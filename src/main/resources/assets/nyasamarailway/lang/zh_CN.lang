@@ -1,0 +1,10 @@
+itemGroup.tabNyaSamaRailway=喵玉铁路
+tile.NyaSamaRailwayBlockSign.name=喵玉铁路
+tile.TrackPlate.name=轨道板
+tile.TrackShelf.name=轨道架
+tile.TrackShelfLow.name=低轨道架
+tile.BlockRailStoneSleeper.name=混凝土枕轨
+tile.BlockRailNoSleeper.name=无砟轨
+tile.BlockRailProtectHead.name=混凝土枕轨(护轨头)
+tile.BlockRailProtectHeadAnti.name=混凝土枕轨(护轨头,反)
+tile.BlockRailProtectBody.name=混凝土枕轨(护轨)

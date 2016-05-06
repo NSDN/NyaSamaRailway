@@ -1,0 +1,10 @@
+itemGroup.tabNyaSamaRailway=NyaSama Railway
+tile.NyaSamaRailwayBlockSign.name=NyaSama Railway
+tile.TrackPlate.name=Track Plate
+tile.TrackShelf.name=Track Shelf
+tile.TrackShelfLow.name=Low Track Shelf
+tile.BlockRailStoneSleeper.name=Stone Sleeper Rail
+tile.BlockRailNoSleeper.name=Thin Sleeper Rail
+tile.BlockRailProtectHead.name=Protect Rail Head
+tile.BlockRailProtectHeadAnti.name=Protect Rail Head(Anti)
+tile.BlockRailProtectBody.name=Protect Rail Body
