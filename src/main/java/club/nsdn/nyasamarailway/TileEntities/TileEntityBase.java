@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import net.minecraft.block.Block;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -21,13 +22,13 @@ public class TileEntityBase extends BlockContainer {
     protected void setIconLocation(String textureLocation) { this.textureLocation = "nyasamarailway" + ":" + textureLocation; }
 
     public TileEntityBase(String blockName) {
-        super(Material.glass);
+        super(Material.rock);
         setBlockName(blockName);
         setBlockTextureName("minecraft:quartz_block_side");
         setIconLocation("minecraft:quartz_block_side");
         setHardness(2.0F);
         setLightLevel(0);
-        setStepSound(Block.soundTypeGlass);
+        setStepSound(Block.soundTypeStone);
         setResistance(10.0F);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
@@ -56,6 +57,15 @@ public class TileEntityBase extends BlockContainer {
     @Override
     public boolean isOpaqueCube() {
         return false;
+    }
+
+    protected void setBoundsByMeta(int meta) {
+    }
+
+    @Override
+    public void setBlockBoundsBasedOnState(IBlockAccess w, int x, int y, int z) {
+        int meta = w.getBlockMetadata(x, y, z);
+        setBoundsByMeta(meta);
     }
 
     @Override

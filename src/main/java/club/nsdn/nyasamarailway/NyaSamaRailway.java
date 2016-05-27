@@ -17,13 +17,18 @@ import java.io.FileOutputStream;
 @Mod(modid = NyaSamaRailway.MODID, version = NyaSamaRailway.VERSION)
 public class NyaSamaRailway {
 
+    @Mod.Instance("NyaSamaRailway")
+    public static NyaSamaRailway instance;
     public static final String MODID = "NyaSamaRailway";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.2";
+    public static final boolean isDebug = false;
     public static PrintStream console = new PrintStream(new FileOutputStream(FileDescriptor.out));
 
     @SidedProxy(clientSide = "club.nsdn.nyasamarailway.Proxy.ClientProxy",
-                serverSide = "club.nsdn.nyasamarailway.Proxy.CommonProxy")
+                serverSide = "club.nsdn.nyasamarailway.Proxy.ServerProxy")
     public static CommonProxy proxy;
+
+    public static NyaSamaRailway getInstance() { return instance; }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)

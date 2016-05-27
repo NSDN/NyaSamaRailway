@@ -11,7 +11,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityTrackShelf extends TileEntityBase {
 
-    public static class TrackShelf extends TileEntity { }
+    public static class TrackShelf extends TileEntity {
+        @Override
+        public boolean shouldRenderInPass(int pass) {
+            return true;
+        }
+    }
 
     public TileEntityTrackShelf() {
         super("TrackShelf");

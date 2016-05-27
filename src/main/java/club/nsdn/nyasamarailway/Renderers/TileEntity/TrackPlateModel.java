@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.Renderers;
+package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 /**
  * Created by drzzm32 on 2016.5.5.

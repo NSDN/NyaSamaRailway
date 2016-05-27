@@ -23,7 +23,7 @@ public class BlockRailBase extends BlockRail{
     }
 
     @Override
-    public float getRailMaxSpeed(World world, EntityMinecart cart, int y, int x, int z) {
+    public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
         return 1.0F;
     }
 
