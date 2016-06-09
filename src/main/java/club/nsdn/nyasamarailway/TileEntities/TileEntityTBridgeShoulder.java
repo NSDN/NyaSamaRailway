@@ -21,6 +21,7 @@ public class TileEntityTBridgeShoulder extends TileEntityBase {
     public TileEntityTBridgeShoulder() {
         super("TBridgeShoulder");
         setIconLocation("t_bridge_shoulder");
+        setLightOpacity(0);
     }
 
     @Override

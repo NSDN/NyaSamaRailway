@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Items;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.Entity.MinecartBase;
+import club.nsdn.nyasamarailway.Entity.NSBT1;
 import club.nsdn.nyasamarailway.Entity.TrainBase;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,16 +35,16 @@ public class ItemTrainBase extends ItemMinecart {
             if (!world.isRemote)
             {
                 TrainBase trainBody = new TrainBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                MinecartBase bogieF = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                MinecartBase bogieB = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                MinecartBase bogieF = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                MinecartBase bogieB = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
 
                 if (itemStack.hasDisplayName())
                 {
                     trainBody.setMinecartName(itemStack.getDisplayName());
                 }
 
-                trainBody.addBogie(0, bogieF, 2.0);
-                trainBody.addBogie(1, bogieB, -2.0);
+                trainBody.addBogie(0, bogieF.getEntityId(), 2.0);
+                trainBody.addBogie(1, bogieB.getEntityId(), -2.0);
 
                 world.spawnEntityInWorld(trainBody);
                 trainBody.onUpdate();

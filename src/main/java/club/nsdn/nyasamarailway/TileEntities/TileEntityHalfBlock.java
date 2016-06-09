@@ -21,6 +21,7 @@ public class TileEntityHalfBlock extends TileEntityBase {
     public TileEntityHalfBlock() {
         super("HalfBlock");
         setIconLocation("half_block");
+        setLightOpacity(0);
     }
 
     @Override

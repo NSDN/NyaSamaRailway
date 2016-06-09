@@ -21,6 +21,7 @@ public class TileEntityTBridgeHeadNoRib extends TileEntityBase {
     public TileEntityTBridgeHeadNoRib() {
         super("TBridgeHeadNoRib");
         setIconLocation("t_bridge_head_no_rib");
+        setLightOpacity(0);
     }
 
     @Override

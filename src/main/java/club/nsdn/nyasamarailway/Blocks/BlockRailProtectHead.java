@@ -11,11 +11,15 @@ import net.minecraft.world.World;
  * Created by drzzm32 on 2016.5.6.
  */
 
-public class BlockRailProtectHead extends BlockRailBase {
+public class BlockRailProtectHead extends BlockRailBase implements IRailDirectional {
 
     public BlockRailProtectHead() {
         super("BlockRailProtectHead");
         setTextureName("rail_protect_head");
+    }
+
+    public boolean isForward() {
+        return true;
     }
 
     @Override

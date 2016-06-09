@@ -21,4 +21,9 @@ public class MinecartBase extends EntityMinecartEmpty {
     public double getMountedYOffset() {
         return -0.1;
     }
+
+    @Override
+    public float getMaxCartSpeedOnRail() {
+        return 2.0F;
+    }
 }

@@ -7,11 +7,15 @@ import net.minecraft.world.World;
  * Created by drzzm32 on 2016.5.6.
  */
 
-public class BlockRailProtectHeadAnti extends BlockRailBase {
+public class BlockRailProtectHeadAnti extends BlockRailBase implements IRailDirectional {
 
     public BlockRailProtectHeadAnti() {
         super("BlockRailProtectHeadAnti");
         setTextureName("rail_protect_head_anti");
+    }
+
+    public boolean isForward() {
+        return false;
     }
 
     @Override

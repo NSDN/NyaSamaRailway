@@ -46,6 +46,11 @@ public class ItemToolBase extends Item {
     }
 
     @Override
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        return false;
+    }
+
+        @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
         return false;
     }

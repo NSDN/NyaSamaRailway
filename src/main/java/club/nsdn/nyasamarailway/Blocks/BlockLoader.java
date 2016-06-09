@@ -23,12 +23,23 @@ public class BlockLoader {
     public static Block blockRailNoSleeperPowered;
     public static Block blockRailStoneSleeperDetector;
     public static Block blockRailNoSleeperDetector;
+
+    /*------*/
+    public static Block blockRailStoneSleeperDetector5s;
+    public static Block blockRailNoSleeperDetector5s;
+    public static Block blockRailStoneSleeperDetector15s;
+    public static Block blockRailNoSleeperDetector15s;
+    public static Block blockRailStoneSleeperDetector30s;
+    public static Block blockRailNoSleeperDetector30s;
+    /*------*/
+
     public static Block blockRailProtectBody;
     public static Block blockRailProtectHead;
     public static Block blockRailProtectHeadAnti;
     public static Block blockRailReception;
     public static Block blockRailReceptionAnti;
     public static Block blockIronBars;
+    public static Block blockIronWeb;
     public static Block blockTBridgeHead;
     public static Block blockTBridgeHeadNoRib;
     public static Block blockTBridgeBody;
@@ -85,6 +96,21 @@ public class BlockLoader {
         blockRailNoSleeperDetector = new BlockRailNoSleeperDetector();
         register(blockRailNoSleeperDetector, "block_rail_no_sleeper_detector");
 
+        /*------*/
+        blockRailStoneSleeperDetector5s = new BlockRailStoneSleeperDetector(5);
+        register(blockRailStoneSleeperDetector5s, "block_rail_stone_sleeper_detector_5s");
+        blockRailNoSleeperDetector5s = new BlockRailNoSleeperDetector(5);
+        register(blockRailNoSleeperDetector5s, "block_rail_no_sleeper_detector_5s");
+        blockRailStoneSleeperDetector15s = new BlockRailStoneSleeperDetector(15);
+        register(blockRailStoneSleeperDetector15s, "block_rail_stone_sleeper_detector_15s");
+        blockRailNoSleeperDetector15s = new BlockRailNoSleeperDetector(15);
+        register(blockRailNoSleeperDetector15s, "block_rail_no_sleeper_detector_15s");
+        blockRailStoneSleeperDetector30s = new BlockRailStoneSleeperDetector(30);
+        register(blockRailStoneSleeperDetector30s, "block_rail_stone_sleeper_detector_30s");
+        blockRailNoSleeperDetector30s = new BlockRailNoSleeperDetector(30);
+        register(blockRailNoSleeperDetector30s, "block_rail_no_sleeper_detector_30s");
+        /*------*/
+
         blockRailProtectHead = new BlockRailProtectHead();
         register(blockRailProtectHead, "block_rail_protect_head");
 
@@ -103,6 +129,9 @@ public class BlockLoader {
 
         blockIronBars = new BlockIronBars();
         register(blockIronBars, "rail_iron_bars");
+
+        blockIronWeb = new BlockIronWeb();
+        register(blockIronWeb, "rail_iron_web");
 
         blockTBridgeHead = new TileEntityTBridgeHead();
         register(blockTBridgeHead, "block_t_bridge_head");

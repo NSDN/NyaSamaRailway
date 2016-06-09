@@ -21,6 +21,7 @@ public class TileEntityTrackPlate extends TileEntityBase {
     public TileEntityTrackPlate() {
         super("TrackPlate");
         setIconLocation("track_plate");
+        setLightOpacity(0);
     }
 
     @Override

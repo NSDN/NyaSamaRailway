@@ -20,32 +20,32 @@ import java.util.LinkedList;
  */
 
 public class TrainBase extends EntityMinecartEmpty {
-    public LinkedList<EntityMinecart> bogies;
+    public LinkedList<Integer> bogies;
     public LinkedList<Double> bogiesDist;
 
     public TrainBase(World world) {
         super(world);
-        bogies = new LinkedList<EntityMinecart>();
+        bogies = new LinkedList<Integer>();
         bogiesDist = new LinkedList<Double>();
     }
 
     public TrainBase(World world, double x, double y, double z) {
         super(world, x, y, z);
-        bogies = new LinkedList<EntityMinecart>();
+        bogies = new LinkedList<Integer>();
         bogiesDist = new LinkedList<Double>();
     }
 
-    public void addBogie(int index, EntityMinecart bogie, double distance) {
-        bogies.add(index, bogie);
+    public void addBogie(int index, int bogieID, double distance) {
+        bogies.add(index, bogieID);
         bogiesDist.add(index, distance);
     }
 
     @Override
     public void killMinecart(DamageSource source) {
         this.setDead();
-        for (EntityMinecart i : this.bogies) {
-            if (i != null)
-                i.killMinecart(source);
+        for (int i : this.bogies) {
+            if (i > 0)
+                ((EntityMinecart) (this.worldObj.getEntityByID(i))).killMinecart(source);
         }
         ItemStack itemstack = new ItemStack(Items.minecart, 1);
         if (this.getCommandSenderName() != null) {
@@ -74,15 +74,15 @@ public class TrainBase extends EntityMinecartEmpty {
             this.kill();
         }
 
-        int i;
+        int Y;
         if (!this.worldObj.isRemote && this.worldObj instanceof WorldServer) {
             this.worldObj.theProfiler.startSection("portal");
             MinecraftServer l = ((WorldServer) this.worldObj).func_73046_m();
-            i = this.getMaxInPortalTime();
+            Y = this.getMaxInPortalTime();
             if (this.inPortal) {
                 if (l.getAllowNether()) {
-                    if (this.ridingEntity == null && this.portalCounter++ >= i) {
-                        this.portalCounter = i;
+                    if (this.ridingEntity == null && this.portalCounter++ >= Y) {
+                        this.portalCounter = Y;
                         this.timeUntilPortal = this.getPortalCooldown();
                         byte i1;
                         if (this.worldObj.provider.dimensionId == -1) {
@@ -113,93 +113,106 @@ public class TrainBase extends EntityMinecartEmpty {
             this.worldObj.theProfiler.endSection();
         }
 
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
+        if(this.worldObj.isRemote) {
+            this.setPosition(this.posX, this.posY, this.posZ);
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+        } else {
+            this.prevPosX = this.posX;
+            this.prevPosY = this.posY;
+            this.prevPosZ = this.posZ;
 
-        int var20 = MathHelper.floor_double(this.posX);
-        i = MathHelper.floor_double(this.posY);
-        int var21 = MathHelper.floor_double(this.posZ);
-
-        if (!bogies.isEmpty()) {
-            EntityMinecart bogieFront = bogies.get(0);
-            EntityMinecart bogieBack = bogies.get(1);
+            if (!bogies.isEmpty()) {
+                EntityMinecart bogieFront = (EntityMinecart) this.worldObj.getEntityByID(bogies.get(0));
+                EntityMinecart bogieBack = (EntityMinecart) this.worldObj.getEntityByID(bogies.get(1));
 
             /*some code*/
-            /**力学建模需求**/
+                /**力学建模需求**/
 
-            if (calcDist(bogieFront, bogieBack) > bogiesDist.get(0) - bogiesDist.get(1)) {
-                /**拉特性**/
-                if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
-                        calcDist(bogieBack.motionX, bogieBack.motionZ)) {
-                    /**前主导**/
-                    Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                    Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                    Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
-                    vb = calcProjection(calcProjection(vf, dir), vb);
-                    bogieBack.motionX = vb.xCoord;
-                    bogieBack.motionZ = vb.zCoord;
-                } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
-                        calcDist(bogieBack.motionX, bogieBack.motionZ)){
-                    /**后主导**/
-                    Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                    Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                    Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
-                    vf = calcProjection(calcProjection(vb, dir), vf);
-                    bogieFront.motionX = vf.xCoord;
-                    bogieFront.motionZ = vf.zCoord;
+                if (calcDist(bogieFront, bogieBack) > bogiesDist.get(0) - bogiesDist.get(1)) {
+                    /**拉特性**/
+                    if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
+                            calcDist(bogieBack.motionX, bogieBack.motionZ)) {
+                        /**前主导**/
+                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
+                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
+                        Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
+                        vb = calcProjection(calcProjection(vf, dir), vb);
+                        bogieBack.motionX = vb.xCoord;
+                        bogieBack.motionZ = vb.zCoord;
+                        //bogieBack.motionX = bogieFront.motionX;
+                        //bogieBack.motionZ = bogieFront.motionZ;
+                    } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
+                            calcDist(bogieBack.motionX, bogieBack.motionZ)){
+                        /**后主导**/
+                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
+                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
+                        Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
+                        vf = calcProjection(calcProjection(vb, dir), vf);
+                        bogieFront.motionX = vf.xCoord;
+                        bogieFront.motionZ = vf.zCoord;
+                        //bogieFront.motionX = bogieBack.motionX;
+                        //bogieFront.motionZ = bogieBack.motionZ;
+                    }
+                } else if (calcDist(bogieFront, bogieBack) < bogiesDist.get(0) - bogiesDist.get(1)) {
+                    /**推特性**/
+                    if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
+                            calcDist(bogieBack.motionX, bogieBack.motionZ)) {
+                        /**前主导**/
+                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
+                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
+                        Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
+                        vb = calcProjection(calcProjection(vf, dir), vb);
+                        bogieBack.motionX = vb.xCoord;
+                        bogieBack.motionZ = vb.zCoord;
+                        //bogieBack.motionX = bogieFront.motionX;
+                        //bogieBack.motionZ = bogieFront.motionZ;
+                    } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
+                            calcDist(bogieBack.motionX, bogieBack.motionZ)){
+                        /**后主导**/
+                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
+                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
+                        Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
+                        vf = calcProjection(calcProjection(vb, dir), vf);
+                        bogieFront.motionX = vf.xCoord;
+                        bogieFront.motionZ = vf.zCoord;
+                        //bogieFront.motionX = bogieBack.motionX;
+                        //bogieFront.motionZ = bogieBack.motionZ;
+                    }
                 }
-            } else if (calcDist(bogieFront, bogieBack) < bogiesDist.get(0) - bogiesDist.get(1)) {
-                /**推特性**/
-                if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
-                        calcDist(bogieBack.motionX, bogieBack.motionZ)) {
-                    /**前主导**/
-                    Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                    Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                    Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
-                    vb = calcProjection(calcProjection(vf, dir), vb);
-                    bogieBack.motionX = vb.xCoord;
-                    bogieBack.motionZ = vb.zCoord;
-                } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
-                        calcDist(bogieBack.motionX, bogieBack.motionZ)){
-                    /**后主导**/
-                    Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                    Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                    Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
-                    vf = calcProjection(calcProjection(vb, dir), vf);
-                    bogieFront.motionX = vf.xCoord;
-                    bogieFront.motionZ = vf.zCoord;
-                }
+
+                bogieFront.onUpdate();
+                bogieBack.onUpdate();
+
+                this.posX = (bogieFront.posX + bogieBack.posX) / 2.0;
+                this.posY = (bogieFront.posY + bogieBack.posY) / 2.0;
+                this.posZ = (bogieFront.posZ + bogieBack.posZ) / 2.0;
+
+                this.rotationYaw = 180.0F - (float) Math.acos((bogieFront.posX - bogieBack.posX) /
+                        calcDist(bogieFront.posX - bogieBack.posX,
+                                bogieFront.posZ - bogieBack.posZ)
+                );
+
+                this.rotationPitch = (float) Math.atan((bogieFront.posY - bogieBack.posY) /
+                        calcDist(bogieFront.posX - bogieBack.posX,
+                                bogieFront.posZ - bogieBack.posZ)
+                );
             }
 
-            bogieFront.onUpdate();
-            bogieBack.onUpdate();
 
-            this.posX = (bogieFront.posX + bogieBack.posX) / 2.0;
-            this.posY = (bogieFront.posY + bogieBack.posY) / 2.0;
-            this.posZ = (bogieFront.posZ + bogieBack.posZ) / 2.0;
+            if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
+                if (this.riddenByEntity.ridingEntity == this) {
+                    this.riddenByEntity.ridingEntity = null;
+                }
 
-            this.rotationYaw = 180.0F - (float) Math.acos((bogieFront.posX - bogieBack.posX) /
-                    calcDist(bogieFront.posX - bogieBack.posX,
-                            bogieFront.posZ - bogieBack.posZ)
-            );
-
-            this.rotationPitch = (float) Math.atan((bogieFront.posY - bogieBack.posY) /
-                    calcDist(bogieFront.posX - bogieBack.posX,
-                            bogieFront.posZ - bogieBack.posZ)
-            );
-        }
-
-
-        if (this.riddenByEntity != null && this.riddenByEntity.isDead) {
-            if (this.riddenByEntity.ridingEntity == this) {
-                this.riddenByEntity.ridingEntity = null;
+                this.riddenByEntity = null;
             }
 
-            this.riddenByEntity = null;
-        }
+            int X = MathHelper.floor_double(this.posX);
+            Y = MathHelper.floor_double(this.posY);
+            int Z = MathHelper.floor_double(this.posZ);
 
-        MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, (float) var20, (float) i, (float) var21));
+            MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, (float) X, (float) Y, (float) Z));
+        }
 
     }
 

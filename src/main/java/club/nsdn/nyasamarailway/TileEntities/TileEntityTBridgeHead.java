@@ -21,6 +21,7 @@ public class TileEntityTBridgeHead extends TileEntityBase {
     public TileEntityTBridgeHead() {
         super("TBridgeHead");
         setIconLocation("t_bridge_head");
+        setLightOpacity(0);
     }
 
     @Override

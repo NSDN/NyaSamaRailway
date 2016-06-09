@@ -13,6 +13,7 @@ public class ItemLoader {
 
     public static Item trainController8Bit;
     public static Item trainController32Bit;
+    public static Item item74HC04;
     public static Item itemMinecartBase;
     public static Item itemTrainBase;
     public static Item itemNSPCT1;
@@ -28,6 +29,9 @@ public class ItemLoader {
 
         trainController32Bit = new ItemTrainController32Bit();
         register(trainController32Bit, "train_controller_32bit");
+
+        item74HC04 = new Item74HC04();
+        register(item74HC04, "item_74hc04");
 
         itemMinecartBase = new ItemMinecartBase();
         register(itemMinecartBase, "item_minecart_base");

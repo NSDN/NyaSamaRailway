@@ -24,6 +24,7 @@ public class TileEntityPlatform extends TileEntityBase {
     public TileEntityPlatform() {
         super("Platform");
         setIconLocation("platform");
+        setLightOpacity(0);
     }
 
     @Override

@@ -8,9 +8,7 @@
  */
 package club.nsdn.nyasamarailway.Event;
 
-import club.nsdn.nyasamarailway.Entity.TrainBase;
-import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
 import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -18,7 +16,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
@@ -41,6 +38,7 @@ public class ToolHandler {
 
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null) {
+
                 if (stack.getItem() instanceof ItemTrainController8Bit) {
                     if (player.isSneaking()) {
                         controller8Bit = new TrainPacket();
@@ -48,12 +46,14 @@ public class ToolHandler {
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.cleared"));
                         return;
                     }
-                    if (!(entity instanceof TrainBase) && entity instanceof EntityMinecart) {
+                    if (entity instanceof EntityMinecart) {
                         controller8Bit = new TrainPacket(player.getEntityId(), entity.getEntityId(), 0, 5, 0);
                         NetworkWrapper.packetSender.sendTo(controller8Bit, player);
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
                     }
-                } else if (stack.getItem() instanceof ItemTrainController32Bit) {
+                }
+
+                else if (stack.getItem() instanceof ItemTrainController32Bit) {
                     if (controller32Bit == null) {
                         controller32Bit = new TrainPacket(-1, 0, 5, 0);
                     }
@@ -66,7 +66,7 @@ public class ToolHandler {
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.cleared"));
                         return;
                     }
-                    if (!(entity instanceof TrainBase) && entity instanceof EntityMinecart) {
+                    if (entity instanceof EntityMinecart) {
                         controller32Bit.cartID = entity.getEntityId();
                         if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
                             controller32Bit.trainUnits.add(controller32Bit.cartID);
@@ -76,7 +76,9 @@ public class ToolHandler {
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
                     }
                 }
+
             }
         }
     }
+
 }
