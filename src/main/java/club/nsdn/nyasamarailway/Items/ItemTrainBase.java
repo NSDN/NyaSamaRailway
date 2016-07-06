@@ -24,6 +24,24 @@ public class ItemTrainBase extends ItemMinecart {
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 
+    public enum RailDirection {
+        NONE,
+        WE, //West-East
+        NS //North-South
+    }
+
+    public RailDirection getRailDirection(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if ((meta & 2) == 0 && (meta & 4) == 0) {
+            return ((meta & 1) == 0) ? RailDirection.NS : RailDirection.WE;
+        } else if ((meta & 2) > 0 && (meta & 4) == 0) {
+            return RailDirection.WE;
+        } else if ((meta & 2) == 0 && (meta & 4) > 0) {
+            return RailDirection.NS;
+        }
+        return RailDirection.NONE;
+    }
+
     protected void setTexName(String name) {
         setTextureName("nyasamarailway" + ":" + name);
     }
@@ -47,12 +65,11 @@ public class ItemTrainBase extends ItemMinecart {
                 trainBody.addBogie(1, bogieB.getEntityId(), -2.0);
 
                 world.spawnEntityInWorld(trainBody);
-                trainBody.onUpdate();
 
-                if ((180.0 - trainBody.rotationYaw) % 180.0 == 0) {
+                if (getRailDirection(world, x, y, z) == RailDirection.WE) {
                     bogieF.posX += 2.0;
                     bogieB.posX -= 2.0;
-                } else if ((180.0 - trainBody.rotationYaw) % 180.0 != 0) {
+                } else if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     bogieF.posZ += 2.0;
                     bogieB.posZ -= 2.0;
                 }

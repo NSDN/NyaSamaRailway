@@ -113,6 +113,7 @@ public class TrainBase extends EntityMinecartEmpty {
             this.worldObj.theProfiler.endSection();
         }
 
+        //if(false) {
         if(this.worldObj.isRemote) {
             this.setPosition(this.posX, this.posY, this.posZ);
             this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -126,66 +127,30 @@ public class TrainBase extends EntityMinecartEmpty {
                 EntityMinecart bogieBack = (EntityMinecart) this.worldObj.getEntityByID(bogies.get(1));
 
             /*some code*/
-                /**力学建模需求**/
 
-                if (calcDist(bogieFront, bogieBack) > bogiesDist.get(0) - bogiesDist.get(1)) {
-                    /**拉特性**/
-                    if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
-                            calcDist(bogieBack.motionX, bogieBack.motionZ)) {
-                        /**前主导**/
-                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                        Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
-                        vb = calcProjection(calcProjection(vf, dir), vb);
-                        bogieBack.motionX = vb.xCoord;
-                        bogieBack.motionZ = vb.zCoord;
-                        //bogieBack.motionX = bogieFront.motionX;
-                        //bogieBack.motionZ = bogieFront.motionZ;
-                    } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
-                            calcDist(bogieBack.motionX, bogieBack.motionZ)){
-                        /**后主导**/
-                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                        Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
-                        vf = calcProjection(calcProjection(vb, dir), vf);
-                        bogieFront.motionX = vf.xCoord;
-                        bogieFront.motionZ = vf.zCoord;
-                        //bogieFront.motionX = bogieBack.motionX;
-                        //bogieFront.motionZ = bogieBack.motionZ;
-                    }
-                } else if (calcDist(bogieFront, bogieBack) < bogiesDist.get(0) - bogiesDist.get(1)) {
-                    /**推特性**/
-                    if (calcDist(bogieFront.motionX, bogieFront.motionZ) >
-                            calcDist(bogieBack.motionX, bogieBack.motionZ)) {
-                        /**前主导**/
-                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                        Vec3 dir = Vec3.createVectorHelper(bogieBack.posX - bogieFront.posX, 0, bogieBack.posZ - bogieFront.posZ);
-                        vb = calcProjection(calcProjection(vf, dir), vb);
-                        bogieBack.motionX = vb.xCoord;
-                        bogieBack.motionZ = vb.zCoord;
-                        //bogieBack.motionX = bogieFront.motionX;
-                        //bogieBack.motionZ = bogieFront.motionZ;
-                    } else if (calcDist(bogieFront.motionX, bogieFront.motionZ) <
-                            calcDist(bogieBack.motionX, bogieBack.motionZ)){
-                        /**后主导**/
-                        Vec3 vb = Vec3.createVectorHelper(bogieBack.motionX, 0, bogieBack.motionZ);
-                        Vec3 vf = Vec3.createVectorHelper(bogieFront.motionX, 0, bogieFront.motionZ);
-                        Vec3 dir = Vec3.createVectorHelper(bogieFront.posX - bogieBack.posX, 0, bogieFront.posZ - bogieBack.posZ);
-                        vf = calcProjection(calcProjection(vb, dir), vf);
-                        bogieFront.motionX = vf.xCoord;
-                        bogieFront.motionZ = vf.zCoord;
-                        //bogieFront.motionX = bogieBack.motionX;
-                        //bogieFront.motionZ = bogieBack.motionZ;
-                    }
-                }
+                double Ks = 500.0;
+                double Kd = 500.0;
+                double m = 1.0;
+                double length = 4.0;
+                double dt = 0.001;
 
-                bogieFront.onUpdate();
-                bogieBack.onUpdate();
+                double dist = calcDist(bogieFront, bogieBack);
+                double dv = Ks * (dist - length) / m * dt;
+                double DdvX = Kd * (bogieFront.motionX - bogieBack.motionZ) / m * dt;
+                double DdvZ = Kd * (bogieFront.motionZ - bogieBack.motionZ) / m * dt;
+
+                bogieBack.motionX += dv * (bogieFront.posX - bogieBack.posX) / dist + DdvX;
+                bogieBack.motionZ += dv * (bogieFront.posZ - bogieBack.posZ) / dist + DdvZ;
+                bogieFront.motionX += -dv * (bogieFront.posX - bogieBack.posX) / dist - DdvX;
+                bogieFront.motionZ += -dv * (bogieFront.posZ - bogieBack.posZ) / dist - DdvZ;
 
                 this.posX = (bogieFront.posX + bogieBack.posX) / 2.0;
                 this.posY = (bogieFront.posY + bogieBack.posY) / 2.0;
                 this.posZ = (bogieFront.posZ + bogieBack.posZ) / 2.0;
+
+                this.motionX = this.posX - this.prevPosX;
+                this.motionY = this.posY - this.prevPosY;
+                this.motionZ = this.posZ - this.prevPosZ;
 
                 this.rotationYaw = 180.0F - (float) Math.acos((bogieFront.posX - bogieBack.posX) /
                         calcDist(bogieFront.posX - bogieBack.posX,
@@ -196,6 +161,8 @@ public class TrainBase extends EntityMinecartEmpty {
                         calcDist(bogieFront.posX - bogieBack.posX,
                                 bogieFront.posZ - bogieBack.posZ)
                 );
+
+                this.moveEntity(this.motionX, this.motionY, this.motionZ);
             }
 
 

@@ -6,8 +6,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.thewdj.physics.Dynamics;
 
 /**
@@ -30,6 +29,20 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 world.getBlock(x, y, z + 1) == this || world.getBlock(x, y, z - 1) == this;
     }
 
+    public void setRailVerticalOutput(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+            world.setBlockMetadataWithNotify(x - 1, y, z, meta | 8, 3);
+            world.setBlockMetadataWithNotify(x + 1, y, z, meta | 8, 3);
+            world.setBlockMetadataWithNotify(x, y - 1, z, meta | 8, 3);
+        } else {
+            world.setBlockMetadataWithNotify(x, y, z - 1, meta | 8, 3);
+            world.setBlockMetadataWithNotify(x, y, z + 1, meta | 8, 3);
+            world.setBlockMetadataWithNotify(x, y - 1, z, meta | 8, 3);
+        }
+
+    }
+
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
         boolean playerDetectable = false;
@@ -47,7 +60,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         double maxV = 0.1;
         if ((world.getBlockMetadata(x, y, z) >= 8) != playerDetectable) {
             if (Math.abs(cart.motionX) < maxV && Math.abs(cart.motionZ) < maxV) {
-                if (world.getBlockMetadata(x, y, z) == 8) {
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ >= 0)
                         cart.motionZ = -0.005;
                     cart.motionZ = -Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1, 1.0, 0.1, 0.02);
@@ -62,15 +75,15 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 cart.motionX = Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1, 1.0, 1.0, 1.0, 0.05, 0.02);
                 cart.motionZ = Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1, 1.0, 1.0, 1.0, 0.05, 0.02);
             } else {
-                int meta = world.getBlockMetadata(x, y, z);
-
-                if (meta % 8 == 0) {
-                    cart.posX = x + 0.5;
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    if (cart.motionZ <= 0) {
+                        cart.motionZ = 0;
+                    }
                 } else {
-                    cart.posZ = z + 0.5;
+                    if (cart.motionX >= 0) {
+                        cart.motionX = 0;
+                    }
                 }
-
-                cart.setVelocity(0, 0, 0);
             }
         }
     }

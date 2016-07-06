@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.Event;
 
+import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
@@ -40,6 +41,12 @@ public class TrainControlClientHandler {
                 if (ToolHandler.controller8Bit != null) {
                     EntityMinecart cart = ToolHandler.controller8Bit.getCartInClient();
                     if (cart != null) {
+                        if (cart instanceof LocoBase) {
+                            TrainController.doControl(ToolHandler.controller8Bit, player);
+                            ((LocoBase) cart).setTrainPacket(ToolHandler.controller8Bit);
+                            NetworkWrapper.packetSender.sendToServer(ToolHandler.controller8Bit);
+                            return;
+                        }
                         TrainController.doControl(ToolHandler.controller8Bit, player);
                         TrainController.doMotion(ToolHandler.controller8Bit, cart);
                         NetworkWrapper.packetSender.sendToServer(ToolHandler.controller8Bit);
@@ -53,6 +60,10 @@ public class TrainControlClientHandler {
                         for (int i : ToolHandler.controller32Bit.trainUnits) {
                             cart = ToolHandler.controller32Bit.getCartInClient(i);
                             if (cart != null) {
+                                if (cart instanceof LocoBase) {
+                                    ((LocoBase) cart).setTrainPacket(ToolHandler.controller32Bit);
+                                    continue;
+                                }
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }
                         }

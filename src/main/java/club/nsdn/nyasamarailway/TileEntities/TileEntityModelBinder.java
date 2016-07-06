@@ -79,6 +79,9 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailSignHeadT.RailSignHeadT.class,
                 new BaseRenderer(new RailSignHeadModel(), "textures/blocks/rail_sign_t.png"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityStationSign.StationSign.class, new StationSignRenderer());
     }
 
 }

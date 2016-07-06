@@ -2,13 +2,10 @@ package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
-import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 import org.thewdj.physics.Dynamics;
 
 /**
@@ -48,7 +45,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         double maxV = 0.1;
         if ((world.getBlockMetadata(x, y, z) >= 8) != playerDetectable) {
             if (Math.abs(cart.motionX) < maxV && Math.abs(cart.motionZ) < maxV) {
-                if (world.getBlockMetadata(x, y, z) == 8) {
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ <= 0)
                         cart.motionZ = 0.005;
                     cart.motionZ = Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1, 1.0, 0.1, 0.02);
@@ -60,18 +57,18 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             }
         } else {
             if (Math.abs(cart.motionX) > maxV || Math.abs(cart.motionZ) > maxV) {
-                cart.motionX = Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1, 1.0, 1.0, 1.0, 0.1, 0.02);
-                cart.motionZ = Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1, 1.0, 1.0, 1.0, 0.1, 0.02);
+                cart.motionX = Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1, 1.0, 1.0, 1.0, 0.05, 0.02);
+                cart.motionZ = Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1, 1.0, 1.0, 1.0, 0.05, 0.02);
             } else {
-                int meta = world.getBlockMetadata(x, y, z);
-
-                if (meta % 8 == 0) {
-                    cart.posX = x + 0.5;
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    if (cart.motionZ >= 0) {
+                        cart.motionZ = 0;
+                    }
                 } else {
-                    cart.posZ = z + 0.5;
+                    if (cart.motionX <= 0) {
+                        cart.motionX = 0;
+                    }
                 }
-
-                cart.setVelocity(0, 0, 0);
             }
         }
     }

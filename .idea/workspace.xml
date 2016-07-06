@@ -2,36 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7423ec30-32b0-49a4-a09b-424972be000f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockIronWeb.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/IRailDirectional.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/Item74HC04.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/ITrainLinkable.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/LocoBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSET1.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSET1.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSET1Model.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignModel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignRenderer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityStationSign.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/org/thewdj/physics/Point3D.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockLoader.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockLoader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeper.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeperDetector.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeperDetector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeperPowered.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailNoSleeperPowered.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailProtectHead.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailProtectHead.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailProtectHeadAnti.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailProtectHeadAnti.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailPoweredBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailPoweredBase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailStoneSleeperDetector.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailStoneSleeperDetector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/MinecartBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/MinecartBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSPCT1.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSPCT1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityLoader.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/ToolHandler.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/ToolHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlClientHandler.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlClientHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlServerHandler.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlServerHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemLoader.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemToolBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemToolBase.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/BaseRenderer.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/BaseRenderer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityHalfBlock.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityHalfBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityHalfHalfBlock.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityHalfHalfBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityPlatform.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityPlatform.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeBody.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeBody.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeBodyNoRib.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeBodyNoRib.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeHead.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeHead.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeHeadNoRib.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeHeadNoRib.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeShoulder.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeShoulder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTrackPlate.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTrackPlate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityBase.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityLoader.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityLoader.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityModelBinder.java" afterPath="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityModelBinder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/en_US.lang" afterPath="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/en_US.lang" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/zh_CN.lang" afterPath="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/zh_CN.lang" />
     </list>
@@ -116,11 +113,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BlockRailDetectorBase.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java">
+      <file leaf-file-name="NyaSamaRailway.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21505377">
-              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ITrainLinkable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/ITrainLinkable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MinecartBase.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/MinecartBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EntityModelBinder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MinecartRenderer.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartRenderer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.24236985">
+              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StationSignRenderer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignRenderer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="121" column="43" selection-start-line="121" selection-start-column="43" selection-end-line="121" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TileEntityStationSign.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityStationSign.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="50" column="66" selection-start-line="50" selection-start-column="66" selection-end-line="50" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TileEntitySignRenderer.class" pinned="false" current-in-tab="false">
+        <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/renderer/tileentity/TileEntitySignRenderer.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.2857144">
+              <caret line="60" column="41" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -132,6 +199,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -681,57 +749,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainController8Bit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainController32Bit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TrainControl/TrainUnitPacket.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TrainControl/TrainController.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlServerHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlClientHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TrainControl/TrainPacket.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailPoweredBase.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/RailSignBodyModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/PlatformModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/RailSignHeadModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHead.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityLoader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityModelBinder.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockLoader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignBody.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadBeep.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadJoe.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadCut.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadLink.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadT.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityPlatform.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemMinecart.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/MinecartRenderer.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemMinecartBase.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Proxy/CommonProxy.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/TrainModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartRenderer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/ToolHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/thewdj/physics/Dynamics.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainBase.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Proxy/ClientProxy.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSBT1Model.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSPCT1.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSBT1.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSPCT1Model.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/en_US.lang" />
-        <option value="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/zh_CN.lang" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSBT1.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSPCT1.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityLoader.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemLoader.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/MinecartBase.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/org/thewdj/physics/Point3D.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSET1.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSET1.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSET1Model.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/en_US.lang" />
+        <option value="$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/zh_CN.lang" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/ToolHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlServerHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlClientHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailPoweredBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/LocoBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityModelBinder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignRenderer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityStationSign.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/ITrainLinkable.java" />
       </list>
     </option>
   </component>
@@ -776,6 +844,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -880,7 +950,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="entity" />
+              <option name="myItemId" value="client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -910,11 +980,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="entity" />
+              <option name="myItemId" value="client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="passive" />
+              <option name="myItemId" value="renderer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -944,11 +1014,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="entity" />
+              <option name="myItemId" value="client" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="monster" />
+              <option name="myItemId" value="renderer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tileentity" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -956,27 +1030,11 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="NyaSamaRailway" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NyaSamaRailway" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NyaSamaRailway" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="Scope">
-        <subPane subId="Problems" />
         <subPane subId="Project Files">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
@@ -1068,10 +1126,6 @@
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="java">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="org/thewdj/physics">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -1231,32 +1285,6 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="Proxy">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="NyaSamaRailway">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src/main">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="java">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="club/nsdn/nyasamarailway">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
             <PATH_ELEMENT USER_OBJECT="Items">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
@@ -1355,11 +1383,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="club.nsdn.nyasamarailway.Items" />
-      <recent name="club.nsdn.nyasamarailway.Entity" />
-      <recent name="club.nsdn.nyasamarailway.Renderers.Entity" />
       <recent name="club.nsdn.nyasamarailway.TileEntities" />
-      <recent name="club.nsdn.nyasamarailway.Renderers" />
+      <recent name="club.nsdn.nyasamarailway.Renderers.TileEntity" />
+      <recent name="club.nsdn.nyasamarailway.Renderers.Entity" />
+      <recent name="club.nsdn.nyasamarailway.Entity" />
+      <recent name="club.nsdn.nyasamarailway.Items" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Git\NyaSamaRailway\src\main\java\club\nsdn\nyasamarailway\Renderers\Entity" />
@@ -1681,29 +1709,29 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5040816" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29351535" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="52" y="105" width="245" height="586" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20918368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="52" y="105" width="245" height="586" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993174" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32935154" sideWeight="0.49591836" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.49591836" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29522184" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32423207" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993174" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32935154" sideWeight="0.49591836" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.49591836" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1711,10 +1739,10 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29692832" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29351535" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20714286" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20918368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="52" y="105" width="245" height="586" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32423207" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1747,382 +1775,419 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/item/ItemMinecart.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.928572">
-          <caret line="63" column="34" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/util/ResourceLocation.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.252809">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/HalfBlockModel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="39" selection-end-column="5" />
+          <caret line="62" column="72" selection-start-line="62" selection-start-column="72" selection-end-line="62" selection-end-column="72" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/renderer/RenderBlocks.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailProtectHeadAnti.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21543986">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/BlockLever.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.72967863">
+          <caret line="214" column="44" selection-start-line="214" selection-start-column="28" selection-end-line="214" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/world/World.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34971645">
-          <caret line="152" column="11" selection-start-line="152" selection-start-column="11" selection-end-line="152" selection-end-column="11" />
+          <caret line="2656" column="19" selection-start-line="2656" selection-start-column="19" selection-end-line="2656" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/model/ModelBase.class">
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/BlockRailDetector.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34971645">
-          <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
+        <state vertical-scroll-proportion="1.0491494">
+          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="65" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/model/ModelRenderer.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.2142856">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="45" selection-start-line="127" selection-start-column="45" selection-end-line="127" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1642#1643#0" expanded="false" />
+            <element signature="e#1708#1709#0" expanded="false" />
+            <element signature="e#1813#1814#0" expanded="false" />
+            <element signature="e#1840#1841#0" expanded="false" />
+            <element signature="e#1894#1895#0" expanded="false" />
+            <element signature="e#1919#1920#0" expanded="false" />
+            <element signature="e#2782#2783#0" expanded="false" />
+            <element signature="e#2816#2817#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/BlockRailPowered.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.2967863">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#717#718#0" expanded="false" />
+            <element signature="e#744#745#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TrainControl/TrainController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="184" column="26" selection-start-line="184" selection-start-column="18" selection-end-line="184" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/LocoBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="63" column="43" selection-start-line="63" selection-start-column="43" selection-end-line="63" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#821#822#0" expanded="false" />
+            <element signature="e#858#859#0" expanded="false" />
+            <element signature="e#976#977#0" expanded="false" />
+            <element signature="e#1003#1004#0" expanded="false" />
+            <element signature="e#1061#1062#0" expanded="false" />
+            <element signature="e#1088#1089#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/model/ModelSign.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.107142">
+          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/renderer/entity/Render.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.5">
-          <caret line="42" column="56" selection-start-line="42" selection-start-column="40" selection-end-line="42" selection-end-column="56" />
+        <state vertical-scroll-proportion="-6.7769375">
+          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/model/ModelMinecart.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.8214285">
-          <caret line="15" column="57" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Proxy/CommonProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemToolBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.053859964">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/util/AxisAlignedBB.class">
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/ITileEntityProvider.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17013232">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/tileentity/TileEntity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.56710774">
+          <caret line="251" column="37" selection-start-line="251" selection-start-column="19" selection-end-line="251" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityHalfBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21543986">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignBody.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21543986">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="77" column="5" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/Block.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.45129225">
+          <caret line="670" column="4" selection-start-line="670" selection-start-column="4" selection-end-line="682" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/BlockContainer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17013232">
+          <caret line="13" column="49" selection-start-line="13" selection-start-column="49" selection-end-line="13" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/network/play/server/S33PacketUpdateSign.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/event/ClickEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.3610586">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraftforge/common/IMinecartCollisionHandler.class">
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/block/BlockSign.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17013232">
-          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+        <state vertical-scroll-proportion="19.296297">
+          <caret line="45" column="52" selection-start-line="45" selection-start-column="52" selection-end-line="45" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainController8Bit.java">
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/item/ItemSign.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.178572">
+          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/tileentity/TileEntitySign.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.6785715">
+          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="43" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TrainControl/TrainPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.400359">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <caret line="3" column="33" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainController32Bit.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18850988">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/BaseRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5924596">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="38" selection-start-line="84" selection-start-column="38" selection-end-line="84" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityModelBinder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4308797">
-          <caret line="24" column="95" selection-start-line="24" selection-start-column="60" selection-end-line="24" selection-end-column="95" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/renderer/entity/RenderMinecart.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19848771">
-          <caret line="22" column="39" selection-start-line="22" selection-start-column="39" selection-end-line="22" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartRenderer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.0233393">
-          <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityTBridgeShoulder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35008976">
-          <caret line="18" column="5" selection-start-line="13" selection-start-column="4" selection-end-line="18" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/thewdj/physics/Dynamics.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="37" selection-start-line="48" selection-start-column="37" selection-end-line="48" selection-end-column="37" />
+          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/world/World.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3090909">
-          <caret line="1008" column="55" selection-start-line="1008" selection-start-column="45" selection-end-line="1008" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_65/src.zip!/java/nio/ByteBuffer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2083333">
-          <caret line="261" column="22" selection-start-line="261" selection-start-column="22" selection-end-line="261" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.1/ccedb5b6f96913c6f78bc10249e747ded90baa51/lwjgl-2.9.1-sources.jar!/org/lwjgl/opengl/Display.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9192708">
-          <caret line="1214" column="37" selection-start-line="1214" selection-start-column="37" selection-end-line="1214" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/util/Vec3.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4016854">
-          <caret line="87" column="45" selection-start-line="87" selection-start-column="34" selection-end-line="87" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Proxy/ClientProxy.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockSign.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="69" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="69" />
+          <caret line="16" column="26" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/ToolHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailPoweredBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10771993">
-          <caret line="38" column="51" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="50" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemTrainBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18850988">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="70" column="39" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraftforge/event/entity/EntityEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.02079395">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraftforge/event/entity/minecart/MinecartEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17013232">
+          <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraftforge/event/entity/minecart/MinecartUpdateEvent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17013232">
+          <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Event/TrainControlClientHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.4308797">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/item/EntityMinecartEmpty.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2142856">
+          <caret line="13" column="46" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/util/AxisAlignedBB.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.607143">
+          <caret line="184" column="25" selection-start-line="184" selection-start-column="25" selection-end-line="184" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/Entity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="131.38889">
+          <caret line="107" column="25" selection-start-line="107" selection-start-column="19" selection-end-line="107" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/item/EntityMinecart.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.178572">
+          <caret line="372" column="21" selection-start-line="372" selection-start-column="21" selection-end-line="372" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/gui/FontRenderer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3327032">
+          <caret line="378" column="16" selection-start-line="378" selection-start-column="16" selection-end-line="378" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityPlatform.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="5" selection-start-line="59" selection-start-column="4" selection-end-line="78" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/client/renderer/tileentity/TileEntitySignRenderer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2857144">
+          <caret line="60" column="41" selection-start-line="60" selection-start-column="8" selection-end-line="60" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/StationSignRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="43" selection-start-line="121" selection-start-column="43" selection-end-line="121" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityStationSign.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="50" column="66" selection-start-line="50" selection-start-column="66" selection-end-line="50" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.077922076">
+          <caret line="152" column="57" selection-start-line="152" selection-start-column="57" selection-end-line="152" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/NyaSamaRailway.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartModel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/IRailDirectional.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35008976">
-          <caret line="16" column="32" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.16157989">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemMinecartBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16517055">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSBT1Model.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21543986">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/TrainModel.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/ITrainLinkable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/TrainBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33213645">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="docComment;class#TrainBase#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/zh_CN.lang">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.89228004">
-          <caret line="51" column="31" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/passive/EntityPig.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.944334">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/passive/EntityHorse.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24652088">
-          <caret line="1277" column="108" selection-start-line="1277" selection-start-column="91" selection-end-line="1277" selection-end-column="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/item/EntityMinecart.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67196816">
-          <caret line="136" column="37" selection-start-line="136" selection-start-column="4" selection-end-line="136" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/Entity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.037037">
-          <caret line="1346" column="37" selection-start-line="1346" selection-start-column="4" selection-end-line="1346" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://E:/Gradle/gradle-2.0/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeBin-1.7.10-10.13.2.1291.jar!/net/minecraft/entity/item/EntityMinecartEmpty.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17013232">
-          <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/assets/nyasamarailway/lang/en_US.lang">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8114901">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="51" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSPCT1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13464992">
-          <caret line="5" column="34" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/NSBT1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18850988">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/NSPCT1Model.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56552964">
-          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSPCT1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18850988">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemNSBT1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.053859964">
-          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5107527">
-          <caret line="21" column="83" selection-start-line="21" selection-start-column="83" selection-end-line="21" selection-end-column="83" />
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/MinecartBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48387095">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-          <folding>
-            <element signature="e#510#511#0" expanded="true" />
-            <element signature="e#537#538#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Items/ItemLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56989247">
-          <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Entity/EntityModelBinder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21505377">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/Entity/MinecartRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24236985">
+          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
           <folding />
         </state>
       </provider>

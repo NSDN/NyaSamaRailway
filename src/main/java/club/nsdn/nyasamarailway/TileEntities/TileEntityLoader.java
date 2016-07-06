@@ -79,6 +79,10 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityRailSignHeadT.RailSignHeadT.class,
                 "tileEntityRailSignHeadT");
+
+        GameRegistry.registerTileEntity(
+                TileEntityStationSign.StationSign.class,
+                "tileEntityStationSign");
     }
 
 }

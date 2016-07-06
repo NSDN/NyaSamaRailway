@@ -51,5 +51,6 @@ item.ItemMinecartBase.name=NSTC-1型轨道车
 item.ItemTrainBase.name=NSFT-1型凹底平车
 item.ItemNSPCT1.name=NSPC-1型敞篷客车
 item.ItemNSBT1.name=NSB-1型列车转向架
+item.ItemNSET1.name=NSE-1型机车
 item.Item74HC04.name=74HC04反相器
 info.74HC04.delay=[NSR] 感应轨输出延时: %d 秒

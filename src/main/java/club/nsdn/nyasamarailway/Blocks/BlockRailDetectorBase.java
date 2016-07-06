@@ -9,32 +9,49 @@ import net.minecraft.block.BlockRailDetector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import org.thewdj.physics.Point3D;
 
 import java.util.*;
 
-public class BlockRailDetectorBase extends BlockRailDetector{
+public class BlockRailDetectorBase extends BlockRailDetector {
 
     public final int delaySecond;
-    public static LinkedHashMap<Vec3, Integer> tmpDelay;
+    public LinkedHashMap<Point3D, Integer> tmpDelay;
 
-    public BlockRailDetectorBase(String name)
-    {
+    public BlockRailDetectorBase(String name) {
         super();
         delaySecond = 0;
-        tmpDelay = new LinkedHashMap<Vec3, Integer>();
+        tmpDelay = new LinkedHashMap<Point3D, Integer>();
         setBlockName(name);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 
-    public BlockRailDetectorBase(String name, int delay)
-    {
+    public BlockRailDetectorBase(String name, int delay) {
         super();
         delaySecond = delay;
-        tmpDelay = new LinkedHashMap<Vec3, Integer>();
+        tmpDelay = new LinkedHashMap<Point3D, Integer>();
         setBlockName(name);
         setCreativeTab(null);
+    }
+
+    public enum RailDirection {
+        NONE,
+        WE, //West-East
+        NS //North-South
+    }
+
+    public RailDirection getRailDirection(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if ((meta & 2) == 0 && (meta & 4) == 0) {
+            return ((meta & 1) == 0) ? RailDirection.NS : RailDirection.WE;
+        } else if ((meta & 2) > 0) {
+            return RailDirection.WE;
+        } else if ((meta & 4) > 0) {
+            return RailDirection.NS;
+        }
+        return RailDirection.NONE;
     }
 
     protected void setTextureName(String name) {
@@ -53,9 +70,9 @@ public class BlockRailDetectorBase extends BlockRailDetector{
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             int meta = world.getBlockMetadata(x, y, z);
-            if((meta & 8) == 0) {
+            if ((meta & 8) == 0) {
                 this.setRailOutput(world, x, y, z, meta);
             }
         }
@@ -69,9 +86,9 @@ public class BlockRailDetectorBase extends BlockRailDetector{
 
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
-        if(!world.isRemote) {
+        if (!world.isRemote) {
             int meta = world.getBlockMetadata(x, y, z);
-            if((meta & 8) != 0) {
+            if ((meta & 8) != 0) {
                 this.setRailOutput(world, x, y, z, meta);
             }
         }
@@ -84,31 +101,53 @@ public class BlockRailDetectorBase extends BlockRailDetector{
     public void setRailOutput(World world, int x, int y, int z, int meta) {
         boolean isPowered = (meta & 8) != 0;
         boolean hasCart = false;
+        boolean isEnabled = false;
         float bBoxSize = 0.125F;
-        List bBox = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox((double)((float)x + bBoxSize), (double)y, (double)((float)z + bBoxSize), (double)((float)(x + 1) - bBoxSize), (double)((float)(y + 1) - bBoxSize), (double)((float)(z + 1) - bBoxSize)));
-        if(!bBox.isEmpty()) {
+        List bBox = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox((double) ((float) x + bBoxSize), (double) y, (double) ((float) z + bBoxSize), (double) ((float) (x + 1) - bBoxSize), (double) ((float) (y + 1) - bBoxSize), (double) ((float) (z + 1) - bBoxSize)));
+        if (!bBox.isEmpty()) {
             hasCart = true;
         }
 
         if (hasCart && !isPowered) {
-            if (!tmpDelay.containsKey(Vec3.createVectorHelper(x, y, z))) {
-                tmpDelay.put(Vec3.createVectorHelper(x, y, z), 0);
-                System.out.println("New delay added");
-            } else {
-                tmpDelay.put(Vec3.createVectorHelper(x, y, z), tmpDelay.get(Vec3.createVectorHelper(x, y, z)) + 1);
-                System.out.println("Delay count:" + tmpDelay.get(Vec3.createVectorHelper(x, y, z)));
-                if (tmpDelay.get(Vec3.createVectorHelper(x, y, z)) > 20 * delaySecond) {
-                    System.out.println("Delay end");
-                    world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, this);
-                    world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-                    tmpDelay.remove(Vec3.createVectorHelper(x, y, z));
+            if (delaySecond != 0) {
+                Point3D p = new Point3D(x, y, z);
+                if (!tmpDelay.containsKey(p)) {
+                    tmpDelay.put(p, 0);
                 }
+                if (tmpDelay.get(p) < delaySecond * 20)
+                    tmpDelay.put(p, tmpDelay.get(p) + 1);
+                else {
+                    if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                        if (world.isBlockIndirectlyGettingPowered(x - 1, y, z) || world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
+                        world.isBlockIndirectlyGettingPowered(x, y - 1, z)) {
+                            isEnabled = true;
+                        }
+                    } else {
+                        if (world.isBlockIndirectlyGettingPowered(x, y, z - 1) || world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
+                                world.isBlockIndirectlyGettingPowered(x, y - 1, z)) {
+                            isEnabled = true;
+                        }
+                    }
+                    if (!isEnabled) {
+                        world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
+                        world.notifyBlocksOfNeighborChange(x, y, z, this);
+                        world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+                        world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                        tmpDelay.put(p, 0);
+                    }
+                }
+            } else {
+                world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
+                world.notifyBlocksOfNeighborChange(x, y, z, this);
+                world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+                world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
             }
+        } else if (!hasCart && !isPowered && delaySecond != 0) {
+            if (tmpDelay.containsKey(new Point3D(x, y, z)))
+                tmpDelay.put(new Point3D(x, y, z), 0);
         }
 
-        if(!hasCart && isPowered) {
+        if (!hasCart && isPowered) {
             world.setBlockMetadataWithNotify(x, y, z, meta & 7, 3);
             world.notifyBlocksOfNeighborChange(x, y, z, this);
             world.notifyBlocksOfNeighborChange(x, y - 1, z, this);

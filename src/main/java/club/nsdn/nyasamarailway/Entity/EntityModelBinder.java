@@ -22,6 +22,9 @@ public class EntityModelBinder {
                 NSBT1.class, new MinecartRenderer(new NSBT1Model(), "textures/carts/nspc_1.png"));
 
         RenderingRegistry.registerEntityRenderingHandler(
+                NSET1.class, new MinecartRenderer(new NSET1Model(), "textures/carts/nse_1.png"));
+
+        RenderingRegistry.registerEntityRenderingHandler(
                 TrainBase.class, new MinecartRenderer(new TrainModel(), "textures/blocks/BrushedAluminum.png"));
 
     }

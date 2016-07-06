@@ -55,6 +55,8 @@ public class BlockLoader {
     public static Block blockRailSignHeadLink;
     public static Block blockRailSignHeadT;
 
+    public static Block blockStationSign;
+
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
     }
@@ -174,6 +176,10 @@ public class BlockLoader {
 
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
+
+
+        blockStationSign = new TileEntityStationSign();
+        register(blockStationSign, "block_station_sign");
 
     }
 
