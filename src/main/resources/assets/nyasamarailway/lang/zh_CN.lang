@@ -54,3 +54,7 @@ item.ItemNSBT1.name=NSB-1型列车转向架
 item.ItemNSET1.name=NSE-1型机车
 item.Item74HC04.name=74HC04反相器
 info.74HC04.delay=[NSR] 感应轨输出延时: %d 秒
+tile.StationSign.name=站牌
+info.train.linking=[NSR] 列车连挂中
+info.train.linked=[NSR] 列车已连挂
+info.train.delinked=[NSR] 列车已解挂

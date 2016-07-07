@@ -119,7 +119,7 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         GL11.glTranslatef(-0.75F + 0.125F, -1.0F, -0.05F);
-        GL11.glScalef(0.04F, 0.04F, 0.04F);
+        GL11.glScalef(0.02F, 0.02F, 0.02F);
         renderer.drawString("潺亭", 8, 0, 0);
         GL11.glScalef(0.5F, 0.5F, 0.0F);
         renderer.drawString("CHANTING", 16, 16, 0);

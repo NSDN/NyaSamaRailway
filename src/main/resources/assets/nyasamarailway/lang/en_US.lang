@@ -54,3 +54,7 @@ item.ItemNSBT1.name=NSB-1 Train Bogie
 item.ItemNSET1.name=NSE-1 Locomotive
 item.Item74HC04.name=74HC04
 info.74HC04.delay=[NSR] Detector Rail Output Delay is: %d s
+tile.StationSign.name=Station Sign
+info.train.linking=[NSR] Train Linking...
+info.train.linked=[NSR] Train Linked
+info.train.delinked=[NSR] Train Delinked

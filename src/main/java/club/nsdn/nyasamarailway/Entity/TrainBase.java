@@ -131,12 +131,12 @@ public class TrainBase extends EntityMinecartEmpty {
                 double Ks = 500.0;
                 double Kd = 500.0;
                 double m = 1.0;
-                double length = 4.0;
+                double length = 2.0;
                 double dt = 0.001;
 
                 double dist = calcDist(bogieFront, bogieBack);
                 double dv = Ks * (dist - length) / m * dt;
-                double DdvX = Kd * (bogieFront.motionX - bogieBack.motionZ) / m * dt;
+                double DdvX = Kd * (bogieFront.motionX - bogieBack.motionX) / m * dt;
                 double DdvZ = Kd * (bogieFront.motionZ - bogieBack.motionZ) / m * dt;
 
                 bogieBack.motionX += dv * (bogieFront.posX - bogieBack.posX) / dist + DdvX;
