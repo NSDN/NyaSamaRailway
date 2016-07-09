@@ -10,6 +10,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
+import org.thewdj.physics.Vec3d;
 
 /**
  * Created by drzzm32 on 2016.6.23.
@@ -95,12 +96,31 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
     public void calcLink(World world) {
         if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) != null) {
             EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
-            double Ks = 500.0;
-            double Kd = 500.0;
+            double Ks = 400.0;
+            double Kd = 400.0;
             double m = 1.0;
-            double length = 1.5;
+            double length = 2.0;
             double dt = 0.001;
 
+            Vec3d sPos = Vec3d.fromEntityPos(this);
+            Vec3d tPos = Vec3d.fromEntityPos(cart);
+            Vec3d sV = Vec3d.fromEntityMotion(this);
+            Vec3d tV = Vec3d.fromEntityMotion(cart);
+            Vec3d SdV = new Vec3d(sPos.subtract(tPos).normalize()).dotProduct(
+                    Ks * (calcDist(this, cart) - length) / m * dt
+            );
+            Vec3d DdV = new Vec3d(sV.subtract(tV)).dotProduct(Kd / m * dt);
+            Vec3d dV = SdV.addVector(DdV);
+
+            cart.motionX += -dV.xCoord;
+            cart.motionY += -dV.yCoord;
+            cart.motionZ += -dV.zCoord;
+
+            this.motionX += dV.xCoord;
+            this.motionY += dV.yCoord;
+            this.motionZ += dV.zCoord;
+
+            /*
             double dist = calcDist(this, cart);
             double dv = Ks * (dist - length) / m * dt;
             double DdvX = Kd * (this.motionX - cart.motionX) / m * dt;
@@ -110,6 +130,7 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
             cart.motionZ += dv * (this.posZ - cart.posZ) / dist + DdvZ;
             this.motionX += -dv * (this.posX - cart.posX) / dist - DdvX;
             this.motionZ += -dv * (this.posZ - cart.posZ) / dist - DdvZ;
+            */
         }
     }
 
@@ -138,21 +159,23 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setInteger("LocoP", this.P);
-        compound.setInteger("LocoR", this.R);
-        compound.setInteger("LocoDir", this.Dir);
-        compound.setDouble("LocoV", this.Velocity);
+    protected void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        this.P = tagCompound.getInteger("LocoP");
+        this.R = tagCompound.getInteger("LocoR");
+        this.Dir = tagCompound.getInteger("LocoDir");
+        this.Velocity = tagCompound.getDouble("LocoV");
+        this.nextLinkTrain = tagCompound.getInteger("nextLinkTrain");
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
-        this.P = compound.getInteger("LocoP");
-        this.R = compound.getInteger("LocoR");
-        this.Dir = compound.getInteger("LocoDir");
-        this.Velocity = compound.getDouble("LocoV");
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        tagCompound.setInteger("LocoP", this.P);
+        tagCompound.setInteger("LocoR", this.R);
+        tagCompound.setInteger("LocoDir", this.Dir);
+        tagCompound.setDouble("LocoV", this.Velocity);
+        tagCompound.setInteger("nextLinkTrain", this.nextLinkTrain);
     }
 
 }
