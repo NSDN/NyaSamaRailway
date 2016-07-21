@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NyaSamaRailway.iml" filepath="$PROJECT_DIR$/NyaSamaRailway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NyaSamaRailway.iml" filepath="$PROJECT_DIR$/.idea/modules/NyaSamaRailway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NyaSamaRailway_api.iml" filepath="$PROJECT_DIR$/.idea/modules/NyaSamaRailway_api.iml" group="NyaSamaRailway" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NyaSamaRailway_main.iml" filepath="$PROJECT_DIR$/.idea/modules/NyaSamaRailway_main.iml" group="NyaSamaRailway" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/NyaSamaRailway_test.iml" filepath="$PROJECT_DIR$/.idea/modules/NyaSamaRailway_test.iml" group="NyaSamaRailway" />
     </modules>
   </component>
 </project>

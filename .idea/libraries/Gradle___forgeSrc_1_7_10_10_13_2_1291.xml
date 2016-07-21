@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: :forgeSrc:1.7.10-10.13.2.1291">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeSrc-1.7.10-10.13.2.1291.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.2.1291/forgeSrc-1.7.10-10.13.2.1291-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

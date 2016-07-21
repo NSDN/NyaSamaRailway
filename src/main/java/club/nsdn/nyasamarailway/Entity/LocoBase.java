@@ -96,10 +96,10 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
     public void calcLink(World world) {
         if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) != null) {
             EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
-            double Ks = 400.0;
-            double Kd = 400.0;
+            double Ks = 500.0;
+            double Kd = 500.0;
             double m = 1.0;
-            double length = 2.0;
+            double length = 1.5;
             double dt = 0.001;
 
             Vec3d sPos = Vec3d.fromEntityPos(this);
