@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +17,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityStationSign extends TileEntityBase {
 
     public static class StationSign extends TileEntity {
+        public String StationNameCN;
+        public String StationNameEN;
+        public String LeftStations[];
+        public String RightStations[];
 
         @Override
         public boolean shouldRenderInPass(int pass) {
@@ -47,8 +52,15 @@ public class TileEntityStationSign extends TileEntityBase {
     }
 
     @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+
+
+        return false;
+    }
+
+    @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.0F, x2 = 1.0F, y2 = 2.5F, z2 = 1.0F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.0F, x2 = 1.0F, y2 = 1.0F, z2 = 1.0F;
         switch (meta % 13) {
             case 1:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);

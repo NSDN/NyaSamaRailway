@@ -6,15 +6,11 @@ package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRailDetector;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.block.*;
 import net.minecraft.world.World;
+import net.minecraft.entity.item.EntityMinecart;
 
-import java.util.Random;
-
-public class BlockRailSignalTransfer extends BlockRailDetector {
-
+public class BlockRailSignalTransfer extends BlockRailPowered {
 
     public BlockRailSignalTransfer() {
         super();
@@ -51,15 +47,119 @@ public class BlockRailSignalTransfer extends BlockRailDetector {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        super.onNeighborBlockChange(world, x, y, z, block);
-        if (!world.isRemote) {
-            int meta = world.getBlockMetadata(x, y, z);
-            this.setRailOutput(world, x, y, z, meta);
+    public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
+    }
+
+    public int getRailChargeDistance() {
+        return 32;
+    }
+
+    @Override
+    protected boolean func_150058_a(World world, int x, int y, int z, int meta, boolean bool, int r) {
+        if (r >= getRailChargeDistance()) {
+            return false;
+        } else {
+            int baseMeta = meta & 7;
+            boolean var9 = true;
+            switch (baseMeta) {
+                case 0:
+                    if (bool) {
+                        ++z;
+                    } else {
+                        --z;
+                    }
+                    break;
+                case 1:
+                    if (bool) {
+                        --x;
+                    } else {
+                        ++x;
+                    }
+                    break;
+                case 2:
+                    if (bool) {
+                        --x;
+                    } else {
+                        ++x;
+                        ++y;
+                        var9 = false;
+                    }
+
+                    baseMeta = 1;
+                    break;
+                case 3:
+                    if (bool) {
+                        --x;
+                        ++y;
+                        var9 = false;
+                    } else {
+                        ++x;
+                    }
+
+                    baseMeta = 1;
+                    break;
+                case 4:
+                    if (bool) {
+                        ++z;
+                    } else {
+                        --z;
+                        ++y;
+                        var9 = false;
+                    }
+
+                    baseMeta = 0;
+                    break;
+                case 5:
+                    if (bool) {
+                        ++z;
+                        ++y;
+                        var9 = false;
+                    } else {
+                        --z;
+                    }
+
+                    baseMeta = 0;
+            }
+
+            return this.func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && this.func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
         }
     }
 
     @Override
+    protected boolean func_150057_a(World world, int x, int y, int z, boolean bool, int r, int prevBaseMeta)
+    {
+        Block block = world.getBlock(x, y, z);
+
+        if (block instanceof BlockRailPowered)
+        {
+            int meta = world.getBlockMetadata(x, y, z);
+            int baseMeta = meta & 7;
+
+            if (prevBaseMeta == 1 && (baseMeta == 0 || baseMeta == 4 || baseMeta == 5))
+            {
+                return false;
+            }
+
+            if (prevBaseMeta == 0 && (baseMeta == 1 || baseMeta == 2 || baseMeta == 3))
+            {
+                return false;
+            }
+
+            if ((meta & 8) != 0)
+            {
+                if (world.isBlockIndirectlyGettingPowered(x, y, z))
+                {
+                    return true;
+                }
+
+                return this.func_150058_a(world, x, y, z, meta, bool, r + 1);
+            }
+        }
+
+        return false;
+    }
+
+    /*@Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
         this.setRailOutput(world, x, y, z, world.getBlockMetadata(x, y, z));
@@ -151,5 +251,5 @@ public class BlockRailSignalTransfer extends BlockRailDetector {
         }
         
         world.func_147453_f(x, y, z, this);
-    }
+    }*/
 }

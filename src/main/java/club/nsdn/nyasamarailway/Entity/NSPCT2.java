@@ -18,4 +18,15 @@ public class NSPCT2 extends MinecartBase {
         return 1.0F;
     }
 
+    @Override
+    public double getMountedYOffset() {
+        return 0.5;
+    }
+
+    @Override
+    public boolean shouldRiderSit()
+    {
+        return false;
+    }
+
 }

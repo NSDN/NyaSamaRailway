@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import org.omg.IOP.Encoding;
 
 public class StationSignRenderer extends TileEntitySpecialRenderer {
 
@@ -61,55 +62,6 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
                 rotation = 270;
                 GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
                 break;
-
-            case 5:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                break;
-            case 6:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 0.0F, 0.0F, -1.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-                break;
-            case 7:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, -1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                break;
-            case 8:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
-                break;
-
-            case 9:
-                rotation = 0;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
-            case 10:
-                rotation = 90;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
-            case 11:
-                rotation = 180;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
-            case 12:
-                rotation = 270;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
         }
 
         this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
@@ -118,11 +70,11 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         GL11.glDepthMask(false);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(-0.75F + 0.125F, -1.0F, -0.05F);
+        GL11.glTranslatef(-0.75F + 0.125F, -1.0F + 0.125F, -0.05F);
         GL11.glScalef(0.02F, 0.02F, 0.02F);
-        renderer.drawString("潺亭", 8, 0, 0);
+        renderer.drawString("CHAN TING", 8, 0, 0);
         GL11.glScalef(0.5F, 0.5F, 0.0F);
-        renderer.drawString("CHANTING", 16, 16, 0);
+        renderer.drawString("CHAN TING", 16, 16, 0);
         GL11.glPopMatrix();
 
         GL11.glDepthMask(true);

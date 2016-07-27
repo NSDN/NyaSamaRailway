@@ -3,6 +3,8 @@ package club.nsdn.nyasamarailway.Blocks;
 import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -226,5 +228,39 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             }
         }
 
+    }
+
+    @Override
+    protected boolean func_150057_a(World world, int x, int y, int z, boolean bool, int r, int prevBaseMeta)
+    {
+        Block block = world.getBlock(x, y, z);
+
+        if (block == this || block instanceof BlockRailSignalTransfer)
+        {
+            int meta = world.getBlockMetadata(x, y, z);
+            int baseMeta = meta & 7;
+
+            if (prevBaseMeta == 1 && (baseMeta == 0 || baseMeta == 4 || baseMeta == 5))
+            {
+                return false;
+            }
+
+            if (prevBaseMeta == 0 && (baseMeta == 1 || baseMeta == 2 || baseMeta == 3))
+            {
+                return false;
+            }
+
+            if ((meta & 8) != 0)
+            {
+                if (world.isBlockIndirectlyGettingPowered(x, y, z))
+                {
+                    return true;
+                }
+
+                return this.func_150058_a(world, x, y, z, meta, bool, r + 1);
+            }
+        }
+
+        return false;
     }
 }
