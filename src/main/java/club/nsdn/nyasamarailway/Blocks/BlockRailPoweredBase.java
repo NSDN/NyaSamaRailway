@@ -5,13 +5,16 @@ package club.nsdn.nyasamarailway.Blocks;
  */
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailPowered;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.thewdj.physics.Dynamics.LocoMotions;
+
+import java.util.List;
 
 public class BlockRailPoweredBase extends BlockRailPowered {
 
@@ -30,7 +33,9 @@ public class BlockRailPoweredBase extends BlockRailPowered {
         return 1.0F;
     }
 
-    public int getRailChargeDistance() { return 32; }
+    public int getRailChargeDistance() {
+        return 32;
+    }
 
     public enum RailDirection {
         NONE,
@@ -64,74 +69,100 @@ public class BlockRailPoweredBase extends BlockRailPowered {
         }
     }
 
+    public void onRailPowered(World world, int x, int y, int z, int meta, boolean hasCart) {
+    }
+
     @Override
-    protected boolean func_150058_a(World p_150058_1_, int p_150058_2_, int p_150058_3_, int p_150058_4_, int p_150058_5_, boolean p_150058_6_, int p_150058_7_) {
-        if(p_150058_7_ >= getRailChargeDistance()) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
+        int meta = world.getBlockMetadata(x, y, z);
+        float bBoxSize = 0.125F;
+        boolean hasCart = false;
+        List bBox = world.getEntitiesWithinAABB(
+                EntityMinecart.class,
+                AxisAlignedBB.getBoundingBox((double) ((float) x + bBoxSize),
+                        (double) y,
+                        (double) ((float) z + bBoxSize),
+                        (double) ((float) (x + 1) - bBoxSize),
+                        (double) ((float) (y + 1) - bBoxSize),
+                        (double) ((float) (z + 1) - bBoxSize))
+        );
+        if (!bBox.isEmpty()) {
+            hasCart = true;
+        }
+        if (meta >= 8) {
+            onRailPowered(world, x, y, z, meta, hasCart);
+        }
+    }
+
+    @Override
+    protected boolean func_150058_a(World world, int x, int y, int z, int meta, boolean bool, int r) {
+        if (r >= getRailChargeDistance()) {
             return false;
         } else {
-            int var8 = p_150058_5_ & 7;
+            int baseMeta = meta & 7;
             boolean var9 = true;
-            switch(var8) {
+            switch (baseMeta) {
                 case 0:
-                    if(p_150058_6_) {
-                        ++p_150058_4_;
+                    if (bool) {
+                        ++z;
                     } else {
-                        --p_150058_4_;
+                        --z;
                     }
                     break;
                 case 1:
-                    if(p_150058_6_) {
-                        --p_150058_2_;
+                    if (bool) {
+                        --x;
                     } else {
-                        ++p_150058_2_;
+                        ++x;
                     }
                     break;
                 case 2:
-                    if(p_150058_6_) {
-                        --p_150058_2_;
+                    if (bool) {
+                        --x;
                     } else {
-                        ++p_150058_2_;
-                        ++p_150058_3_;
+                        ++x;
+                        ++y;
                         var9 = false;
                     }
 
-                    var8 = 1;
+                    baseMeta = 1;
                     break;
                 case 3:
-                    if(p_150058_6_) {
-                        --p_150058_2_;
-                        ++p_150058_3_;
+                    if (bool) {
+                        --x;
+                        ++y;
                         var9 = false;
                     } else {
-                        ++p_150058_2_;
+                        ++x;
                     }
 
-                    var8 = 1;
+                    baseMeta = 1;
                     break;
                 case 4:
-                    if(p_150058_6_) {
-                        ++p_150058_4_;
+                    if (bool) {
+                        ++z;
                     } else {
-                        --p_150058_4_;
-                        ++p_150058_3_;
+                        --z;
+                        ++y;
                         var9 = false;
                     }
 
-                    var8 = 0;
+                    baseMeta = 0;
                     break;
                 case 5:
-                    if(p_150058_6_) {
-                        ++p_150058_4_;
-                        ++p_150058_3_;
+                    if (bool) {
+                        ++z;
+                        ++y;
                         var9 = false;
                     } else {
-                        --p_150058_4_;
+                        --z;
                     }
 
-                    var8 = 0;
+                    baseMeta = 0;
             }
 
-            return this.func_150057_a(p_150058_1_, p_150058_2_, p_150058_3_, p_150058_4_, p_150058_6_, p_150058_7_, var8)?true:var9 && this.func_150057_a(p_150058_1_, p_150058_2_, p_150058_3_ - 1, p_150058_4_, p_150058_6_, p_150058_7_, var8);
+            return this.func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && this.func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
         }
     }
 

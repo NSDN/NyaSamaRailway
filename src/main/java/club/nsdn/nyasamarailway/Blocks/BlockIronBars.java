@@ -13,6 +13,7 @@ public class BlockIronBars extends BlockPane {
     public BlockIronBars() {
         super("nyasamarailway:iron_bars", "nyasamarailway:iron_bars", Material.iron, true);
         setBlockName("BlockIronBars");
+        setHardness(2.0F);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 

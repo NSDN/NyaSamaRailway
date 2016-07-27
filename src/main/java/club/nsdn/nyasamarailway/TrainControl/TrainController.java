@@ -183,6 +183,7 @@ public class TrainController {
 
         if (train.R < 10) {
             train.Velocity = Dynamics.LocoMotions.calcVelocityDown(Math.abs(train.Velocity), 0.1, 1.0, 0.1, 1.0, train.R / 10.0, 0.02);
+            if (train.Velocity < 0.005) train.Velocity = 0;
         }
 
         if (train.Dir != 0) {

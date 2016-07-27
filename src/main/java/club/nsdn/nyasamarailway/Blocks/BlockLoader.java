@@ -38,6 +38,7 @@ public class BlockLoader {
     public static Block blockRailProtectHeadAnti;
     public static Block blockRailReception;
     public static Block blockRailReceptionAnti;
+    public static Block blockRailSignalTransfer;
     public static Block blockIronBars;
     public static Block blockIronWeb;
     public static Block blockTBridgeHead;
@@ -127,6 +128,9 @@ public class BlockLoader {
 
         blockRailReceptionAnti = new BlockRailReceptionAnti();
         register(blockRailReceptionAnti, "block_rail_reception_anti");
+
+        blockRailSignalTransfer = new BlockRailSignalTransfer();
+        register(blockRailSignalTransfer, "block_rail_signal_transfer");
 
 
         blockIronBars = new BlockIronBars();

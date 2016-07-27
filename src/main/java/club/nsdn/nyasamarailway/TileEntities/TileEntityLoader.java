@@ -4,9 +4,9 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamarailway.Blocks.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import net.minecraft.tileentity.TileEntityPiston;
 
 public class TileEntityLoader {
 
@@ -83,6 +83,14 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityStationSign.StationSign.class,
                 "tileEntityStationSign");
+
+        GameRegistry.registerTileEntity(
+                BlockRailReception.TileEntityRailReception.class,
+                "tileEntityRailReception");
+
+        GameRegistry.registerTileEntity(
+                BlockRailReceptionAnti.TileEntityRailReceptionAnti.class,
+                "tileEntityRailReceptionAnti");
     }
 
 }

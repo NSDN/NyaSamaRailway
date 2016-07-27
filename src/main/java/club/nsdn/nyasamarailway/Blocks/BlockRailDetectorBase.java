@@ -119,14 +119,12 @@ public class BlockRailDetectorBase extends BlockRailDetector {
                 else {
                     if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                         if (world.isBlockIndirectlyGettingPowered(x - 1, y, z) || world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
-                        world.isBlockIndirectlyGettingPowered(x, y - 1, z)) {
-                            if ((world.getBlockMetadata(x, y, z - 1) & 8) == 0 && (world.getBlockMetadata(x, y, z + 1) & 8) == 0)
+                            world.isBlockIndirectlyGettingPowered(x - 1, y - 1, z) || world.isBlockIndirectlyGettingPowered(x + 1, y - 1, z)) {
                                 isEnabled = true;
                         }
                     } else {
                         if (world.isBlockIndirectlyGettingPowered(x, y, z - 1) || world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
-                                world.isBlockIndirectlyGettingPowered(x, y - 1, z)) {
-                            if ((world.getBlockMetadata(x - 1, y, z) & 8) == 0 && (world.getBlockMetadata(x + 1, y, z) & 8) == 0)
+                            world.isBlockIndirectlyGettingPowered(x, y - 1, z - 1) || world.isBlockIndirectlyGettingPowered(x, y - 1, z + 1)) {
                                 isEnabled = true;
                         }
                     }

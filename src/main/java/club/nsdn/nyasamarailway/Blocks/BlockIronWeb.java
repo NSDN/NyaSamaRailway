@@ -13,6 +13,7 @@ public class BlockIronWeb extends BlockPane {
     public BlockIronWeb() {
         super("nyasamarailway:iron_web", "nyasamarailway:iron_web", Material.iron, true);
         setBlockName("BlockIronWeb");
+        setHardness(2.0F);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 

@@ -102,7 +102,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     }
     
     public void calcLink(World world) {
-        if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) != null) {
+        if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) instanceof EntityMinecart) {
             EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
             double Ks = 500.0;
             double Kd = 500.0;
@@ -128,17 +128,6 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
             this.motionY += dV.yCoord;
             this.motionZ += dV.zCoord;
 
-            /*
-            double dist = calcDist(this, cart);
-            double dv = Ks * (dist - length) / m * dt;
-            double DdvX = Kd * (this.motionX - cart.motionX) / m * dt;
-            double DdvZ = Kd * (this.motionZ - cart.motionZ) / m * dt;
-
-            cart.motionX += dv * (this.posX - cart.posX) / dist + DdvX;
-            cart.motionZ += dv * (this.posZ - cart.posZ) / dist + DdvZ;
-            this.motionX += -dv * (this.posX - cart.posX) / dist - DdvX;
-            this.motionZ += -dv * (this.posZ - cart.posZ) / dist - DdvZ;
-            */
         }
     }
 

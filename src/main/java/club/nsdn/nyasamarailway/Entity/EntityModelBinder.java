@@ -7,6 +7,7 @@ package club.nsdn.nyasamarailway.Entity;
 import club.nsdn.nyasamarailway.Renderers.Entity.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.client.model.ModelBase;
 
 public class EntityModelBinder {
 
@@ -27,6 +28,10 @@ public class EntityModelBinder {
         RenderingRegistry.registerEntityRenderingHandler(
                 TrainBase.class, new MinecartRenderer(new TrainModel(), "textures/blocks/BrushedAluminum.png"));
 
+        ModelBase models[] = { new NSBT1Model(), new NSPCT2Model() };
+        String textures[] = { "textures/carts/nspc_1.png", "textures/blocks/BrushedAluminum.png" };
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT2.class, new TrainRenderer(models, textures));
     }
 
 }

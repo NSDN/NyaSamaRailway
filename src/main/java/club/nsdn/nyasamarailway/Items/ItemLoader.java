@@ -17,6 +17,7 @@ public class ItemLoader {
     public static Item itemMinecartBase;
     public static Item itemTrainBase;
     public static Item itemNSPCT1;
+    public static Item itemNSPCT2;
     public static Item itemNSBT1;
     public static Item itemNSET1;
 
@@ -39,6 +40,9 @@ public class ItemLoader {
 
         itemNSPCT1 = new ItemNSPCT1();
         register(itemNSPCT1, "item_nspc_1");
+
+        itemNSPCT2 = new ItemNSPCT2();
+        register(itemNSPCT2, "item_nspc_2");
 
         itemNSBT1 = new ItemNSBT1();
         register(itemNSBT1, "item_nsb_1");
