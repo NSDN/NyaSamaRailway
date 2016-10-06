@@ -41,6 +41,8 @@ public class BlockLoader {
     public static Block blockRailReceptionAnti;
     public static Block blockRailSignalTransfer;
     public static Block blockRailSpeedLimit;
+    public static Block blockRailDirectional;
+    public static Block blockRailDirectionalAnti;
 
     public static Block blockIronBars;
     public static Block blockIronWeb;
@@ -140,6 +142,13 @@ public class BlockLoader {
         blockRailSpeedLimit = new BlockRailSpeedLimit();
         register(blockRailSpeedLimit, "block_rail_speed_limit");
 
+        blockRailDirectional = new BlockRailDirectional();
+        register(blockRailDirectional, "block_rail_dir");
+
+        blockRailDirectionalAnti = new BlockRailDirectionalAnti();
+        register(blockRailDirectionalAnti, "block_rail_dir_anti");
+
+
         blockIronBars = new BlockIronBars();
         register(blockIronBars, "rail_iron_bars");
 
@@ -188,8 +197,8 @@ public class BlockLoader {
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
 
-        railNoSleeperStraight = new RailNoSleeperStraight();
-        register(railNoSleeperStraight, "rail_ns_s");
+        //railNoSleeperStraight = new RailNoSleeperStraight();
+        //register(railNoSleeperStraight, "rail_ns_s");
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");

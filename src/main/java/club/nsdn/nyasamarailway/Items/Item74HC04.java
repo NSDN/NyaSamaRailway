@@ -38,9 +38,11 @@ public class Item74HC04 extends ItemToolBase {
             if (((IRailDirectional) block).isForward()) {
                 if (block instanceof BlockRailReception) world.setBlock(x, y, z, BlockLoader.blockRailReceptionAnti);
                 if (block instanceof BlockRailProtectHead) world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);
+                if ((block instanceof BlockRailDirectional)) world.setBlock(x, y, z, BlockLoader.blockRailDirectionalAnti);
             } else {
                 if (block instanceof BlockRailReceptionAnti) world.setBlock(x, y, z, BlockLoader.blockRailReception);
                 if (block instanceof BlockRailProtectHeadAnti) world.setBlock(x, y, z, BlockLoader.blockRailProtectHead);
+                if ((block instanceof BlockRailDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.blockRailDirectional);
             }
             return !world.isRemote;
         } else if (block instanceof BlockRailDetectorBase) {
@@ -81,10 +83,6 @@ public class Item74HC04 extends ItemToolBase {
             return !world.isRemote;
         }
 
-        if (block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
-            player.swingItem();
-            return !world.isRemote;
-        }
         return false;
     }
 }

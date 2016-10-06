@@ -1,5 +1,8 @@
 package club.nsdn.nyasamarailway.Entity;
 
+import club.nsdn.nyasamarailway.Items.ItemLoader;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 /**
@@ -16,6 +19,15 @@ public class NSBT1 extends MinecartBase {
     @Override
     public float getMaxCartSpeedOnRail() {
         return 2.0F;
+    }
+
+    @Override
+    public void killMinecart(DamageSource source)
+    {
+        this.setDead();
+        ItemStack itemstack = new ItemStack(ItemLoader.itemNSBT1, 1);
+        itemstack.setStackDisplayName(itemstack.getDisplayName());
+        this.entityDropItem(itemstack, 0.0F);
     }
 
 }

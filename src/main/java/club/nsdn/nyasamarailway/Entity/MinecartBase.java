@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.Entity;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
 import club.nsdn.nyasamarailway.Items.Item74HC04;
+import club.nsdn.nyasamarailway.Items.ItemLoader;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import net.minecraft.block.Block;
@@ -150,11 +151,11 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
         int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && (metadata & 8) == 0) return;
+                if (riddenByEntity == null) return;
         }
         if (block instanceof BlockRailReceptionAnti) {
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && (metadata & 8) == 0) return;
+                if (riddenByEntity == null) return;
         }
         super.func_145821_a(x, y, z, v1, v, block, meta);
     }
@@ -201,6 +202,15 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
         } else {
             return true;
         }
+    }
+
+    @Override
+    public void killMinecart(DamageSource source)
+    {
+        this.setDead();
+        ItemStack itemstack = new ItemStack(ItemLoader.itemMinecartBase, 1);
+        itemstack.setStackDisplayName(itemstack.getDisplayName());
+        this.entityDropItem(itemstack, 0.0F);
     }
 
     @Override

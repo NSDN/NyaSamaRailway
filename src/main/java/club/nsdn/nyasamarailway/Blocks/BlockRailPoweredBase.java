@@ -171,7 +171,7 @@ public class BlockRailPoweredBase extends BlockRailPowered {
     {
         Block block = world.getBlock(x, y, z);
 
-        if (block instanceof BlockRailPoweredBase)
+        if ((block == this) || ((block instanceof BlockRailSignalTransfer)))
         {
             int meta = world.getBlockMetadata(x, y, z);
             int baseMeta = meta & 7;
