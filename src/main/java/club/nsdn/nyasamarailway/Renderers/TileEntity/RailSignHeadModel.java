@@ -7,6 +7,7 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class RailSignHeadModel extends ModelBase {
     public ModelRenderer Shape1;
@@ -35,8 +36,12 @@ public class RailSignHeadModel extends ModelBase {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(entity, f, f1, f2, f3, f4, f5);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.7F, 0.7F, 0.7F);
+        GL11.glTranslatef(0.0F, 0.61F, 0.0F);
         Shape1.render(f5);
         Shape2.render(f5);
+        GL11.glPopMatrix();
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {

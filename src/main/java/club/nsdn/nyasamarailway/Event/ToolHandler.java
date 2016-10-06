@@ -1,11 +1,3 @@
-/* 
- * Copyright (c) CovertJaguar, 2014 http://railcraft.info
- * 
- * This code is the property of CovertJaguar
- * and may only be used with explicit written
- * permission unless otherwise specified on the
- * license page at http://railcraft.info/wiki/info:license.
- */
 package club.nsdn.nyasamarailway.Event;
 
 import club.nsdn.nyasamarailway.Entity.ITrainLinkable;
@@ -20,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
+/**
+ * Created by drzzm32 on 2016.6.7.
+ */
 public class ToolHandler {
     private static ToolHandler instance;
     public static TrainPacket controller8Bit;

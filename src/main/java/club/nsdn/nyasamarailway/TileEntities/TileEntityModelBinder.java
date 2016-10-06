@@ -5,6 +5,9 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
+import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailNoSleeperStraightModel;
+import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailRenderer;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -82,6 +85,9 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityStationSign.StationSign.class, new StationSignRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailNoSleeperStraight.Rail.class, new RailRenderer(new RailNoSleeperStraightModel(), "textures/rails/rail_ns_s.png"));
     }
 
 }

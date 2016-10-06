@@ -52,73 +52,64 @@ public class RailRenderer extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 
-        int rotation = 0;
-        switch (te.getBlockMetadata() % 13) {
-            case 1:
-                rotation = 0;
-                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+        switch (te.getBlockMetadata()) {
+            case 0: //N-S
+                GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
                 break;
-            case 2:
-                rotation = 90;
-                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-                break;
-            case 3:
-                rotation = 180;
-                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-                break;
-            case 4:
-                rotation = 270;
-                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
-                break;
-
-            case 5:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                break;
-            case 6:
-                GL11.glTranslatef(0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(90.0F, 0.0F, 0.0F, -1.0F);
-                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+            case 1: //W-E
                 GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
                 break;
-            case 7:
+            case 2: //E
+                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+                GL11.glScalef(1.5F, 1.0F, 1.0F);
+                GL11.glRotatef(-55.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.5F, 0.5F);
+                break;
+            case 3: //W
+                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+                GL11.glScalef(1.5F, 1.0F, 1.0F);
+                GL11.glRotatef(55.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.5F, -0.5F);
+                break;
+            case 4: //N
+                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+                GL11.glScalef(1.0F, 1.0F, 1.5F);
+                GL11.glRotatef(55.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.5F, -0.5F);
+                break;
+            case 5: //S
+                GL11.glTranslatef(0.0F, -1.0F, 0.0F);
+                GL11.glScalef(1.0F, 1.0F, 1.5F);
+                GL11.glRotatef(-55.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glTranslatef(0.0F, -0.5F, 0.5F);
+                break;
+            /*case 6:
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, -1.0F, 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                 GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
                 break;
-            case 8:
+            case 7:
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                 GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
                 break;
 
-            case 9:
+            case 8:
                 rotation = 0;
                 GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -2.0F, 0.0F);
                 GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
                 break;
-            case 10:
+            case 9:
                 rotation = 90;
                 GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -2.0F, 0.0F);
                 GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
-            case 11:
-                rotation = 180;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
-            case 12:
-                rotation = 270;
-                GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -2.0F, 0.0F);
-                GL11.glRotatef(rotation, 0.0F, -1.0F, 0.0F);
-                break;
+                break;*/
         }
 
         this.model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

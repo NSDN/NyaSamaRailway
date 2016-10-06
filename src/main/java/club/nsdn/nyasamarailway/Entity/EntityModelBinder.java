@@ -32,6 +32,9 @@ public class EntityModelBinder {
         String textures[] = { "textures/carts/nspc_1.png", "textures/blocks/BrushedAluminum.png" };
         RenderingRegistry.registerEntityRenderingHandler(
                 NSPCT2.class, new TrainRenderer(models, textures));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT3.class, new MinecartRenderer(new NSPCT3Model(), "textures/carts/nspc_3.png"));
     }
 
 }

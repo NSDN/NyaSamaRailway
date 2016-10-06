@@ -162,8 +162,42 @@ public class BlockRailPoweredBase extends BlockRailPowered {
                     baseMeta = 0;
             }
 
-            return this.func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && this.func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
+            return func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && this.func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
         }
+    }
+
+    @Override
+    protected boolean func_150057_a(World world, int x, int y, int z, boolean bool, int r, int prevBaseMeta)
+    {
+        Block block = world.getBlock(x, y, z);
+
+        if (block instanceof BlockRailPoweredBase)
+        {
+            int meta = world.getBlockMetadata(x, y, z);
+            int baseMeta = meta & 7;
+
+            if (prevBaseMeta == 1 && (baseMeta == 0 || baseMeta == 4 || baseMeta == 5))
+            {
+                return false;
+            }
+
+            if (prevBaseMeta == 0 && (baseMeta == 1 || baseMeta == 2 || baseMeta == 3))
+            {
+                return false;
+            }
+
+            if ((meta & 8) != 0)
+            {
+                if (world.isBlockIndirectlyGettingPowered(x, y, z))
+                {
+                    return true;
+                }
+
+                return func_150058_a(world, x, y, z, meta, bool, r + 1);
+            }
+        }
+
+        return false;
     }
 
 }

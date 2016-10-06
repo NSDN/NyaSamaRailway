@@ -4,6 +4,7 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity;
  * Created by drzzm32 on 2016.7.5.
  */
 
+import club.nsdn.nyasamarailway.TileEntities.TileEntityStationSign;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -14,7 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
-import org.omg.IOP.Encoding;
 
 public class StationSignRenderer extends TileEntitySpecialRenderer {
 
@@ -34,6 +34,7 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
+        TileEntityStationSign.StationSign sign = (TileEntityStationSign.StationSign) te;
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
@@ -70,11 +71,15 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         GL11.glDepthMask(false);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(-0.75F + 0.125F, -1.0F + 0.125F, -0.05F);
-        GL11.glScalef(0.02F, 0.02F, 0.02F);
-        renderer.drawString("CHAN TING", 8, 0, 0);
-        GL11.glScalef(0.5F, 0.5F, 0.0F);
-        renderer.drawString("CHAN TING", 16, 16, 0);
+        GL11.glTranslatef(-0.75F + 0.25F, -1.0F + 0.125F, -0.05F);
+        GL11.glScalef(0.03F, 0.03F, 1.0F);
+        renderer.drawString(sign.StationNameCN, 8, 0, 0);
+        GL11.glScalef(0.5F, 0.5F, 1.0F);
+        renderer.drawString(sign.StationNameEN, 16, 16, 0);
+        GL11.glScalef(1.1F, 1.1F, 1.0F);
+        renderer.drawString(sign.LeftStations, 0, 28, 0);
+        renderer.drawString("<==>", 24, 28, 0);
+        renderer.drawString(sign.RightStations, 44, 28, 0);
         GL11.glPopMatrix();
 
         GL11.glDepthMask(true);

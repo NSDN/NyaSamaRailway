@@ -15,7 +15,7 @@ public class NSPCT1 extends MinecartBase {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 5.0F;
+        return 1.0F;
     }
 
 }

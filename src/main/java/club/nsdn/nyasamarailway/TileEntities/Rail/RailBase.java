@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -40,6 +41,15 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
         super(canTurn);
         this.setBlockBounds(-0.5F, 0.0F, -0.5F, 1.5F, 0.25F, 1.5F);
         this.isBlockContainer = true;
+    }
+
+    protected String textureLocation = "";
+    protected void setIconLocation(String textureLocation) { this.textureLocation = "nyasamarailway" + ":" + textureLocation; }
+
+    @Override
+    public void registerBlockIcons(IIconRegister icon)
+    {
+        this.blockIcon = icon.registerIcon(textureLocation);
     }
 
     @Override
@@ -98,6 +108,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
         }
     }
 
+    @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
         return super.getCollisionBoundingBoxFromPool(world, x, y, z);
@@ -113,6 +124,11 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
         setBoundsByMeta(meta);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
     }
 
 }

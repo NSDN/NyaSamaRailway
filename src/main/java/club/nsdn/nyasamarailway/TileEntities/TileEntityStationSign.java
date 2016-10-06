@@ -5,22 +5,20 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityStationSign extends TileEntityBase {
 
     public static class StationSign extends TileEntity {
         public String StationNameCN;
         public String StationNameEN;
-        public String LeftStations[];
-        public String RightStations[];
+        public String LeftStations;
+        public String RightStations;
 
         @Override
         public boolean shouldRenderInPass(int pass) {
@@ -30,20 +28,28 @@ public class TileEntityStationSign extends TileEntityBase {
         @Override
         public void writeToNBT(NBTTagCompound tagCompound) {
             super.writeToNBT(tagCompound);
-
+            tagCompound.setString("StationNameCN", StationNameCN);
+            tagCompound.setString("StationNameEN", StationNameEN);
+            tagCompound.setString("LeftStations", LeftStations);
+            tagCompound.setString("RightStations", RightStations);
         }
 
         @Override
-        public void readFromNBT(NBTTagCompound p_readFromNBT_1_) {
-            super.readFromNBT(p_readFromNBT_1_);
-
+        public void readFromNBT(NBTTagCompound tagCompound) {
+            super.readFromNBT(tagCompound);
+            StationNameCN = tagCompound.getString("StationNameCN");
+            StationNameEN = tagCompound.getString("StationNameEN");
+            LeftStations = tagCompound.getString("LeftStations");
+            RightStations = tagCompound.getString("RightStations");
         }
+
     }
 
     public TileEntityStationSign() {
         super("StationSign");
         setIconLocation("station_sign");
         setLightOpacity(0);
+        //setCreativeTab(null);
     }
 
     @Override
@@ -52,10 +58,8 @@ public class TileEntityStationSign extends TileEntityBase {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-
-
-        return false;
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        return null;
     }
 
     @Override

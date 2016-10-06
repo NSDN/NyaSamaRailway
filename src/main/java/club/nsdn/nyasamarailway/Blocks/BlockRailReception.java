@@ -12,15 +12,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
+import org.thewdj.physics.Point3D;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by drzzm32 on 2016.5.22.
  */
 
 public class BlockRailReception extends BlockRailPoweredBase implements IRailDirectional, ITileEntityProvider {
+
+    public LinkedHashMap<Point3D, Integer> tmpDelay;
+    public final int delay = 5;
 
     public static class TileEntityRailReception extends TileEntity {
 
@@ -46,6 +54,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
     public BlockRailReception() {
         super("BlockRailReception");
         setTextureName("rail_reception");
+        tmpDelay = new LinkedHashMap<Point3D, Integer>();
     }
 
     public boolean isForward() {
@@ -142,24 +151,34 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0)) rail.cartType = cart.getClass().getName();
             }
             if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
+                Point3D p = new Point3D(x, y, z);
                 if (hasPlayer) {
-                    if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                        if (cart.motionZ > maxV) { //cart.motionZ > maxV
-                            if (cart.motionZ < maxV * 1.5) cart.motionZ = maxV * 1.5;
+                    if (!tmpDelay.containsKey(p)) {
+                        tmpDelay.put(p, 0);
+                    }
+                    if (tmpDelay.get(p) < delay * 20)
+                        tmpDelay.put(p, tmpDelay.get(p) + 1);
+                    else {
+                        if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                            if (cart.motionZ > maxV) { //cart.motionZ > maxV
+                                if (cart.motionZ < maxV * 1.5) cart.motionZ = maxV * 1.5;
+                            } else {
+                                if (cart.motionZ >= 0) cart.motionZ = -0.005;
+                                if (cart.motionZ > -maxV)
+                                    cart.motionZ = -Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1, 1.0, 0.1, 0.02);
+                            }
                         } else {
-                            if (cart.motionZ >= 0) cart.motionZ = -0.005;
-                            if (cart.motionZ > -maxV)
-                                cart.motionZ = -Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1, 1.0, 0.1, 0.02);
-                        }
-                    } else {
-                        if (cart.motionX < -maxV) { //cart.motionX < -maxV
-                            if (cart.motionX > -maxV * 1.5) cart.motionX = -maxV * 1.5;
-                        } else {
-                            if (cart.motionX <= 0) cart.motionX = 0.005;
-                            if (cart.motionX < maxV)
-                                cart.motionX = Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1, 1.0, 0.1, 0.02);
+                            if (cart.motionX < -maxV) { //cart.motionX < -maxV
+                                if (cart.motionX > -maxV * 1.5) cart.motionX = -maxV * 1.5;
+                            } else {
+                                if (cart.motionX <= 0) cart.motionX = 0.005;
+                                if (cart.motionX < maxV)
+                                    cart.motionX = Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1, 1.0, 0.1, 0.02);
+                            }
                         }
                     }
+                } else {
+                    tmpDelay.put(p, 0);
                 }
             } else {
                 if (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) {
@@ -197,6 +216,24 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         return false;
     }
 
+    public EntityMinecart getMinecart(World world, int x, int y, int z) {
+        float bBoxSize = 0.125F;
+        List bBox = world.getEntitiesWithinAABB(
+                EntityMinecart.class,
+                AxisAlignedBB.getBoundingBox((double) ((float) x + bBoxSize),
+                        (double) y,
+                        (double) ((float) z + bBoxSize),
+                        (double) ((float) (x + 1) - bBoxSize),
+                        (double) ((float) (y + 1) - bBoxSize),
+                        (double) ((float) (z + 1) - bBoxSize))
+        );
+        for (Object i : bBox.toArray()) {
+            if (i instanceof EntityMinecart)
+                return (EntityMinecart)i;
+        }
+        return null;
+    }
+
     @Override
     public void onRailPowered(World world, int x, int y, int z, int meta, boolean hasCart) {
         boolean playerDetectable = false;
@@ -207,22 +244,40 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 rail = (TileEntityRailReception) world.getTileEntity(x, y, z);
             }
             if (rail != null) {
-                if (!rail.cartType.isEmpty() && !hasCart && !world.isRemote) {
-                    if (rail.cartType.equals(MinecartBase.class.getName())) {
-                        MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                        world.spawnEntityInWorld(cart);
-                    } else if (rail.cartType.equals(NSBT1.class.getName())) {
-                        MinecartBase cart = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                        world.spawnEntityInWorld(cart);
-                    } else if (rail.cartType.equals(NSPCT1.class.getName())) {
-                        MinecartBase cart = new NSPCT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                        world.spawnEntityInWorld(cart);
-                    } else if (rail.cartType.equals(NSPCT2.class.getName())) {
-                        MinecartBase cart = new NSPCT2(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                        world.spawnEntityInWorld(cart);
-                    } else {
-                        EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
-                        world.spawnEntityInWorld(cart);
+                if (!rail.cartType.isEmpty() && !world.isRemote) {
+                    Point3D p = new Point3D(x, y, z);
+                    if (tmpDelay.containsKey(p)) {
+                        if (tmpDelay.get(p) >= delay * 20) {
+                            if (!hasCart) {
+                                if (rail.cartType.equals(MinecartBase.class.getName())) {
+                                    MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                                    world.spawnEntityInWorld(cart);
+                                } else if (rail.cartType.equals(NSBT1.class.getName())) {
+                                    MinecartBase cart = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                                    world.spawnEntityInWorld(cart);
+                                } else if (rail.cartType.equals(NSPCT1.class.getName())) {
+                                    MinecartBase cart = new NSPCT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                                    world.spawnEntityInWorld(cart);
+                                } else if (rail.cartType.equals(NSPCT2.class.getName())) {
+                                    MinecartBase cart = new NSPCT2(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                                    world.spawnEntityInWorld(cart);
+                                } else if (rail.cartType.equals(NSPCT3.class.getName())) {
+                                    MinecartBase cart = new NSPCT3(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                                    world.spawnEntityInWorld(cart);
+                                } else {
+                                    EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
+                                    world.spawnEntityInWorld(cart);
+                                }
+                            }
+                            tmpDelay.put(p, 0);
+                        } else {
+                            if (hasCart) {
+                                EntityMinecart cart = getMinecart(world, x, y, z);
+                                if (cart == null) return;
+                                cart.setDead();
+                                world.removeEntity(cart);
+                            }
+                        }
                     }
                 }
             }
@@ -230,37 +285,4 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
 
     }
 
-    @Override
-    protected boolean func_150057_a(World world, int x, int y, int z, boolean bool, int r, int prevBaseMeta)
-    {
-        Block block = world.getBlock(x, y, z);
-
-        if (block == this || block instanceof BlockRailSignalTransfer)
-        {
-            int meta = world.getBlockMetadata(x, y, z);
-            int baseMeta = meta & 7;
-
-            if (prevBaseMeta == 1 && (baseMeta == 0 || baseMeta == 4 || baseMeta == 5))
-            {
-                return false;
-            }
-
-            if (prevBaseMeta == 0 && (baseMeta == 1 || baseMeta == 2 || baseMeta == 3))
-            {
-                return false;
-            }
-
-            if ((meta & 8) != 0)
-            {
-                if (world.isBlockIndirectlyGettingPowered(x, y, z))
-                {
-                    return true;
-                }
-
-                return this.func_150058_a(world, x, y, z, meta, bool, r + 1);
-            }
-        }
-
-        return false;
-    }
 }

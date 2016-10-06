@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import club.nsdn.nyasamarailway.Blocks.*;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -91,6 +92,10 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 BlockRailReceptionAnti.TileEntityRailReceptionAnti.class,
                 "tileEntityRailReceptionAnti");
+
+        GameRegistry.registerTileEntity(
+                RailNoSleeperStraight.Rail.class,
+                "railNoSleeperStraight");
     }
 
 }

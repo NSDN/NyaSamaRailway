@@ -13,4 +13,9 @@ public class NSBT1 extends MinecartBase {
         super(world, x, y, z);
     }
 
+    @Override
+    public float getMaxCartSpeedOnRail() {
+        return 2.0F;
+    }
+
 }

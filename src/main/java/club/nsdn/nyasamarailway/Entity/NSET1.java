@@ -7,10 +7,20 @@ import net.minecraft.world.World;
  */
 public class NSET1 extends LocoBase {
 
-    public NSET1(World world) { super(world); }
+    public NSET1(World world) {
+        super(world);
+    }
 
     public NSET1(World world, double x, double y, double z) {
         super(world, x, y, z);
+    }
+
+    @Override
+    protected void applyDrag() {
+        //Do engine code
+        calcLink(worldObj);
+
+        super.applyDrag();
     }
 
 }

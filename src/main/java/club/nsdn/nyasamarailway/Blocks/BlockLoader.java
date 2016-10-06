@@ -4,6 +4,7 @@ package club.nsdn.nyasamarailway.Blocks;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
 import net.minecraft.block.Block;
 import club.nsdn.nyasamarailway.TileEntities.*;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -39,6 +40,8 @@ public class BlockLoader {
     public static Block blockRailReception;
     public static Block blockRailReceptionAnti;
     public static Block blockRailSignalTransfer;
+    public static Block blockRailSpeedLimit;
+
     public static Block blockIronBars;
     public static Block blockIronWeb;
     public static Block blockTBridgeHead;
@@ -55,6 +58,8 @@ public class BlockLoader {
     public static Block blockRailSignHeadJoe;
     public static Block blockRailSignHeadLink;
     public static Block blockRailSignHeadT;
+
+    public static Block railNoSleeperStraight;
 
     public static Block blockStationSign;
 
@@ -132,6 +137,8 @@ public class BlockLoader {
         blockRailSignalTransfer = new BlockRailSignalTransfer();
         register(blockRailSignalTransfer, "block_rail_signal_transfer");
 
+        blockRailSpeedLimit = new BlockRailSpeedLimit();
+        register(blockRailSpeedLimit, "block_rail_speed_limit");
 
         blockIronBars = new BlockIronBars();
         register(blockIronBars, "rail_iron_bars");
@@ -181,6 +188,8 @@ public class BlockLoader {
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
 
+        railNoSleeperStraight = new RailNoSleeperStraight();
+        register(railNoSleeperStraight, "rail_ns_s");
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");

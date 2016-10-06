@@ -23,7 +23,7 @@ public class TileEntityRailSignHeadT extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 1.5F, z2 = 0.5625F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.25F, x2 = 1.0F, y2 = 1.0F, z2 = 0.75F;
         switch (meta % 13) {
             case 1:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);
