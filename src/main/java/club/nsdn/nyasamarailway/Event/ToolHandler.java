@@ -74,15 +74,27 @@ public class ToolHandler {
                         NetworkWrapper.packetSender.sendTo(controller32Bit, player);
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
                     } else {
-                        if (ExRollerCoaster.getInstance().verifyEntity(entity) ||
-                                RailsOfWar.getInstance().verifyEntity(entity)) {
-                            controller32Bit.cartID = entity.getEntityId();
-                            if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
-                                controller32Bit.trainUnits.add(controller32Bit.cartID);
+                        if (ExRollerCoaster.getInstance() != null) {
+                            if (ExRollerCoaster.getInstance().verifyEntity(entity)) {
+                                controller32Bit.cartID = entity.getEntityId();
+                                if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
+                                    controller32Bit.trainUnits.add(controller32Bit.cartID);
+                                }
+                                controller32Bit.playerID = player.getEntityId();
+                                NetworkWrapper.packetSender.sendTo(controller32Bit, player);
+                                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
                             }
-                            controller32Bit.playerID = player.getEntityId();
-                            NetworkWrapper.packetSender.sendTo(controller32Bit, player);
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
+                        }
+                        if (RailsOfWar.getInstance() != null) {
+                            if (RailsOfWar.getInstance().verifyEntity(entity)) {
+                                controller32Bit.cartID = entity.getEntityId();
+                                if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
+                                    controller32Bit.trainUnits.add(controller32Bit.cartID);
+                                }
+                                controller32Bit.playerID = player.getEntityId();
+                                NetworkWrapper.packetSender.sendTo(controller32Bit, player);
+                                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
+                            }
                         }
                     }
                 }

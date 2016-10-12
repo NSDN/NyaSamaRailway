@@ -18,10 +18,10 @@ import net.minecraft.world.World;
 public class TileEntityStationSign extends TileEntityBase {
 
     public static class StationSign extends TileEntity {
-        public String StationNameCN;
-        public String StationNameEN;
-        public String LeftStations;
-        public String RightStations;
+        public String StationNameCN = " ";
+        public String StationNameEN = " ";
+        public String LeftStations = " ";
+        public String RightStations = " ";
 
         @Override
         public boolean shouldRenderInPass(int pass) {
