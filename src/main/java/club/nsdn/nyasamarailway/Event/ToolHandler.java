@@ -1,6 +1,8 @@
 package club.nsdn.nyasamarailway.Event;
 
 import club.nsdn.nyasamarailway.Entity.ITrainLinkable;
+import club.nsdn.nyasamarailway.ExtMod.ExRollerCoaster;
+import club.nsdn.nyasamarailway.ExtMod.RailsOfWar;
 import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
 import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
@@ -71,6 +73,17 @@ public class ToolHandler {
                         controller32Bit.playerID = player.getEntityId();
                         NetworkWrapper.packetSender.sendTo(controller32Bit, player);
                         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
+                    } else {
+                        if (ExRollerCoaster.getInstance().verifyEntity(entity) ||
+                                RailsOfWar.getInstance().verifyEntity(entity)) {
+                            controller32Bit.cartID = entity.getEntityId();
+                            if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
+                                controller32Bit.trainUnits.add(controller32Bit.cartID);
+                            }
+                            controller32Bit.playerID = player.getEntityId();
+                            NetworkWrapper.packetSender.sendTo(controller32Bit, player);
+                            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
+                        }
                     }
                 }
 

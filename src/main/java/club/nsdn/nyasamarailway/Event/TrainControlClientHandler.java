@@ -9,6 +9,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -54,16 +55,12 @@ public class TrainControlClientHandler {
                 }
             } else if (stack.getItem() instanceof ItemTrainController32Bit) {
                 if (ToolHandler.controller32Bit != null) {
-                    EntityMinecart cart;
+                    Entity cart;
                     if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                         TrainController.doControl(ToolHandler.controller32Bit, player);
                         for (int i : ToolHandler.controller32Bit.trainUnits) {
-                            cart = ToolHandler.controller32Bit.getCartInClient(i);
+                            cart = ToolHandler.controller32Bit.getUniCartInClient(i);
                             if (cart != null) {
-                                if (cart instanceof LocoBase) {
-                                    ((LocoBase) cart).setTrainPacket(ToolHandler.controller32Bit);
-                                    continue;
-                                }
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }
                         }

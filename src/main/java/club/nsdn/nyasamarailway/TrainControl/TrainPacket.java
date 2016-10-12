@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -192,6 +193,17 @@ public class TrainPacket implements IMessage {
         return cart;
     }
 
+    public Entity getUniCartInServer(int cartID) {
+        if (this.cartID <= 0) return null;
+        Entity cart;
+        try {
+            cart = MinecraftServer.getServer().getEntityWorld().getEntityByID(cartID);
+        } catch (Exception e) {
+            return null;
+        }
+        return cart;
+    }
+
     @SideOnly(Side.CLIENT)
     public EntityMinecart getCartInClient() {
         if (this.cartID <= 0) return null;
@@ -210,6 +222,18 @@ public class TrainPacket implements IMessage {
         EntityMinecart cart;
         try {
             cart = (EntityMinecart) Minecraft.getMinecraft().theWorld.getEntityByID(cartID);
+        } catch (Exception e) {
+            return null;
+        }
+        return cart;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Entity getUniCartInClient(int cartID) {
+        if (this.cartID <= 0) return null;
+        Entity cart;
+        try {
+            cart = Minecraft.getMinecraft().theWorld.getEntityByID(cartID);
         } catch (Exception e) {
             return null;
         }

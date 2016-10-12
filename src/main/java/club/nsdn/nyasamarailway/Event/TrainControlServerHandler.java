@@ -6,6 +6,7 @@ import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -55,15 +56,11 @@ public class TrainControlServerHandler {
                     ItemStack stack = player.getCurrentEquippedItem();
                     if (stack != null) {
                         if (stack.getItem() instanceof ItemTrainController32Bit) {
-                            EntityMinecart cart;
+                            Entity cart;
                             if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                                 for (int i : ToolHandler.controller32Bit.trainUnits) {
-                                    cart = ToolHandler.controller32Bit.getCartInServer(i);
+                                    cart = ToolHandler.controller32Bit.getUniCartInServer(i);
                                     if (cart != null) {
-                                        if (cart instanceof LocoBase) {
-                                            ((LocoBase) cart).setTrainPacket(ToolHandler.controller32Bit);
-                                            continue;
-                                        }
                                         TrainController.doMotion(ToolHandler.controller32Bit, cart);
                                     }
                                 }

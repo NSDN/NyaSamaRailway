@@ -7,6 +7,9 @@ package club.nsdn.nyasamarailway.TileEntities;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -37,6 +40,25 @@ public class TileEntityStationSign extends TileEntityBase {
         @Override
         public void readFromNBT(NBTTagCompound tagCompound) {
             super.readFromNBT(tagCompound);
+            StationNameCN = tagCompound.getString("StationNameCN");
+            StationNameEN = tagCompound.getString("StationNameEN");
+            LeftStations = tagCompound.getString("LeftStations");
+            RightStations = tagCompound.getString("RightStations");
+        }
+
+        @Override
+        public Packet getDescriptionPacket() {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            tagCompound.setString("StationNameCN", StationNameCN);
+            tagCompound.setString("StationNameEN", StationNameEN);
+            tagCompound.setString("LeftStations", LeftStations);
+            tagCompound.setString("RightStations", RightStations);
+            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
+        }
+
+        @Override
+        public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
+            NBTTagCompound tagCompound = packet.func_148857_g();
             StationNameCN = tagCompound.getString("StationNameCN");
             StationNameEN = tagCompound.getString("StationNameEN");
             LeftStations = tagCompound.getString("LeftStations");

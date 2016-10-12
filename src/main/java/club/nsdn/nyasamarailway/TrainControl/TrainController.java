@@ -4,6 +4,7 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
@@ -162,12 +163,12 @@ public class TrainController {
         //buildGUI(player.posX, player.posY, player.posZ);
     }
 
-    private static void calcYaw(TrainPacket train, EntityMinecart cart) {
+    private static void calcYaw(TrainPacket train, Entity cart) {
         train.prevYaw = train.Yaw;
         train.Yaw = 180.0 - cart.rotationYaw;
     }
 
-    public static void doMotion(TrainPacket train, EntityMinecart cart) {
+    public static void doMotion(TrainPacket train, Entity cart) {
         calcYaw(train, cart);
 
         if (train.P > 0 && train.Velocity < 0.005) {
