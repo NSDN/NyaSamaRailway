@@ -197,8 +197,8 @@ public class BlockLoader {
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
 
-        //railNoSleeperStraight = new RailNoSleeperStraight();
-        //register(railNoSleeperStraight, "rail_ns_s");
+        railNoSleeperStraight = new RailNoSleeperStraight();
+        register(railNoSleeperStraight, "rail_ns_s");
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");

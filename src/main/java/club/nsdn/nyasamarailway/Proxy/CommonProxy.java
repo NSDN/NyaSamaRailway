@@ -34,13 +34,17 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event)
     {
-        if (Loader.isModLoaded("erc")) {
+        if (Loader.isModLoaded(ExRollerCoaster.modid)) {
             ExRollerCoaster.setInstance(new ExRollerCoaster());
             System.out.println("[NSDN] NyaSamaRailway detected ExRollerCoaster mod");
         }
-        if (Loader.isModLoaded("row")) {
+        if (Loader.isModLoaded(RailsOfWar.modid)) {
             RailsOfWar.setInstance(new RailsOfWar());
             System.out.println("[NSDN] NyaSamaRailway detected RailsOfWar mod");
+        }
+        if (Loader.isModLoaded(Traincraft.modid)) {
+            Traincraft.setInstance(new Traincraft());
+            System.out.println("[NSDN] NyaSamaRailway detected Traincraft mod");
         }
     }
 

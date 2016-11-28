@@ -102,7 +102,7 @@ public class BlockRailDetectorBase extends BlockRailDetector {
         boolean isPowered = (meta & 8) != 0;
         boolean hasCart = false;
         boolean isEnabled = false;
-        float bBoxSize = 0.125F;
+        float bBoxSize = 0.5F;
         List bBox = world.getEntitiesWithinAABB(EntityMinecart.class, AxisAlignedBB.getBoundingBox((double) ((float) x + bBoxSize), (double) y, (double) ((float) z + bBoxSize), (double) ((float) (x + 1) - bBoxSize), (double) ((float) (y + 1) - bBoxSize), (double) ((float) (z + 1) - bBoxSize)));
         if (!bBox.isEmpty()) {
             hasCart = true;
