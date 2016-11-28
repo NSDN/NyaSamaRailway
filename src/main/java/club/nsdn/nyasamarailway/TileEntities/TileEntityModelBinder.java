@@ -4,16 +4,21 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailNoSleeperStraightModel;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailRenderer;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 public class TileEntityModelBinder {
 
     public TileEntityModelBinder(FMLInitializationEvent event) {
+
+        BlockPlatform.renderType = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockPlatform.renderType, new PlatformRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityTrackPlate.TrackPlate.class,
@@ -54,10 +59,6 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityHalfHalfBlock.HalfHalfBlock.class,
                 new BaseRenderer(new HalfHalfBlockModel()));
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityPlatform.Platform.class,
-                new BaseRenderer(new PlatformModel()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailSignBody.RailSignBody.class,

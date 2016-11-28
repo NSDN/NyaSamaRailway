@@ -33,11 +33,36 @@ public class Traincraft implements IExtMod {
 
     @Override
     public boolean verifyEntity(Entity entity) {
-        return ClassVerifier.verifyClass(entity.getClass(), "AbstractTrains", EntityMinecart.class);
+        return Util.verifyClass(entity.getClass(), "AbstractTrains", EntityMinecart.class);
     }
 
     public boolean isLocomotive(Entity entity) {
-        return ClassVerifier.verifyClass(entity.getClass(), "train.common.api.Locomotive", EntityMinecart.class);
+        return Util.verifyClass(entity.getClass(), "train.common.api.Locomotive", EntityMinecart.class);
+    }
+
+    public boolean Locomotive_getIsLocoTurnedOn(Entity entity) {
+        if (isLocomotive(entity)) {
+            Field[] field = entity.getClass().getDeclaredFields();
+            for (Field f : field) {
+                if (f.getName().contains("accelerate")) {
+                    boolean tmp = false;
+                    try {
+                        tmp = f.getBoolean(entity);
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    return tmp;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean Locomotive_setIsLocoTurnedOn(Entity entity, boolean value) {
+        if (isLocomotive(entity)) {
+            Util.modifyNBT(entity, "isLocoTurnedOn", value);
+        }
+        return false;
     }
 
     public double Locomotive_getAccel(Entity entity) {

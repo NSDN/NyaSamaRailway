@@ -54,10 +54,6 @@ public class TileEntityLoader {
                 "tileEntityHalfHalfBlock");
 
         GameRegistry.registerTileEntity(
-                TileEntityPlatform.Platform.class,
-                "tileEntityPlatform");
-
-        GameRegistry.registerTileEntity(
                 TileEntityRailSignBody.RailSignBody.class,
                 "tileEntityRailSignBody");
 

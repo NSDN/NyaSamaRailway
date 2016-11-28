@@ -176,7 +176,7 @@ public class BlockLoader {
         blockHalfHalfBlock = new TileEntityHalfHalfBlock();
         register(blockHalfHalfBlock, "block_half_half_block");
 
-        blockPlatform = new TileEntityPlatform();
+        blockPlatform = new BlockPlatform();
         register(blockPlatform, "block_platform");
 
         blockRailSignBody = new TileEntityRailSignBody();
@@ -197,8 +197,8 @@ public class BlockLoader {
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
 
-        railNoSleeperStraight = new RailNoSleeperStraight();
-        register(railNoSleeperStraight, "rail_ns_s");
+        //railNoSleeperStraight = new RailNoSleeperStraight();
+        //register(railNoSleeperStraight, "rail_ns_s");
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");

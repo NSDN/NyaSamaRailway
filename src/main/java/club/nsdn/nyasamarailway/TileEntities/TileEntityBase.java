@@ -68,7 +68,7 @@ public class TileEntityBase extends BlockContainer {
 
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
     }
 
     @SideOnly(Side.CLIENT)

@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Event;
 
 import club.nsdn.nyasamarailway.Entity.LocoBase;
+import club.nsdn.nyasamarailway.ExtMod.Traincraft;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
@@ -10,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by drzzm32 on 2016.5.13.
@@ -41,6 +41,9 @@ public class TrainControlServerHandler {
                                     ((LocoBase) cart).setTrainPacket(ToolHandler.controller8Bit);
                                     return;
                                 }
+                                if (Traincraft.instance.isLocomotive(cart)) {
+                                    Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                }
                                 TrainController.doMotion(ToolHandler.controller8Bit, cart);
                             }
                         }
@@ -61,6 +64,9 @@ public class TrainControlServerHandler {
                                 for (int i : ToolHandler.controller32Bit.trainUnits) {
                                     cart = ToolHandler.controller32Bit.getUniCartInServer(i);
                                     if (cart != null) {
+                                        if (Traincraft.instance.isLocomotive(cart)) {
+                                            Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                        }
                                         TrainController.doMotion(ToolHandler.controller32Bit, cart);
                                     }
                                 }
