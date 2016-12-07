@@ -10,10 +10,11 @@ import net.minecraft.world.World;
  */
 public class NSPCT2 extends MinecartBase {
 
-    public NSPCT2(World world) { super(world); }
+    public NSPCT2(World world) { super(world); ignoreFrustumCheck = true; }
 
     public NSPCT2(World world, double x, double y, double z) {
         super(world, x, y, z);
+        ignoreFrustumCheck = true;
     }
 
     @Override

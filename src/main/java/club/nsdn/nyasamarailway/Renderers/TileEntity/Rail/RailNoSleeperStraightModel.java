@@ -19,16 +19,16 @@ public class RailNoSleeperStraightModel extends ModelBase {
         textureHeight = 16;
         setTextureOffset("RailPieceL1.Base", 0, 0);
         setTextureOffset("RailPieceL1.Base1", 0, 0);
-        setTextureOffset("RailPieceL1.Rail", 0, 7);
+        setTextureOffset("RailPieceL1.TileEntityRail", 0, 7);
         setTextureOffset("RailPieceL2.Base", 0, 0);
         setTextureOffset("RailPieceL2.Base1", 0, 0);
-        setTextureOffset("RailPieceL2.Rail", 0, 7);
+        setTextureOffset("RailPieceL2.TileEntityRail", 0, 7);
         setTextureOffset("RailPieceR1.Base", 0, 0);
         setTextureOffset("RailPieceR1.Base1", 0, 0);
-        setTextureOffset("RailPieceR1.Rail", 0, 7);
+        setTextureOffset("RailPieceR1.TileEntityRail", 0, 7);
         setTextureOffset("RailPieceR2.Base", 0, 0);
         setTextureOffset("RailPieceR2.Base1", 0, 0);
-        setTextureOffset("RailPieceR2.Rail", 0, 7);
+        setTextureOffset("RailPieceR2.TileEntityRail", 0, 7);
 
         RailPieceL1 = new ModelRenderer(this, "RailPieceL1");
         RailPieceL1.setRotationPoint(-5.5F, 22F, -4F);
@@ -36,28 +36,28 @@ public class RailNoSleeperStraightModel extends ModelBase {
         RailPieceL1.mirror = true;
         RailPieceL1.addBox("Base", -1.5F, 1F, -1.5F, 3, 1, 3);
         RailPieceL1.addBox("Base1", -1F, 0.5F, -1F, 2, 1, 2);
-        RailPieceL1.addBox("Rail", -0.5F, 0F, -4F, 1, 1, 8);
+        RailPieceL1.addBox("TileEntityRail", -0.5F, 0F, -4F, 1, 1, 8);
         RailPieceL2 = new ModelRenderer(this, "RailPieceL2");
         RailPieceL2.setRotationPoint(-5.5F, 22F, 4F);
         setRotation(RailPieceL2, 0F, 0F, 0F);
         RailPieceL2.mirror = true;
         RailPieceL2.addBox("Base", -1.5F, 1F, -1.5F, 3, 1, 3);
         RailPieceL2.addBox("Base1", -1F, 0.5F, -1F, 2, 1, 2);
-        RailPieceL2.addBox("Rail", -0.5F, 0F, -4F, 1, 1, 8);
+        RailPieceL2.addBox("TileEntityRail", -0.5F, 0F, -4F, 1, 1, 8);
         RailPieceR1 = new ModelRenderer(this, "RailPieceR1");
         RailPieceR1.setRotationPoint(5.5F, 22F, -4F);
         setRotation(RailPieceR1, 0F, 0F, 0F);
         RailPieceR1.mirror = true;
         RailPieceR1.addBox("Base", -1.5F, 1F, -1.5F, 3, 1, 3);
         RailPieceR1.addBox("Base1", -1F, 0.5F, -1F, 2, 1, 2);
-        RailPieceR1.addBox("Rail", -0.5F, 0F, -4F, 1, 1, 8);
+        RailPieceR1.addBox("TileEntityRail", -0.5F, 0F, -4F, 1, 1, 8);
         RailPieceR2 = new ModelRenderer(this, "RailPieceR2");
         RailPieceR2.setRotationPoint(5.5F, 22F, 4F);
         setRotation(RailPieceR2, 0F, 0F, 0F);
         RailPieceR2.mirror = true;
         RailPieceR2.addBox("Base", -1.5F, 1F, -1.5F, 3, 1, 3);
         RailPieceR2.addBox("Base1", -1F, 0.5F, -1F, 2, 1, 2);
-        RailPieceR2.addBox("Rail", -0.5F, 0F, -4F, 1, 1, 8);
+        RailPieceR2.addBox("TileEntityRail", -0.5F, 0F, -4F, 1, 1, 8);
     }
 
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {

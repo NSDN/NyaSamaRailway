@@ -1,9 +1,22 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.ItemLoader;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
+
+import java.util.List;
 
 /**
  * Created by drzzm32 on 2016.5.26.

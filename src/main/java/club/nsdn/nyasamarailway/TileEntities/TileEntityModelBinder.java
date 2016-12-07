@@ -6,12 +6,14 @@ package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
-import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailNoSleeperStraightModel;
-import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.RailRenderer;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
+import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.*;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMono;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.client.model.ModelBase;
 
 public class TileEntityModelBinder {
 
@@ -88,7 +90,16 @@ public class TileEntityModelBinder {
                 TileEntityStationSign.StationSign.class, new StationSignRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                RailNoSleeperStraight.Rail.class, new RailRenderer(new RailNoSleeperStraightModel(), "textures/rails/rail_ns_s.png"));
+                RailBase.TileEntityRail.class, new RailRenderer(new RailNoSleeperStraightModel(), "textures/rails/rail_ns_s.png"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMono.TileEntityRail.class, new RailMonoRenderer(new ModelBase[] { new RailMonoStraightSimpleModel(), new RailMonoSlopeSimpleModel(), new RailMonoTurnedSimpleModel() }, 0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnet.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraight.png", "textures/rails/RailMonoMagnetSlope.png", "textures/rails/RailMonoMagnetTurned.png" },
+                        0.0, 0.0, 0.0));
     }
 
 }

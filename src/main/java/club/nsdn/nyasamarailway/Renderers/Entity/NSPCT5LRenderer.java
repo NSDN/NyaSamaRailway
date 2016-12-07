@@ -1,7 +1,8 @@
 package club.nsdn.nyasamarailway.Renderers.Entity;
 
-import club.nsdn.nyasamarailway.Entity.NSPCT4;
+import club.nsdn.nyasamarailway.Entity.NSPCT5L;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -12,34 +13,33 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm32 on 2016.5.23.
+ * Created by drzzm32 on 2016.12.7.
  */
-public class MinecartRenderer extends RenderMinecart {
-    private ResourceLocation cartTex = new ResourceLocation("nyasamarailway", "textures/carts/nstc_1.png");
-    public ModelBase modelCart;
-    private double shiftX, shiftY, shiftZ;
+public class NSPCT5LRenderer extends RenderMinecart {
 
-    public MinecartRenderer(ModelBase model, String texturePath) {
-        super();
-        cartTex = new ResourceLocation("nyasamarailway", texturePath);
-        modelCart = model;
-        shiftX = 0; shiftY = 0; shiftZ = 0;
-    }
+    public final int HEAD = 0, BODYWW = 1, BODYNW = 2;
 
-    public MinecartRenderer(ModelBase model, String texturePath, double shiftX, double shiftY, double shiftZ) {
+    private ResourceLocation trainTex;
+    public ModelBase modelTrain[];
+
+    public NSPCT5LRenderer(ModelBase model[], String texturePath) {
         super();
-        cartTex = new ResourceLocation("nyasamarailway", texturePath);
-        modelCart = model;
-        this.shiftX = shiftX; this.shiftY = shiftY; this.shiftZ = shiftZ;
+        trainTex = new ResourceLocation("nyasamarailway", texturePath);
+        modelTrain = model;
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityMinecart cart) {
-        return cartTex;
+        return trainTex;
     }
 
     @Override
     public void doRender(EntityMinecart minecart, double x, double y, double z, float Yaw, float p_doRender_9_) {
+        int length = 5;
+        if (minecart instanceof NSPCT5L) {
+            length = ((NSPCT5L) minecart).cartLength;
+        }
+
         GL11.glPushMatrix();
         this.bindEntityTexture(minecart);
         long var10 = (long)minecart.getEntityId() * 493286711L;
@@ -109,8 +109,60 @@ public class MinecartRenderer extends RenderMinecart {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslated(shiftX, -shiftY, shiftZ);
-        modelCart.render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        GL11.glPushMatrix();
+        GL11.glTranslated(0, -0.1, 0);
+
+        GL11.glPushMatrix();
+        GL11.glScaled(2.0, 2.0, 2.0);
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(trainTex);
+
+        modelTrain[BODYWW].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        for (int i = 1; i <= length - 1; i += 2) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 1.0F * i);
+            modelTrain[BODYNW].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 1.0F * (-i));
+            modelTrain[BODYNW].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+        }
+
+        for (int i = 2; i <= length - 1; i += 2) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 1.0F * i);
+            modelTrain[BODYWW].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 1.0F * (-i));
+            modelTrain[BODYWW].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            GL11.glPopMatrix();
+        }
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.0F, 1.0F * (+length));
+        GL11.glPushMatrix();
+        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+        modelTrain[HEAD].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.0F, 1.0F * (-length));
+        GL11.glPushMatrix();
+        GL11.glRotatef(0.0F, 0.0F, 1.0F, 0.0F);
+        modelTrain[HEAD].render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+
+        GL11.glPopMatrix();
+
+        GL11.glPopMatrix();
         GL11.glPopMatrix();
 
         GL11.glPopMatrix();

@@ -4,7 +4,7 @@ package club.nsdn.nyasamarailway.Blocks;
  * Created by drzzm32 on 2016.5.5.
  */
 
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailNoSleeperStraight;
+import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import net.minecraft.block.Block;
 import club.nsdn.nyasamarailway.TileEntities.*;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -62,6 +62,8 @@ public class BlockLoader {
     public static Block blockRailSignHeadT;
 
     public static Block railNoSleeperStraight;
+    public static Block railMono;
+    public static Block railMonoMagnet;
 
     public static Block blockStationSign;
 
@@ -202,6 +204,12 @@ public class BlockLoader {
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");
+
+        railMono = new RailMono();
+        register(railMono, "rail_mono");
+
+        railMonoMagnet = new RailMonoMagnet();
+        register(railMonoMagnet, "rail_mono_magnet");
 
     }
 
