@@ -14,14 +14,18 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
  */
 public class NSPCT5L extends MinecartBase {
 
-    public int cartLength;
+    public static final int DATA_LENGTH = 29;
+    //public int cartLength;
 
-    public NSPCT5L(World world) { super(world); ignoreFrustumCheck = true; cartLength = 3; }
+    public NSPCT5L(World world) {
+        super(world); ignoreFrustumCheck = true;
+        this.getDataWatcher().addObject(DATA_LENGTH, 3);
+    }
 
     public NSPCT5L(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
-        cartLength = 3;
+        this.getDataWatcher().addObject(DATA_LENGTH, 3);
     }
 
     @Override
@@ -50,45 +54,15 @@ public class NSPCT5L extends MinecartBase {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer player) {
-        if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player))) {
-            return true;
-        } else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != player) {
-            return true;
-        } else if (this.riddenByEntity != null && this.riddenByEntity != player) {
-            return false;
-        } else {
-            if (player != null) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
-                    if (stack.getItem() instanceof ItemStationSign) {
-                        cartLength = cartLength < 5 ? cartLength + 1 : 1;
-                        return true;
-                    }
-                    if (stack.getItem() instanceof Item74HC04 ||
-                            stack.getItem() instanceof ItemTrainController8Bit ||
-                            stack.getItem() instanceof ItemTrainController32Bit) {
-                        return true;
-                    }
-                }
-                if (!this.worldObj.isRemote) {
-                    player.mountEntity(this);
-                }
-            }
-            return true;
-        }
-    }
-
-    @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.cartLength = tagCompound.getInteger("cartLength");
+        this.getDataWatcher().updateObject(DATA_LENGTH, tagCompound.getInteger("cartLength"));
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("cartLength", this.cartLength);
+        tagCompound.setInteger("cartLength", this.getDataWatcher().getWatchableObjectInt(DATA_LENGTH));
     }
 
 }

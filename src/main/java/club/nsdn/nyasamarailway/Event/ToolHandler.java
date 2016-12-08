@@ -1,6 +1,8 @@
 package club.nsdn.nyasamarailway.Event;
 
 import club.nsdn.nyasamarailway.Entity.ITrainLinkable;
+import club.nsdn.nyasamarailway.Entity.NSPCT5;
+import club.nsdn.nyasamarailway.Entity.NSPCT5L;
 import club.nsdn.nyasamarailway.ExtMod.ExRollerCoaster;
 import club.nsdn.nyasamarailway.ExtMod.RailsOfWar;
 import club.nsdn.nyasamarailway.Items.*;
@@ -120,6 +122,17 @@ public class ToolHandler {
                             }
                             tmpLinkTrain = null;
                         }
+                    }
+                }
+
+                else if (stack.getItem() instanceof ItemNSPCT5) {
+                    if (entity instanceof NSPCT5) {
+                        entity.getDataWatcher().updateObject(NSPCT5.DATA_LENGTH, entity.getDataWatcher().getWatchableObjectInt(NSPCT5.DATA_LENGTH) < 5 ? entity.getDataWatcher().getWatchableObjectInt(NSPCT5.DATA_LENGTH) + 1 : 1);
+                    }
+                }
+                else if (stack.getItem() instanceof ItemNSPCT5L) {
+                    if (entity instanceof NSPCT5L) {
+                        entity.getDataWatcher().updateObject(NSPCT5L.DATA_LENGTH, entity.getDataWatcher().getWatchableObjectInt(NSPCT5L.DATA_LENGTH) < 5 ? entity.getDataWatcher().getWatchableObjectInt(NSPCT5L.DATA_LENGTH) + 1 : 1);
                     }
                 }
 

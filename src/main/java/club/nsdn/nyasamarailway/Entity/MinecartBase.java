@@ -2,24 +2,28 @@ package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
-import club.nsdn.nyasamarailway.Items.Item74HC04;
-import club.nsdn.nyasamarailway.Items.ItemLoader;
-import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -45,15 +49,19 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     /** appears to be the progress of the turn */
     public boolean isInReverse = false;
 
+    public static final int DATA_LINK = 28;
+
     //public int prevLinkTrain = -1;
-    public int nextLinkTrain = -1;
+    //public int nextLinkTrain = -1;
 
     public MinecartBase(World world) {
         super(world);
+        getDataWatcher().addObject(DATA_LINK, 0);
     }
 
     public MinecartBase(World world, double x, double y, double z) {
         super(world, x, y, z);
+        getDataWatcher().addObject(DATA_LINK, 0);
     }
 
     @Override
@@ -73,6 +81,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
                             stack.getItem() instanceof ItemTrainController32Bit) {
                         return true;
                     }
+                    if (stack.getItem() instanceof ItemMinecart) return true;
                 }
                 if (!this.worldObj.isRemote) {
                     player.mountEntity(this);
@@ -102,7 +111,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     }
 
     public int getNextTrainID() {
-        return this.nextLinkTrain;
+        return this.getDataWatcher().getWatchableObjectInt(DATA_LINK);
     }
 
     public boolean LinkTrain(int ID) {
@@ -111,8 +120,8 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
             this.prevLinkTrain = ID;
         } else 
         */
-        if (this.nextLinkTrain == -1) {
-            this.nextLinkTrain = ID;
+        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) == -1) {
+            this.getDataWatcher().updateObject(DATA_LINK, ID);
         } else {
             return false;
         }
@@ -125,8 +134,8 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
             this.prevLinkTrain = -1;
         } else 
         */
-        if (this.nextLinkTrain == ID) {
-            this.nextLinkTrain = -1;
+        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) == ID) {
+            this.getDataWatcher().updateObject(DATA_LINK, -1);
         }
     }
 
@@ -135,8 +144,8 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     }
 
     public void calcLink(World world) {
-        if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) instanceof EntityMinecart) {
-            EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
+        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) > 0 && world.getEntityByID(this.getDataWatcher().getWatchableObjectInt(DATA_LINK)) instanceof EntityMinecart) {
+            EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.getDataWatcher().getWatchableObjectInt(DATA_LINK));
             double Ks = 500.0;
             double Kd = 500.0;
             double m = 1.0;
@@ -236,13 +245,13 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.nextLinkTrain = tagCompound.getInteger("nextLinkTrain");
+        this.getDataWatcher().updateObject(DATA_LINK,tagCompound.getInteger("nextLinkTrain"));
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("nextLinkTrain", this.nextLinkTrain);
+        tagCompound.setInteger("nextLinkTrain", this.getDataWatcher().getWatchableObjectInt(DATA_LINK));
     }
 
     public boolean checkBlockIsRail(World world, int x, int y, int z, Class<?> cls) {

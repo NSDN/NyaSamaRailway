@@ -37,7 +37,7 @@ public class NSPCT5Renderer extends RenderMinecart {
     public void doRender(EntityMinecart minecart, double x, double y, double z, float Yaw, float p_doRender_9_) {
         int length = 5;
         if (minecart instanceof NSPCT5) {
-            length = ((NSPCT5) minecart).cartLength;
+            length = minecart.getDataWatcher().getWatchableObjectInt(NSPCT5.DATA_LENGTH);
         }
 
         GL11.glPushMatrix();
