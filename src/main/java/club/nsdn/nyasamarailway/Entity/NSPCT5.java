@@ -35,7 +35,7 @@ public class NSPCT5 extends MinecartBase {
 
     @Override
     public double getMountedYOffset() {
-        return -0.1;
+        return -0.6;
     }
 
     @Override

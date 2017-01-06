@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.ExtMod;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -34,6 +35,13 @@ public class Util {
         else if (value instanceof Byte)
             tagCompound.setByte(nbtTag, (Byte) value);
         entity.readFromNBT(tagCompound);
+    }
+
+    public static boolean isMinecart(Class<?> c) {
+        if (c == EntityMinecart.class) return true;
+        else if (c == Object.class)
+            return false;
+        else return isMinecart(c.getSuperclass());
     }
 
 }

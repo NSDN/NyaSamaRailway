@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.Entity.*;
+import club.nsdn.nyasamarailway.ExtMod.Util;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import net.minecraft.block.Block;
@@ -278,7 +279,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             }
             if (rail != null) {
                 if (!rail.cartType.isEmpty() && !world.isRemote) {
-                    if(!hasCart && (world.getBlockMetadata(x + 1, y, z) > 8 || world.getBlockMetadata(x, y, z - 1) > 8)) {
+                    if(!hasCart && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
                         if (rail.cartType.equals(MinecartBase.class.getName())) {
                             MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                             world.spawnEntityInWorld(cart);
@@ -303,7 +304,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                         delayENB.put(p, false);
                     }
 
-                    if (hasCart && (world.getBlockMetadata(x - 1, y, z) > 8 || world.getBlockMetadata(x, y, z + 1) > 8)) {
+                    if (hasCart && (isRailPowered(world, x - 1, y, z) || isRailPowered(world, x, y, z + 1))) {
                         EntityMinecart cart = getMinecart(world, x, y, z);
                         if (cart == null) return;
                         cart.setDead();

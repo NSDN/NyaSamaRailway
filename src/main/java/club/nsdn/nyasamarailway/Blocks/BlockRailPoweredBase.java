@@ -55,6 +55,13 @@ public class BlockRailPoweredBase extends BlockRailPowered {
         return RailDirection.NONE;
     }
 
+    public boolean isRailPowered(World world, int x, int y, int z) {
+        if (world.getBlock(x, y, z) instanceof BlockRailPoweredBase) {
+            return (world.getBlockMetadata(x, y, z) & 8) > 0;
+        }
+        return false;
+    }
+
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
         float maxV = getRailMaxSpeed(world, cart, x, y, z);

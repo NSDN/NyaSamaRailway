@@ -178,12 +178,14 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
         //applyPush
         int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
+            BlockRailReception.TileEntityRailReception tile = (BlockRailReception.TileEntityRailReception) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
         }
         if (block instanceof BlockRailReceptionAnti) {
+            BlockRailReceptionAnti.TileEntityRailReceptionAnti tile = (BlockRailReceptionAnti.TileEntityRailReceptionAnti) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
         }
         //applyPush(x, y, z, v1, v, block, meta);
         super.func_145821_a(x, y, z, v1, v, block, meta);
