@@ -7,6 +7,7 @@ package club.nsdn.nyasamarailway.Proxy;
 import club.nsdn.nyasamarailway.Entity.EntityLoader;
 import club.nsdn.nyasamarailway.Event.EventRegister;
 import club.nsdn.nyasamarailway.ExtMod.*;
+import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.*;
@@ -36,15 +37,15 @@ public class CommonProxy {
     {
         if (Loader.isModLoaded(ExRollerCoaster.modid)) {
             ExRollerCoaster.setInstance(new ExRollerCoaster());
-            System.out.println("[NSDN] NyaSamaRailway detected ExRollerCoaster mod");
+            NyaSamaRailway.log.info("NyaSamaRailway detected ExRollerCoaster mod");
         }
         if (Loader.isModLoaded(RailsOfWar.modid)) {
             RailsOfWar.setInstance(new RailsOfWar());
-            System.out.println("[NSDN] NyaSamaRailway detected RailsOfWar mod");
+            NyaSamaRailway.log.info("NyaSamaRailway detected RailsOfWar mod");
         }
         if (Loader.isModLoaded(Traincraft.modid)) {
             Traincraft.setInstance(new Traincraft());
-            System.out.println("[NSDN] NyaSamaRailway detected Traincraft mod");
+            NyaSamaRailway.log.info("NyaSamaRailway detected Traincraft mod");
         }
     }
 
