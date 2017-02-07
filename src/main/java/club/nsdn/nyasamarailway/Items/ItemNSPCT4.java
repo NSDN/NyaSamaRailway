@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.Items;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.Entity.MinecartBase;
 import club.nsdn.nyasamarailway.Entity.NSPCT4;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnetBase;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -28,7 +29,7 @@ public class ItemNSPCT4 extends ItemMinecart {
 
     @Override
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
-        if (BlockRailBase.func_150051_a(world.getBlock(x, y, z)))
+        if (BlockRailBase.func_150051_a(world.getBlock(x, y, z)) && world.getBlock(x, y, z) instanceof RailMonoMagnetBase)
         {
             if (!world.isRemote)
             {

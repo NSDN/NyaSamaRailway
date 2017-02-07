@@ -5,6 +5,8 @@ import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
 import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnetReception;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnetReceptionAnti;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -185,6 +187,16 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
         if (block instanceof BlockRailReceptionAnti) {
             BlockRailReceptionAnti.TileEntityRailReceptionAnti tile = (BlockRailReceptionAnti.TileEntityRailReceptionAnti) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+        }
+        if (block instanceof RailMonoMagnetReception) {
+            RailMonoMagnetReception.TileEntityRail tile = (RailMonoMagnetReception.TileEntityRail) worldObj.getTileEntity(x, y, z);
+            if (!((RailMonoMagnetReception) block).checkNearbySameRail(worldObj, x, y, z))
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+        }
+        if (block instanceof RailMonoMagnetReceptionAnti) {
+            RailMonoMagnetReceptionAnti.TileEntityRail tile = (RailMonoMagnetReceptionAnti.TileEntityRail) worldObj.getTileEntity(x, y, z);
+            if (!((RailMonoMagnetReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
                 if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
         }
         //applyPush(x, y, z, v1, v, block, meta);

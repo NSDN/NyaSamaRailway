@@ -12,6 +12,9 @@ import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
@@ -45,6 +48,19 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         @Override
         public void readFromNBT(NBTTagCompound tagCompound) {
             super.readFromNBT(tagCompound);
+            cartType = tagCompound.getString("cartType");
+        }
+
+        @Override
+        public Packet getDescriptionPacket() {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            tagCompound.setString("cartType", cartType);
+            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
+        }
+
+        @Override
+        public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
+            NBTTagCompound tagCompound = packet.func_148857_g();
             cartType = tagCompound.getString("cartType");
         }
     }
@@ -294,6 +310,15 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                             world.spawnEntityInWorld(cart);
                         } else if (rail.cartType.equals(NSPCT3.class.getName())) {
                             MinecartBase cart = new NSPCT3(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                            world.spawnEntityInWorld(cart);
+                        } else if (rail.cartType.equals(NSPCT4.class.getName())) {
+                            MinecartBase cart = new NSPCT4(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                            world.spawnEntityInWorld(cart);
+                        } else if (rail.cartType.equals(NSPCT5.class.getName())) {
+                            MinecartBase cart = new NSPCT5(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                            world.spawnEntityInWorld(cart);
+                        } else if (rail.cartType.equals(NSPCT5L.class.getName())) {
+                            MinecartBase cart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                             world.spawnEntityInWorld(cart);
                         } else {
                             EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);

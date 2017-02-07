@@ -64,6 +64,17 @@ public class BlockLoader {
     public static Block railNoSleeperStraight;
     public static Block railMono;
     public static Block railMonoMagnet;
+    public static Block railMonoMagnetPowered;
+    public static Block railMonoMagnetDetector;
+    public static Block railMonoMagnetDetector5s;
+    public static Block railMonoMagnetDetector15s;
+    public static Block railMonoMagnetDetector30s;
+    public static Block railMonoMagnetReception;
+    public static Block railMonoMagnetReceptionAnti;
+    public static Block railMonoMagnetDirectional;
+    public static Block railMonoMagnetDirectionalAnti;
+    public static Block railMonoMagnetSpeedLimit;
+    public static Block railMonoMagnetSignalTransfer;
 
     public static Block blockStationSign;
 
@@ -210,6 +221,39 @@ public class BlockLoader {
 
         railMonoMagnet = new RailMonoMagnet();
         register(railMonoMagnet, "rail_mono_magnet");
+
+        railMonoMagnetDetector = new RailMonoMagnetDetector();
+        register(railMonoMagnetDetector, "rail_mono_magnet_detector");
+
+        railMonoMagnetDetector5s = new RailMonoMagnetDetector(5);
+        register(railMonoMagnetDetector5s, "rail_mono_magnet_detector_5s");
+
+        railMonoMagnetDetector15s = new RailMonoMagnetDetector(15);
+        register(railMonoMagnetDetector15s, "rail_mono_magnet_detector_15s");
+
+        railMonoMagnetDetector30s = new RailMonoMagnetDetector(30);
+        register(railMonoMagnetDetector30s, "rail_mono_magnet_detector_30s");
+
+        railMonoMagnetPowered = new RailMonoMagnetPowered();
+        register(railMonoMagnetPowered, "rail_mono_magnet_powered");
+
+        railMonoMagnetReception = new RailMonoMagnetReception();
+        register(railMonoMagnetReception, "rail_mono_magnet_reception");
+
+        railMonoMagnetReceptionAnti = new RailMonoMagnetReceptionAnti();
+        register(railMonoMagnetReceptionAnti, "rail_mono_magnet_reception_anti");
+
+        railMonoMagnetDirectional = new RailMonoMagnetDirectional();
+        register(railMonoMagnetDirectional, "rail_mono_magnet_directional");
+
+        railMonoMagnetDirectionalAnti = new RailMonoMagnetDirectionalAnti();
+        register(railMonoMagnetDirectionalAnti, "rail_mono_magnet_directional_anti");
+
+        railMonoMagnetSpeedLimit = new RailMonoMagnetSpeedLimit();
+        register(railMonoMagnetSpeedLimit, "rail_mono_magnet_speed_limit");
+
+        railMonoMagnetSignalTransfer = new RailMonoMagnetSignalTransfer();
+        register(railMonoMagnetSignalTransfer, "rail_mono_magnet_signal_transfer");
 
     }
 

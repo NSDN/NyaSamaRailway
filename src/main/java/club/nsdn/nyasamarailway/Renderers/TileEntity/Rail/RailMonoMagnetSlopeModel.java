@@ -7,6 +7,7 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity.Rail;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class RailMonoMagnetSlopeModel extends ModelBase {
 
@@ -20,7 +21,7 @@ public class RailMonoMagnetSlopeModel extends ModelBase {
         Body.addBox(0F, 0F, 0F, 8, 0, 31);
         Body.setRotationPoint(-4F, 49.5F, -14.1F);
         Body.setTextureSize(64, 32);
-        Body.mirror = true;
+        Body.mirror = false;
         setRotation(Body, 0.7853982F, 0F, 0F);
     }
 

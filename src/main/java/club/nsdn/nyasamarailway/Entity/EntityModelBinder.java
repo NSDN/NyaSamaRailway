@@ -37,7 +37,7 @@ public class EntityModelBinder {
                 NSPCT3.class, new MinecartRenderer(new NSPCT3Model(), "textures/carts/nspc_3.png"));
 
         RenderingRegistry.registerEntityRenderingHandler(
-                NSPCT4.class, new MinecartRenderer(new NSPCT4Model(), "textures/carts/nspc_4.png", 0.0, -1.0, 0.0));
+                NSPCT4.class, new NSPCT4Renderer(new NSPCT4Model(), "textures/carts/nspc_4.png"));
 
         RenderingRegistry.registerEntityRenderingHandler(
                 NSPCT5.class, new NSPCT5Renderer(new ModelBase[] { new NSPCT5HeadModel(), new NSPCT5BodyWWModel(), new NSPCT5BodyNWModel() }, "textures/carts/nspc_5.png"));

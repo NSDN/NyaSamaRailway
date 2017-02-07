@@ -5,9 +5,7 @@ package club.nsdn.nyasamarailway.TileEntities;
  */
 
 import club.nsdn.nyasamarailway.Blocks.*;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMono;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
+import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -102,6 +100,39 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 RailMonoMagnet.TileEntityRail.class,
                 "railMonoMagnet");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetDetector.TileEntityRail.class,
+                "railMonoMagnetDetector");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetDirectional.TileEntityRail.class,
+                "railMonoMagnetDirectional");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetDirectionalAnti.TileEntityRail.class,
+                "railMonoMagnetDirectionalAnti");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetPowered.TileEntityRail.class,
+                "railMonoMagnetPowered");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetReception.TileEntityRail.class,
+                "railMonoMagnetReception");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetReceptionAnti.TileEntityRail.class,
+                "railMonoMagnetReceptionAnti");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetSignalTransfer.TileEntityRail.class,
+                "railMonoMagnetSignalTransfer");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetSpeedLimit.TileEntityRail.class,
+                "railMonoMagnetSpeedLimit");
+
     }
 
 }

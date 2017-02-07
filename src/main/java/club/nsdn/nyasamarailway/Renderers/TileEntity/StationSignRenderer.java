@@ -8,6 +8,7 @@ import club.nsdn.nyasamarailway.TileEntities.TileEntityStationSign;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -40,6 +41,21 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         FontRenderer renderer = this.func_147498_b();
+
+        RenderHelper.disableStandardItemLighting();
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        if (Minecraft.isAmbientOcclusionEnabled())
+        {
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+        }
+        else
+        {
+            GL11.glShadeModel(GL11.GL_FLAT);
+        }
+
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         GL11.glPushMatrix();
@@ -86,6 +102,9 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         GL11.glPopMatrix();
+
+        RenderHelper.enableStandardItemLighting();
+
         GL11.glPopMatrix();
     }
 

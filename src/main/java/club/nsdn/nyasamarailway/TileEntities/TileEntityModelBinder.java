@@ -7,9 +7,7 @@ package club.nsdn.nyasamarailway.TileEntities;
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.*;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMono;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
+import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -99,6 +97,54 @@ public class TileEntityModelBinder {
                 RailMonoMagnet.TileEntityRail.class, new RailMonoRenderer(
                         new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
                         new String[] { "textures/rails/RailMonoMagnetStraight.png", "textures/rails/RailMonoMagnetSlope.png", "textures/rails/RailMonoMagnetTurned.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetDetector.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightDetector.png", "textures/rails/RailMonoMagnetSlopeDetector.png", "textures/rails/RailMonoMagnetTurnedDetector.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetDirectional.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightDirectional.png", "textures/rails/RailMonoMagnetSlopeDirectional.png", "textures/rails/RailMonoMagnetTurnedDirectional.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetDirectionalAnti.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightDirectionalAnti.png", "textures/rails/RailMonoMagnetSlopeDirectionalAnti.png", "textures/rails/RailMonoMagnetTurnedDirectionalAnti.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetPowered.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightPowered.png", "textures/rails/RailMonoMagnetSlopePowered.png", "textures/rails/RailMonoMagnetTurnedPowered.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetReception.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightReception.png", "textures/rails/RailMonoMagnetSlopeReception.png", "textures/rails/RailMonoMagnetTurnedReception.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetReceptionAnti.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightReceptionAnti.png", "textures/rails/RailMonoMagnetSlopeReceptionAnti.png", "textures/rails/RailMonoMagnetTurnedReceptionAnti.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetSignalTransfer.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightSignalTransfer.png", "textures/rails/RailMonoMagnetSlopeSignalTransfer.png", "textures/rails/RailMonoMagnetTurnedSignalTransfer.png" },
+                        0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetSpeedLimit.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightSpeedLimit.png", "textures/rails/RailMonoMagnetSlopeSpeedLimit.png", "textures/rails/RailMonoMagnetTurnedSpeedLimit.png" },
                         0.0, 0.0, 0.0));
     }
 
