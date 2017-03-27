@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -24,6 +25,25 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
     private final ModelBase[] model;
     private final ResourceLocation[] textures;
     private double shiftX, shiftY, shiftZ;
+
+    public class EntityFake extends Entity {
+        @Override
+        public void writeEntityToNBT(NBTTagCompound p_70109_1_) {
+            super.writeToNBT(p_70109_1_);
+        }
+
+        @Override
+        public void readEntityFromNBT(NBTTagCompound p_70020_1_) {
+            super.readFromNBT(p_70020_1_);
+        }
+        @Override
+        protected void entityInit() {
+
+        }
+        public EntityFake(World world) {
+            super(world);
+        }
+    }
 
     public RailMonoRenderer(ModelBase[] model, double shiftX, double shiftY, double shiftZ) {
         this.model = model;
@@ -103,7 +123,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                         GL11.glRotatef(-90.0F, 0.0F, -1.0F, 0.0F);
                         GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                         Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE_P]);
-                        this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                        this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                         break;
                     case 4: //N
                         GL11.glRotatef(180.0F, 0.0F, -1.0F, 0.0F);
@@ -115,7 +135,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                         GL11.glRotatef(0.0F, 0.0F, -1.0F, 0.0F);
                         GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                         Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE_P]);
-                        this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                        this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                         break;
                 }
             } else {
@@ -140,7 +160,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                         GL11.glRotatef(-90.0F, 0.0F, -1.0F, 0.0F);
                         GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                         Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE]);
-                        this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                        this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                         break;
                     case 4: //N
                         GL11.glRotatef(180.0F, 0.0F, -1.0F, 0.0F);
@@ -152,7 +172,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                         GL11.glRotatef(0.0F, 0.0F, -1.0F, 0.0F);
                         GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                         Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE]);
-                        this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                        this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                         break;
                 }
             }
@@ -178,7 +198,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                     GL11.glRotatef(-90.0F, 0.0F, -1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                     Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE]);
-                    this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                    this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                     break;
                 case 4: //N
                     GL11.glRotatef(180.0F, 0.0F, -1.0F, 0.0F);
@@ -190,7 +210,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                     GL11.glRotatef(0.0F, 0.0F, -1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -1.0F, 0.0F);
                     Minecraft.getMinecraft().renderEngine.bindTexture(textures[SLOPE]);
-                    this.model[SLOPE].render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+                    this.model[SLOPE].render(new EntityFake(te.getWorldObj()), 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
                     break;
                 case 6: //S-E
                     GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
