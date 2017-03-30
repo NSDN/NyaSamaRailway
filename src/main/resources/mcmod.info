@@ -1,0 +1,16 @@
+[
+{
+  "modid": "NyaSamaRailway",
+  "name": "NyaSama Railway",
+  "description": "NyaSama railway mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://dev.nyasama.com/nsmc",
+  "updateUrl": "",
+  "authorList": ["NSDN"],
+  "credits": "Copyright (C) NSDN 2014 - 2017",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
