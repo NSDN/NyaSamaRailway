@@ -1,7 +1,7 @@
 package org.thewdj.physics;
 
 /**
- * Created by drzzm32 on 2016.5.8.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class Dynamics {
     public static final double G = 9.8;

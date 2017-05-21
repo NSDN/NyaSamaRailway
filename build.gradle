@@ -1,47 +1,22 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            name = "forge"
-            url = "http://forgemavenmirror.sinaapp.com/maven"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath files('fgow-1.2.1.jar')
     }
 }
-//apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-ext.mcpJsonUrl = "http://forgemavenmirror.sinaapp.com/versions.json"
-ext.forgeJsonUrl = "http://forgemavenmirror.sinaapp.com/maven/net/minecraftforge/forge/json"
-
-apply plugin: 'fgow'
-
-repositories {
-    flatDir { name = "local"; dirs "/" }
-    maven {
-        name = "forge"
-        url = "http://forgemavenmirror.sinaapp.com/maven"
-    }
-}
-
-repos {
-    mcJsonUrl = "http://bmclapi2.bangbang93.com/versions/{MC_VERSION}/{MC_VERSION}.json"
-    mcClientUrl = "http://bmclapi2.bangbang93.com/versions/{MC_VERSION}/{MC_VERSION}.jar"
-    mcServerUrl = "http://bmclapi2.bangbang93.com/versions/{MC_VERSION}/minecraft_server.{MC_VERSION}.jar"
-    assestIndexUrl = "http://bmclapi2.bangbang93.com/indexes/{ASSET_INDEX}.json"
-    assestUrl = "http://bmclapi2.bangbang93.com/assets"
-    mcpUrl = "http://forgemavenmirror.sinaapp.com/fernflower-fix-1.0.zip"
-}
 
 version = "2.0"
 group= "club.nsdn.nyasamarailway" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "NyaSamaRailway"
 
-sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = "1.6"
+    sourceCompatibility = targetCompatibility = "1.8"
 }
 
 minecraft {

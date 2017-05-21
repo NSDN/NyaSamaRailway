@@ -7,9 +7,8 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2016.5.6.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class BlockRailNoSleeperDetector extends BlockRailDetectorBase {
 
     public BlockRailNoSleeperDetector() {

@@ -6,8 +6,8 @@ package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.Blocks.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.*;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class TileEntityLoader {
 

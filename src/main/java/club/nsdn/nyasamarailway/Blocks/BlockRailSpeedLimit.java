@@ -1,13 +1,12 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-/**
- * Created by drzzm32 on 2016.8.26.
- */
-
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 public class BlockRailSpeedLimit extends BlockRailPoweredBase {
 
     public BlockRailSpeedLimit() {

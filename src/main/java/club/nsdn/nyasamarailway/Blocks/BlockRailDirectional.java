@@ -5,7 +5,7 @@ import org.thewdj.physics.Dynamics;
 import net.minecraft.entity.item.EntityMinecart;
 
 /**
- * Created by drzzm on 2016.10.6.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class BlockRailDirectional extends BlockRailPoweredBase implements IRailDirectional {
 

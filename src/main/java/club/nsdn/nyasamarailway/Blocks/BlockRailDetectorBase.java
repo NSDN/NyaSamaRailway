@@ -1,9 +1,5 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-/**
- * Created by drzzm32 on 2016.5.5.
- */
-
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.ExtMod.Traincraft;
 import net.minecraft.block.BlockRailDetector;
@@ -19,6 +15,9 @@ import org.thewdj.physics.Point3D;
 
 import java.util.*;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 public class BlockRailDetectorBase extends BlockRailDetector {
 
     public final int delaySecond;

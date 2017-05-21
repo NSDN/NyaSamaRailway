@@ -1,21 +1,18 @@
 package club.nsdn.nyasamarailway.Event;
 
-import club.nsdn.nyasamarailway.Entity.LocoBase;
-import club.nsdn.nyasamarailway.ExtMod.Traincraft;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by drzzm32 on 2016.5.13.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class TrainControlServerHandler {
     private static TrainControlServerHandler instance;
 

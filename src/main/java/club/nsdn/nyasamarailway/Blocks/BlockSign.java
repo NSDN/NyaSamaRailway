@@ -1,13 +1,12 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-/**
- * Created by drzzm32 on 2016.5.5.
- */
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 public class BlockSign extends Block {
 
     public BlockSign() {

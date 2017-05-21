@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2016.5.9.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class ItemTrainController32Bit extends ItemToolBase {
 

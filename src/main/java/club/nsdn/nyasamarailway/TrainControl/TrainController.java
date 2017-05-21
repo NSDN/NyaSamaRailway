@@ -1,8 +1,8 @@
 package club.nsdn.nyasamarailway.TrainControl;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -12,12 +12,12 @@ import org.lwjgl.input.Keyboard;
 import org.thewdj.physics.Dynamics;
 
 /**
- * Created by drzzm32 on 2016.5.9.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class TrainController {
     /*
     @SideOnly(Side.CLIENT)
-    private static ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/items/ntp_gui.png");
+    private static ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/item/ntp_gui.png");
     @SideOnly(Side.CLIENT)
     private final static float texWidth = 256;
     @SideOnly(Side.CLIENT)

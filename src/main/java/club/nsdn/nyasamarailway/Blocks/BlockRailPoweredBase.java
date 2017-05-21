@@ -1,9 +1,5 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-/**
- * Created by drzzm32 on 2016.5.5.
- */
-
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailPowered;
@@ -16,6 +12,9 @@ import org.thewdj.physics.Dynamics.LocoMotions;
 
 import java.util.List;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 public class BlockRailPoweredBase extends BlockRailPowered {
 
     public BlockRailPoweredBase(String name) {

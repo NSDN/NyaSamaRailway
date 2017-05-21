@@ -1,13 +1,13 @@
 package club.nsdn.nyasamarailway.TrainControl;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
- * Created by drzzm32 on 2016.5.16.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class NetworkWrapper {
     public static SimpleNetworkWrapper packetSender;

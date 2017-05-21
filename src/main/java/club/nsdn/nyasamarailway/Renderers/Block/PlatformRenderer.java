@@ -1,7 +1,7 @@
-package club.nsdn.nyasamarailway.Renderers.TileEntity;
+package club.nsdn.nyasamarailway.Renderers.Block;
 
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraftforge.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -13,15 +13,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
-import club.nsdn.nyasamarailway.Renderers.RendererHelper;
+import club.nsdn.nyasamarailway.Renderers.Block.RendererHelper;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm on 2016.11.28.
+ * Created by drzzm32 on 2017.5.21.
  */
-public class PlatformRenderer
-        implements ISimpleBlockRenderingHandler
-{
+public class PlatformRenderer implements ISimpleBlockRenderingHandler {
     private int blockMetadata;
     private int attachedBlockMetadata;
     private int xOffset;
@@ -31,12 +29,11 @@ public class PlatformRenderer
     private Block attachedBlock;
     private IIcon topIcon;
     private IIcon sidesIcon;
-    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_top.obj"));
-    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides.obj"));
-    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides_tall.obj"));
+    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/block/Platform_edge_top.obj"));
+    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/block/Platform_edge_sides.obj"));
+    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/block/Platform_edge_sides_tall.obj"));
 
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
-    {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         this.blockMetadata = world.getBlockMetadata(x, y, z);
         this.topIcon = world.getBlock(x, y, z).getIcon(1, 0);
         if ((this.blockMetadata & 0x3) == 2) {

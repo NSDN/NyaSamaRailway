@@ -10,7 +10,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2016.6.7.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class Item74HC04 extends ItemToolBase {
 

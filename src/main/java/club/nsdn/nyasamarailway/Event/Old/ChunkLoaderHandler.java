@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.Event;
+package club.nsdn.nyasamarailway.Event.Old;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -7,7 +7,7 @@ import club.nsdn.nyasamarailway.Entity.NSET1;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.event.entity.EntityEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashSet;
 import java.util.LinkedList;

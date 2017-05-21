@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 /**
  * Created by drzzm32 on 2017.5.21.
  */
-public class BlockPlatform extends Block {
+public class BlockEdge extends Block {
 
     public static int renderType;
     private float xBoundMin;
@@ -25,14 +25,14 @@ public class BlockPlatform extends Block {
     private float zBoundMax;
     private IIcon blockIcon;
 
-    public BlockPlatform()
+    public BlockEdge()
     {
         super(Material.rock);
         setHardness(1.0F);
         setResistance(2.0F);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
-        setBlockName("Platform");
-        setBlockTextureName("nyasamarailway:platform_edge");
+        setBlockName("EdgeBlock");
+        setBlockTextureName("nyasamarailway:edge_block");
     }
 
     @Override

@@ -1,9 +1,8 @@
-package club.nsdn.nyasamarailway.Items;
+package club.nsdn.nyasamarailway.Items.Old;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.Entity.MinecartBase;
-import club.nsdn.nyasamarailway.Entity.NSPCT5;
-import club.nsdn.nyasamarailway.Entity.NSPCT5L;
+import club.nsdn.nyasamarailway.Entity.LocoBase;
+import club.nsdn.nyasamarailway.Entity.NSET1;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -11,14 +10,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2016.12.5.
+ * Created by drzzm32 on 2016.6.23.
  */
-public class ItemNSPCT5L extends ItemMinecart {
 
-    public ItemNSPCT5L() {
+public class ItemNSET1 extends ItemMinecart {
+
+    public ItemNSET1() {
         super(-1);
-        setUnlocalizedName("ItemNSPCT5L");
-        setTexName("item_nspc_5l");
+        setUnlocalizedName("ItemNSET1");
+        setTexName("item_nse_1");
         setMaxStackSize(64);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
@@ -33,7 +33,7 @@ public class ItemNSPCT5L extends ItemMinecart {
         {
             if (!world.isRemote)
             {
-                MinecartBase entityminecart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                LocoBase entityminecart = new NSET1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
 
                 if (itemStack.hasDisplayName())
                 {

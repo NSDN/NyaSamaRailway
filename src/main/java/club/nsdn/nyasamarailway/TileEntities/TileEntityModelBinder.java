@@ -4,13 +4,14 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamarailway.Blocks.BlockEdge;
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.*;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraft.client.model.ModelBase;
 
 public class TileEntityModelBinder {
@@ -19,6 +20,9 @@ public class TileEntityModelBinder {
 
         BlockPlatform.renderType = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(BlockPlatform.renderType, new PlatformRenderer());
+
+        BlockEdge.renderType = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockEdge.renderType, new EdgeRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityTrackPlate.TrackPlate.class,

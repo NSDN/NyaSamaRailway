@@ -26,9 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * Created by drzzm32 on 2016.5.22.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRailDirectional, ITileEntityProvider {
 
     public LinkedHashMap<Point3D, Integer> tmpDelay;

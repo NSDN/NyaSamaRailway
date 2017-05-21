@@ -1,13 +1,9 @@
 package club.nsdn.nyasamarailway;
 
-/**
- * Created by drzzm32 on 2016.5.5.
- */
-
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.Mod.EventHandler;
 import club.nsdn.nyasamarailway.Proxy.CommonProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,13 +12,16 @@ import java.io.PrintStream;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 @Mod(modid = NyaSamaRailway.MODID, version = NyaSamaRailway.VERSION)
 public class NyaSamaRailway {
 
     @Mod.Instance("NyaSamaRailway")
     public static NyaSamaRailway instance;
     public static final String MODID = "NyaSamaRailway";
-    public static final String VERSION = "0.4";
+    public static final String VERSION = "2.0";
     public static final boolean isDebug = false;
     public static Logger log = LogManager.getLogger(MODID);
 

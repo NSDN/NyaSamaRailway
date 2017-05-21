@@ -4,8 +4,8 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.5.
  */
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;

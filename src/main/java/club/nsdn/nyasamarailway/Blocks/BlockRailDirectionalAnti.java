@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
 /**
- * Created by drzzm on 2016.10.6.
+ * Created by drzzm32 on 2017.5.21.
  */
 public class BlockRailDirectionalAnti extends BlockRailPoweredBase implements IRailDirectional {
 

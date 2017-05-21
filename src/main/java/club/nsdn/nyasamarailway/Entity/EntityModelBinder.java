@@ -5,8 +5,8 @@ package club.nsdn.nyasamarailway.Entity;
  */
 
 import club.nsdn.nyasamarailway.Renderers.Entity.*;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraft.client.model.ModelBase;
 
 public class EntityModelBinder {

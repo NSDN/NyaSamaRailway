@@ -1,13 +1,9 @@
 package club.nsdn.nyasamarailway.Items;
 
-/**
- * Created by drzzm32 on 2016.5.6.
- */
-
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
 
+/**
+ * Created by drzzm32 on 2017.5.21.
+ */
 public class ItemToolBase extends Item {
     protected ToolMaterial toolMaterial;
 

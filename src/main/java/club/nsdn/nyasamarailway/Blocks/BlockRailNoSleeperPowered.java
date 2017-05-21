@@ -5,9 +5,8 @@ import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
 /**
- * Created by drzzm32 on 2016.5.6.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class BlockRailNoSleeperPowered extends BlockRailPoweredBase {
 
     public BlockRailNoSleeperPowered() {

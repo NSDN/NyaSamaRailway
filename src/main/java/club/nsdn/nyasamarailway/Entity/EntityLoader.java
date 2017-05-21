@@ -5,8 +5,8 @@ package club.nsdn.nyasamarailway.Entity;
  */
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class EntityLoader {
 

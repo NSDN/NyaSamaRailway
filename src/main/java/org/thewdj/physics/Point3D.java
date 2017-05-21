@@ -3,9 +3,8 @@ package org.thewdj.physics;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Created by drzzm32 on 2016.6.10.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class Point3D {
     public int x;
     public int y;

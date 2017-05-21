@@ -4,9 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2016.5.6.
+ * Created by drzzm32 on 2017.5.21.
  */
-
 public class BlockRailProtectBody extends BlockRailBase {
 
     public BlockRailProtectBody() {
