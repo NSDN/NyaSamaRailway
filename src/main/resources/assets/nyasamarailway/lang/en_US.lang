@@ -45,6 +45,7 @@ ntp.control.dir.down=Direction Back
 ntp.control.brake.up=Increase Brake
 ntp.control.brake.down=Decrease Brake
 tile.Platform.name=Platform Edge
+tile.EdgeBlock.name=Edge Block
 tile.RailSignBody.name=Rail Sign Body
 tile.RailSignHeadBeep.name=Rail Sign Head(Beep)
 tile.RailSignHeadCut.name=Rail Sign Head(Cut)

@@ -4,6 +4,7 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamarailway.Blocks.BlockEdge;
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.*;
 import club.nsdn.nyasamarailway.Renderers.TileEntity.Rail.*;
@@ -19,6 +20,9 @@ public class TileEntityModelBinder {
 
         BlockPlatform.renderType = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(BlockPlatform.renderType, new PlatformRenderer());
+
+        BlockEdge.renderType = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(BlockEdge.renderType, new EdgeRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityTrackPlate.TrackPlate.class,

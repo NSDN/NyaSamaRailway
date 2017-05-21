@@ -45,6 +45,7 @@ ntp.control.dir.down=反扳方向手柄
 ntp.control.brake.up=提高制动
 ntp.control.brake.down=降低制动
 tile.Platform.name=站台边缘
+tile.EdgeBlock.name=边缘方块
 tile.RailSignBody.name=标牌杆
 tile.RailSignHeadBeep.name=鸣笛标牌
 tile.RailSignHeadCut.name=分相断路标牌

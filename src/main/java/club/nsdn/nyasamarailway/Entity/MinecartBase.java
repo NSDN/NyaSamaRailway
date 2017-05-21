@@ -67,6 +67,17 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     }
 
     @Override
+    public AxisAlignedBB getCollisionBox(Entity entity) {
+        double size = 2;
+        return AxisAlignedBB.getBoundingBox(1 - size, 1 - size, 1 - size, size, size, size);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return getCollisionBox(null);
+    }
+
+    @Override
     public boolean interactFirst(EntityPlayer player) {
         if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player))) {
             return true;
@@ -406,15 +417,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
             this.setRotation(this.rotationYaw, this.rotationPitch);
 
-            AxisAlignedBB box;
-            if (getCollisionHandler() != null)
-            {
-                box = getCollisionHandler().getMinecartCollisionBox(this);
-            }
-            else
-            {
-                box = boundingBox.expand(0.2D, 0.0D, 0.2D);
-            }
+            AxisAlignedBB box = getBoundingBox();
 
             List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 

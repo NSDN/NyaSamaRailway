@@ -54,6 +54,7 @@ public class BlockLoader {
     public static Block blockHalfBlock;
     public static Block blockHalfHalfBlock;
     public static Block blockPlatform;
+    public static Block blockEdge;
     public static Block blockRailSignBody;
     public static Block blockRailSignHeadBeep;
     public static Block blockRailSignHeadCut;
@@ -191,6 +192,9 @@ public class BlockLoader {
 
         blockPlatform = new BlockPlatform();
         register(blockPlatform, "block_platform");
+
+        blockEdge = new BlockEdge();
+        register(blockEdge, "block_edge");
 
         blockRailSignBody = new TileEntityRailSignBody();
         register(blockRailSignBody, "block_rail_sign_body");

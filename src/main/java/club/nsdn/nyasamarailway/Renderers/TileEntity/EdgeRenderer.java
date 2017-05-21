@@ -1,11 +1,11 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
-import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
+import club.nsdn.nyasamarailway.Blocks.BlockEdge;
+import club.nsdn.nyasamarailway.Renderers.RendererHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
@@ -13,13 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
-import club.nsdn.nyasamarailway.Renderers.RendererHelper;
-import org.lwjgl.opengl.GL11;
-
 /**
  * Created by drzzm on 2016.11.28.
  */
-public class PlatformRenderer implements ISimpleBlockRenderingHandler {
+public class EdgeRenderer implements ISimpleBlockRenderingHandler {
     private int blockMetadata;
     private int attachedBlockMetadata;
     private int xOffset;
@@ -35,7 +32,6 @@ public class PlatformRenderer implements ISimpleBlockRenderingHandler {
 
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         this.blockMetadata = world.getBlockMetadata(x, y, z);
-        this.topIcon = world.getBlock(x, y, z).getIcon(1, 0);
         if ((this.blockMetadata & 0x3) == 2) {
             this.xOffset = -1;
         } else if ((this.blockMetadata & 0x3) == 0) {
@@ -61,6 +57,7 @@ public class PlatformRenderer implements ISimpleBlockRenderingHandler {
             this.attachedBlock = block;
         }
         this.sidesIcon = this.attachedBlock.getIcon(2, this.attachedBlockMetadata);
+        this.topIcon = this.sidesIcon;
         Tessellator.instance.addTranslation(x + 0.5F, y - (this.blockMetadata & 0x4) / 8.0F, z + 0.5F);
         Tessellator.instance.setColorOpaque(255, 255, 255);
         Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
@@ -83,6 +80,6 @@ public class PlatformRenderer implements ISimpleBlockRenderingHandler {
 
     public int getRenderId()
     {
-        return BlockPlatform.renderType;
+        return BlockEdge.renderType;
     }
 }

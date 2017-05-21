@@ -1,9 +1,11 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,6 +28,12 @@ public class NSPCT5L extends MinecartBase {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity entity) {
+        double size = 4;
+        return AxisAlignedBB.getBoundingBox(1 - size, 1 - size, 1 - size, size, size, size);
     }
 
     @Override

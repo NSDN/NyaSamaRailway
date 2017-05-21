@@ -4,7 +4,11 @@ package club.nsdn.nyasamarailway.TileEntities;
  * Created by drzzm32 on 2016.5.10.
  */
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -26,6 +30,15 @@ public class TileEntityStationSign extends TileEntityBase {
         @Override
         public boolean shouldRenderInPass(int pass) {
             return true;
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(2, 2, 2);
         }
 
         @Override
