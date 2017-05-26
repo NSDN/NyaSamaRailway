@@ -290,6 +290,18 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     {
         if (this.worldObj.isRemote) {
             super.onUpdate();
+
+            double detlaYaw = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
+            /* Driver Heading */
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+                if (this.riddenByEntity.ridingEntity == this)
+                {
+                    if (this.riddenByEntity instanceof EntityPlayer) {
+                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
+                    }
+                }
+            }
+
             return;
         }
 
@@ -439,7 +451,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
-                        ((EntityPlayer) this.riddenByEntity).cameraYaw += detlaYaw;
+                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
                     }
                 }
             }

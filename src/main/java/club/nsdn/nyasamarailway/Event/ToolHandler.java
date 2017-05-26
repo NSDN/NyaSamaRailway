@@ -100,7 +100,7 @@ public class ToolHandler {
                         }
                     }
                 }
-
+                /*
                 else if (stack.getItem() instanceof Item74HC04) {
                     if (entity instanceof ITrainLinkable) {
                         if (tmpLinkTrain == null) {
@@ -124,7 +124,7 @@ public class ToolHandler {
                         }
                     }
                 }
-
+                */
                 else if (stack.getItem() instanceof ItemNSPCT5) {
                     if (entity instanceof NSPCT5) {
                         entity.getDataWatcher().updateObject(NSPCT5.DATA_LENGTH, entity.getDataWatcher().getWatchableObjectInt(NSPCT5.DATA_LENGTH) < 5 ? entity.getDataWatcher().getWatchableObjectInt(NSPCT5.DATA_LENGTH) + 1 : 1);

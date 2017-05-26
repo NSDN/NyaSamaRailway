@@ -176,7 +176,12 @@ public class TrainController {
         }
 
         if (train.R > 5) {
-            train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.02);
+            if (train.isUnits) {
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.02);
+            } else {
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 50.0, 0.02);
+            }
+
             if (train.Velocity < train.nextVelocity) {
                 train.Velocity = train.nextVelocity;
             }
