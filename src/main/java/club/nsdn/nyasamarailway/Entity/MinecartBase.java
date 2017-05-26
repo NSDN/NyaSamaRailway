@@ -407,9 +407,9 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
                 }
             }
 
-            double d5 = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
+            double detlaYaw = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
 
-            if (d5 < -170.0D || d5 >= 170.0D)
+            if (detlaYaw < -170.0D || detlaYaw >= 170.0D)
             {
                 this.rotationYaw += 180.0F;
                 this.isInReverse = !this.isInReverse;
@@ -430,6 +430,16 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
                     if (entity != this.riddenByEntity && entity.canBePushed() && entity instanceof EntityMinecart)
                     {
                         entity.applyEntityCollision(this);
+                    }
+                }
+            }
+
+            /* Driver Heading */
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+                if (this.riddenByEntity.ridingEntity == this)
+                {
+                    if (this.riddenByEntity instanceof EntityPlayer) {
+                        ((EntityPlayer) this.riddenByEntity).cameraYaw += detlaYaw;
                     }
                 }
             }
