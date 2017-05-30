@@ -59,10 +59,10 @@ public class TrainControlServerHandler {
                     ItemStack stack = player.getCurrentEquippedItem();
                     if (stack != null) {
                         if (stack.getItem() instanceof ItemTrainController32Bit) {
-                            Entity cart;
+                            EntityMinecart cart;
                             if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                                 for (int i : ToolHandler.controller32Bit.trainUnits) {
-                                    cart = ToolHandler.controller32Bit.getUniCartInServer(i);
+                                    cart = ToolHandler.controller32Bit.getCartInServer(i);
                                     if (cart != null) {
                                         if (Traincraft.instance.isLocomotive(cart)) {
                                             Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);

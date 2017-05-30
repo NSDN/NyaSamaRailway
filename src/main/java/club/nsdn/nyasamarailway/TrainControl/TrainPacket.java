@@ -12,6 +12,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.WorldManager;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.*;
 
@@ -31,6 +33,7 @@ public class TrainPacket implements IMessage {
                     ToolHandler.controller32Bit = new TrainPacket();
                 }
                 ToolHandler.controller32Bit.isUnits = true;
+                ToolHandler.controller32Bit.dimensionID = serverPlayer.dimension;
                 ToolHandler.controller32Bit.playerID = serverPlayer.getEntityId();
                 ToolHandler.controller32Bit.P = packet.P;
                 ToolHandler.controller32Bit.R = packet.R;
@@ -40,6 +43,7 @@ public class TrainPacket implements IMessage {
                     ToolHandler.controller8Bit = new TrainPacket();
                 }
                 ToolHandler.controller8Bit.isUnits = false;
+                ToolHandler.controller8Bit.dimensionID = serverPlayer.dimension;
                 ToolHandler.controller8Bit.playerID = serverPlayer.getEntityId();
                 ToolHandler.controller8Bit.P = packet.P;
                 ToolHandler.controller8Bit.R = packet.R;
@@ -54,6 +58,7 @@ public class TrainPacket implements IMessage {
         @Override
         public IMessage onMessage(TrainPacket packet, MessageContext context) {
             if (packet.isUnits) {
+
                 if (ToolHandler.controller32Bit == null) {
                     ToolHandler.controller32Bit = new TrainPacket();
                 }
@@ -61,6 +66,7 @@ public class TrainPacket implements IMessage {
                 if (packet.cartID > 0) {
                     if (ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                         ToolHandler.controller32Bit.trainUnits.add(packet.cartID);
+                        ToolHandler.controller32Bit.dimensionID = packet.dimensionID;
                         ToolHandler.controller32Bit.cartID = packet.cartID;
                         ToolHandler.controller32Bit.P = packet.P;
                         ToolHandler.controller32Bit.R = packet.R;
@@ -77,6 +83,7 @@ public class TrainPacket implements IMessage {
                 ToolHandler.controller8Bit = new TrainPacket();
                 ToolHandler.controller8Bit.isUnits = false;
                 if (packet.cartID > 0) {
+                    ToolHandler.controller8Bit.dimensionID = packet.dimensionID;
                     ToolHandler.controller8Bit.cartID = packet.cartID;
                     ToolHandler.controller8Bit.P = packet.P;
                     ToolHandler.controller8Bit.R = packet.R;
@@ -91,6 +98,7 @@ public class TrainPacket implements IMessage {
     public LinkedList<Integer> trainUnits;
     public boolean isUnits;
 
+    public int dimensionID;
     public int playerID;
     public int cartID;
     public int P;
@@ -104,6 +112,7 @@ public class TrainPacket implements IMessage {
     public TrainPacket() {
         this.trainUnits = new LinkedList<Integer>();
         this.isUnits = false;
+        this.dimensionID = -2;
         this.playerID = -1;
         this.cartID = -1;
         this.P = 0;
@@ -118,6 +127,7 @@ public class TrainPacket implements IMessage {
     public TrainPacket(int playerID, int cartID, int P, int R, int Dir) {
         this.trainUnits = new LinkedList<Integer>();
         this.isUnits = false;
+        this.dimensionID = -2;
         this.playerID = playerID;
         this.cartID = cartID;
         this.P = P;
@@ -132,6 +142,7 @@ public class TrainPacket implements IMessage {
     public TrainPacket(int cartID, int P, int R, int Dir) {
         this.trainUnits = new LinkedList<Integer>();
         this.isUnits = false;
+        this.dimensionID = -2;
         this.cartID = cartID;
         this.P = P;
         this.R = R;
@@ -145,6 +156,7 @@ public class TrainPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeBoolean(this.isUnits);
+        buf.writeInt(this.dimensionID);
         buf.writeInt(this.cartID);
         buf.writeInt(this.P);
         buf.writeInt(this.R);
@@ -154,6 +166,7 @@ public class TrainPacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         this.isUnits = buf.readBoolean();
+        this.dimensionID = buf.readInt();
         this.cartID = buf.readInt();
         this.P = buf.readInt();
         this.R = buf.readInt();
@@ -162,9 +175,10 @@ public class TrainPacket implements IMessage {
 
     public EntityPlayerMP getPlayerInServer() {
         if (this.playerID <= 0) return null;
+        if (this.dimensionID < -1) return null;
         EntityPlayerMP player;
         try {
-            player = (EntityPlayerMP) MinecraftServer.getServer().getEntityWorld().getEntityByID(this.playerID);
+            player = (EntityPlayerMP) DimensionManager.getWorld(this.dimensionID).getEntityByID(this.playerID);
         } catch (Exception e) {
             return null;
         }
@@ -173,9 +187,10 @@ public class TrainPacket implements IMessage {
 
     public EntityMinecart getCartInServer() {
         if (this.cartID <= 0) return null;
+        if (this.dimensionID < -1) return null;
         EntityMinecart cart;
         try {
-            cart = (EntityMinecart) MinecraftServer.getServer().getEntityWorld().getEntityByID(this.cartID);
+            cart = (EntityMinecart) DimensionManager.getWorld(this.dimensionID).getEntityByID(this.cartID);
         } catch (Exception e) {
             return null;
         }
@@ -183,26 +198,18 @@ public class TrainPacket implements IMessage {
     }
 
     public EntityMinecart getCartInServer(int cartID) {
-        if (this.cartID <= 0) return null;
+        if (cartID <= 0) return null;
+        if (this.dimensionID < -1) return null;
         EntityMinecart cart;
         try {
-            cart = (EntityMinecart) MinecraftServer.getServer().getEntityWorld().getEntityByID(cartID);
+            cart = (EntityMinecart) DimensionManager.getWorld(this.dimensionID).getEntityByID(cartID);
         } catch (Exception e) {
             return null;
         }
         return cart;
     }
 
-    public Entity getUniCartInServer(int cartID) {
-        if (this.cartID <= 0) return null;
-        Entity cart;
-        try {
-            cart = MinecraftServer.getServer().getEntityWorld().getEntityByID(cartID);
-        } catch (Exception e) {
-            return null;
-        }
-        return cart;
-    }
+
 
     @SideOnly(Side.CLIENT)
     public EntityMinecart getCartInClient() {
@@ -218,22 +225,10 @@ public class TrainPacket implements IMessage {
 
     @SideOnly(Side.CLIENT)
     public EntityMinecart getCartInClient(int cartID) {
-        if (this.cartID <= 0) return null;
+        if (cartID <= 0) return null;
         EntityMinecart cart;
         try {
             cart = (EntityMinecart) Minecraft.getMinecraft().theWorld.getEntityByID(cartID);
-        } catch (Exception e) {
-            return null;
-        }
-        return cart;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Entity getUniCartInClient(int cartID) {
-        if (this.cartID <= 0) return null;
-        Entity cart;
-        try {
-            cart = Minecraft.getMinecraft().theWorld.getEntityByID(cartID);
         } catch (Exception e) {
             return null;
         }

@@ -55,11 +55,11 @@ public class TrainControlClientHandler {
                 }
             } else if (stack.getItem() instanceof ItemTrainController32Bit) {
                 if (ToolHandler.controller32Bit != null) {
-                    Entity cart;
+                    EntityMinecart cart;
                     if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                         TrainController.doControl(ToolHandler.controller32Bit, player);
                         for (int i : ToolHandler.controller32Bit.trainUnits) {
-                            cart = ToolHandler.controller32Bit.getUniCartInClient(i);
+                            cart = ToolHandler.controller32Bit.getCartInClient(i);
                             if (cart != null) {
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }
