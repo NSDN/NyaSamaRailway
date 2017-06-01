@@ -1,9 +1,5 @@
 package club.nsdn.nyasamarailway.Items;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 /**
  * Created by drzzm32 on 2017.5.21.
  */
@@ -15,9 +11,4 @@ public class ItemTrainController32Bit extends ItemToolBase {
         setTexName("ntp-32");
     }
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        player.setItemInUse(itemStack, this.getMaxItemUseDuration(itemStack));
-        return itemStack;
-    }
 }

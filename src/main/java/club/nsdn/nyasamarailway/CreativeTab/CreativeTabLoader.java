@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.CreativeTab;
 
+import club.nsdn.nyasamarailway.Blocks.BlockNyaSamaRailwayLogo;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +17,7 @@ public class CreativeTabLoader {
         tabNyaSamaRailway = new CreativeTabs("tabNyaSamaRailway") {
             @Override
             public Item getTabIconItem() {
-                return Item.getItemFromBlock(BlockLoader.blockNyaSamaRailwayLogo);
+                return Item.getItemFromBlock(BlockLoader.blocks.get(new BlockNyaSamaRailwayLogo().getRegisterID()));
             }
         };
     }

@@ -22,27 +22,12 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event)
     {
-        //new TileEntityLoader(event);
-        //new EntityLoader(event);
         EventRegister.registerCommon();
     }
 
     public void postInit(FMLPostInitializationEvent event)
     {
-        /*
-        if (Loader.isModLoaded(ExRollerCoaster.modid)) {
-            ExRollerCoaster.setInstance(new ExRollerCoaster());
-            NyaSamaRailway.log.info("NyaSamaRailway detected ExRollerCoaster mod");
-        }
-        if (Loader.isModLoaded(RailsOfWar.modid)) {
-            RailsOfWar.setInstance(new RailsOfWar());
-            NyaSamaRailway.log.info("NyaSamaRailway detected RailsOfWar mod");
-        }
-        if (Loader.isModLoaded(Traincraft.modid)) {
-            Traincraft.setInstance(new Traincraft());
-            NyaSamaRailway.log.info("NyaSamaRailway detected Traincraft mod");
-        }
-        */
+
     }
 
 }

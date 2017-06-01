@@ -8,11 +8,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by drzzm32 on 2017.5.21.
@@ -30,22 +28,16 @@ public class TrainControlClientHandler {
     public void tick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null)
-        return;
+            return;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiChat)
             return;
 
-        ItemStack stack = player.getCurrentEquippedItem();
+        ItemStack stack = player.getHeldItemMainhand();
         if (stack != null) {
             if (stack.getItem() instanceof ItemTrainController8Bit) {
                 if (ToolHandler.controller8Bit != null) {
                     EntityMinecart cart = ToolHandler.controller8Bit.getCartInClient();
                     if (cart != null) {
-                        if (cart instanceof LocoBase) {
-                            TrainController.doControl(ToolHandler.controller8Bit, player);
-                            ((LocoBase) cart).setTrainPacket(ToolHandler.controller8Bit);
-                            NetworkWrapper.packetSender.sendToServer(ToolHandler.controller8Bit);
-                            return;
-                        }
                         TrainController.doControl(ToolHandler.controller8Bit, player);
                         TrainController.doMotion(ToolHandler.controller8Bit, cart);
                         NetworkWrapper.packetSender.sendToServer(ToolHandler.controller8Bit);
@@ -53,11 +45,11 @@ public class TrainControlClientHandler {
                 }
             } else if (stack.getItem() instanceof ItemTrainController32Bit) {
                 if (ToolHandler.controller32Bit != null) {
-                    Entity cart;
+                    EntityMinecart cart;
                     if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                         TrainController.doControl(ToolHandler.controller32Bit, player);
                         for (int i : ToolHandler.controller32Bit.trainUnits) {
-                            cart = ToolHandler.controller32Bit.getUniCartInClient(i);
+                            cart = ToolHandler.controller32Bit.getCartInClient(i);
                             if (cart != null) {
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }

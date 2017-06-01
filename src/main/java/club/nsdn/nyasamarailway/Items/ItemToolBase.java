@@ -1,29 +1,26 @@
 package club.nsdn.nyasamarailway.Items;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.UseHoeEvent;
+
+import java.util.Set;
 
 /**
  * Created by drzzm32 on 2017.5.21.
  */
-public class ItemToolBase extends Item {
-    protected ToolMaterial toolMaterial;
+public class ItemToolBase extends ItemTool {
+    private static final Set<Block> EFFECTIVE_ON;
 
     public ItemToolBase(ToolMaterial material) {
-        super();
+        super(1.0F, -1.0F, material, EFFECTIVE_ON);
         this.toolMaterial = material;
         this.setMaxStackSize(1);
         this.setMaxDamage(material.getMaxUses());
@@ -31,41 +28,11 @@ public class ItemToolBase extends Item {
     }
 
     protected void setTexName(String name) {
-        setTextureName("nyasamarailway" + ":" + name);
+        setRegistryName("nyasamarailway", name);
     }
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-        return false;
-    }
-
-    @Override
-    public boolean itemInteractionForEntity(ItemStack itemStack, EntityPlayer player, EntityLivingBase entity) {
-        return false;
-    }
-
-    @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-        @Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void onUpdate(ItemStack itemStack, World world, Entity entity, int index, boolean inHand) {
-
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        return itemStack;
-    }
-
-    @Override
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float px, float py, float pz) {
         return false;
     }
 
@@ -74,7 +41,8 @@ public class ItemToolBase extends Item {
         return true;
     }
 
-    public String getToolMaterialName() {
-        return this.toolMaterial.toString();
+    static {
+        EFFECTIVE_ON = Sets.newHashSet(new Block[]{Blocks.ACTIVATOR_RAIL, Blocks.COAL_ORE, Blocks.COBBLESTONE, Blocks.DETECTOR_RAIL, Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.DOUBLE_STONE_SLAB, Blocks.GOLDEN_RAIL, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.ICE, Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.MOSSY_COBBLESTONE, Blocks.NETHERRACK, Blocks.PACKED_ICE, Blocks.RAIL, Blocks.REDSTONE_ORE, Blocks.SANDSTONE, Blocks.RED_SANDSTONE, Blocks.STONE, Blocks.STONE_SLAB, Blocks.STONE_BUTTON, Blocks.STONE_PRESSURE_PLATE});
     }
+
 }

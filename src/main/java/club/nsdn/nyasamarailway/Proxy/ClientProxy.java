@@ -1,7 +1,6 @@
 package club.nsdn.nyasamarailway.Proxy;
 
 import club.nsdn.nyasamarailway.Event.EventRegister;
-import club.nsdn.nyasamarailway.Renderers.Block.BlockModelBinder;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import net.minecraftforge.fml.common.event.*;
 
@@ -20,9 +19,6 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event)
     {
         super.init(event);
-        new BlockModelBinder(event);
-        //new TileEntityModelBinder(event);
-        //new EntityModelBinder(event);
         TrainController.KeyInput.registerKeyBindings();
         EventRegister.registerClient();
     }

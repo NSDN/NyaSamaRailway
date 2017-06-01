@@ -5,9 +5,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 import org.lwjgl.input.Keyboard;
 import org.thewdj.physics.Dynamics;
 
@@ -15,44 +14,6 @@ import org.thewdj.physics.Dynamics;
  * Created by drzzm32 on 2017.5.21.
  */
 public class TrainController {
-    /*
-    @SideOnly(Side.CLIENT)
-    private static ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/item/ntp_gui.png");
-    @SideOnly(Side.CLIENT)
-    private final static float texWidth = 256;
-    @SideOnly(Side.CLIENT)
-    private final static float texHeight = 160;*/
-
-    /*@SideOnly(Side.CLIENT)
-    private static void drawPic(float x, float y, float z, float sx, float sy, float sw, float sh) {
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glColor3f(1, 1, 1);
-
-        GL11.glTexCoord2f(sx / texWidth, sh / texHeight);
-        GL11.glVertex3f(x, y, z);
-        GL11.glTexCoord2f(sx / texWidth, 0);
-        GL11.glVertex3f(x, y - sh, z);
-        GL11.glTexCoord2f((sw + sx) / texWidth, 0);
-        GL11.glVertex3f(x + sw, y - sh, z);
-        GL11.glTexCoord2f((sw + sx) / texWidth, sh / texHeight);
-        GL11.glVertex3f(x + sw, y, z);
-
-        GL11.glEnd();
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static void buildGUI(double x, double y, double z) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
-        GL11.glPushMatrix();
-
-        drawPic(0, 0, 0, 0, 0, 160, 160);
-
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-    }
-    */
 
     public final static int MaxP = 20;
 
@@ -102,20 +63,20 @@ public class TrainController {
 
         if (KeyInput.DirUP == 1) {
             if (train.P > 0) {
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                player.addChatComponentMessage(new TextComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == -1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = 1;
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                player.addChatComponentMessage(new TextComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirUP = 2;
         } else if (KeyInput.DirDOWN == 1) {
             if (train.P > 0) {
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                player.addChatComponentMessage(new TextComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == 1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = -1;
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                player.addChatComponentMessage(new TextComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirDOWN = 2;
         }
@@ -123,24 +84,24 @@ public class TrainController {
         if (KeyInput.PowerDown == 1) {
             if (train.P > 0) train.P -= 1;
             if (train.P < 0) train.P = 0;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            player.addChatComponentMessage(new TextComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerDown = 2;
         } else if (KeyInput.PowerUp == 1) {
             if (train.P < MaxP) train.P += 1;
             if (train.P > MaxP) train.P = MaxP;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            player.addChatComponentMessage(new TextComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerUp = 2;
         }
 
         if (KeyInput.BrakeDown == 1) {
             if (train.R < 10) train.R += 1;
             if (train.R > 10) train.R = 10;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            player.addChatComponentMessage(new TextComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeDown = 2;
         } else if (KeyInput.BrakeUp == 1) {
             if (train.R > 1) train.R -= 1;
             if (train.R < 1) train.R = 1;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            player.addChatComponentMessage(new TextComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeUp = 2;
         }
 
@@ -160,7 +121,6 @@ public class TrainController {
             KeyInput.BrakeUp = 0;
         }
 
-        //buildGUI(player.posX, player.posY, player.posZ);
     }
 
     private static void calcYaw(TrainPacket train, Entity cart) {
@@ -176,7 +136,12 @@ public class TrainController {
         }
 
         if (train.R > 5) {
-            train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.02);
+            if (train.isUnits) {
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.02);
+            } else {
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 50.0, 0.02);
+            }
+
             if (train.Velocity < train.nextVelocity) {
                 train.Velocity = train.nextVelocity;
             }

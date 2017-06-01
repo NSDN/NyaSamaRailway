@@ -29,18 +29,11 @@ public class TrainControlServerHandler {
             if (ToolHandler.controller8Bit.playerID > 0) {
                 EntityPlayerMP player = ToolHandler.controller8Bit.getPlayerInServer();
                 if (player != null) {
-                    ItemStack stack = player.getCurrentEquippedItem();
+                    ItemStack stack = player.getHeldItemMainhand();
                     if (stack != null) {
                         if (stack.getItem() instanceof ItemTrainController8Bit) {
                             EntityMinecart cart = ToolHandler.controller8Bit.getCartInServer();
                             if (cart != null) {
-                                if (cart instanceof LocoBase) {
-                                    ((LocoBase) cart).setTrainPacket(ToolHandler.controller8Bit);
-                                    return;
-                                }
-                                if (Traincraft.instance.isLocomotive(cart)) {
-                                    Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
-                                }
                                 TrainController.doMotion(ToolHandler.controller8Bit, cart);
                             }
                         }
@@ -53,17 +46,14 @@ public class TrainControlServerHandler {
             if (ToolHandler.controller32Bit.playerID > 0) {
                 EntityPlayerMP player = ToolHandler.controller32Bit.getPlayerInServer();
                 if (player != null) {
-                    ItemStack stack = player.getCurrentEquippedItem();
+                    ItemStack stack = player.getHeldItemMainhand();
                     if (stack != null) {
                         if (stack.getItem() instanceof ItemTrainController32Bit) {
-                            Entity cart;
+                            EntityMinecart cart;
                             if (!ToolHandler.controller32Bit.trainUnits.isEmpty()) {
                                 for (int i : ToolHandler.controller32Bit.trainUnits) {
-                                    cart = ToolHandler.controller32Bit.getUniCartInServer(i);
+                                    cart = ToolHandler.controller32Bit.getCartInServer(i);
                                     if (cart != null) {
-                                        if (Traincraft.instance.isLocomotive(cart)) {
-                                            Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
-                                        }
                                         TrainController.doMotion(ToolHandler.controller32Bit, cart);
                                     }
                                 }
