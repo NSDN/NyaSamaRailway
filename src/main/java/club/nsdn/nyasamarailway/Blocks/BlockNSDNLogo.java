@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.SoundType;
@@ -14,7 +15,7 @@ public class BlockNSDNLogo extends BlockGlass implements IBlockBase {
     public BlockNSDNLogo() {
         super(Material.GLASS, false);
         setUnlocalizedName("NyaSamaRailwayNSDNLogo");
-        setRegistryName("nyasamarailway", getRegisterID());
+        setRegistryName(NyaSamaRailway.modid, getRegisterID());
         setHardness(2.0F);
         setLightLevel(1);
         setSoundType(SoundType.GLASS);
@@ -24,6 +25,6 @@ public class BlockNSDNLogo extends BlockGlass implements IBlockBase {
 
     @Override
     public String getRegisterID() {
-        return "nsdn_logo";
+        return "nsdn_r_logo";
     }
 }

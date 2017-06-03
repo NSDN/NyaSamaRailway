@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "blocks/nsdn_r_logo"
+    "all": "nyasamarailway:blocks/nsdn_r_logo"
   }
 }

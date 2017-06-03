@@ -1,6 +1,5 @@
 package club.nsdn.nyasamarailway.Event;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -19,6 +18,7 @@ public class EventRegister {
 
     public static void registerClient() {
         MinecraftForge.EVENT_BUS.register(TrainControlClientHandler.instance());
+        MinecraftForge.EVENT_BUS.register(ClientTickHandler.instance());
     }
 
 }

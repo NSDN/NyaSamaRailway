@@ -21,6 +21,7 @@ public class NyaSamaRailway {
     @Mod.Instance("NyaSamaRailway")
     public static NyaSamaRailway instance;
     public static final String MODID = "NyaSamaRailway";
+    public static final String modid = "nyasamarailway";
     public static final String VERSION = "2.0";
     public static final boolean isDebug = false;
     public static Logger log = LogManager.getLogger(MODID);

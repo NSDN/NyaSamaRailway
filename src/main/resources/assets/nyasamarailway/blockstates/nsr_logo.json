@@ -1,5 +1,7 @@
 {
   "variants": {
-    "normal": { "model": "nsr_logo" }
+    "normal": {
+      "model": "nyasamarailway:nsr_logo"
+    }
   }
 }

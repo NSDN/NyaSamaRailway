@@ -1,8 +1,15 @@
 package club.nsdn.nyasamarailway.Items;
 
+import club.nsdn.nyasamarailway.NyaSamaRailway;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.LinkedHashMap;
 
@@ -32,5 +39,24 @@ public class ItemLoader {
         addItem(new ItemTrainController32Bit());
 
         for (String id : items.keySet()) register(items.get(id));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void preLoadModels() {
+        for (String id : items.keySet()) {
+            ModelBakery.registerItemVariants(items.get(id), new ResourceLocation(NyaSamaRailway.modid, id));
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void loadModels() {
+        for (String id : items.keySet()) {
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(
+                    items.get(id), 0,
+                    new ModelResourceLocation(NyaSamaRailway.modid + ":" + id, "inventory")
+            );
+
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "items/ntp-32"
+    "layer0": "nyasamarailway:items/ntp-32"
   }
 }

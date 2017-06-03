@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["NSDN"],
   "credits": "Copyright (C) NSDN 2014 - 2017",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }

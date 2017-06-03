@@ -3,13 +3,13 @@ package club.nsdn.nyasamarailway.Event;
 import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
 import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
+import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * Created by drzzm32 on 2017.5.21.
@@ -26,13 +26,15 @@ public class ToolHandler {
     }
 
     @SubscribeEvent
-    public void onEntityInteract(PlayerInteractEvent event) {
-        if (event.getEntityPlayer() instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+    public void onEntityInteract(MinecartInteractEvent event) {
+        if (event.getPlayer() instanceof EntityPlayerMP) {
+            EntityPlayerMP player = (EntityPlayerMP) event.getPlayer();
             Entity entity = event.getEntity();
 
             ItemStack stack = player.getHeldItemMainhand();
             if (stack != null) {
+                if (stack.getItem() instanceof ItemToolBase)
+                    event.setCanceled(true);
 
                 if (stack.getItem() instanceof ItemTrainController8Bit) {
                     if (player.isSneaking()) {
