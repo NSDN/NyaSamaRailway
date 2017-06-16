@@ -43,6 +43,7 @@ public class BlockLoader {
     public static Block blockRailSpeedLimit;
     public static Block blockRailDirectional;
     public static Block blockRailDirectionalAnti;
+    public static Block blockRailBlocking;
 
     public static Block blockIronBars;
     public static Block blockIronWeb;
@@ -161,6 +162,9 @@ public class BlockLoader {
 
         blockRailDirectionalAnti = new BlockRailDirectionalAnti();
         register(blockRailDirectionalAnti, "block_rail_dir_anti");
+
+        blockRailBlocking = new BlockRailBlocking();
+        register(blockRailBlocking, "block_rail_blocking");
 
 
         blockIronBars = new BlockIronBars();
