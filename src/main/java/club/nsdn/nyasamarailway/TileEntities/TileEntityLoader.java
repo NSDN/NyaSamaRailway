@@ -90,6 +90,10 @@ public class TileEntityLoader {
                 "tileEntityRailReceptionAnti");
 
         GameRegistry.registerTileEntity(
+                BlockRailBlocking.TileEntityRailBlocking.class,
+                "tileEntityRailBlocking");
+
+        GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
                 "railNoSleeperStraight");
 
