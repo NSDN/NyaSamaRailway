@@ -150,6 +150,12 @@ public class TileEntityModelBinder {
                         new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
                         new String[] { "textures/rails/RailMonoMagnetStraightSpeedLimit.png", "textures/rails/RailMonoMagnetSlopeSpeedLimit.png", "textures/rails/RailMonoMagnetTurnedSpeedLimit.png" },
                         0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetBlocking.TileEntityRail.class, new RailMonoRenderer(
+                        new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
+                        new String[] { "textures/rails/RailMonoMagnetStraightBlocking.png", "textures/rails/RailMonoMagnetSlopeBlocking.png", "textures/rails/RailMonoMagnetTurnedBlocking.png" },
+                        0.0, 0.0, 0.0));
     }
 
 }

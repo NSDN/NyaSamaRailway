@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
+import club.nsdn.nyasamarailway.Blocks.TileEntityRailReceiver;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityMinecartCommandBlock;
@@ -27,7 +28,7 @@ import java.util.Random;
  */
 public class RailMonoMagnetDetector extends RailMonoMagnetBase {
 
-    public static class TileEntityRail extends TileEntity implements RailMonoMagnetPowerable {
+    public static class TileEntityRail extends TileEntityRailReceiver implements RailMonoMagnetPowerable {
 
         @Override
         public boolean shouldRenderInPass(int pass) {
@@ -46,19 +47,18 @@ public class RailMonoMagnetDetector extends RailMonoMagnetBase {
 
         @Override
         public Packet getDescriptionPacket() {
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
+            return super.getDescriptionPacket();
         }
 
         @Override
         public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-            NBTTagCompound tagCompound = packet.func_148857_g();
+            super.onDataPacket(manager, packet);
         }
 
     }
 
     public final int delaySecond;
-    public LinkedHashMap<Point3D, Integer> tmpDelay;
+    public static LinkedHashMap<Point3D, Integer> tmpDelay;
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
@@ -76,6 +76,12 @@ public class RailMonoMagnetDetector extends RailMonoMagnetBase {
         delaySecond = delay;
         tmpDelay = new LinkedHashMap<Point3D, Integer>();
         setCreativeTab(null);
+    }
+
+    public RailMonoMagnetDetector(String name, String icon) {
+        super(true, name, icon);
+        delaySecond = 0;
+        tmpDelay = new LinkedHashMap<Point3D, Integer>();
     }
 
     @Override
@@ -196,6 +202,11 @@ public class RailMonoMagnetDetector extends RailMonoMagnetBase {
                             isEnabled = true;
                         }
                     }
+                    if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
+                        TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
+                        if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                    }
+
                     if (!isEnabled) {
                         world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
                         world.notifyBlocksOfNeighborChange(x, y, z, this);

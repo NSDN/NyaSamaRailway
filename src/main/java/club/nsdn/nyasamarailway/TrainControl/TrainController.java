@@ -24,27 +24,27 @@ public class TrainController {
     private final static float texHeight = 160;*/
 
     /*@SideOnly(Side.CLIENT)
-    private static void drawPic(float x, float y, float z, float sx, float sy, float sw, float sh) {
+    private static void drawPic(float linkedX, float linkedY, float linkedZ, float sx, float sy, float sw, float sh) {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glColor3f(1, 1, 1);
 
         GL11.glTexCoord2f(sx / texWidth, sh / texHeight);
-        GL11.glVertex3f(x, y, z);
+        GL11.glVertex3f(linkedX, linkedY, linkedZ);
         GL11.glTexCoord2f(sx / texWidth, 0);
-        GL11.glVertex3f(x, y - sh, z);
+        GL11.glVertex3f(linkedX, linkedY - sh, linkedZ);
         GL11.glTexCoord2f((sw + sx) / texWidth, 0);
-        GL11.glVertex3f(x + sw, y - sh, z);
+        GL11.glVertex3f(linkedX + sw, linkedY - sh, linkedZ);
         GL11.glTexCoord2f((sw + sx) / texWidth, sh / texHeight);
-        GL11.glVertex3f(x + sw, y, z);
+        GL11.glVertex3f(linkedX + sw, linkedY, linkedZ);
 
         GL11.glEnd();
     }
 
     @SideOnly(Side.CLIENT)
-    private static void buildGUI(double x, double y, double z) {
+    private static void buildGUI(double linkedX, double linkedY, double linkedZ) {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
+        GL11.glTranslated(linkedX, linkedY, linkedZ);
         GL11.glPushMatrix();
 
         drawPic(0, 0, 0, 0, 0, 160, 160);
