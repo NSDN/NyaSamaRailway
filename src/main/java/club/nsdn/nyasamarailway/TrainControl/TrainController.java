@@ -15,44 +15,6 @@ import org.thewdj.physics.Dynamics;
  * Created by drzzm32 on 2016.5.9.
  */
 public class TrainController {
-    /*
-    @SideOnly(Side.CLIENT)
-    private static ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/items/ntp_gui.png");
-    @SideOnly(Side.CLIENT)
-    private final static float texWidth = 256;
-    @SideOnly(Side.CLIENT)
-    private final static float texHeight = 160;*/
-
-    /*@SideOnly(Side.CLIENT)
-    private static void drawPic(float linkedX, float linkedY, float linkedZ, float sx, float sy, float sw, float sh) {
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glColor3f(1, 1, 1);
-
-        GL11.glTexCoord2f(sx / texWidth, sh / texHeight);
-        GL11.glVertex3f(linkedX, linkedY, linkedZ);
-        GL11.glTexCoord2f(sx / texWidth, 0);
-        GL11.glVertex3f(linkedX, linkedY - sh, linkedZ);
-        GL11.glTexCoord2f((sw + sx) / texWidth, 0);
-        GL11.glVertex3f(linkedX + sw, linkedY - sh, linkedZ);
-        GL11.glTexCoord2f((sw + sx) / texWidth, sh / texHeight);
-        GL11.glVertex3f(linkedX + sw, linkedY, linkedZ);
-
-        GL11.glEnd();
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static void buildGUI(double linkedX, double linkedY, double linkedZ) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        GL11.glPushMatrix();
-        GL11.glTranslated(linkedX, linkedY, linkedZ);
-        GL11.glPushMatrix();
-
-        drawPic(0, 0, 0, 0, 0, 160, 160);
-
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-    }
-    */
 
     public final static int MaxP = 20;
 
