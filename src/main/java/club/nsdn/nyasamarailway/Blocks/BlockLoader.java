@@ -44,6 +44,7 @@ public class BlockLoader {
     public static Block blockRailDirectional;
     public static Block blockRailDirectionalAnti;
     public static Block blockRailBlocking;
+    public static Block blockRailNoSleeperBlocking;
 
     public static Block blockIronBars;
     public static Block blockIronWeb;
@@ -77,6 +78,7 @@ public class BlockLoader {
     public static Block railMonoMagnetDirectionalAnti;
     public static Block railMonoMagnetSpeedLimit;
     public static Block railMonoMagnetSignalTransfer;
+    public static Block railMonoMagnetBlocking;
 
     public static Block blockStationSign;
 
@@ -165,6 +167,9 @@ public class BlockLoader {
 
         blockRailBlocking = new BlockRailBlocking();
         register(blockRailBlocking, "block_rail_blocking");
+
+        blockRailNoSleeperBlocking = new BlockRailNoSleeperBlocking();
+        register(blockRailNoSleeperBlocking, "block_rail_no_sleeper_blocking");
 
 
         blockIronBars = new BlockIronBars();
@@ -262,6 +267,9 @@ public class BlockLoader {
 
         railMonoMagnetSignalTransfer = new RailMonoMagnetSignalTransfer();
         register(railMonoMagnetSignalTransfer, "rail_mono_magnet_signal_transfer");
+
+        railMonoMagnetBlocking = new RailMonoMagnetBlocking();
+        register(railMonoMagnetBlocking, "rail_mono_magnet_blocking");
 
     }
 

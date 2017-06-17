@@ -1,28 +1,29 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-/**
- * Created by drzzm32 on 2016.5.5.
- */
-
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.ExtMod.Traincraft;
 import net.minecraft.block.BlockRailDetector;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.thewdj.physics.Point3D;
 
 import java.util.*;
 
-public class BlockRailDetectorBase extends BlockRailDetector {
+/**
+ * Created by drzzm32 on 2016.5.5.
+ */
+public class BlockRailDetectorBase extends BlockRailDetector implements ITileEntityProvider {
 
     public final int delaySecond;
-    public LinkedHashMap<Point3D, Integer> tmpDelay;
+    public static LinkedHashMap<Point3D, Integer> tmpDelay;
+
+    public TileEntity createNewTileEntity(World world, int i) {
+        return new TileEntityRailReceiver();
+    }
 
     public BlockRailDetectorBase(String name) {
         super();
@@ -123,8 +124,8 @@ public class BlockRailDetectorBase extends BlockRailDetector {
                 else {
                     if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                         if (world.isBlockIndirectlyGettingPowered(x - 1, y, z) || world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
-                            world.isBlockIndirectlyGettingPowered(x - 1, y - 1, z) || world.isBlockIndirectlyGettingPowered(x + 1, y - 1, z)) {
-                                isEnabled = true;
+                                world.isBlockIndirectlyGettingPowered(x - 1, y - 1, z) || world.isBlockIndirectlyGettingPowered(x + 1, y - 1, z)) {
+                            isEnabled = true;
                         }
                     } else {
                         if (world.isBlockIndirectlyGettingPowered(x, y, z - 1) || world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
@@ -132,6 +133,11 @@ public class BlockRailDetectorBase extends BlockRailDetector {
                                 isEnabled = true;
                         }
                     }
+                    if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
+                        TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
+                        if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                    }
+
                     if (!isEnabled) {
                         world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
                         world.notifyBlocksOfNeighborChange(x, y, z, this);

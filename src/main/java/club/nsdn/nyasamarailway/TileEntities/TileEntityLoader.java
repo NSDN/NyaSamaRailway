@@ -90,8 +90,12 @@ public class TileEntityLoader {
                 "tileEntityRailReceptionAnti");
 
         GameRegistry.registerTileEntity(
-                BlockRailBlocking.TileEntityRailBlocking.class,
-                "tileEntityRailBlocking");
+                TileEntityRailTransceiver.class,
+                "tileEntityRailTransceiver");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailReceiver.class,
+                "tileEntityRailReceiver");
 
         GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
@@ -136,6 +140,10 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 RailMonoMagnetSpeedLimit.TileEntityRail.class,
                 "railMonoMagnetSpeedLimit");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetBlocking.TileEntityRail.class,
+                "railMonoMagnetBlocking");
 
     }
 

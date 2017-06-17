@@ -1,5 +1,6 @@
-package club.nsdn.nyasamarailway.Blocks;
+package club.nsdn.nyasamarailway.TileEntities.Rail;
 
+import club.nsdn.nyasamarailway.Blocks.TileEntityRailTransceiver;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,28 +13,34 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by drzzm32 on 2017.6.16.
+ * Created by drzzm32 on 2017.6.17.
  */
-public class BlockRailBlocking extends BlockRailDetectorBase {
+public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
 
-    public static LinkedHashMap<UUID, TileEntityRailTransceiver> tmpRails;
+    public static LinkedHashMap<UUID, TileEntityRail> tmpRails;
+
+    public static class TileEntityRail extends TileEntityRailTransceiver implements RailMonoMagnetPowerable {
+
+        @Override
+        public boolean shouldRenderInPass(int pass) {
+            return true;
+        }
+    }
 
     public TileEntity createNewTileEntity(World world, int i) {
-        return new TileEntityRailTransceiver();
+        return new TileEntityRail();
     }
 
-    public BlockRailBlocking() {
-        super("BlockRailBlocking");
-        setTextureName("rail_blocking");
+    public RailMonoMagnetBlocking() {
+        super("RailMonoMagnetBlocking", "rail_mono_magnet_blocking");
 
-        tmpRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
+        tmpRails = new LinkedHashMap<UUID, TileEntityRail>();
     }
 
-    public BlockRailBlocking(String name, String texture) {
-        super(name);
-        setTextureName(texture);
+    public RailMonoMagnetBlocking(String name, String texture) {
+        super("RailMonoMagnetBlocking", "rail_mono_magnet_blocking");
 
-        tmpRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
+        tmpRails = new LinkedHashMap<UUID, TileEntityRail>();
     }
 
     public void setOutputSignal(World world, int x, int y, int z, boolean state) {
@@ -91,20 +98,20 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
                 (world.getBlock(x, y, z - 1) == this && railHasCart(world, x, y, z - 1));
     }
 
-    public TileEntityRailTransceiver[] getNearbyRail(World world, int x, int y, int z) {
-        return new TileEntityRailTransceiver[]{
-                world.getTileEntity(x + 1, y, z) instanceof TileEntityRailTransceiver ? (TileEntityRailTransceiver) world.getTileEntity(x + 1, y, z) : null,
-                world.getTileEntity(x - 1, y, z) instanceof TileEntityRailTransceiver ? (TileEntityRailTransceiver) world.getTileEntity(x - 1, y, z) : null,
-                world.getTileEntity(x, y, z + 1) instanceof TileEntityRailTransceiver ? (TileEntityRailTransceiver) world.getTileEntity(x, y, z + 1) : null,
-                world.getTileEntity(x, y, z - 1) instanceof TileEntityRailTransceiver ? (TileEntityRailTransceiver) world.getTileEntity(x, y, z - 1) : null,
+    public TileEntityRail[] getNearbyRail(World world, int x, int y, int z) {
+        return new TileEntityRail[]{
+                world.getTileEntity(x + 1, y, z) instanceof TileEntityRail ? (TileEntityRail) world.getTileEntity(x + 1, y, z) : null,
+                world.getTileEntity(x - 1, y, z) instanceof TileEntityRail ? (TileEntityRail) world.getTileEntity(x - 1, y, z) : null,
+                world.getTileEntity(x, y, z + 1) instanceof TileEntityRail ? (TileEntityRail) world.getTileEntity(x, y, z + 1) : null,
+                world.getTileEntity(x, y, z - 1) instanceof TileEntityRail ? (TileEntityRail) world.getTileEntity(x, y, z - 1) : null,
         };
     }
 
     @Override
     public void setRailOutput(World world, int x, int y, int z, int meta) {
-        TileEntityRailTransceiver thisRail = null;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRailTransceiver)
-            thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
+        TileEntityRail thisRail = null;
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRail)
+            thisRail = (TileEntityRail) world.getTileEntity(x, y, z);
 
         if (thisRail != null) {
             if (thisRail.getTransceiverRail() != null) {
@@ -114,8 +121,8 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
                 }
             } else {
                 if (!nearbyRailHasCart(world, x, y, z)) {
-                    TileEntityRailTransceiver[] rails = getNearbyRail(world, x, y, z);
-                    for (TileEntityRailTransceiver rail : rails) {
+                    TileEntityRail[] rails = getNearbyRail(world, x, y, z);
+                    for (TileEntityRail rail : rails) {
                         if (rail != null) {
                             setOutputSignal(rail, false);
                             if (rail.getTransceiverRail() != null)
@@ -149,9 +156,9 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        TileEntityRailTransceiver thisRail = null;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRailTransceiver) {
-            thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
+        TileEntityRail thisRail = null;
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
+            thisRail = (TileEntityRail) world.getTileEntity(x, y, z);
         }
         if (thisRail != null) {
             UUID uuid = player.getUniqueID();

@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.IRailDirectional;
+import club.nsdn.nyasamarailway.Blocks.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IRailDirectional {
 
-    public static class TileEntityRail extends TileEntity implements RailMonoMagnetPowerable {
+    public static class TileEntityRail extends TileEntityRailReceiver implements RailMonoMagnetPowerable {
 
         public String cartType = "";
 
@@ -46,13 +47,15 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
 
         @Override
         public Packet getDescriptionPacket() {
-            NBTTagCompound tagCompound = new NBTTagCompound();
+            S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
+            NBTTagCompound tagCompound = packet.func_148857_g();
             tagCompound.setString("cartType", cartType);
-            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
+            return packet;
         }
 
         @Override
         public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
+            super.onDataPacket(manager, packet);
             NBTTagCompound tagCompound = packet.func_148857_g();
             cartType = tagCompound.getString("cartType");
         }
@@ -192,7 +195,25 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
 
                     } else {
                         if (tmpDelay.get(p) < delay * 20 && delayENB.get(p)) {
-                            tmpDelay.put(p, tmpDelay.get(p) + 1);
+                            boolean isEnabled = false;
+
+                            if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                                if (world.isBlockIndirectlyGettingPowered(x - 1, y, z) || world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
+                                        world.isBlockIndirectlyGettingPowered(x - 1, y - 1, z) || world.isBlockIndirectlyGettingPowered(x + 1, y - 1, z)) {
+                                    isEnabled = true;
+                                }
+                            } else {
+                                if (world.isBlockIndirectlyGettingPowered(x, y, z - 1) || world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
+                                        world.isBlockIndirectlyGettingPowered(x, y - 1, z - 1) || world.isBlockIndirectlyGettingPowered(x, y - 1, z + 1)) {
+                                    isEnabled = true;
+                                }
+                            }
+                            if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
+                                TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
+                                if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                            }
+
+                            if (!isEnabled) tmpDelay.put(p, tmpDelay.get(p) + 1);
                             if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                                 cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.01D, 0.02D));
                                 cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.01D, 0.02D));
