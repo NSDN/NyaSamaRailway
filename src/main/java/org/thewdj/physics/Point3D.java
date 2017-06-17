@@ -33,6 +33,6 @@ public class Point3D {
 
     @Override
     public String toString() {
-        return "linkedX=" + x + ", linkedY=" + y + ", linkedZ=" + z;
+        return "x=" + x + ", y=" + y + ", z=" + z;
     }
 }
