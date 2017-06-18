@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.TileEntityRailTransceiver;
+import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -112,39 +113,34 @@ public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
     }
 
     @Override
-    public void onMinecartPass(World world, EntityMinecart cart, int y, int x, int z) {
-        TileEntityRailTransceiver thisRail = null;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRailTransceiver)
-            thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
-
-        if (thisRail != null) {
-            if (thisRail.getTransceiverRail() != null) {
-                if (nearbyRailPowered(world, x, y, z)) {
-                    setOutputSignal(thisRail, true);
-                    setOutputSignal(thisRail.getTransceiverRail(), true);
-                }
-            } else {
-                if (!nearbyRailHasCart(world, x, y, z)) {
-                    TileEntityRailTransceiver[] rails = getNearbyRail(world, x, y, z);
-                    for (TileEntityRailTransceiver rail : rails) {
-                        if (rail != null) {
-                            setOutputSignal(rail, false);
-                            if (rail.getTransceiverRail() != null)
-                                setOutputSignal(rail.getTransceiverRail(), false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public void setRailOutput(World world, int x, int y, int z, int meta) {
         TileEntityRailTransceiver thisRail = null;
         if (world.getTileEntity(x, y, z) instanceof TileEntityRailTransceiver)
             thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
 
         if (thisRail != null) {
+            if (railHasCart(world, x, y, z)) {
+                if (thisRail.getTransceiverRail() != null) {
+                    if (nearbyRailPowered(world, x, y, z)) {
+                        setOutputSignal(thisRail, true);
+                        setOutputSignal(thisRail.getTransceiverRail(), true);
+                        NyaSamaRailway.log.info("(" + x + ", " + y + ", " + z + ") " + "in blocking.");
+                    }
+                } else {
+                    if (!nearbyRailHasCart(world, x, y, z)) {
+                        TileEntityRailTransceiver[] rails = getNearbyRail(world, x, y, z);
+                        for (TileEntityRailTransceiver rail : rails) {
+                            if (rail != null) {
+                                setOutputSignal(rail, false);
+                                if (rail.getTransceiverRail() != null)
+                                    setOutputSignal(rail.getTransceiverRail(), false);
+                                NyaSamaRailway.log.info("(" + x + ", " + y + ", " + z + ") " + "leaving blocking.");
+                            }
+                        }
+                    }
+                }
+            }
+
             if (thisRail.getTransceiverRail() == null) {
                 if (railHasCart(world, x, y, z) && !railHasPowered(world, x, y, z)) {
                     world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
