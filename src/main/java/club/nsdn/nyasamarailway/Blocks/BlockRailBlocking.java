@@ -112,14 +112,15 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
             thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
 
         if (thisRail != null) {
-            if (railHasCart(world, x, y, z)) {
-                if (thisRail.getTransceiverRail() != null) {
+            if (thisRail.getTransceiverRail() != null) {
+                if (railHasCart(world, x, y, z) && !railHasPowered(world, x, y, z)) {
                     if (nearbyRailPowered(world, x, y, z)) {
                         setOutputSignal(thisRail, true);
                         setOutputSignal(thisRail.getTransceiverRail(), true);
-                        NyaSamaRailway.log.info("(" + x + ", " + y + ", " + z + ") " + "in blocking.");
                     }
-                } else {
+                }
+            } else {
+                if (!railHasCart(world, x, y, z) && railHasPowered(world, x, y, z)) {
                     if (!nearbyRailHasCart(world, x, y, z)) {
                         TileEntityRailTransceiver[] rails = getNearbyRail(world, x, y, z);
                         for (TileEntityRailTransceiver rail : rails) {
@@ -127,7 +128,6 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
                                 setOutputSignal(rail, false);
                                 if (rail.getTransceiverRail() != null)
                                     setOutputSignal(rail.getTransceiverRail(), false);
-                                NyaSamaRailway.log.info("(" + x + ", " + y + ", " + z + ") " + "leaving blocking.");
                             }
                         }
                     }
@@ -150,7 +150,7 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
                 }
 
                 if (railHasCart(world, x, y, z)) {
-                    world.scheduleBlockUpdate(x, y, z, this, 20);
+                    world.scheduleBlockUpdate(x, y, z, this, 1);
                 }
 
                 world.func_147453_f(x, y, z, this);
