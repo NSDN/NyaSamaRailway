@@ -40,31 +40,17 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         public String cartType = "";
 
         @Override
-        public void writeToNBT(NBTTagCompound tagCompound) {
-            super.writeToNBT(tagCompound);
-            tagCompound.setString("cartType", cartType);
-        }
-
-        @Override
-        public void readFromNBT(NBTTagCompound tagCompound) {
-            super.readFromNBT(tagCompound);
+        public void fromNBT(NBTTagCompound tagCompound) {
             cartType = tagCompound.getString("cartType");
+            super.fromNBT(tagCompound);
         }
 
         @Override
-        public Packet getDescriptionPacket() {
-            S35PacketUpdateTileEntity packet = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-            NBTTagCompound tagCompound = packet.func_148857_g();
+        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("cartType", cartType);
-            return packet;
+            return super.toNBT(tagCompound);
         }
 
-        @Override
-        public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-            super.onDataPacket(manager, packet);
-            NBTTagCompound tagCompound = packet.func_148857_g();
-            cartType = tagCompound.getString("cartType");
-        }
     }
 
     public TileEntity createNewTileEntity(World world, int i) {
