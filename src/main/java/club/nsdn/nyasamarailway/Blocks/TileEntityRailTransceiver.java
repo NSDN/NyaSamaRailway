@@ -48,30 +48,13 @@ public class TileEntityRailTransceiver extends TileEntity {
         transceiverZ = "null";
     }
 
-    @Override
-    public void writeToNBT(NBTTagCompound tagCompound) {
-        super.writeToNBT(tagCompound);
-        if (getTransceiverRail() == null) {
-            tagCompound.setString("transceiverRailX", "null");
-            tagCompound.setString("transceiverRailY", "null");
-            tagCompound.setString("transceiverRailZ", "null");
-        }
-        tagCompound.setString("transceiverRailX", transceiverX);
-        tagCompound.setString("transceiverRailY", transceiverY);
-        tagCompound.setString("transceiverRailZ", transceiverZ);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void fromNBT(NBTTagCompound tagCompound) {
         transceiverX = tagCompound.getString("transceiverRailX");
         transceiverY = tagCompound.getString("transceiverRailY");
         transceiverZ = tagCompound.getString("transceiverRailZ");
     }
 
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
+    public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (getTransceiverRail() == null) {
             tagCompound.setString("transceiverRailX", "null");
             tagCompound.setString("transceiverRailY", "null");
@@ -80,14 +63,32 @@ public class TileEntityRailTransceiver extends TileEntity {
         tagCompound.setString("transceiverRailX", transceiverX);
         tagCompound.setString("transceiverRailY", transceiverY);
         tagCompound.setString("transceiverRailZ", transceiverZ);
+        return tagCompound;
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tagCompound) {
+        super.writeToNBT(tagCompound);
+        toNBT(tagCompound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
+        fromNBT(tagCompound);
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        toNBT(tagCompound);
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
         NBTTagCompound tagCompound = packet.func_148857_g();
-        transceiverX = tagCompound.getString("transceiverRailX");
-        transceiverY = tagCompound.getString("transceiverRailY");
-        transceiverZ = tagCompound.getString("transceiverRailZ");
+        fromNBT(tagCompound);
     }
+
 }
