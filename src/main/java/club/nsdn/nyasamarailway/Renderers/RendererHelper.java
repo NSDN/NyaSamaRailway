@@ -5,12 +5,15 @@ package club.nsdn.nyasamarailway.Renderers;
  */
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.obj.Face;
 import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.client.model.obj.TextureCoordinate;
 import net.minecraftforge.client.model.obj.Vertex;
 import net.minecraftforge.client.model.obj.WavefrontObject;
+import org.lwjgl.opengl.GL11;
 
 public class RendererHelper {
     private static float radius = 0.0F;
@@ -18,6 +21,14 @@ public class RendererHelper {
     private static float centre_u = 0.0F;
     private static float centre_v = 0.0F;
     private static final float mapping_factor = 0.98F;
+
+    public static void renderWithResourceAndRotation(WavefrontObject model, float angle, ResourceLocation texture, TextureManager manager) {
+        manager.bindTexture(texture);
+        GL11.glPushMatrix();
+        GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+        model.renderAll();
+        GL11.glPopMatrix();
+    }
 
     public static void renderWithIconAndRotation(WavefrontObject model, float angle, IIcon icon, Tessellator tessellator) {
         for (GroupObject group : model.groupObjects) {

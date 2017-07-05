@@ -16,14 +16,16 @@ public class TileEntityRailTransceiver extends TileEntity {
     public TileEntityRailTransceiver getTransceiverRail() {
         if (transceiverX.equals("null") || transceiverY.equals("null") || transceiverZ.equals("null")) return null;
 
-        TileEntity tileEntity;
+        TileEntity tileEntity; int x, y, z;
         try {
-            tileEntity = worldObj.getTileEntity(
-                    Integer.parseInt(transceiverX), Integer.parseInt(transceiverY), Integer.parseInt(transceiverZ)
-            );
+            x = Integer.parseInt(transceiverX);
+            y = Integer.parseInt(transceiverY);
+            z = Integer.parseInt(transceiverZ);
         } catch (Exception e) {
             return null;
         }
+        tileEntity = worldObj.getTileEntity(x, y, z);
+
         if (tileEntity == null) return null;
         if (!(tileEntity instanceof TileEntityRailTransceiver)) return null;
 
@@ -59,10 +61,11 @@ public class TileEntityRailTransceiver extends TileEntity {
             tagCompound.setString("transceiverRailX", "null");
             tagCompound.setString("transceiverRailY", "null");
             tagCompound.setString("transceiverRailZ", "null");
+        } else {
+            tagCompound.setString("transceiverRailX", transceiverX);
+            tagCompound.setString("transceiverRailY", transceiverY);
+            tagCompound.setString("transceiverRailZ", transceiverZ);
         }
-        tagCompound.setString("transceiverRailX", transceiverX);
-        tagCompound.setString("transceiverRailY", transceiverY);
-        tagCompound.setString("transceiverRailZ", transceiverZ);
         return tagCompound;
     }
 

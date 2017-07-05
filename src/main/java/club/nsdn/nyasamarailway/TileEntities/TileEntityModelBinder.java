@@ -156,6 +156,10 @@ public class TileEntityModelBinder {
                         new ModelBase[] { new RailMonoMagnetStraightModel(), new RailMonoMagnetSlopeModel(), new RailMonoMagnetTurnedModel() },
                         new String[] { "textures/rails/RailMonoMagnetStraightBlocking.png", "textures/rails/RailMonoMagnetSlopeBlocking.png", "textures/rails/RailMonoMagnetTurnedBlocking.png" },
                         0.0, 0.0, 0.0));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntitySignalLight.SignalLight.class, new SignalLightRenderer());
+
     }
 
 }

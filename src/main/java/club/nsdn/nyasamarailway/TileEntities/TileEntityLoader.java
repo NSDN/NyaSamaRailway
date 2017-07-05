@@ -145,6 +145,10 @@ public class TileEntityLoader {
                 RailMonoMagnetBlocking.TileEntityRail.class,
                 "railMonoMagnetBlocking");
 
+        GameRegistry.registerTileEntity(
+                TileEntitySignalLight.SignalLight.class,
+                "tileEntitySignalLight");
+
     }
 
 }

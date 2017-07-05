@@ -94,6 +94,7 @@ public class Item74HC04 extends ItemToolBase {
                 }
                 return !world.isRemote;
             } else if (block instanceof BlockRailDetectorBase) {
+                if (block instanceof BlockRailBlocking) return !world.isRemote;
                 int nowDelay = ((BlockRailDetectorBase) block).getDelaySecond();
                 if (block instanceof BlockRailStoneSleeperDetector) {
                     switch (nowDelay) {
@@ -130,6 +131,7 @@ public class Item74HC04 extends ItemToolBase {
                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.74HC04.delay", nowDelay));
                 return !world.isRemote;
             } else if (block instanceof RailMonoMagnetDetector) {
+                if (block instanceof RailMonoMagnetBlocking) return !world.isRemote;
                 int nowDelay = ((RailMonoMagnetDetector) block).getDelaySecond();
                 switch (nowDelay) {
                     case 0:
