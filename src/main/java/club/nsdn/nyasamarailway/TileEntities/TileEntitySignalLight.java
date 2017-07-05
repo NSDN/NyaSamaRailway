@@ -53,6 +53,7 @@ public class TileEntitySignalLight extends TileEntityBase {
         super("SignalLight");
         setIconLocation("signal_light");
         setLightOpacity(0);
+        setLightLevel(0.75F);
     }
 
     @Override
@@ -154,7 +155,12 @@ public class TileEntitySignalLight extends TileEntityBase {
         if (world.getTileEntity(x, y, z) == null) return;
         if (world.getTileEntity(x, y, z) instanceof SignalLight) {
             SignalLight signalLight = (SignalLight) world.getTileEntity(x, y, z);
-            boolean isEnable = signalLight.senderRailIsPowered() ^ nearbyBlockIsPowered(world, x, y, z);
+            boolean isEnable;
+            if (signalLight.getSenderRail() == null) {
+                isEnable = nearbyBlockIsPowered(world, x, y, z);
+            } else {
+                isEnable = signalLight.senderRailIsPowered() ^ thisBlockIsPowered(world, x, y, z);
+            }
             int meta = world.getBlockMetadata(x, y, z);
             int old = meta;
 
@@ -175,6 +181,11 @@ public class TileEntitySignalLight extends TileEntityBase {
             }
 
             if (old != meta) {
+                if (((meta >> 2) & 0x3) == 0) {
+                    setLightLevel(0.0F);
+                } else {
+                    setLightLevel(0.75F);
+                }
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
             }
@@ -208,6 +219,13 @@ public class TileEntitySignalLight extends TileEntityBase {
             world.isBlockIndirectlyGettingPowered(x - 1, y, z) ||
             world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
             world.isBlockIndirectlyGettingPowered(x, y, z - 1) ||
+            world.isBlockIndirectlyGettingPowered(x, y - 1, z)
+        );
+    }
+
+    public boolean thisBlockIsPowered(World world, int x, int y, int z) {
+        return (
+            world.isBlockIndirectlyGettingPowered(x, y, z) ||
             world.isBlockIndirectlyGettingPowered(x, y - 1, z)
         );
     }
