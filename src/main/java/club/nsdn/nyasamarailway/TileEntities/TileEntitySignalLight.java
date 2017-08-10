@@ -1,8 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.Blocks.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Items.Item74HC04;
-import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -30,6 +28,7 @@ public class TileEntitySignalLight extends TileEntityBase {
 
         public String lightType= "red&green";
         public boolean isBlinking = false;
+        public boolean isPowered = false;
 
         public int delay;
 
@@ -37,6 +36,7 @@ public class TileEntitySignalLight extends TileEntityBase {
         public void fromNBT(NBTTagCompound tagCompound) {
             lightType = tagCompound.getString("lightType");
             isBlinking = tagCompound.getBoolean("isBlinking");
+            isPowered = tagCompound.getBoolean("isPowered");
             super.fromNBT(tagCompound);
         }
 
@@ -44,6 +44,7 @@ public class TileEntitySignalLight extends TileEntityBase {
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("lightType", lightType);
             tagCompound.setBoolean("isBlinking", isBlinking);
+            tagCompound.setBoolean("isPowered", isPowered);
             return super.toNBT(tagCompound);
         }
 
@@ -93,6 +94,7 @@ public class TileEntitySignalLight extends TileEntityBase {
                     signalLight.isBlinking = true;
                     player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.on"));
                 }
+                updateLight(world, x, y, z);
                 return true;
             }
             if (!player.isSneaking() && !world.isRemote) {
@@ -117,9 +119,13 @@ public class TileEntitySignalLight extends TileEntityBase {
                         signalLight.lightType = "yellow&green";
                         player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_green"));
                     } else if (signalLight.lightType.equals("yellow&green")) {
+                        signalLight.lightType = "white&blue";
+                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.white_blue"));
+                    } else if (signalLight.lightType.equals("white&blue")) {
                         signalLight.lightType = "none";
                         player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.none"));
                     }
+                    updateLight(world, x, y, z);
                     return true;
                 }
             }
@@ -157,7 +163,7 @@ public class TileEntitySignalLight extends TileEntityBase {
             SignalLight signalLight = (SignalLight) world.getTileEntity(x, y, z);
             boolean isEnable;
             if (signalLight.getSenderRail() == null) {
-                isEnable = nearbyBlockIsPowered(world, x, y, z);
+                isEnable = nearbyBlockIsPowered(world, x, y, z) || signalLight.isPowered;
             } else {
                 isEnable = signalLight.senderRailIsPowered() ^ thisBlockIsPowered(world, x, y, z);
             }
@@ -208,6 +214,8 @@ public class TileEntitySignalLight extends TileEntityBase {
             return isEnable ? meta | (LIGHT_R << 2) : meta | (LIGHT_G << 2);
         else if (lightType.equals("yellow&green"))
             return isEnable ? meta | (LIGHT_Y << 2) : meta | (LIGHT_G << 2);
+        else if (lightType.equals("white&blue"))
+            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
         else
             return meta;
     }

@@ -61,6 +61,7 @@ public class Traincraft implements IExtMod {
     public boolean Locomotive_setIsLocoTurnedOn(Entity entity, boolean value) {
         if (isLocomotive(entity)) {
             Util.modifyNBT(entity, "isLocoTurnedOn", value);
+            return true;
         }
         return false;
     }

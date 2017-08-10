@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
-import club.nsdn.nyasamarailway.Blocks.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityMinecartCommandBlock;

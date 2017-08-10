@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity;
  */
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
+import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalLight;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -29,7 +30,9 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_none.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_r.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_y.png"),
-            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_g.png")
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_g.png"),
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_w.png"),
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_b.png")
     };
     private static final int TEXTURE_DEF = 0;
     private static final int TEXTURE_R = 1;
@@ -61,6 +64,15 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
 
         TextureManager manager = Minecraft.getMinecraft().getTextureManager();
         int lightState = (meta >> 2) & 0x3;
+
+        if (te instanceof TileEntitySignalLight.SignalLight) {
+            if (((TileEntitySignalLight.SignalLight) te).lightType.equals("white&blue")) {
+                if (lightState == 2) lightState = 4;
+                else if (lightState == 3) lightState = 5;
+                else lightState = 0;
+            }
+        }
+
         GL11.glPushMatrix();
         GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
         RendererHelper.renderWithResourceAndRotation(model, angle, textures[lightState], manager);

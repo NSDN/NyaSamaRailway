@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.Blocks;
 
-import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityRailTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;

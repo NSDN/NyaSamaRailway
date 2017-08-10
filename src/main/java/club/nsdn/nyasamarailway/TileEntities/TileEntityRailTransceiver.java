@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.Blocks;
+package club.nsdn.nyasamarailway.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,18 +9,18 @@ import net.minecraft.tileentity.TileEntity;
 /**
  * Created by drzzm32 on 2017.6.17.
  */
-public class TileEntityRailReceiver extends TileEntity {
+public class TileEntityRailTransceiver extends TileEntity {
 
-    public String receiverX, receiverY, receiverZ;
+    public String transceiverX, transceiverY, transceiverZ;
 
-    public TileEntityRailTransceiver getSenderRail() {
-        if (receiverX.equals("null") || receiverY.equals("null") || receiverZ.equals("null")) return null;
+    public TileEntityRailTransceiver getTransceiverRail() {
+        if (transceiverX.equals("null") || transceiverY.equals("null") || transceiverZ.equals("null")) return null;
 
         TileEntity tileEntity; int x, y, z;
         try {
-            x = Integer.parseInt(receiverX);
-            y = Integer.parseInt(receiverY);
-            z = Integer.parseInt(receiverZ);
+            x = Integer.parseInt(transceiverX);
+            y = Integer.parseInt(transceiverY);
+            z = Integer.parseInt(transceiverZ);
         } catch (Exception e) {
             return null;
         }
@@ -32,46 +32,46 @@ public class TileEntityRailReceiver extends TileEntity {
         return (TileEntityRailTransceiver) tileEntity;
     }
 
-    public void setSenderRail(TileEntityRailTransceiver rail) {
+    public void setTransceiverRail(TileEntityRailTransceiver rail) {
         if (rail == null) {
-            receiverX = "null";
-            receiverY = "null";
-            receiverZ = "null";
+            transceiverX = "null";
+            transceiverY = "null";
+            transceiverZ = "null";
         } else {
-            receiverX = String.valueOf(rail.xCoord);
-            receiverY = String.valueOf(rail.yCoord);
-            receiverZ = String.valueOf(rail.zCoord);
+            transceiverX = String.valueOf(rail.xCoord);
+            transceiverY = String.valueOf(rail.yCoord);
+            transceiverZ = String.valueOf(rail.zCoord);
         }
     }
 
-    public boolean senderRailIsPowered() {
-        TileEntityRailTransceiver rail = getSenderRail();
+    public boolean transceiverRailIsPowered() {
+        TileEntityRailTransceiver rail = getTransceiverRail();
         if (rail == null) return false;
         int meta = worldObj.getBlockMetadata(rail.xCoord, rail.yCoord, rail.zCoord);
         return (meta & 8) != 0;
     }
 
-    public TileEntityRailReceiver() {
-        receiverX = "null";
-        receiverY = "null";
-        receiverZ = "null";
+    public TileEntityRailTransceiver() {
+        transceiverX = "null";
+        transceiverY = "null";
+        transceiverZ = "null";
     }
 
     public void fromNBT(NBTTagCompound tagCompound) {
-        receiverX = tagCompound.getString("receiverRailX");
-        receiverY = tagCompound.getString("receiverRailY");
-        receiverZ = tagCompound.getString("receiverRailZ");
+        transceiverX = tagCompound.getString("transceiverRailX");
+        transceiverY = tagCompound.getString("transceiverRailY");
+        transceiverZ = tagCompound.getString("transceiverRailZ");
     }
 
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-        if (getSenderRail() == null) {
-            tagCompound.setString("receiverRailX", "null");
-            tagCompound.setString("receiverRailY", "null");
-            tagCompound.setString("receiverRailZ", "null");
+        if (getTransceiverRail() == null) {
+            tagCompound.setString("transceiverRailX", "null");
+            tagCompound.setString("transceiverRailY", "null");
+            tagCompound.setString("transceiverRailZ", "null");
         } else {
-            tagCompound.setString("receiverRailX", receiverX);
-            tagCompound.setString("receiverRailY", receiverY);
-            tagCompound.setString("receiverRailZ", receiverZ);
+            tagCompound.setString("transceiverRailX", transceiverX);
+            tagCompound.setString("transceiverRailY", transceiverY);
+            tagCompound.setString("transceiverRailZ", transceiverZ);
         }
         return tagCompound;
     }

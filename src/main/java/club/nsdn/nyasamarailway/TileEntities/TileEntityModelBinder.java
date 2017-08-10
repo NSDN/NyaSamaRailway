@@ -160,6 +160,12 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntitySignalLight.SignalLight.class, new SignalLightRenderer());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntitySignalBox.SignalBox.class, new SignalBoxRenderer(false));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntitySignalBoxSender.SignalBoxSender.class, new SignalBoxRenderer(true));
+
     }
 
 }
