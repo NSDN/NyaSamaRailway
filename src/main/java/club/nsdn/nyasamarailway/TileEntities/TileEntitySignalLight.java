@@ -1,8 +1,10 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.Items.Item74HC04;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +28,8 @@ public class TileEntitySignalLight extends TileEntityBase {
 
     public static class SignalLight extends TileEntityRailReceiver {
 
-        public String lightType= "red&green";
+        public String lightType = "red&green";
+        public String prevLightType = "null";
         public boolean isBlinking = false;
         public boolean isPowered = false;
 
@@ -86,7 +89,11 @@ public class TileEntitySignalLight extends TileEntityBase {
         if (world.getTileEntity(x, y, z) instanceof SignalLight) {
             signalLight = (SignalLight) world.getTileEntity(x, y, z);
 
-            if (player.isSneaking() && !world.isRemote) {
+            if (player.getCurrentEquippedItem() != null) {
+                if (player.getCurrentEquippedItem().getItem() instanceof Item74HC04) return false;
+            }
+
+            if (!player.isSneaking() && !world.isRemote) {
                 if (signalLight.isBlinking) {
                     signalLight.isBlinking = false;
                     player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.off"));
@@ -94,40 +101,39 @@ public class TileEntitySignalLight extends TileEntityBase {
                     signalLight.isBlinking = true;
                     player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.on"));
                 }
-                updateLight(world, x, y, z);
                 return true;
             }
-            if (!player.isSneaking() && !world.isRemote) {
-                if (player.getCurrentEquippedItem() == null) return false;
-                if (player.getCurrentEquippedItem().getItem() instanceof Item74HC04) {
-                    if (signalLight.lightType.equals("none")) {
-                        signalLight.lightType = "red&off";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_off"));
-                    } else if (signalLight.lightType.equals("red&off")) {
-                        signalLight.lightType = "yellow&off";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_off"));
-                    } else if (signalLight.lightType.equals("yellow&off")) {
-                        signalLight.lightType = "green&off";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.green_off"));
-                    } else if (signalLight.lightType.equals("green&off")) {
-                        signalLight.lightType = "red&yellow";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_yellow"));
-                    } else if (signalLight.lightType.equals("red&yellow")) {
-                        signalLight.lightType = "red&green";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_green"));
-                    } else if (signalLight.lightType.equals("red&green")) {
-                        signalLight.lightType = "yellow&green";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_green"));
-                    } else if (signalLight.lightType.equals("yellow&green")) {
-                        signalLight.lightType = "white&blue";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.white_blue"));
-                    } else if (signalLight.lightType.equals("white&blue")) {
-                        signalLight.lightType = "none";
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.none"));
-                    }
-                    updateLight(world, x, y, z);
-                    return true;
+            if (player.isSneaking() && !world.isRemote) {
+                signalLight.prevLightType = signalLight.lightType;
+                if (signalLight.lightType.equals("none")) {
+                    signalLight.lightType = "red&off";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_off"));
+                } else if (signalLight.lightType.equals("red&off")) {
+                    signalLight.lightType = "yellow&off";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_off"));
+                } else if (signalLight.lightType.equals("yellow&off")) {
+                    signalLight.lightType = "green&off";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.green_off"));
+                } else if (signalLight.lightType.equals("green&off")) {
+                    signalLight.lightType = "red&yellow";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_yellow"));
+                } else if (signalLight.lightType.equals("red&yellow")) {
+                    signalLight.lightType = "red&green";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_green"));
+                } else if (signalLight.lightType.equals("red&green")) {
+                    signalLight.lightType = "yellow&green";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_green"));
+                } else if (signalLight.lightType.equals("yellow&green")) {
+                    signalLight.lightType = "white&blue";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.white_blue"));
+                } else if (signalLight.lightType.equals("white&blue")) {
+                    signalLight.lightType = "yellow&purple";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_purple"));
+                } else if (signalLight.lightType.equals("yellow&purple")) {
+                    signalLight.lightType = "none";
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.none"));
                 }
+                return true;
             }
 
         }
@@ -186,7 +192,8 @@ public class TileEntitySignalLight extends TileEntityBase {
                 meta = setLightState(isEnable, meta, signalLight.lightType);
             }
 
-            if (old != meta) {
+            if (old != meta || !signalLight.prevLightType.equals(signalLight.lightType)) {
+                signalLight.prevLightType = signalLight.lightType;
                 if (((meta >> 2) & 0x3) == 0) {
                     setLightLevel(0.0F);
                 } else {
@@ -215,6 +222,8 @@ public class TileEntitySignalLight extends TileEntityBase {
         else if (lightType.equals("yellow&green"))
             return isEnable ? meta | (LIGHT_Y << 2) : meta | (LIGHT_G << 2);
         else if (lightType.equals("white&blue"))
+            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
+        else if (lightType.equals("yellow&purple"))
             return isEnable ? meta | (2 << 2) : meta | (3 << 2);
         else
             return meta;

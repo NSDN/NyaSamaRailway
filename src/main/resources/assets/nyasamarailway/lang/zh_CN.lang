@@ -106,6 +106,7 @@ info.signal.light.mode.red_yellow=[NSR] 信号灯模式设置为 红-黄
 info.signal.light.mode.red_green=[NSR] 信号灯模式设置为 红-绿
 info.signal.light.mode.yellow_green=[NSR] 信号灯模式设置为 黄-绿
 info.signal.light.mode.white_blue=[NSR] 信号灯模式设置为 白-蓝
+info.signal.light.mode.yellow_purple=[NSR] 信号灯模式设置为 黄-紫
 info.signal.light.mode.none=[NSR] 信号灯模式设置为 常灭
 info.signal.box.inverter.off=[NSR] 信号执行器内部反相器停止使能
 info.signal.box.inverter.on=[NSR] 信号执行器内部反相器使能

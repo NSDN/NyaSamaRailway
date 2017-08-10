@@ -7,7 +7,6 @@ import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -41,8 +40,10 @@ public class TrainControlServerHandler {
                                     ((LocoBase) cart).setTrainPacket(ToolHandler.controller8Bit);
                                     return;
                                 }
-                                if (Traincraft.instance.isLocomotive(cart)) {
-                                    Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                if (Traincraft.getInstance() != null) {
+                                    if (Traincraft.instance.isLocomotive(cart)) {
+                                        Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                    }
                                 }
                                 TrainController.doMotion(ToolHandler.controller8Bit, cart);
                             }
@@ -64,8 +65,10 @@ public class TrainControlServerHandler {
                                 for (int i : ToolHandler.controller32Bit.trainUnits) {
                                     cart = ToolHandler.controller32Bit.getCartInServer(i);
                                     if (cart != null) {
-                                        if (Traincraft.instance.isLocomotive(cart)) {
-                                            Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                        if (Traincraft.getInstance() != null) {
+                                            if (Traincraft.instance.isLocomotive(cart)) {
+                                                Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
+                                            }
                                         }
                                         TrainController.doMotion(ToolHandler.controller32Bit, cart);
                                     }

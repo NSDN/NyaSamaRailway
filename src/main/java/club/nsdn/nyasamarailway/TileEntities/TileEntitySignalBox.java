@@ -25,6 +25,7 @@ public class TileEntitySignalBox extends TileEntityBase {
     public static class SignalBox extends TileEntityRailActuator {
 
         public boolean inverterEnabled;
+        public boolean prevInverterEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
@@ -131,6 +132,7 @@ public class TileEntitySignalBox extends TileEntityBase {
             signalBox = (SignalBox) world.getTileEntity(x, y, z);
 
             if (player.isSneaking() && !world.isRemote) {
+                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
                 if (signalBox.inverterEnabled) {
                     signalBox.inverterEnabled = false;
                     player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
@@ -198,7 +200,8 @@ public class TileEntitySignalBox extends TileEntityBase {
                 }
             }
 
-            if (old != meta) {
+            if (old != meta || signalBox.prevInverterEnabled != signalBox.inverterEnabled) {
+                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
             }

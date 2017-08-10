@@ -21,6 +21,7 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
     public static class SignalBoxSender extends TileEntityRailSender {
 
         public boolean isEnabled;
+        public boolean prevIsEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
@@ -99,21 +100,26 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+
         SignalBoxSender sender;
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof SignalBoxSender) {
             sender = (SignalBoxSender) world.getTileEntity(x, y, z);
-
             if (!world.isRemote) {
+                sender.prevIsEnabled = sender.isEnabled;
                 if (sender.isEnabled) {
                     sender.isEnabled = false;
                 } else {
                     sender.isEnabled = true;
                 }
+                world.playSoundEffect(
+                        (double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D,
+                        "random.click", 0.3F, 0.5F
+                );
                 return true;
             }
-
         }
+
         return false;
     }
 
@@ -156,7 +162,8 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
             if (isEnabled) meta |= 0x8;
             else meta &= 0x7;
 
-            if (old != meta) {
+            if (old != meta || sender.prevIsEnabled != sender.isEnabled) {
+                sender.prevIsEnabled = sender.isEnabled;
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
             }

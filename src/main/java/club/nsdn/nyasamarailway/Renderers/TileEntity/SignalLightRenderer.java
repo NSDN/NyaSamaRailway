@@ -32,12 +32,9 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_y.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_g.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_w.png"),
-            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_b.png")
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_b.png"),
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_p.png")
     };
-    private static final int TEXTURE_DEF = 0;
-    private static final int TEXTURE_R = 1;
-    private static final int TEXTURE_Y = 2;
-    private static final int TEXTURE_G = 3;
 
     public SignalLightRenderer() {
     }
@@ -69,6 +66,10 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
             if (((TileEntitySignalLight.SignalLight) te).lightType.equals("white&blue")) {
                 if (lightState == 2) lightState = 4;
                 else if (lightState == 3) lightState = 5;
+                else lightState = 0;
+            } else if (((TileEntitySignalLight.SignalLight) te).lightType.equals("yellow&purple")) {
+                if (lightState == 2) lightState = 2;
+                else if (lightState == 3) lightState = 6;
                 else lightState = 0;
             }
         }

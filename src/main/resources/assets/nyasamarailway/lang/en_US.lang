@@ -106,6 +106,7 @@ info.signal.light.mode.red_yellow=[NSR] Signal Light Mode is Red-Yellow
 info.signal.light.mode.red_green=[NSR] Signal Light Mode is Red-Green
 info.signal.light.mode.yellow_green=[NSR] Signal Light Mode is Yellow-Green
 info.signal.light.mode.white_blue=[NSR] Signal Light Mode is White-Blue
+info.signal.light.mode.yellow_purple=[NSR] Signal Light Mode is Yellow-Purple
 info.signal.light.mode.none=[NSR] Signal Light Mode is Always-OFF
 info.signal.box.inverter.off=[NSR] Signal Actuator Inverter is OFF
 info.signal.box.inverter.on=[NSR] Signal Actuator Inverter is ON

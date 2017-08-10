@@ -5,10 +5,7 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity;
  */
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailActuator;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailSender;
-import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalBox;
-import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalLight;
+import club.nsdn.nyasamarailway.TileEntities.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -25,6 +22,7 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "models/blocks/signal_box_base.obj")
     );
     private final WavefrontObject modelBtn;
+    private final WavefrontObject modelBtnLight;
     private final ResourceLocation textureBase = new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_base.png");
 
     private final WavefrontObject models[] = {
@@ -36,20 +34,26 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_r.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_y.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_g.png"),
-            new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_none.png")
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_none.png"),
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_w.png")
     };
     private static final int SIGN_R = 0;
     private static final int SIGN_Y = 1;
     private static final int SIGN_G = 2;
     private static final int SIGN_NONE = 3;
+    private static final int SIGN_W = 4;
 
     public SignalBoxRenderer(boolean isSender) {
         if (isSender) {
-            modelBtn =  new WavefrontObject(
+            modelBtn = new WavefrontObject(
                     new ResourceLocation("nyasamarailway", "models/blocks/signal_box_btn.obj")
+            );
+            modelBtnLight = new WavefrontObject(
+                    new ResourceLocation("nyasamarailway", "models/blocks/signal_box_btn_light.obj")
             );
         } else {
             modelBtn = null;
+            modelBtnLight = null;
         }
     }
 
@@ -59,11 +63,15 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
         boolean txState;
         boolean rxState;
         boolean sgnState = (meta & 0x8) != 0;
+        boolean isEnabled = false;
 
         if (te instanceof TileEntityRailActuator) {
             txState = ((TileEntityRailActuator) te).getTarget() != null;
             rxState = ((TileEntityRailActuator) te).getSenderRail() != null;
         } else if (te instanceof TileEntityRailSender) {
+            if (te instanceof TileEntitySignalBoxSender.SignalBoxSender) {
+                isEnabled = ((TileEntitySignalBoxSender.SignalBoxSender) te).isEnabled;
+            }
             txState = ((TileEntityRailSender) te).getTarget() != null;
             rxState = ((TileEntityRailSender) te).getTransceiverRail() != null;
         } else return;
@@ -108,34 +116,37 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, -1.0F, 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                 GL11.glRotatef(0, 0.0F, -1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 1.0F, -1.0F);
                 break;
             case 5:
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, -1.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                 GL11.glRotatef(90.0F, 0.0F, -1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 1.0F, -1.0F);
                 break;
             case 6:
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                 GL11.glRotatef(180.0F, 0.0F, -1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 1.0F, -1.0F);
                 break;
             case 7:
                 GL11.glTranslatef(0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0.0F, -1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                 GL11.glRotatef(270.0F, 0.0F, -1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 1.0F, -1.0F);
                 break;
         }
 
         RendererHelper.renderWithResourceAndRotation(modelBase, 0, textureBase, manager);
-        if (modelBtn != null) RendererHelper.renderWithResourceAndRotation(modelBtn, 0, textureBase, manager);
+        if (modelBtn != null) {
+            RendererHelper.renderWithResourceAndRotation(modelBtn, 0, textureBase, manager);
+            RendererHelper.renderWithResourceAndRotation(modelBtnLight, 0, textures[isEnabled ? SIGN_W : SIGN_NONE], manager);
+        }
         RendererHelper.renderWithResourceAndRotation(models[SIGN_G], 0, textures[rxState ? SIGN_G : SIGN_NONE], manager);
         RendererHelper.renderWithResourceAndRotation(models[SIGN_Y], 0, textures[txState ? SIGN_Y : SIGN_NONE], manager);
         RendererHelper.renderWithResourceAndRotation(models[SIGN_R], 0, textures[sgnState ? SIGN_R : SIGN_NONE], manager);
