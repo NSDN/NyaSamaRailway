@@ -65,9 +65,14 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
         boolean sgnState = (meta & 0x8) != 0;
         boolean isEnabled = false;
 
+        boolean inverted = false;
+
         if (te instanceof TileEntityRailActuator) {
             txState = ((TileEntityRailActuator) te).getTarget() != null;
             rxState = ((TileEntityRailActuator) te).getSenderRail() != null;
+            if (te instanceof TileEntitySignalBox.SignalBox) {
+                inverted = ((TileEntitySignalBox.SignalBox) te).inverterEnabled;
+            }
         } else if (te instanceof TileEntityRailSender) {
             if (te instanceof TileEntitySignalBoxSender.SignalBoxSender) {
                 isEnabled = ((TileEntitySignalBoxSender.SignalBoxSender) te).isEnabled;
@@ -146,10 +151,19 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
         if (modelBtn != null) {
             RendererHelper.renderWithResourceAndRotation(modelBtn, 0, textureBase, manager);
             RendererHelper.renderWithResourceAndRotation(modelBtnLight, 0, textures[isEnabled ? SIGN_W : SIGN_NONE], manager);
+            RendererHelper.renderWithResourceAndRotation(models[SIGN_R], 0, textures[sgnState ? SIGN_R : SIGN_NONE], manager);
         }
         RendererHelper.renderWithResourceAndRotation(models[SIGN_G], 0, textures[rxState ? SIGN_G : SIGN_NONE], manager);
         RendererHelper.renderWithResourceAndRotation(models[SIGN_Y], 0, textures[txState ? SIGN_Y : SIGN_NONE], manager);
-        RendererHelper.renderWithResourceAndRotation(models[SIGN_R], 0, textures[sgnState ? SIGN_R : SIGN_NONE], manager);
+        RendererHelper.renderWithResourceAndRotation(
+            models[SIGN_R], 0,
+            textures[
+                sgnState ? (
+                    (inverted && modelBtn == null) ? SIGN_W : SIGN_R
+                ) : SIGN_NONE
+            ],
+            manager
+        );
 
         GL11.glPopMatrix();
         GL11.glPopMatrix();

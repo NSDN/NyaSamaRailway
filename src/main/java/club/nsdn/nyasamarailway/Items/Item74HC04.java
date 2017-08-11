@@ -1,9 +1,7 @@
 package club.nsdn.nyasamarailway.Items;
 
-import club.nsdn.nyasamarailway.Blocks.*;
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
 import club.nsdn.nyasamarailway.TileEntities.*;
-import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -49,28 +47,29 @@ public class Item74HC04 extends ItemToolBase {
         if (block == null)
             return false;
 
-        if (player.isSneaking()) {
-            if (!world.isRemote) {
+        if (!world.isRemote) {
+            if (player.isSneaking()) {
                 UUID uuid = player.getUniqueID();
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity instanceof TileEntityRailTransceiver) {
                     TileEntityRailTransceiver railSender = (TileEntityRailTransceiver) tileEntity;
                     if (tmpRails.containsKey(uuid)) {
                         tmpRails.remove(uuid);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                     } else {
                         tmpRails.put(uuid, railSender);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
                     }
+                    return true;
                 } else if (tileEntity instanceof TileEntityRailReceiver) {
                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) tileEntity;
                     if (tmpRails.containsKey(uuid)) {
                         if (railReceiver.getSenderRail() != tmpRails.get(uuid)) {
                             if (tmpRails.get(uuid).getTransceiverRail() == null) {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 railReceiver.setSenderRail(tmpRails.get(uuid));
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                 world.markBlockForUpdate(x, y, z);
                             }
                             tmpRails.remove(uuid);
@@ -78,17 +77,16 @@ public class Item74HC04 extends ItemToolBase {
                             if (railReceiver.getSenderRail() == tmpRails.get(uuid)) {
                                 railReceiver.setSenderRail(null);
                                 tmpRails.remove(uuid);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 world.markBlockForUpdate(x, y, z);
                             }
                         }
                     } else {
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                     }
+                    return true;
                 }
-            }
-        } else {
-            if (!world.isRemote) {
+            } else {
                 UUID uuid = player.getUniqueID();
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity instanceof TileEntityRailSender) {
@@ -96,28 +94,29 @@ public class Item74HC04 extends ItemToolBase {
                     if (senderRails.containsKey(uuid)) {
                         if (senderRails.get(uuid) instanceof TileEntityRailSender) {
                             if (senderRails.get(uuid) == sender) {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                             } else {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             }
                         } else {
                             if (senderRails.get(uuid).getTransceiverRail() == sender) {
                                 sender.setTransceiverRail(null);
                                 senderRails.get(uuid).setTransceiverRail(null);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 world.markBlockForUpdate(x, y, z);
                             } else {
                                 sender.setTransceiverRail(senderRails.get(uuid));
                                 senderRails.get(uuid).setTransceiverRail(sender);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                 world.markBlockForUpdate(x, y, z);
                             }
                         }
                         senderRails.remove(uuid);
                     } else {
                         senderRails.put(uuid, sender);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
                     }
+                    return true;
                 } else if (tileEntity instanceof TileEntityRailTransceiver) {
                     TileEntityRailTransceiver transceiver = (TileEntityRailTransceiver) tileEntity;
                     if (senderRails.containsKey(uuid)) {
@@ -125,30 +124,31 @@ public class Item74HC04 extends ItemToolBase {
                             if (senderRails.get(uuid).getTransceiverRail() == transceiver) {
                                 transceiver.setTransceiverRail(null);
                                 senderRails.get(uuid).setTransceiverRail(null);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 world.markBlockForUpdate(x, y, z);
                             } else {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             }
                         } else {
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                         }
                         senderRails.remove(uuid);
                     } else {
                         senderRails.put(uuid, transceiver);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
                     }
+                    return true;
                 } else if (tileEntity instanceof TileEntityRailReceiver) {
                     TileEntityRailReceiver receiver = (TileEntityRailReceiver) tileEntity;
                     if (senderRails.containsKey(uuid)) {
                         if (receiver.getSenderRail() != senderRails.get(uuid)) {
                             receiver.setSenderRail(senderRails.get(uuid));
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                             world.markBlockForUpdate(x, y, z);
                             senderRails.remove(uuid);
                         } else {
                             receiver.setSenderRail(null);
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                             world.markBlockForUpdate(x, y, z);
                         }
                         senderRails.remove(uuid);
@@ -158,34 +158,35 @@ public class Item74HC04 extends ItemToolBase {
                                 TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
                                 if (actuator.getTarget() != receiver) {
                                     actuator.setTarget(receiver);
-                                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                     world.markBlockForUpdate(x, y, z);
                                 } else {
                                     actuator.setTarget(null);
-                                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                     world.markBlockForUpdate(x, y, z);
                                 }
                             } else if (receiver instanceof TileEntityRailActuator) {
                                 if (((TileEntityRailActuator) receiver).getTarget() != receiverRails.get(uuid)) {
                                     ((TileEntityRailActuator) receiver).setTarget(receiverRails.get(uuid));
-                                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                     world.markBlockForUpdate(x, y, z);
                                 } else {
                                     ((TileEntityRailActuator) receiver).setTarget(null);
-                                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                     world.markBlockForUpdate(x, y, z);
                                 }
                             }
                             receiverRails.remove(uuid);
                         } else {
                             if (receiver instanceof TileEntitySignalLight.SignalLight) {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 receiverRails.put(uuid, receiver);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
                             }
                         }
                     }
+                    return true;
                 } else {
                     if (Railcraft.getInstance() != null) {
                         if (Railcraft.getInstance().verifySwitch(tileEntity)) {
@@ -194,95 +195,22 @@ public class Item74HC04 extends ItemToolBase {
                                     TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
                                     if (actuator.getTarget() != tileEntity) {
                                         actuator.setTarget(tileEntity);
-                                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                         world.markBlockForUpdate(x, y, z);
                                     } else {
                                         actuator.setTarget(null);
-                                        player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                         world.markBlockForUpdate(x, y, z);
                                     }
                                 }
                                 receiverRails.remove(uuid);
                             } else {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             }
+                            return true;
                         }
                     }
                 }
-            }
-
-            if (block instanceof IRailDirectional) {
-                if (((IRailDirectional) block).isForward()) {
-                    if (block instanceof BlockRailReception) world.setBlock(x, y, z, BlockLoader.blockRailReceptionAnti);
-                    if (block instanceof BlockRailProtectHead) world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);
-                    if ((block instanceof BlockRailDirectional)) world.setBlock(x, y, z, BlockLoader.blockRailDirectionalAnti);
-                    if (block instanceof RailMonoMagnetReception) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReceptionAnti);
-                    if ((block instanceof RailMonoMagnetDirectional)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectionalAnti);
-                } else {
-                    if (block instanceof BlockRailReceptionAnti) world.setBlock(x, y, z, BlockLoader.blockRailReception);
-                    if (block instanceof BlockRailProtectHeadAnti) world.setBlock(x, y, z, BlockLoader.blockRailProtectHead);
-                    if ((block instanceof BlockRailDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.blockRailDirectional);
-                    if (block instanceof RailMonoMagnetReceptionAnti) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReception);
-                    if ((block instanceof RailMonoMagnetDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectional);
-                }
-                return !world.isRemote;
-            } else if (block instanceof BlockRailDetectorBase) {
-                if (block instanceof BlockRailBlocking) return !world.isRemote;
-                int nowDelay = ((BlockRailDetectorBase) block).getDelaySecond();
-                if (block instanceof BlockRailStoneSleeperDetector) {
-                    switch (nowDelay) {
-                        case 0:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector5s);
-                            break;
-                        case 5:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector15s);
-                            break;
-                        case 15:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector30s);
-                            break;
-                        case 30:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector);
-                            break;
-                    }
-                } else if (block instanceof BlockRailNoSleeperDetector) {
-                    switch (nowDelay) {
-                        case 0:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector5s);
-                            break;
-                        case 5:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector15s);
-                            break;
-                        case 15:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector30s);
-                            break;
-                        case 30:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector);
-                            break;
-                    }
-                }
-                nowDelay = ((BlockRailDetectorBase) world.getBlock(x, y, z)).getDelaySecond();
-                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.74HC04.delay", nowDelay));
-                return !world.isRemote;
-            } else if (block instanceof RailMonoMagnetDetector) {
-                if (block instanceof RailMonoMagnetBlocking) return !world.isRemote;
-                int nowDelay = ((RailMonoMagnetDetector) block).getDelaySecond();
-                switch (nowDelay) {
-                    case 0:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector5s);
-                        break;
-                    case 5:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector15s);
-                        break;
-                    case 15:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector30s);
-                        break;
-                    case 30:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector);
-                        break;
-                }
-                nowDelay = ((RailMonoMagnetDetector) world.getBlock(x, y, z)).getDelaySecond();
-                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.74HC04.delay", nowDelay));
-                return !world.isRemote;
             }
         }
 

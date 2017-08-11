@@ -1,15 +1,10 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
-import club.nsdn.nyasamarailway.Items.Item74HC04;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -122,29 +117,6 @@ public class TileEntitySignalBox extends TileEntityBase {
                 setBlockBounds(y1, z1, 1.0F - x2, y2, z2, 1.0F - x1);
                 break;
         }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        SignalBox signalBox = null;
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof SignalBox) {
-            signalBox = (SignalBox) world.getTileEntity(x, y, z);
-
-            if (player.isSneaking() && !world.isRemote) {
-                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
-                if (signalBox.inverterEnabled) {
-                    signalBox.inverterEnabled = false;
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
-                } else {
-                    signalBox.inverterEnabled = true;
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.on"));
-                }
-                return true;
-            }
-
-        }
-        return false;
     }
 
     @Override

@@ -26,15 +26,18 @@ public class Railcraft implements IExtMod {
 
     @Override
     public boolean verifyBlock(Block block) {
+        if (block == null) return false;
         return block.getClass().getName().contains("mods.railcraft.common.blocks");
     }
 
     @Override
     public boolean verifyEntity(Entity entity) {
+        if (entity == null) return false;
         return entity.getClass().getName().contains("mods.railcraft.common.carts");
     }
 
     public boolean verifySwitch(TileEntity tileEntity) {
+        if (tileEntity == null) return false;
         return tileEntity.getClass().getSuperclass().getName().contains(
                 "mods.railcraft.common.blocks.signals.TileSwitchBase"
         ) || tileEntity.getClass().getSuperclass().getSuperclass().getName().contains(

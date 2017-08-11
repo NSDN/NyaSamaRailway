@@ -25,12 +25,14 @@ public class RailsOfWar implements IExtMod {
 
     @Override
     public boolean verifyBlock(Block block) {
+        if (block == null) return false;
         return block.getClass().getName().contains("BlockPointer") &&
                block.getClass().getName().contains("net.row"); //Verify pointer only, not rail
     }
 
     @Override
     public boolean verifyEntity(Entity entity) {
+        if (entity == null) return false;
         return entity.getClass().getSuperclass().getSuperclass().getName().contains("RoWRollingStock");
     }
 }

@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 public class Util {
 
     public static boolean verifyClass(Class<?> c, String tag, Class<?> end) {
+        if (c == null) return false;
+        if (end == null) return false;
         if (c == end) return false;
         if (c.getSuperclass().getName().contains(tag))
             return true;
@@ -19,6 +21,7 @@ public class Util {
     }
 
     public static void modifyNBT(Entity entity, String nbtTag, Object value) {
+        if (entity == null) return;
         NBTTagCompound tagCompound = new NBTTagCompound();
         entity.writeToNBT(tagCompound);
         if (value instanceof Boolean)
@@ -39,6 +42,7 @@ public class Util {
     }
 
     public static void modifyNBT(TileEntity tileEntity, String nbtTag, Object value) {
+        if (tileEntity == null) return;
         NBTTagCompound tagCompound = new NBTTagCompound();
         tileEntity.writeToNBT(tagCompound);
         if (value instanceof Boolean)
@@ -59,6 +63,7 @@ public class Util {
     }
 
     public static boolean isMinecart(Class<?> c) {
+        if (c == null) return false;
         if (c == EntityMinecart.class) return true;
         else if (c == Object.class)
             return false;

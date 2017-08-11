@@ -1,14 +1,9 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.Blocks.BlockLoader;
-import club.nsdn.nyasamarailway.Items.Item74HC04;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -80,64 +75,6 @@ public class TileEntitySignalLight extends TileEntityBase {
     @Override
     protected void setBoundsByMeta(int meta) {
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        SignalLight signalLight = null;
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof SignalLight) {
-            signalLight = (SignalLight) world.getTileEntity(x, y, z);
-
-            if (player.getCurrentEquippedItem() != null) {
-                if (player.getCurrentEquippedItem().getItem() instanceof Item74HC04) return false;
-            }
-
-            if (!player.isSneaking() && !world.isRemote) {
-                if (signalLight.isBlinking) {
-                    signalLight.isBlinking = false;
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.off"));
-                } else {
-                    signalLight.isBlinking = true;
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.on"));
-                }
-                return true;
-            }
-            if (player.isSneaking() && !world.isRemote) {
-                signalLight.prevLightType = signalLight.lightType;
-                if (signalLight.lightType.equals("none")) {
-                    signalLight.lightType = "red&off";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_off"));
-                } else if (signalLight.lightType.equals("red&off")) {
-                    signalLight.lightType = "yellow&off";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_off"));
-                } else if (signalLight.lightType.equals("yellow&off")) {
-                    signalLight.lightType = "green&off";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.green_off"));
-                } else if (signalLight.lightType.equals("green&off")) {
-                    signalLight.lightType = "red&yellow";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_yellow"));
-                } else if (signalLight.lightType.equals("red&yellow")) {
-                    signalLight.lightType = "red&green";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_green"));
-                } else if (signalLight.lightType.equals("red&green")) {
-                    signalLight.lightType = "yellow&green";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_green"));
-                } else if (signalLight.lightType.equals("yellow&green")) {
-                    signalLight.lightType = "white&blue";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.white_blue"));
-                } else if (signalLight.lightType.equals("white&blue")) {
-                    signalLight.lightType = "yellow&purple";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_purple"));
-                } else if (signalLight.lightType.equals("yellow&purple")) {
-                    signalLight.lightType = "none";
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.none"));
-                }
-                return true;
-            }
-
-        }
-        return false;
     }
 
     @Override

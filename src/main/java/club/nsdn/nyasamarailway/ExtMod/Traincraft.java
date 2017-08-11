@@ -33,10 +33,12 @@ public class Traincraft implements IExtMod {
 
     @Override
     public boolean verifyEntity(Entity entity) {
+        if (entity == null) return false;
         return Util.verifyClass(entity.getClass(), "AbstractTrains", EntityMinecart.class);
     }
 
     public boolean isLocomotive(Entity entity) {
+        if (entity == null) return false;
         return Util.verifyClass(entity.getClass(), "train.common.api.Locomotive", EntityMinecart.class);
     }
 
