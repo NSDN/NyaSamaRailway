@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
-import club.nsdn.nyasamarailway.Blocks.TileEntityRailTransceiver;
-import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.Items.Item1N4148;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityRailTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -163,41 +163,6 @@ public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
                 world.func_147453_f(x, y, z, this);
             }
         }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        TileEntityRail thisRail = null;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
-            thisRail = (TileEntityRail) world.getTileEntity(x, y, z);
-        }
-        if (thisRail != null) {
-            UUID uuid = player.getUniqueID();
-            if (player.isSneaking() && !world.isRemote) {
-                if (tmpRails.containsKey(uuid)) {
-                    if (tmpRails.get(uuid) == thisRail) {
-                        thisRail.setTransceiverRail(null);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.abort"));
-                    } else {
-                        if (thisRail.getTransceiverRail() == tmpRails.get(uuid)) {
-                            thisRail.getTransceiverRail().setTransceiverRail(null);
-                            thisRail.setTransceiverRail(null);
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.disconnected"));
-                        } else {
-                            thisRail.setTransceiverRail(tmpRails.get(uuid));
-                            thisRail.getTransceiverRail().setTransceiverRail(thisRail);
-                            player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.connected"));
-                        }
-                    }
-                    tmpRails.remove(uuid);
-                } else {
-                    tmpRails.put(uuid, thisRail);
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.begin"));
-                }
-                return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -47,6 +47,10 @@ public class CommonProxy {
             Traincraft.setInstance(new Traincraft());
             NyaSamaRailway.log.info("NyaSamaRailway detected Traincraft mod");
         }
+        if (Loader.isModLoaded(Railcraft.modid)) {
+            Railcraft.setInstance(new Railcraft());
+            NyaSamaRailway.log.info("NyaSamaRailway detected Railcraft mod");
+        }
     }
 
 }

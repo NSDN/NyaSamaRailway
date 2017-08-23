@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.Items;
 
-import club.nsdn.nyasamarailway.Blocks.*;
-import club.nsdn.nyasamarailway.TileEntities.Rail.*;
+import club.nsdn.nyasamarailway.ExtMod.Railcraft;
+import club.nsdn.nyasamarailway.TileEntities.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,12 +20,18 @@ public class Item74HC04 extends ItemToolBase {
 
     public static LinkedHashMap<UUID, TileEntityRailTransceiver> tmpRails;
 
+    public static LinkedHashMap<UUID, TileEntityRailTransceiver> senderRails;
+    public static LinkedHashMap<UUID, TileEntityRailReceiver> receiverRails;
+
     public Item74HC04() {
         super(ToolMaterial.IRON);
         setUnlocalizedName("Item74HC04");
         setTexName("74hc04");
 
         tmpRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
+
+        senderRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
+        receiverRails = new LinkedHashMap<UUID, TileEntityRailReceiver>();
     }
 
     @Override
@@ -41,113 +47,192 @@ public class Item74HC04 extends ItemToolBase {
         if (block == null)
             return false;
 
-        if (player.isSneaking()) {
-            if (!world.isRemote) {
+        if (!world.isRemote) {
+            if (player.isSneaking()) {
                 UUID uuid = player.getUniqueID();
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 if (tileEntity instanceof TileEntityRailTransceiver) {
                     TileEntityRailTransceiver railSender = (TileEntityRailTransceiver) tileEntity;
                     if (tmpRails.containsKey(uuid)) {
                         tmpRails.remove(uuid);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.abort"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                     } else {
                         tmpRails.put(uuid, railSender);
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.begin"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
                     }
+                    return true;
                 } else if (tileEntity instanceof TileEntityRailReceiver) {
                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) tileEntity;
                     if (tmpRails.containsKey(uuid)) {
-                        if (railReceiver.getSenderRail() == null) {
+                        if (railReceiver.getSenderRail() != tmpRails.get(uuid)) {
                             if (tmpRails.get(uuid).getTransceiverRail() == null) {
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.error"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 railReceiver.setSenderRail(tmpRails.get(uuid));
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.connected"));
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                updateTileEntity(tmpRails.get(uuid));
+                                updateTileEntity(railReceiver);
                             }
                             tmpRails.remove(uuid);
                         } else {
                             if (railReceiver.getSenderRail() == tmpRails.get(uuid)) {
                                 railReceiver.setSenderRail(null);
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                updateTileEntity(tmpRails.get(uuid));
+                                updateTileEntity(railReceiver);
                                 tmpRails.remove(uuid);
-                                player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.disconnected"));
                             }
                         }
                     } else {
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.error"));
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                     }
+                    return true;
                 }
-            }
-        } else {
-            if (block instanceof IRailDirectional) {
-                if (((IRailDirectional) block).isForward()) {
-                    if (block instanceof BlockRailReception) world.setBlock(x, y, z, BlockLoader.blockRailReceptionAnti);
-                    if (block instanceof BlockRailProtectHead) world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);
-                    if ((block instanceof BlockRailDirectional)) world.setBlock(x, y, z, BlockLoader.blockRailDirectionalAnti);
-                    if (block instanceof RailMonoMagnetReception) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReceptionAnti);
-                    if ((block instanceof RailMonoMagnetDirectional)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectionalAnti);
+            } else {
+                UUID uuid = player.getUniqueID();
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                if (tileEntity instanceof TileEntityRailMultiSender) {
+                    TileEntityRailMultiSender sender = (TileEntityRailMultiSender) tileEntity;
+                    if (senderRails.containsKey(uuid)) {
+                        if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                            if (senderRails.get(uuid) == sender) {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
+                            } else {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                            }
+                        } else {
+                            if (senderRails.get(uuid).getTransceiverRail() == sender) {
+                                sender.setTransceiverRail(null);
+                                senderRails.get(uuid).setTransceiverRail(null);
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(sender);
+                            } else {
+                                sender.setTransceiverRail(senderRails.get(uuid));
+                                senderRails.get(uuid).setTransceiverRail(sender);
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(sender);
+                            }
+                        }
+                        senderRails.remove(uuid);
+                    } else {
+                        senderRails.put(uuid, sender);
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                    }
+                    return true;
+                } else if (tileEntity instanceof TileEntityRailTransceiver) {
+                    TileEntityRailTransceiver transceiver = (TileEntityRailTransceiver) tileEntity;
+                    if (senderRails.containsKey(uuid)) {
+                        if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                            if (senderRails.get(uuid).getTransceiverRail() == transceiver) {
+                                transceiver.setTransceiverRail(null);
+                                senderRails.get(uuid).setTransceiverRail(null);
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(transceiver);
+                            } else {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                            }
+                        } else {
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
+                        }
+                        senderRails.remove(uuid);
+                    } else {
+                        senderRails.put(uuid, transceiver);
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                    }
+                    return true;
+                } else if (tileEntity instanceof TileEntityRailReceiver) {
+                    TileEntityRailReceiver receiver = (TileEntityRailReceiver) tileEntity;
+                    if (senderRails.containsKey(uuid)) {
+                        if (receiver.getSenderRail() != senderRails.get(uuid)) {
+                            receiver.setSenderRail(senderRails.get(uuid));
+                            if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                                ((TileEntityRailMultiSender) senderRails.get(uuid)).incTarget();
+                            }
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                            updateTileEntity(senderRails.get(uuid));
+                            updateTileEntity(receiver);
+                            senderRails.remove(uuid);
+                        } else {
+                            receiver.setSenderRail(null);
+                            if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                                ((TileEntityRailMultiSender) senderRails.get(uuid)).decTarget();
+                            }
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                            updateTileEntity(senderRails.get(uuid));
+                            updateTileEntity(receiver);
+                        }
+                        senderRails.remove(uuid);
+                    } else {
+                        if (receiverRails.containsKey(uuid)) {
+                            if (receiverRails.get(uuid) instanceof TileEntityRailActuator) {
+                                TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
+                                if (actuator == receiver) {
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                }
+                                if (actuator.getTarget() != receiver) {
+                                    actuator.setTarget(receiver);
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(receiver);
+                                } else {
+                                    actuator.setTarget(null);
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(receiver);
+                                }
+                            } else if (receiver instanceof TileEntityRailActuator) {
+                                if (((TileEntityRailActuator) receiver).getTarget() != receiverRails.get(uuid)) {
+                                    ((TileEntityRailActuator) receiver).setTarget(receiverRails.get(uuid));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                    updateTileEntity(receiverRails.get(uuid));
+                                    updateTileEntity(receiver);
+                                } else {
+                                    ((TileEntityRailActuator) receiver).setTarget(null);
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                    updateTileEntity(receiverRails.get(uuid));
+                                    updateTileEntity(receiver);
+                                }
+                            }
+                            receiverRails.remove(uuid);
+                        } else {
+                            if (receiver instanceof TileEntitySignalLight.SignalLight) {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                            } else {
+                                receiverRails.put(uuid, receiver);
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                            }
+                        }
+                    }
+                    return true;
                 } else {
-                    if (block instanceof BlockRailReceptionAnti) world.setBlock(x, y, z, BlockLoader.blockRailReception);
-                    if (block instanceof BlockRailProtectHeadAnti) world.setBlock(x, y, z, BlockLoader.blockRailProtectHead);
-                    if ((block instanceof BlockRailDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.blockRailDirectional);
-                    if (block instanceof RailMonoMagnetReceptionAnti) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReception);
-                    if ((block instanceof RailMonoMagnetDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectional);
-                }
-                return !world.isRemote;
-            } else if (block instanceof BlockRailDetectorBase) {
-                int nowDelay = ((BlockRailDetectorBase) block).getDelaySecond();
-                if (block instanceof BlockRailStoneSleeperDetector) {
-                    switch (nowDelay) {
-                        case 0:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector5s);
-                            break;
-                        case 5:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector15s);
-                            break;
-                        case 15:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector30s);
-                            break;
-                        case 30:
-                            world.setBlock(x, y, z, BlockLoader.blockRailStoneSleeperDetector);
-                            break;
-                    }
-                } else if (block instanceof BlockRailNoSleeperDetector) {
-                    switch (nowDelay) {
-                        case 0:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector5s);
-                            break;
-                        case 5:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector15s);
-                            break;
-                        case 15:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector30s);
-                            break;
-                        case 30:
-                            world.setBlock(x, y, z, BlockLoader.blockRailNoSleeperDetector);
-                            break;
+                    if (Railcraft.getInstance() != null) {
+                        if (Railcraft.getInstance().verifySwitch(tileEntity)) {
+                            if (receiverRails.containsKey(uuid)) {
+                                if (receiverRails.get(uuid) instanceof TileEntityRailActuator) {
+                                    TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
+                                    if (actuator.getTarget() != tileEntity) {
+                                        actuator.setTarget(tileEntity);
+                                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                        updateTileEntity(actuator);
+                                        updateTileEntity(tileEntity);
+                                    } else {
+                                        actuator.setTarget(null);
+                                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                        updateTileEntity(actuator);
+                                        updateTileEntity(tileEntity);
+                                    }
+                                }
+                                receiverRails.remove(uuid);
+                            } else {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                            }
+                            return true;
+                        }
                     }
                 }
-                nowDelay = ((BlockRailDetectorBase) world.getBlock(x, y, z)).getDelaySecond();
-                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.74HC04.delay", nowDelay));
-                return !world.isRemote;
-            } else if (block instanceof RailMonoMagnetDetector) {
-                int nowDelay = ((RailMonoMagnetDetector) block).getDelaySecond();
-                switch (nowDelay) {
-                    case 0:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector5s);
-                        break;
-                    case 5:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector15s);
-                        break;
-                    case 15:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector30s);
-                        break;
-                    case 30:
-                        world.setBlock(x, y, z, BlockLoader.railMonoMagnetDetector);
-                        break;
-                }
-                nowDelay = ((RailMonoMagnetDetector) world.getBlock(x, y, z)).getDelaySecond();
-                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.74HC04.delay", nowDelay));
-                return !world.isRemote;
             }
         }
 

@@ -82,6 +82,10 @@ public class BlockLoader {
 
     public static Block blockStationSign;
 
+    public static Block blockSignalLight;
+    public static Block blockSignalBox;
+    public static Block blockSignalBoxSender;
+
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
     }
@@ -270,6 +274,15 @@ public class BlockLoader {
 
         railMonoMagnetBlocking = new RailMonoMagnetBlocking();
         register(railMonoMagnetBlocking, "rail_mono_magnet_blocking");
+
+        blockSignalLight = new TileEntitySignalLight();
+        register(blockSignalLight, "block_signal_light");
+
+        blockSignalBox = new TileEntitySignalBox();
+        register(blockSignalBox, "block_signal_box");
+
+        blockSignalBoxSender = new TileEntitySignalBoxSender();
+        register(blockSignalBoxSender, "block_signal_box_sender");
 
     }
 

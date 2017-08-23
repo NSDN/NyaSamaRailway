@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.Blocks;
+package club.nsdn.nyasamarailway.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -16,14 +16,16 @@ public class TileEntityRailReceiver extends TileEntity {
     public TileEntityRailTransceiver getSenderRail() {
         if (receiverX.equals("null") || receiverY.equals("null") || receiverZ.equals("null")) return null;
 
-        TileEntity tileEntity;
+        TileEntity tileEntity; int x, y, z;
         try {
-            tileEntity = worldObj.getTileEntity(
-                    Integer.parseInt(receiverX), Integer.parseInt(receiverY), Integer.parseInt(receiverZ)
-            );
+            x = Integer.parseInt(receiverX);
+            y = Integer.parseInt(receiverY);
+            z = Integer.parseInt(receiverZ);
         } catch (Exception e) {
             return null;
         }
+        tileEntity = worldObj.getTileEntity(x, y, z);
+
         if (tileEntity == null) return null;
         if (!(tileEntity instanceof TileEntityRailTransceiver)) return null;
 
@@ -66,10 +68,11 @@ public class TileEntityRailReceiver extends TileEntity {
             tagCompound.setString("receiverRailX", "null");
             tagCompound.setString("receiverRailY", "null");
             tagCompound.setString("receiverRailZ", "null");
+        } else {
+            tagCompound.setString("receiverRailX", receiverX);
+            tagCompound.setString("receiverRailY", receiverY);
+            tagCompound.setString("receiverRailZ", receiverZ);
         }
-        tagCompound.setString("receiverRailX", receiverX);
-        tagCompound.setString("receiverRailY", receiverY);
-        tagCompound.setString("receiverRailZ", receiverZ);
         return tagCompound;
     }
 
@@ -96,6 +99,24 @@ public class TileEntityRailReceiver extends TileEntity {
     public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
         NBTTagCompound tagCompound = packet.func_148857_g();
         fromNBT(tagCompound);
+    }
+
+    public void updateTileEntity(TileEntity tileEntity) {
+        if (tileEntity == null) return;
+        tileEntity.getWorldObj().markBlockForUpdate(
+                tileEntity.xCoord,
+                tileEntity.yCoord,
+                tileEntity.zCoord
+        );
+    }
+
+    public void onDestroy() {
+        if (getSenderRail() != null) {
+            if (getSenderRail() instanceof TileEntityRailMultiSender) {
+                ((TileEntityRailMultiSender) getSenderRail()).decTarget();
+                updateTileEntity(getSenderRail());
+            }
+        }
     }
 
 }

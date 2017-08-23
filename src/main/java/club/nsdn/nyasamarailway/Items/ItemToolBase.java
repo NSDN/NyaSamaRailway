@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
@@ -78,4 +79,14 @@ public class ItemToolBase extends Item {
     public String getToolMaterialName() {
         return this.toolMaterial.toString();
     }
+
+    public void updateTileEntity(TileEntity tileEntity) {
+        if (tileEntity == null) return;
+        tileEntity.getWorldObj().markBlockForUpdate(
+                tileEntity.xCoord,
+                tileEntity.yCoord,
+                tileEntity.zCoord
+        );
+    }
+
 }
