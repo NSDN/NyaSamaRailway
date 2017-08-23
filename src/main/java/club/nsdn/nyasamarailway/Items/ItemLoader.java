@@ -15,6 +15,7 @@ public class ItemLoader {
     public static Item trainController32Bit;
     public static Item item74HC04;
     public static Item item1N4148;
+    public static Item itemPierBuilder;
     public static Item itemStationSign;
     public static Item itemMinecartBase;
     public static Item itemTrainBase;
@@ -43,6 +44,9 @@ public class ItemLoader {
 
         item1N4148 = new Item1N4148();
         register(item1N4148, "item_1n4148");
+
+        itemPierBuilder = new ItemPierBuilder();
+        register(itemPierBuilder, "item_pier_builder");
 
         itemStationSign = new ItemStationSign();
         register(itemStationSign, "item_station_sign");
