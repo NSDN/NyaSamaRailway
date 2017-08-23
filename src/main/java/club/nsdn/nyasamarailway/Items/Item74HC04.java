@@ -70,15 +70,17 @@ public class Item74HC04 extends ItemToolBase {
                             } else {
                                 railReceiver.setSenderRail(tmpRails.get(uuid));
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                                world.markBlockForUpdate(x, y, z);
+                                updateTileEntity(tmpRails.get(uuid));
+                                updateTileEntity(railReceiver);
                             }
                             tmpRails.remove(uuid);
                         } else {
                             if (railReceiver.getSenderRail() == tmpRails.get(uuid)) {
                                 railReceiver.setSenderRail(null);
-                                tmpRails.remove(uuid);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                world.markBlockForUpdate(x, y, z);
+                                updateTileEntity(tmpRails.get(uuid));
+                                updateTileEntity(railReceiver);
+                                tmpRails.remove(uuid);
                             }
                         }
                     } else {
@@ -89,10 +91,10 @@ public class Item74HC04 extends ItemToolBase {
             } else {
                 UUID uuid = player.getUniqueID();
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity instanceof TileEntityRailSender) {
-                    TileEntityRailSender sender = (TileEntityRailSender) tileEntity;
+                if (tileEntity instanceof TileEntityRailMultiSender) {
+                    TileEntityRailMultiSender sender = (TileEntityRailMultiSender) tileEntity;
                     if (senderRails.containsKey(uuid)) {
-                        if (senderRails.get(uuid) instanceof TileEntityRailSender) {
+                        if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
                             if (senderRails.get(uuid) == sender) {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                             } else {
@@ -103,12 +105,14 @@ public class Item74HC04 extends ItemToolBase {
                                 sender.setTransceiverRail(null);
                                 senderRails.get(uuid).setTransceiverRail(null);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                world.markBlockForUpdate(x, y, z);
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(sender);
                             } else {
                                 sender.setTransceiverRail(senderRails.get(uuid));
                                 senderRails.get(uuid).setTransceiverRail(sender);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                                world.markBlockForUpdate(x, y, z);
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(sender);
                             }
                         }
                         senderRails.remove(uuid);
@@ -120,12 +124,13 @@ public class Item74HC04 extends ItemToolBase {
                 } else if (tileEntity instanceof TileEntityRailTransceiver) {
                     TileEntityRailTransceiver transceiver = (TileEntityRailTransceiver) tileEntity;
                     if (senderRails.containsKey(uuid)) {
-                        if (senderRails.get(uuid) instanceof TileEntityRailSender) {
+                        if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
                             if (senderRails.get(uuid).getTransceiverRail() == transceiver) {
                                 transceiver.setTransceiverRail(null);
                                 senderRails.get(uuid).setTransceiverRail(null);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                world.markBlockForUpdate(x, y, z);
+                                updateTileEntity(senderRails.get(uuid));
+                                updateTileEntity(transceiver);
                             } else {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             }
@@ -143,37 +148,52 @@ public class Item74HC04 extends ItemToolBase {
                     if (senderRails.containsKey(uuid)) {
                         if (receiver.getSenderRail() != senderRails.get(uuid)) {
                             receiver.setSenderRail(senderRails.get(uuid));
+                            if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                                ((TileEntityRailMultiSender) senderRails.get(uuid)).incTarget();
+                            }
                             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                            world.markBlockForUpdate(x, y, z);
+                            updateTileEntity(senderRails.get(uuid));
+                            updateTileEntity(receiver);
                             senderRails.remove(uuid);
                         } else {
                             receiver.setSenderRail(null);
+                            if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
+                                ((TileEntityRailMultiSender) senderRails.get(uuid)).decTarget();
+                            }
                             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                            world.markBlockForUpdate(x, y, z);
+                            updateTileEntity(senderRails.get(uuid));
+                            updateTileEntity(receiver);
                         }
                         senderRails.remove(uuid);
                     } else {
                         if (receiverRails.containsKey(uuid)) {
                             if (receiverRails.get(uuid) instanceof TileEntityRailActuator) {
                                 TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
+                                if (actuator == receiver) {
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                }
                                 if (actuator.getTarget() != receiver) {
                                     actuator.setTarget(receiver);
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                                    world.markBlockForUpdate(x, y, z);
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(receiver);
                                 } else {
                                     actuator.setTarget(null);
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                    world.markBlockForUpdate(x, y, z);
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(receiver);
                                 }
                             } else if (receiver instanceof TileEntityRailActuator) {
                                 if (((TileEntityRailActuator) receiver).getTarget() != receiverRails.get(uuid)) {
                                     ((TileEntityRailActuator) receiver).setTarget(receiverRails.get(uuid));
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                                    world.markBlockForUpdate(x, y, z);
+                                    updateTileEntity(receiverRails.get(uuid));
+                                    updateTileEntity(receiver);
                                 } else {
                                     ((TileEntityRailActuator) receiver).setTarget(null);
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                    world.markBlockForUpdate(x, y, z);
+                                    updateTileEntity(receiverRails.get(uuid));
+                                    updateTileEntity(receiver);
                                 }
                             }
                             receiverRails.remove(uuid);
@@ -196,11 +216,13 @@ public class Item74HC04 extends ItemToolBase {
                                     if (actuator.getTarget() != tileEntity) {
                                         actuator.setTarget(tileEntity);
                                         if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
-                                        world.markBlockForUpdate(x, y, z);
+                                        updateTileEntity(actuator);
+                                        updateTileEntity(tileEntity);
                                     } else {
                                         actuator.setTarget(null);
                                         if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
-                                        world.markBlockForUpdate(x, y, z);
+                                        updateTileEntity(actuator);
+                                        updateTileEntity(tileEntity);
                                     }
                                 }
                                 receiverRails.remove(uuid);

@@ -126,6 +126,17 @@ public class TileEntitySignalBox extends TileEntityBase {
     }
 
     @Override
+    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
+        super.onBlockPreDestroy(world, x, y, z, meta);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity != null) {
+            if (tileEntity instanceof TileEntityRailReceiver) {
+                ((TileEntityRailReceiver) tileEntity).onDestroy();
+            }
+        }
+    }
+
+    @Override
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
         return true;
     }

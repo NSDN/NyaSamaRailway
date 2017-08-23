@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 /**
  * Created by drzzm32 on 2017.8.10.
  */
-public class TileEntityRailSender extends TileEntityRailTransceiver {
+public class TileEntityRailSingleSender extends TileEntityRailTransceiver {
 
     public String targetX, targetY, targetZ;
 
@@ -70,7 +70,7 @@ public class TileEntityRailSender extends TileEntityRailTransceiver {
         return true;
     }
 
-    public TileEntityRailSender() {
+    public TileEntityRailSingleSender() {
         targetX = "null";
         targetY = "null";
         targetZ = "null";

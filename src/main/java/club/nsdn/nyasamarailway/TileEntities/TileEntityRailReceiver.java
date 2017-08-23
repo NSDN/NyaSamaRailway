@@ -101,4 +101,22 @@ public class TileEntityRailReceiver extends TileEntity {
         fromNBT(tagCompound);
     }
 
+    public void updateTileEntity(TileEntity tileEntity) {
+        if (tileEntity == null) return;
+        tileEntity.getWorldObj().markBlockForUpdate(
+                tileEntity.xCoord,
+                tileEntity.yCoord,
+                tileEntity.zCoord
+        );
+    }
+
+    public void onDestroy() {
+        if (getSenderRail() != null) {
+            if (getSenderRail() instanceof TileEntityRailMultiSender) {
+                ((TileEntityRailMultiSender) getSenderRail()).decTarget();
+                updateTileEntity(getSenderRail());
+            }
+        }
+    }
+
 }

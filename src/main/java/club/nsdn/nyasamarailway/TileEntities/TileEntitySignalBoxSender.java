@@ -5,7 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -18,7 +17,7 @@ import java.util.Random;
  */
 public class TileEntitySignalBoxSender extends TileEntityBase {
 
-    public static class SignalBoxSender extends TileEntityRailSender {
+    public static class SignalBoxSender extends TileEntityRailMultiSender {
 
         public boolean isEnabled;
         public boolean prevIsEnabled;
@@ -100,7 +99,6 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-
         SignalBoxSender sender;
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof SignalBoxSender) {
@@ -116,8 +114,8 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
                         (double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D,
                         "random.click", 0.3F, 0.5F
                 );
-                return true;
             }
+            return true;
         }
 
         return false;

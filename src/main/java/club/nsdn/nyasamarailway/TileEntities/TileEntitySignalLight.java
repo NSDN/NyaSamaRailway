@@ -84,6 +84,17 @@ public class TileEntitySignalLight extends TileEntityBase {
     }
 
     @Override
+    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
+        super.onBlockPreDestroy(world, x, y, z, meta);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity != null) {
+            if (tileEntity instanceof TileEntityRailReceiver) {
+                ((TileEntityRailReceiver) tileEntity).onDestroy();
+            }
+        }
+    }
+
+    @Override
     public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
         return true;
     }
@@ -106,7 +117,7 @@ public class TileEntitySignalLight extends TileEntityBase {
             SignalLight signalLight = (SignalLight) world.getTileEntity(x, y, z);
             boolean isEnable;
             if (signalLight.getSenderRail() == null) {
-                isEnable = nearbyBlockIsPowered(world, x, y, z) || signalLight.isPowered;
+                isEnable = signalLight.isPowered ^ thisBlockIsPowered(world, x, y, z);
             } else {
                 isEnable = signalLight.senderRailIsPowered() ^ thisBlockIsPowered(world, x, y, z);
             }
