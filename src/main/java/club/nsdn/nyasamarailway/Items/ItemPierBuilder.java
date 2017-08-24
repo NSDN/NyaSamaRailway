@@ -1,8 +1,10 @@
 package club.nsdn.nyasamarailway.Items;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
@@ -54,6 +56,18 @@ public class ItemPierBuilder extends ItemToolBase {
         }
     }
 
+    public boolean reachesEndBlock(World world, int x, int y, int z) {
+        boolean flag = world.getBlock(x, y, z) == endBlock;
+
+        Material material = world.getBlock(x, y, z).getMaterial();
+        flag |= (
+            material == Material.clay || material == Material.ground ||
+            material == Material.iron || material == Material.rock
+        );
+
+        return flag;
+    }
+
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         Block block = world.getBlock(x, y, z);
@@ -76,7 +90,7 @@ public class ItemPierBuilder extends ItemToolBase {
                         new ChatComponentTranslation("info.PierBuilder.begin")
                 );
 
-            for (int dy = 0; world.getBlock(x, y - dy - 1 , z) != endBlock; dy++) {
+            for (int dy = 0; !reachesEndBlock(world, x, y - dy - 1, z); dy++) {
                 traversalCounter = 0;
                 TraversalBlocks(world, block, x, y - dy, z);
 
