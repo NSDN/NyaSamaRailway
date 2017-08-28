@@ -164,6 +164,7 @@ public class TileEntitySignalBox extends TileEntityBase {
 
             if (signalBox.getSenderRail() == null) {
                 isEnabled = (meta & 0x8) != 0;
+                meta &= 0x7;
             } else {
                 isEnabled = signalBox.senderRailIsPowered();
 
@@ -176,17 +177,19 @@ public class TileEntitySignalBox extends TileEntityBase {
             if (!signalBox.setSwitch(isEnabled)) {
                 if (!signalBox.setTargetLight(isEnabled)) {
                     if (signalBox.getTarget() != null) {
-                        signalBox.setTargetMetadata(
-                                signalBox.getTarget().getBlockMetadata() & 0x7 | (isEnabled ? 0x8 : 0x0)
-                        );
+                        if (signalBox.getTargetMetadata() >= 0 && isEnabled &&
+                            (signalBox.getTargetMetadata() & 0x8) == 0
+                        ) {
+                            signalBox.setTargetMetadata(signalBox.getTargetMetadata() | 0x8);
+                        }
                     }
                 }
             }
 
             if (old != meta || signalBox.prevInverterEnabled != signalBox.inverterEnabled) {
                 signalBox.prevInverterEnabled = signalBox.inverterEnabled;
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
+                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
             }
 
             world.scheduleBlockUpdate(x, y, z, this, 1);

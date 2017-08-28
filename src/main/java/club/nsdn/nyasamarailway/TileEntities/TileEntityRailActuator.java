@@ -62,6 +62,18 @@ public class TileEntityRailActuator extends TileEntityRailReceiver {
         }
     }
 
+    public int getTargetMetadata() {
+        TileEntity railTarget = getTarget();
+
+        if (railTarget == null) return -1;
+
+        int meta = railTarget.getWorldObj().getBlockMetadata(
+                railTarget.xCoord, railTarget.yCoord, railTarget.zCoord
+        );
+
+        return meta;
+    }
+
     public boolean setTargetMetadata(int meta) {
         TileEntity railTarget = getTarget();
 

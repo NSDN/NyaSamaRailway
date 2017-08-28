@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
@@ -14,7 +13,7 @@ import net.minecraft.world.World;
  */
 public class ItemPierBuilder extends ItemToolBase {
 
-    public static final int TRAVERSAL_MAX = 64;
+    public static final int TRAVERSAL_MAX = 128;
     public static int traversalCounter;
 
     public Block endBlock;
