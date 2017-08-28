@@ -154,7 +154,6 @@ public class Item74HC04 extends ItemToolBase {
                             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                             updateTileEntity(senderRails.get(uuid));
                             updateTileEntity(receiver);
-                            senderRails.remove(uuid);
                         } else {
                             receiver.setSenderRail(null);
                             if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
@@ -171,8 +170,7 @@ public class Item74HC04 extends ItemToolBase {
                                 TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
                                 if (actuator == receiver) {
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
-                                }
-                                if (actuator.getTarget() != receiver) {
+                                } else if (actuator.getTarget() != receiver) {
                                     actuator.setTarget(receiver);
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                     updateTileEntity(actuator);
