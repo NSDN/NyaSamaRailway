@@ -46,6 +46,9 @@ public class BlockLoader {
     public static Block blockRailBlocking;
     public static Block blockRailNoSleeperBlocking;
 
+    public static Block blockBumperStoneSleeper;
+    public static Block blockBumperNoSleeper;
+
     public static Block blockIronBars;
     public static Block blockIronWeb;
     public static Block blockTBridgeHead;
@@ -174,6 +177,13 @@ public class BlockLoader {
 
         blockRailNoSleeperBlocking = new BlockRailNoSleeperBlocking();
         register(blockRailNoSleeperBlocking, "block_rail_no_sleeper_blocking");
+
+
+        blockBumperStoneSleeper = new TileEntityBumperStoneSleeper();
+        register(blockBumperStoneSleeper, "block_bumper_stone_sleeper");
+
+        blockBumperNoSleeper = new TileEntityBumperNoSleeper();
+        register(blockBumperNoSleeper, "block_bumper_no_sleeper");
 
 
         blockIronBars = new BlockIronBars();
