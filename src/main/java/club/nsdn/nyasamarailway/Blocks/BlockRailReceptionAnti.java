@@ -31,6 +31,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
     public static class TileEntityRailReceptionAnti extends TileEntityRailReceiver {
 
         public int delay = 0;
+        public int count = 0;
         public boolean enable = false;
         public String cartType = "";
 
@@ -66,30 +67,43 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 world.getBlock(x, y, z + 1) == this || world.getBlock(x, y, z - 1) == this;
     }
 
-    public void setRailVerticalOutput(World world, int x, int y, int z, boolean value) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (value) {
-            if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                world.setBlockMetadataWithNotify(x - 1, y, z, meta | 8, 3);
-                world.setBlockMetadataWithNotify(x + 1, y, z, meta | 8, 3);
-                world.setBlockMetadataWithNotify(x, y - 1, z, meta | 8, 3);
+    public void spawnCart(World world, int x, int y, int z) {
+        TileEntityRailReceptionAnti rail = null;
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+            rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+        }
+        if (rail != null) {
+            if (rail.cartType.isEmpty()) return;
+
+            if (rail.cartType.equals(MinecartBase.class.getName())) {
+                MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSBT1.class.getName())) {
+                MinecartBase cart = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT1.class.getName())) {
+                MinecartBase cart = new NSPCT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT2.class.getName())) {
+                MinecartBase cart = new NSPCT2(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT3.class.getName())) {
+                MinecartBase cart = new NSPCT3(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT4.class.getName())) {
+                MinecartBase cart = new NSPCT4(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT5.class.getName())) {
+                MinecartBase cart = new NSPCT5(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT5L.class.getName())) {
+                MinecartBase cart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
             } else {
-                world.setBlockMetadataWithNotify(x, y, z - 1, meta | 8, 3);
-                world.setBlockMetadataWithNotify(x, y, z + 1, meta | 8, 3);
-                world.setBlockMetadataWithNotify(x, y - 1, z, meta | 8, 3);
-            }
-        } else {
-            if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                world.setBlockMetadataWithNotify(x - 1, y, z, meta & 7, 3);
-                world.setBlockMetadataWithNotify(x + 1, y, z, meta & 7, 3);
-                world.setBlockMetadataWithNotify(x, y - 1, z, meta & 7, 3);
-            } else {
-                world.setBlockMetadataWithNotify(x, y, z - 1, meta & 7, 3);
-                world.setBlockMetadataWithNotify(x, y, z + 1, meta & 7, 3);
-                world.setBlockMetadataWithNotify(x, y - 1, z, meta & 7, 3);
+                EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
+                world.spawnEntityInWorld(cart);
             }
         }
-
     }
 
     @Override
@@ -124,7 +138,19 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     }
                 }
             } else {
-                //计时10秒放车
+                TileEntityRailReceptionAnti rail = null;
+                if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+                    rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+                }
+                if (rail != null) {
+                    rail.count += 1;
+                    if (rail.count >= DELAY_TIME * 20) {
+                        rail.count = 0;
+                        spawnCart(world, x, y, z);
+                        rail.delay = 0;
+                        rail.enable = false;
+                    }
+                }
             }
 
             world.scheduleBlockUpdate(x, y, z, this, 1);
@@ -333,34 +359,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             if (rail != null) {
                 if (!rail.cartType.isEmpty() && !world.isRemote) {
                     if (!hasCart && (isRailPowered(world, x - 1, y, z) || isRailPowered(world, x, y, z + 1))) {
-                        if (rail.cartType.equals(MinecartBase.class.getName())) {
-                            MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSBT1.class.getName())) {
-                            MinecartBase cart = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT1.class.getName())) {
-                            MinecartBase cart = new NSPCT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT2.class.getName())) {
-                            MinecartBase cart = new NSPCT2(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT3.class.getName())) {
-                            MinecartBase cart = new NSPCT3(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT4.class.getName())) {
-                            MinecartBase cart = new NSPCT4(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT5.class.getName())) {
-                            MinecartBase cart = new NSPCT5(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else if (rail.cartType.equals(NSPCT5L.class.getName())) {
-                            MinecartBase cart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                            world.spawnEntityInWorld(cart);
-                        } else {
-                            EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
-                            world.spawnEntityInWorld(cart);
-                        }
+                        spawnCart(world, x, y, z);
                         rail.delay = 0;
                         rail.enable = false;
                     }
