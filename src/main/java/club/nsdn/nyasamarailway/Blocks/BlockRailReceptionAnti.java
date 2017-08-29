@@ -8,6 +8,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -107,6 +108,12 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
     }
 
     @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x, y, z);
+        world.scheduleBlockUpdate(x, y, z, this, 1);
+    }
+
+    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if (!world.isRemote) {
             float bBoxSize = 0.125F;
@@ -122,6 +129,11 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             boolean hasCart = !bBox.isEmpty();
 
             if (hasCart) {
+                if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+                    TileEntityRailReceptionAnti rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+                    if (rail != null) rail.count = 0;
+                }
+
                 for (Object obj : bBox) {
                     if (obj instanceof EntityMinecart) {
                         if (((EntityMinecart) obj).riddenByEntity == null) {
@@ -179,7 +191,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         double maxV;
         if (!playerDetectable) {
             maxV = 0.1;
-            if (world.getBlockMetadata(x, y, z) >= 8) {
+            if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ < -maxV) { //cart.motionZ < -maxV
                         if (cart.motionZ > -maxV * 1.5) cart.motionZ = -maxV * 1.5;
@@ -203,10 +215,11 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     cart.motionZ = Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1, 1.0, 1.0, 1.0, 0.05, 0.02);
                 } else {
                     if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                        cart.motionZ = 0;
+                        cart.motionZ = 0.0D;
                     } else {
-                        cart.motionX = 0;
+                        cart.motionX = 0.0D;
                     }
+                    cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             }
         } else {
@@ -221,20 +234,23 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
 
                 if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
                     if (hasPlayer) {
-                        if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && (rail.delay == 0)) {
+                        if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && !rail.enable) {
                             if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                                 cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
                                 cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
-                                rail.enable = true;
                             } else {
+                                rail.enable = true;
                                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                                     cart.motionZ = 0.0D;
                                 } else {
                                     cart.motionX = 0.0D;
                                 }
-                                player.addChatComponentMessage(
-                                        new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
-                                );
+                                cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
+                                if (player instanceof EntityPlayerMP) {
+                                    player.addChatComponentMessage(
+                                            new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
+                                    );
+                                }
                             }
                         } else {
                             if (rail.delay < DELAY_TIME * 20 && rail.enable) {
@@ -257,6 +273,15 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                                 }
 
                                 if (!isEnabled) rail.delay += 1;
+
+                                if (rail.delay == DELAY_TIME * 15) {
+                                    if (player instanceof EntityPlayerMP) {
+                                        player.addChatComponentMessage(
+                                                new ChatComponentTranslation("info.reception.ready")
+                                        );
+                                    }
+                                }
+
                                 if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                                     cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.01D, 0.02D));
                                     cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.01D, 0.02D));
@@ -266,6 +291,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                                     } else {
                                         cart.motionX = 0.0D;
                                     }
+                                    cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
                                 }
                             } else {
                                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
