@@ -190,7 +190,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         double maxV;
         if (!playerDetectable) {
             maxV = 0.1;
-            if (world.getBlockMetadata(x, y, z) >= 8) {
+            if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ > maxV) { //cart.motionZ > maxV
                         if (cart.motionZ < maxV * 1.5) cart.motionZ = maxV * 1.5;
@@ -231,14 +231,14 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
                     rail.cartType = cart.getClass().getName();
 
-                if (world.getBlockMetadata(x, y, z) < 8) {
+                if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
                     if (hasPlayer) {
-                        if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && rail.delay == 0) {
+                        if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && !rail.enable) {
                             if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                                 cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
                                 cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
-                                rail.enable = true;
                             } else {
+                                rail.enable = true;
                                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                                     cart.motionZ = 0.0D;
                                 } else {
