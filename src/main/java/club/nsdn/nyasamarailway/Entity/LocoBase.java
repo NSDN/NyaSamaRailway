@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
+import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.Item74HC04;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
@@ -189,7 +190,7 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
                     EntityPlayer player = (EntityPlayer) source.getEntity();
                     ItemStack stack = player.getCurrentEquippedItem();
                     if (stack == null) return false;
-                    if (stack.getItem() instanceof Item74HC04) flag = true;
+                    if (stack.getItem() instanceof Item1N4148) flag = true;
                 }
                 if(flag || this.getDamage() > 40.0F) {
                     if(this.riddenByEntity != null) {

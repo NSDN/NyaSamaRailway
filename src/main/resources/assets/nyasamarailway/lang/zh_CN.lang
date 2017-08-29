@@ -117,3 +117,4 @@ info.PierBuilder.begin=[NSR] 桥墩建造器开始工作...
 info.PierBuilder.abort=[NSR] 桥墩建造器工作中止,因为桥墩截面过大(Stack Overflow)
 info.PierBuilder.finish=[NSR] 桥墩建造器工作完成
 info.reception.pause=[NSR] 列车将在本站停车 %d 秒,欲到下一站的旅客请不要下车
+info.reception.ready=[NSR] 列车即将发车,上车的旅客请站稳扶好

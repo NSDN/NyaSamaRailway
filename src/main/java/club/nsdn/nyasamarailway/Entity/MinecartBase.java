@@ -68,8 +68,11 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
     @Override
     public AxisAlignedBB getCollisionBox(Entity entity) {
-        double size = 2;
-        return AxisAlignedBB.getBoundingBox(1 - size, 1 - size, 1 - size, size, size, size);
+        double size = 1.5;
+        return AxisAlignedBB.getBoundingBox(
+                posX + 1 - size, posY + 1 - size, posZ + 1 - size,
+                posX + size, posY + size, posZ + size
+        );
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
             if (player != null) {
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
-                    if (stack.getItem() instanceof Item74HC04 ||
+                    if (stack.getItem() instanceof Item1N4148 ||
                             stack.getItem() instanceof ItemTrainController8Bit ||
                             stack.getItem() instanceof ItemTrainController32Bit) {
                         return true;
@@ -237,7 +240,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
                     EntityPlayer player = (EntityPlayer) source.getEntity();
                     ItemStack stack = player.getCurrentEquippedItem();
                     if (stack == null) return false;
-                    if (stack.getItem() instanceof Item74HC04) flag = true;
+                    if (stack.getItem() instanceof Item1N4148) flag = true;
                 }
                 if(flag || this.getDamage() > 40.0F) {
                     if(this.riddenByEntity != null) {

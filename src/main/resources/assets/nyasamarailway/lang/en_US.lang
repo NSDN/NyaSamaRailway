@@ -117,3 +117,4 @@ info.PierBuilder.begin=[NSR] Pier Builder begin...
 info.PierBuilder.abort=[NSR] Pier Builder aborted, caused by Stack Overflow
 info.PierBuilder.finish=[NSR] Pier Builder finished the work
 info.reception.pause=[NSR] The train will parking for %d seconds at this stop.\nPassengers who wished to go to the next stop, please do not get off.
+info.reception.ready=[NSR] The train is about to depart.\nPassengers who get on the train, please stand firm.
