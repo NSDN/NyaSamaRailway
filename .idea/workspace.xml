@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ebcc2aa-1e49-48ea-b63d-0c57657f65c6" name="Default" comment="" />
+    <list default="true" id="4ebcc2aa-1e49-48ea-b63d-0c57657f65c6" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="NyaSamaTelecom.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -76,16 +78,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SignalBoxRenderer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/SignalBoxRenderer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1065">
-              <caret line="81" column="22" lean-forward="false" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TileEntityRailMultiSender.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailMultiSender.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -118,11 +110,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TileEntityRailReceiver.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TileEntityRailReceiver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="110" column="5" lean-forward="false" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
+            <state relative-caret-position="1545">
+              <caret line="107" column="34" lean-forward="false" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockRailReception.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="795">
+              <caret line="76" column="12" lean-forward="false" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockRailReceptionAnti.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -148,16 +160,6 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TileEntitySignalBoxSender.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntitySignalBoxSender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
-              <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -765,8 +767,6 @@
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/TileEntityRailWireless.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/Rail/RailMonoMagnetDetector.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailDetectorBase.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" />
-        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/Rail/RailMonoMagnetReception.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/Rail/RailMonoMagnetReceptionAnti.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/TileEntityRailTransceiver.java" />
@@ -800,6 +800,8 @@
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntitySignalBox.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntitySignalLight.java" />
         <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailReceiver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java" />
+        <option value="$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java" />
       </list>
     </option>
   </component>
@@ -886,24 +888,6 @@
             <path>
               <item name="NyaSamaRailway" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="NyaSamaRailway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Gradle: :forgeBin:1.7.10-10.13.4.1614-1.7.10" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="NyaSamaRailway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Gradle: :forgeBin:1.7.10-10.13.4.1614-1.7.10" type="70bed36:NamedLibraryElementNode" />
-              <item name="forgeBin-1.7.10-10.13.4.1614-1.7.10.jar" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="NyaSamaRailway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Gradle: :forgeBin:1.7.10-10.13.4.1614-1.7.10" type="70bed36:NamedLibraryElementNode" />
-              <item name="forgeBin-1.7.10-10.13.4.1614-1.7.10.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -1300,7 +1284,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297062" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21695095" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22334754" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1913646" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1339,20 +1323,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Proxy/CommonProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="51" column="77" lean-forward="true" selection-start-line="51" selection-start-column="77" selection-end-line="51" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailSignHeadT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="25" column="8" lean-forward="true" selection-start-line="25" selection-start-column="8" selection-end-line="63" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Renderers/TileEntity/TBridgeHeadModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-466">
@@ -1616,7 +1586,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1605">
           <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1624,7 +1593,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1065">
           <caret line="81" column="22" lean-forward="false" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1639,13 +1607,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="34" column="22" lean-forward="false" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forgeBin-1.7.10-10.13.4.1614-1.7.10.jar!/net/minecraft/block/Block.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="998" column="16" lean-forward="false" selection-start-line="998" selection-start-column="16" selection-end-line="998" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -1707,8 +1668,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/TileEntities/TileEntityRailReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="110" column="5" lean-forward="false" selection-start-line="110" selection-start-column="5" selection-end-line="110" selection-end-column="5" />
+        <state relative-caret-position="1545">
+          <caret line="107" column="34" lean-forward="false" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forgeBin-1.7.10-10.13.4.1614-1.7.10.jar!/net/minecraft/block/Block.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="582" column="16" lean-forward="false" selection-start-line="582" selection-start-column="16" selection-end-line="582" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReception.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="76" column="12" lean-forward="false" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/club/nsdn/nyasamarailway/Blocks/BlockRailReceptionAnti.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
       </provider>
