@@ -120,3 +120,4 @@ info.PierBuilder.abort=[NSR] 桥墩建造器工作中止,因为桥墩截面过�
 info.PierBuilder.finish=[NSR] 桥墩建造器工作完成
 info.reception.pause=[NSR] 列车将在本站停车 %d 秒,欲到下一站的旅客请不要下车
 info.reception.ready=[NSR] 列车即将发车,上车的旅客请站稳扶好
+info.reception.delay=[NSR] 抱歉,列车将推迟发车
