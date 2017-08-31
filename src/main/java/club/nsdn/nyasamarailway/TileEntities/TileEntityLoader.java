@@ -157,6 +157,14 @@ public class TileEntityLoader {
                 TileEntitySignalBoxSender.SignalBoxSender.class,
                 "tileEntitySignalBoxSender");
 
+        GameRegistry.registerTileEntity(
+                TileEntityBumperStoneSleeper.Bumper.class,
+                "tileEntityBumperStoneSleeper");
+
+        GameRegistry.registerTileEntity(
+                TileEntityBumperNoSleeper.Bumper.class,
+                "tileEntityBumperNoSleeper");
+
     }
 
 }

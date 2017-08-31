@@ -127,11 +127,6 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
             boolean hasCart = !bBox.isEmpty();
 
             if (hasCart) {
-                if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
-                    TileEntityRail rail = (TileEntityRail) world.getTileEntity(x, y, z);
-                    if (rail != null) rail.count = 0;
-                }
-
                 for (Object obj : bBox) {
                     if (obj instanceof EntityMinecart) {
                         if (((EntityMinecart) obj).riddenByEntity == null) {
@@ -141,6 +136,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                             }
                             if (rail != null) {
                                 rail.delay = 0;
+                                rail.count = 0;
                                 rail.enable = false;
                             }
                         }
@@ -248,6 +244,8 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                                     player.addChatComponentMessage(
                                             new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
                                     );
+                                } else {
+                                    player.playSound("nyasamarailway:info.reception.pause", 0.5F, 1.0F);
                                 }
                             }
                         } else {
@@ -271,12 +269,29 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                                 }
 
                                 if (!isEnabled) rail.delay += 1;
+                                else {
+                                    rail.count += 1;
+
+                                    if (rail.delay + rail.count == DELAY_TIME * 15) {
+                                        rail.delay = DELAY_TIME * 15 - 1;
+                                        rail.count += 1;
+                                        if (player instanceof EntityPlayerMP) {
+                                            player.addChatComponentMessage(
+                                                    new ChatComponentTranslation("info.reception.delay")
+                                            );
+                                        } else {
+                                            player.playSound("nyasamarailway:info.reception.delay", 0.5F, 1.0F);
+                                        }
+                                    }
+                                }
 
                                 if (rail.delay == DELAY_TIME * 15) {
                                     if (player instanceof EntityPlayerMP) {
                                         player.addChatComponentMessage(
                                                 new ChatComponentTranslation("info.reception.ready")
                                         );
+                                    } else {
+                                        player.playSound("nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                                     }
                                 }
 
@@ -315,6 +330,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                         }
                     } else {
                         rail.delay = 0;
+                        rail.count = 0;
                         rail.enable = false;
                     }
                 } else {

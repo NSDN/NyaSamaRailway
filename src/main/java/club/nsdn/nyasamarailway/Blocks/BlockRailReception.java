@@ -128,11 +128,6 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             boolean hasCart = !bBox.isEmpty();
 
             if (hasCart) {
-                if (world.getTileEntity(x, y, z) instanceof TileEntityRailReception) {
-                    TileEntityRailReception rail = (TileEntityRailReception) world.getTileEntity(x, y, z);
-                    if (rail != null) rail.count = 0;
-                }
-
                 for (Object obj : bBox) {
                     if (obj instanceof EntityMinecart) {
                         if (((EntityMinecart) obj).riddenByEntity == null) {
@@ -142,6 +137,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                             }
                             if (rail != null) {
                                 rail.delay = 0;
+                                rail.count = 0;
                                 rail.enable = false;
                             }
                         }
@@ -249,6 +245,8 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                                     player.addChatComponentMessage(
                                             new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
                                     );
+                                } else {
+                                    player.playSound("nyasamarailway:info.reception.pause", 0.5F, 1.0F);
                                 }
                             }
                         } else {
@@ -272,12 +270,29 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                                 }
 
                                 if (!isEnabled) rail.delay += 1;
+                                else {
+                                    rail.count += 1;
+
+                                    if (rail.delay + rail.count == DELAY_TIME * 15) {
+                                        rail.delay = DELAY_TIME * 15 - 1;
+                                        rail.count += 1;
+                                        if (player instanceof EntityPlayerMP) {
+                                            player.addChatComponentMessage(
+                                                    new ChatComponentTranslation("info.reception.delay")
+                                            );
+                                        } else {
+                                            player.playSound("nyasamarailway:info.reception.delay", 0.5F, 1.0F);
+                                        }
+                                    }
+                                }
 
                                 if (rail.delay == DELAY_TIME * 15) {
                                     if (player instanceof EntityPlayerMP) {
                                         player.addChatComponentMessage(
                                                 new ChatComponentTranslation("info.reception.ready")
                                         );
+                                    } else {
+                                        player.playSound("nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                                     }
                                 }
 
@@ -316,6 +331,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                         }
                     } else {
                         rail.delay = 0;
+                        rail.count = 0;
                         rail.enable = false;
                     }
                 } else {
