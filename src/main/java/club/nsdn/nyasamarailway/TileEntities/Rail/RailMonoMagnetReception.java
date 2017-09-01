@@ -30,6 +30,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
         public int delay = 0;
         public int count = 0;
         public boolean enable = false;
+        public boolean prev = false;
         public String cartType = "";
 
         @Override
@@ -129,15 +130,20 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
             if (hasCart) {
                 for (Object obj : bBox) {
                     if (obj instanceof EntityMinecart) {
-                        if (((EntityMinecart) obj).riddenByEntity == null) {
-                            TileEntityRail rail = null;
-                            if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
-                                rail = (TileEntityRail) world.getTileEntity(x, y, z);
-                            }
-                            if (rail != null) {
+                        TileEntityRail rail = null;
+                        if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
+                            rail = (TileEntityRail) world.getTileEntity(x, y, z);
+                        }
+                        if (rail != null) {
+                            if (((EntityMinecart) obj).riddenByEntity == null) {
                                 rail.delay = 0;
                                 rail.count = 0;
                                 rail.enable = false;
+
+                                rail.prev = true;
+                            } else if (rail.prev) {
+                                rail.prev = false;
+                                //rail.delay = DELAY_TIME * 15 - 1;
                             }
                         }
                         break;
@@ -244,25 +250,13 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                                     player.addChatComponentMessage(
                                             new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
                                     );
-                                } else {
-                                    player.playSound("nyasamarailway:info.reception.pause", 0.5F, 1.0F);
+                                    world.playSoundAtEntity(cart, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
                                 }
                             }
                         } else {
                             if (rail.delay < DELAY_TIME * 20 && rail.enable) {
                                 boolean isEnabled = false;
 
-                                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                                    if (world.isBlockIndirectlyGettingPowered(x - 1, y, z) || world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
-                                            world.isBlockIndirectlyGettingPowered(x - 1, y - 1, z) || world.isBlockIndirectlyGettingPowered(x + 1, y - 1, z)) {
-                                        isEnabled = true;
-                                    }
-                                } else {
-                                    if (world.isBlockIndirectlyGettingPowered(x, y, z - 1) || world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
-                                            world.isBlockIndirectlyGettingPowered(x, y - 1, z - 1) || world.isBlockIndirectlyGettingPowered(x, y - 1, z + 1)) {
-                                        isEnabled = true;
-                                    }
-                                }
                                 if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
                                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
                                     if (railReceiver.senderRailIsPowered()) isEnabled = true;
@@ -279,19 +273,18 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                                             player.addChatComponentMessage(
                                                     new ChatComponentTranslation("info.reception.delay")
                                             );
-                                        } else {
-                                            player.playSound("nyasamarailway:info.reception.delay", 0.5F, 1.0F);
+                                            world.playSoundAtEntity(cart, "nyasamarailway:info.reception.delay", 0.5F, 1.0F);
                                         }
                                     }
                                 }
 
                                 if (rail.delay == DELAY_TIME * 15) {
+                                    rail.count = 0;
                                     if (player instanceof EntityPlayerMP) {
                                         player.addChatComponentMessage(
                                                 new ChatComponentTranslation("info.reception.ready")
                                         );
-                                    } else {
-                                        player.playSound("nyasamarailway:info.reception.ready", 0.5F, 1.0F);
+                                        world.playSoundAtEntity(cart, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                                     }
                                 }
 

@@ -1,0 +1,23 @@
+{
+  "info.reception.pause": {
+    "category": "record",
+    "sounds": [{
+      "name": "info/reception/pause",
+      "stream": false
+    }]
+  },
+  "info.reception.ready": {
+    "category": "record",
+    "sounds": [{
+      "name": "info/reception/ready",
+      "stream": false
+    }]
+  },
+  "info.reception.delay": {
+    "category": "record",
+    "sounds": [{
+      "name": "info/reception/delay",
+      "stream": false
+    }]
+  }
+}
