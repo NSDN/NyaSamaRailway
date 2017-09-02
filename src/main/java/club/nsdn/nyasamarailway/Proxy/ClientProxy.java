@@ -5,13 +5,14 @@ package club.nsdn.nyasamarailway.Proxy;
  */
 
 import club.nsdn.nyasamarailway.Entity.EntityModelBinder;
-import club.nsdn.nyasamarailway.Entity.MinecartBase;
 import club.nsdn.nyasamarailway.Event.EventRegister;
-import club.nsdn.nyasamarailway.Renderers.Entity.MinecartRenderer;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.event.*;
 import club.nsdn.nyasamarailway.TileEntities.TileEntityModelBinder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.util.ResourceLocation;
 
 public class ClientProxy extends CommonProxy {
 

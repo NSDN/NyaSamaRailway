@@ -2,6 +2,8 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkPosition;
@@ -50,6 +52,26 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
 
     protected String textureLocation = "";
     protected void setIconLocation(String textureLocation) { this.textureLocation = "nyasamarailway" + ":" + textureLocation; }
+
+    @Override
+    public Material getMaterial() {
+        return super.getMaterial();
+    }
+
+    @Override
+    public MapColor getMapColor(int i) {
+        return getMaterial().getMaterialMapColor();
+    }
+
+    @Override
+    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z) {
+        return !getMaterial().blocksMovement();
+    }
+
+    @Override
+    public int getMobilityFlag() {
+        return getMaterial().getMaterialMobility();
+    }
 
     @Override
     public void registerBlockIcons(IIconRegister icon)
@@ -159,9 +181,8 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
         protected int chunkCoordX;
         protected int chunkCoordY;
         protected int chunkCoordZ;
-        private final boolean field_150656_f;
-        private List field_150657_g = new ArrayList();
-        private static final String __OBFID = "CL_00000196";
+        private final boolean isNormalRail;
+        private List<ChunkPosition> array = new ArrayList<ChunkPosition>();
         private final boolean canMakeSlopes;
 
         public Rail(World world, int x, int y, int z)
@@ -173,80 +194,80 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
             this.chunkCoordZ = z;
             BlockRailBase block = (BlockRailBase)world.getBlock(x, y, z);
             int l = block.getBasicRailMetadata(world, null, x, y, z);
-            this.field_150656_f = !block.isFlexibleRail(world, x, y, z);
+            this.isNormalRail = !block.isFlexibleRail(world, x, y, z);
             canMakeSlopes = block.canMakeSlopes(world, x, y, z);
             this.func_150648_a(l);
         }
 
         private void func_150648_a(int p_150648_1_)
         {
-            this.field_150657_g.clear();
+            this.array.clear();
 
             if (p_150648_1_ == 0)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
             }
             else if (p_150648_1_ == 1)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
             }
             else if (p_150648_1_ == 2)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY + 1, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY + 1, this.chunkCoordZ));
             }
             else if (p_150648_1_ == 3)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY + 1, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY + 1, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
             }
             else if (p_150648_1_ == 4)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY + 1, this.chunkCoordZ - 1));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY + 1, this.chunkCoordZ - 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
             }
             else if (p_150648_1_ == 5)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY + 1, this.chunkCoordZ + 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY + 1, this.chunkCoordZ + 1));
             }
             else if (p_150648_1_ == 6)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
             }
             else if (p_150648_1_ == 7)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1));
             }
             else if (p_150648_1_ == 8)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
             }
             else if (p_150648_1_ == 9)
             {
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
-                this.field_150657_g.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
+                this.array.add(new ChunkPosition(this.chunkCoordX + 1, this.chunkCoordY, this.chunkCoordZ));
+                this.array.add(new ChunkPosition(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1));
             }
         }
 
         private void func_150651_b()
         {
-            for (int i = 0; i < this.field_150657_g.size(); ++i)
+            for (int i = 0; i < this.array.size(); ++i)
             {
-                RailBase.Rail rail = this.func_150654_a((ChunkPosition)this.field_150657_g.get(i));
+                RailBase.Rail rail = this.func_150654_a((ChunkPosition)this.array.get(i));
 
                 if (rail != null && rail.func_150653_a(this))
                 {
-                    this.field_150657_g.set(i, new ChunkPosition(rail.chunkCoordX, rail.chunkCoordY, rail.chunkCoordZ));
+                    this.array.set(i, new ChunkPosition(rail.chunkCoordX, rail.chunkCoordY, rail.chunkCoordZ));
                 }
                 else
                 {
-                    this.field_150657_g.remove(i--);
+                    this.array.remove(i--);
                 }
             }
         }
@@ -265,9 +286,9 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
         //WTF?
         private boolean func_150653_a(RailBase.Rail p_150653_1_)
         {
-            for (int i = 0; i < this.field_150657_g.size(); ++i)
+            for (int i = 0; i < this.array.size(); ++i)
             {
-                ChunkPosition chunkposition = (ChunkPosition)this.field_150657_g.get(i);
+                ChunkPosition chunkposition = (ChunkPosition)this.array.get(i);
 
                 if (chunkposition.chunkPosX == p_150653_1_.chunkCoordX && chunkposition.chunkPosZ == p_150653_1_.chunkCoordZ)
                 {
@@ -280,9 +301,9 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
 
         private boolean func_150652_b(int p_150652_1_, int p_150652_2_, int p_150652_3_)
         {
-            for (int l = 0; l < this.field_150657_g.size(); ++l)
+            for (int l = 0; l < this.array.size(); ++l)
             {
-                ChunkPosition chunkposition = (ChunkPosition)this.field_150657_g.get(l);
+                ChunkPosition chunkposition = (ChunkPosition)this.array.get(l);
 
                 if (chunkposition.chunkPosX == p_150652_1_ && chunkposition.chunkPosZ == p_150652_3_)
                 {
@@ -322,13 +343,13 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
 
         private boolean func_150649_b(Rail p_150649_1_)
         {
-            return this.func_150653_a(p_150649_1_) ? true : (this.field_150657_g.size() == 2 ? false : true);
+            return this.func_150653_a(p_150649_1_) ? true : (this.array.size() == 2 ? false : true);
         }
 
         //轨道Metadata操作
         private void func_150645_c(Rail p_150645_1_)
         {
-            this.field_150657_g.add(new ChunkPosition(p_150645_1_.chunkCoordX, p_150645_1_.chunkCoordY, p_150645_1_.chunkCoordZ));
+            this.array.add(new ChunkPosition(p_150645_1_.chunkCoordX, p_150645_1_.chunkCoordY, p_150645_1_.chunkCoordZ));
             boolean flag = this.func_150652_b(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ - 1);
             boolean flag1 = this.func_150652_b(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ + 1);
             boolean flag2 = this.func_150652_b(this.chunkCoordX - 1, this.chunkCoordY, this.chunkCoordZ);
@@ -345,7 +366,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
                 b0 = 1;
             }
 
-            if (!this.field_150656_f)
+            if (!this.isNormalRail)
             {
                 if (flag1 && flag3 && !flag && !flag2)
                 {
@@ -401,7 +422,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
 
             int i = b0;
 
-            if (this.field_150656_f)
+            if (this.isNormalRail)
             {
                 i = this.world.getBlockMetadata(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ) & 8 | b0;
             }
@@ -443,7 +464,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
                 b0 = 1;
             }
 
-            if (!this.field_150656_f)
+            if (!this.isNormalRail)
             {
                 if (flag3 && flag5 && !flag2 && !flag4)
                 {
@@ -478,7 +499,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
                     b0 = 1;
                 }
 
-                if (!this.field_150656_f)
+                if (!this.isNormalRail)
                 {
                     if (p_150655_1_)
                     {
@@ -561,7 +582,7 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
             this.func_150648_a(b0);
             int i = b0;
 
-            if (this.field_150656_f)
+            if (this.isNormalRail)
             {
                 i = this.world.getBlockMetadata(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ) & 8 | b0;
             }
@@ -570,9 +591,9 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
             {
                 this.world.setBlockMetadataWithNotify(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ, i, 3);
 
-                for (int j = 0; j < this.field_150657_g.size(); ++j)
+                for (int j = 0; j < this.array.size(); ++j)
                 {
-                    RailBase.Rail rail = this.func_150654_a((ChunkPosition)this.field_150657_g.get(j));
+                    RailBase.Rail rail = this.func_150654_a((ChunkPosition)this.array.get(j));
                     if (rail != null)
                     {
                         rail.func_150651_b();

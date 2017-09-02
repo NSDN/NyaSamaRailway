@@ -1,11 +1,17 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.NyaSamaRailway;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by drzzm32 on 2016.11.29.
@@ -34,6 +40,11 @@ public class RailMono extends RailBase {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityRail();
+    }
+
+    @Override
+    public Material getMaterial() {
+        return Material.rock;
     }
 
     public RailMono() {

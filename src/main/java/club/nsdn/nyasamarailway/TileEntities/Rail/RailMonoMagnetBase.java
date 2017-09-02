@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -50,6 +51,11 @@ public class RailMonoMagnetBase extends RailBase {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityRail();
+    }
+
+    @Override
+    public Material getMaterial() {
+        return Material.iron;
     }
 
     public RailMonoMagnetBase(boolean noTurn, String name, String icon) {
