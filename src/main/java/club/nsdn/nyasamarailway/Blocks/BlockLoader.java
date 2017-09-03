@@ -71,6 +71,7 @@ public class BlockLoader {
     public static Block railMono;
     public static Block railMonoBumper;
     public static Block railMonoMagnet;
+    public static Block railMonoSwitch;
     public static Block railMonoMagnetPowered;
     public static Block railMonoMagnetDetector;
     public static Block railMonoMagnetDetector5s;
@@ -89,6 +90,7 @@ public class BlockLoader {
     public static Block blockSignalLight;
     public static Block blockSignalBox;
     public static Block blockSignalBoxSender;
+    public static Block blockTriStateSignalBox;
 
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
@@ -253,6 +255,9 @@ public class BlockLoader {
         railMonoMagnet = new RailMonoMagnet();
         register(railMonoMagnet, "rail_mono_magnet");
 
+        railMonoSwitch = new RailMonoSwitch();
+        register(railMonoSwitch, "rail_mono_switch");
+
         railMonoMagnetDetector = new RailMonoMagnetDetector();
         register(railMonoMagnetDetector, "rail_mono_magnet_detector");
 
@@ -297,6 +302,9 @@ public class BlockLoader {
 
         blockSignalBoxSender = new TileEntitySignalBoxSender();
         register(blockSignalBoxSender, "block_signal_box_sender");
+
+        blockTriStateSignalBox = new TileEntityTriStateSignalBox();
+        register(blockTriStateSignalBox, "block_tri_state_signal_box");
 
     }
 

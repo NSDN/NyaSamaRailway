@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import club.nsdn.nyasamarailway.TileEntities.TileEntityRailTransceiver;
 import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalBox;
 import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalLight;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityTriStateSignalBox;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -147,6 +148,29 @@ public class Item1N4148 extends ItemToolBase {
                 }
                 return true;
             }
+        } else if (tileEntity instanceof TileEntityTriStateSignalBox.TriStateSignalBox) {
+            TileEntityTriStateSignalBox.TriStateSignalBox signalBox = (TileEntityTriStateSignalBox.TriStateSignalBox) tileEntity;
+
+            if (player.isSneaking()) {
+                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
+                if (signalBox.inverterEnabled) {
+                    signalBox.inverterEnabled = false;
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
+                } else {
+                    signalBox.inverterEnabled = true;
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.on"));
+                }
+            } else {
+                signalBox.prevTriStateIsNeg = signalBox.triStateIsNeg;
+                if (signalBox.triStateIsNeg) {
+                    signalBox.triStateIsNeg = false;
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.triState.pos"));
+                } else {
+                    signalBox.triStateIsNeg = true;
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.triState.neg"));
+                }
+            }
+            return !world.isRemote;
         } else if (tileEntity instanceof TileEntitySignalBox.SignalBox) {
             TileEntitySignalBox.SignalBox signalBox = (TileEntitySignalBox.SignalBox) tileEntity;
 

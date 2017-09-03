@@ -27,8 +27,6 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
     private final WavefrontObject[] model;
     private final ResourceLocation[] textures;
 
-    private final boolean isMagnet;
-
     public RailMonoRenderer() {
         this.model  = new WavefrontObject[] {
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_straight.obj")),
@@ -40,7 +38,6 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                 new ResourceLocation("nyasamarailway", "textures/rails/mono_rail.png"),
                 new ResourceLocation("nyasamarailway", "textures/rails/mono_rail.png")
         };
-        this.isMagnet = false;
     }
 
     public RailMonoRenderer(String[] texturePath) {
@@ -56,7 +53,6 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
         for (int i = 3; i < 6; i++) {
             textures[i] = new ResourceLocation("nyasamarailway", texturePath[i - 3].replace(".png", "_powered.png"));
         }
-        this.isMagnet = true;
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {

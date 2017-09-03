@@ -169,6 +169,14 @@ public class TileEntityLoader {
                 TileEntityBumperNoSleeper.Bumper.class,
                 "tileEntityBumperNoSleeper");
 
+        GameRegistry.registerTileEntity(
+                TileEntityTriStateSignalBox.TriStateSignalBox.class,
+                "tileEntityTriStateSignalBox");
+
+        GameRegistry.registerTileEntity(
+                RailMonoSwitch.MonoSwitch.class,
+                "railMonoSwitch");
+
     }
 
 }

@@ -58,4 +58,12 @@ public class RailMonoMagnet extends RailMonoMagnetBase {
         super(false, "RailMonoMagnet", "rail_mono_magnet");
     }
 
+    @Override
+    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+        return world.getBlock(x, y, z).isReplaceable(world, x, y, z) && (
+                world.getBlock(x, y - 1, z) instanceof RailMono ||
+                world.getBlock(x, y - 1, z) instanceof RailMonoSwitch
+        );
+    }
+
 }

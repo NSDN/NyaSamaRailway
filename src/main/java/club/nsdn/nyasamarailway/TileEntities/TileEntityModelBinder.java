@@ -169,6 +169,11 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityBumperNoSleeper.Bumper.class, new BumperRenderer("rail_ns"));
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityTriStateSignalBox.TriStateSignalBox.class, new TriStateSignalBoxRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoSwitch.MonoSwitch.class, new RailMonoSwitchRenderer());
     }
 
 }
