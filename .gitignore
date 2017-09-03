@@ -9,3 +9,7 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+# IDEA config
+.idea/gradle.xml
+.idea/workspace.xml

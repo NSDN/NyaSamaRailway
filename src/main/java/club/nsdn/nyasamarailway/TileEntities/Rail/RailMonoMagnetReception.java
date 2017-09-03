@@ -5,6 +5,8 @@ import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,6 +45,15 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("cartType", cartType);
             return super.toNBT(tagCompound);
+        }
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(4, 4, 4);
         }
 
     }

@@ -2,6 +2,8 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityMinecartCommandBlock;
@@ -31,8 +33,12 @@ public class RailMonoMagnetDetector extends RailMonoMagnetBase {
     public static class TileEntityRail extends TileEntityRailReceiver implements RailMonoMagnetPowerable {
 
         @Override
-        public boolean shouldRenderInPass(int pass) {
-            return true;
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(4, 4, 4);
         }
 
         @Override

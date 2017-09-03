@@ -1,6 +1,8 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityMinecart;
@@ -21,8 +23,12 @@ public class RailMonoMagnetBase extends RailBase {
     public static class TileEntityRail extends TileEntity {
 
         @Override
-        public boolean shouldRenderInPass(int pass) {
-            return true;
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(4, 4, 4);
         }
 
         @Override

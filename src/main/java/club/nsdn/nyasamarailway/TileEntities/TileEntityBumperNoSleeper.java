@@ -53,7 +53,7 @@ public class TileEntityBumperNoSleeper extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
 }

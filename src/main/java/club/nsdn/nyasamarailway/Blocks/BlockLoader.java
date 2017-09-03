@@ -69,6 +69,7 @@ public class BlockLoader {
 
     public static Block railNoSleeperStraight;
     public static Block railMono;
+    public static Block railMonoBumper;
     public static Block railMonoMagnet;
     public static Block railMonoMagnetPowered;
     public static Block railMonoMagnetDetector;
@@ -245,6 +246,9 @@ public class BlockLoader {
 
         railMono = new RailMono();
         register(railMono, "rail_mono");
+
+        railMonoBumper = new RailMonoBumper();
+        register(railMonoBumper, "rail_mono_bumper");
 
         railMonoMagnet = new RailMonoMagnet();
         register(railMonoMagnet, "rail_mono_magnet");
