@@ -4,8 +4,8 @@ package club.nsdn.nyasamarailway.Renderers;
  * Created by drzzm on 2016.11.28.
  */
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.obj.Face;
@@ -22,11 +22,14 @@ public class RendererHelper {
     private static float centre_v = 0.0F;
     private static final float mapping_factor = 0.98F;
 
-    public static void renderWithResourceAndRotation(WavefrontObject model, float angle, ResourceLocation texture, TextureManager manager) {
-        manager.bindTexture(texture);
+    public static void renderWithResourceAndRotation(WavefrontObject model, float angle, ResourceLocation texture) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
         GL11.glPushMatrix();
         GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
         model.renderAll();
+        GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
 

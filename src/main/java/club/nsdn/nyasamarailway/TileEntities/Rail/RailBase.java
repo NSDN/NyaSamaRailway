@@ -28,8 +28,12 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
     public static class TileEntityRail extends TileEntity {
 
         @Override
-        public boolean shouldRenderInPass(int pass) {
-            return true;
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(4, 4, 4);
         }
 
         @Override

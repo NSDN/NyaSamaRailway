@@ -98,6 +98,10 @@ public class TileEntityLoader {
                 "railMono");
 
         GameRegistry.registerTileEntity(
+                RailMonoBumper.Bumper.class,
+                "railMonoBumper");
+
+        GameRegistry.registerTileEntity(
                 RailMonoMagnet.TileEntityRail.class,
                 "railMonoMagnet");
 

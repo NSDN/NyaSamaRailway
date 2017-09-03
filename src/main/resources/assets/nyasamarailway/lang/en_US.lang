@@ -58,6 +58,7 @@ tile.RailSignHeadLink.name=Rail Sign Head(Link)
 tile.RailSignHeadT.name=Rail Sign Head(T)
 tile.RailNoSleeperStraight.name=Thin Sleeper Straight Rail(Reality)
 tile.RailMono.name=Mono Rail Base
+tile.RailMonoBumper.name=Mono Rail Bumper
 tile.RailMonoMagnet.name=Mono Rail Magnet Part
 tile.RailMonoMagnetDetector.name=Mono Rail Detector Part
 tile.RailMonoMagnetDirectional.name=Mono Rail Directional Part

@@ -1,11 +1,14 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
@@ -17,8 +20,12 @@ public class RailMonoMagnetSpeedLimit extends RailMonoMagnetPowered {
     public static class TileEntityRail extends TileEntity implements RailMonoMagnetPowerable {
 
         @Override
-        public boolean shouldRenderInPass(int pass) {
-            return true;
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(4, 4, 4);
         }
 
         @Override

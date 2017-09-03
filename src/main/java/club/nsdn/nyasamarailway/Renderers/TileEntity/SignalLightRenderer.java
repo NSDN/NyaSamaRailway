@@ -59,7 +59,6 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
         int meta = te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         int angle = (meta & 0x3) * 90;
 
-        TextureManager manager = Minecraft.getMinecraft().getTextureManager();
         int lightState = (meta >> 2) & 0x3;
 
         if (te instanceof TileEntitySignalLight.SignalLight) {
@@ -74,10 +73,7 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
             }
         }
 
-        GL11.glPushMatrix();
-        GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-        RendererHelper.renderWithResourceAndRotation(model, angle, textures[lightState], manager);
-        GL11.glPopMatrix();
+        RendererHelper.renderWithResourceAndRotation(model, angle, textures[lightState]);
 
         RenderHelper.enableStandardItemLighting();
 

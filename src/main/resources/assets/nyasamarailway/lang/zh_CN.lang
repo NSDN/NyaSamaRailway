@@ -58,6 +58,7 @@ tile.RailSignHeadLink.name=分相合标牌
 tile.RailSignHeadT.name=T标牌
 tile.RailNoSleeperStraight.name=真实无砟轨
 tile.RailMono.name=单轨轨基
+tile.RailMonoBumper.name=单轨车挡
 tile.RailMonoMagnet.name=单轨永磁体组件
 tile.RailMonoMagnetDetector.name=单轨感应组件
 tile.RailMonoMagnetDirectional.name=单轨方向组件

@@ -97,10 +97,6 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
 
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
-        TextureManager manager = Minecraft.getMinecraft().getTextureManager();
-        GL11.glPushMatrix();
-        GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-
         GL11.glPushMatrix();
 
         switch (meta & 0x7) {
@@ -147,24 +143,22 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
                 break;
         }
 
-        RendererHelper.renderWithResourceAndRotation(modelBase, 0, textureBase, manager);
+        RendererHelper.renderWithResourceAndRotation(modelBase, 0, textureBase);
         if (modelBtn != null) {
-            RendererHelper.renderWithResourceAndRotation(modelBtn, 0, textureBase, manager);
-            RendererHelper.renderWithResourceAndRotation(modelBtnLight, 0, textures[isEnabled ? SIGN_W : SIGN_NONE], manager);
+            RendererHelper.renderWithResourceAndRotation(modelBtn, 0, textureBase);
+            RendererHelper.renderWithResourceAndRotation(modelBtnLight, 0, textures[isEnabled ? SIGN_W : SIGN_NONE]);
         }
-        RendererHelper.renderWithResourceAndRotation(models[SIGN_G], 0, textures[rxState ? SIGN_G : SIGN_NONE], manager);
-        RendererHelper.renderWithResourceAndRotation(models[SIGN_Y], 0, textures[txState ? SIGN_Y : SIGN_NONE], manager);
+        RendererHelper.renderWithResourceAndRotation(models[SIGN_G], 0, textures[rxState ? SIGN_G : SIGN_NONE]);
+        RendererHelper.renderWithResourceAndRotation(models[SIGN_Y], 0, textures[txState ? SIGN_Y : SIGN_NONE]);
         RendererHelper.renderWithResourceAndRotation(
             models[SIGN_R], 0,
             textures[
                 sgnState ? (
                     (inverted && modelBtn == null) ? SIGN_W : SIGN_R
                 ) : SIGN_NONE
-            ],
-            manager
+            ]
         );
 
-        GL11.glPopMatrix();
         GL11.glPopMatrix();
 
         RenderHelper.enableStandardItemLighting();

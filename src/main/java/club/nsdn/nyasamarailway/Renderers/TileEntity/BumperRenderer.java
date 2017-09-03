@@ -50,13 +50,8 @@ public class BumperRenderer extends TileEntitySpecialRenderer {
         int meta = te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         int angle = (meta & 0x3) * 90;
 
-        TextureManager manager = Minecraft.getMinecraft().getTextureManager();
-
-        GL11.glPushMatrix();
-        GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-        RendererHelper.renderWithResourceAndRotation(modelRail, angle, textureRail, manager);
-        RendererHelper.renderWithResourceAndRotation(modelMain, angle, textureMain, manager);
-        GL11.glPopMatrix();
+        RendererHelper.renderWithResourceAndRotation(modelRail, angle, textureRail);
+        RendererHelper.renderWithResourceAndRotation(modelMain, angle, textureMain);
 
         RenderHelper.enableStandardItemLighting();
 
