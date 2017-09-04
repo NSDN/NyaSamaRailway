@@ -92,6 +92,14 @@ public class BlockLoader {
     public static Block blockSignalBoxSender;
     public static Block blockTriStateSignalBox;
 
+    public static Block blockGateBase;
+    public static Block blockGateDoor;
+    public static Block blockGateFront;
+    public static Block blockGateFrontN;
+
+    public static Block blockTicketOnce;
+    public static Block blockTicketCard;
+
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
     }
@@ -305,6 +313,24 @@ public class BlockLoader {
 
         blockTriStateSignalBox = new TileEntityTriStateSignalBox();
         register(blockTriStateSignalBox, "block_tri_state_signal_box");
+
+        blockGateBase = new TileEntityGateBase();
+        register(blockGateBase, "block_gate_base");
+
+        blockGateDoor = new TileEntityGateDoor();
+        register(blockGateDoor, "block_gate_door");
+
+        blockGateFront = new TileEntityGateFront();
+        register(blockGateFront, "block_gate_front");
+
+        blockGateFrontN = new TileEntityGateFrontN();
+        register(blockGateFrontN, "block_gate_front_n");
+
+        blockTicketOnce = new TileEntityTicketBlockOnce();
+        register(blockTicketOnce, "block_ticket_once");
+
+        blockTicketCard = new TileEntityTicketBlockCard();
+        register(blockTicketCard, "block_ticket_card");
 
     }
 

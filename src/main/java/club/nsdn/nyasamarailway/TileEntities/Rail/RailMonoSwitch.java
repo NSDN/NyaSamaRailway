@@ -66,31 +66,6 @@ public class RailMonoSwitch extends RailBase {
             return tagCompound;
         }
 
-        @Override
-        public void writeToNBT(NBTTagCompound tagCompound) {
-            super.writeToNBT(tagCompound);
-            toNBT(tagCompound);
-        }
-
-        @Override
-        public void readFromNBT(NBTTagCompound tagCompound) {
-            super.readFromNBT(tagCompound);
-            fromNBT(tagCompound);
-        }
-
-        @Override
-        public Packet getDescriptionPacket() {
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            toNBT(tagCompound);
-            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
-        }
-
-        @Override
-        public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-            NBTTagCompound tagCompound = packet.func_148857_g();
-            fromNBT(tagCompound);
-        }
-
     }
 
     @Override
@@ -184,32 +159,32 @@ public class RailMonoSwitch extends RailBase {
                 case MonoSwitch.STATE_POS: //left
                     switch (monoSwitch.direction) {
                         case SOUTH:
-                            meta = 8;
-                            break;
-                        case WEST:
                             meta = 9;
                             break;
-                        case NORTH:
+                        case WEST:
                             meta = 6;
                             break;
-                        case EAST:
+                        case NORTH:
                             meta = 7;
+                            break;
+                        case EAST:
+                            meta = 8;
                             break;
                     }
                     break;
                 case MonoSwitch.STATE_NEG: //right
                     switch (monoSwitch.direction) {
                         case SOUTH:
-                            meta = 9;
+                            meta = 8;
                             break;
                         case WEST:
-                            meta = 6;
+                            meta = 9;
                             break;
                         case NORTH:
-                            meta = 7;
+                            meta = 6;
                             break;
                         case EAST:
-                            meta = 8;
+                            meta = 7;
                             break;
                     }
                     break;
@@ -245,7 +220,7 @@ public class RailMonoSwitch extends RailBase {
 
             if (old != meta) {
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-                world.notifyBlockChange(x, y + 1, z, BlockLoader.railMono);
+                world.notifyBlockChange(x, y, z, BlockLoader.railMono);
                 world.markBlockForUpdate(x, y, z);
             }
             world.scheduleBlockUpdate(x, y, z, this, 1);

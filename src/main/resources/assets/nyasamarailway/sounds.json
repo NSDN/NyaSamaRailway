@@ -19,5 +19,12 @@
       "name": "info/reception/delay",
       "stream": false
     }]
+  },
+  "info.gate.beep": {
+    "category": "record",
+    "sounds": [{
+      "name": "info/gate/beep",
+      "stream": false
+    }]
   }
 }

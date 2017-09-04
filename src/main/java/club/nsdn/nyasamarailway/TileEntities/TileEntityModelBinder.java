@@ -174,6 +174,29 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 RailMonoSwitch.MonoSwitch.class, new RailMonoSwitchRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGateBase.GateBase.class, new GateRenderer(GateRenderer.GATE_BASE));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGateDoor.GateDoor.class, new GateRenderer(GateRenderer.GATE_DOOR));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGateFront.GateFront.class, new GateRenderer(GateRenderer.GATE_FRONT));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGateFrontN.GateFrontN.class, new GateRenderer(GateRenderer.GATE_FRONT_N));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityTicketBlockOnce.TicketBlock.class,
+                new TicketBlockRenderer(TicketBlockRenderer.TICKET_ONCE)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityTicketBlockCard.TicketBlock.class,
+                new TicketBlockRenderer(TicketBlockRenderer.TICKET_CARD)
+        );
+
     }
 
 }

@@ -28,6 +28,9 @@ public class ItemLoader {
     public static Item itemNSBT1;
     public static Item itemNSET1;
 
+    public static Item itemTicketOnce;
+    public static Item itemNyaCard;
+
     private static void register(Item item, String name) {
         GameRegistry.registerItem(item, name);
     }
@@ -77,6 +80,12 @@ public class ItemLoader {
 
         itemNSET1 = new ItemNSET1();
         register(itemNSET1, "item_nse_1");
+
+        itemTicketOnce = new ItemTicketOnce();
+        register(itemTicketOnce, "item_ticket_once");
+
+        itemNyaCard = new ItemNyaCard();
+        register(itemNyaCard, "item_nyacard");
 
         itemTrainBase = new ItemTrainBase();
         if (NyaSamaRailway.isDebug) register(itemTrainBase, "item_train_base");

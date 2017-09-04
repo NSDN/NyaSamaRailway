@@ -197,7 +197,10 @@ public class Item74HC04 extends ItemToolBase {
                             }
                             receiverRails.remove(uuid);
                         } else {
-                            if (receiver instanceof TileEntitySignalLight.SignalLight || receiver instanceof RailMonoSwitch.MonoSwitch) {
+                            if (receiver instanceof TileEntitySignalLight.SignalLight ||
+                                    receiver instanceof RailMonoSwitch.MonoSwitch ||
+                                    receiver instanceof TileEntityGateFront.GateFront
+                                ) {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 receiverRails.put(uuid, receiver);

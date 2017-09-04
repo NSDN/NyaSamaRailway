@@ -177,6 +177,30 @@ public class TileEntityLoader {
                 RailMonoSwitch.MonoSwitch.class,
                 "railMonoSwitch");
 
+        GameRegistry.registerTileEntity(
+                TileEntityGateBase.GateBase.class,
+                "tileEntityGateBase");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGateDoor.GateDoor.class,
+                "tileEntityGateDoor");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGateFront.GateFront.class,
+                "tileEntityGateFront");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGateFrontN.GateFrontN.class,
+                "tileEntityGateFrontN");
+
+        GameRegistry.registerTileEntity(
+                TileEntityTicketBlockOnce.TicketBlock.class,
+                "tileEntityTicketBlockOnce");
+
+        GameRegistry.registerTileEntity(
+                TileEntityTicketBlockCard.TicketBlock.class,
+                "tileEntityTicketBlockCard");
+
     }
 
 }
