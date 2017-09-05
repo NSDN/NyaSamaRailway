@@ -37,7 +37,7 @@ public class NSPCT6Renderer extends RenderMinecart {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityMinecart cart) {
-        return null;
+        return textureBase;
     }
 
     @Override
