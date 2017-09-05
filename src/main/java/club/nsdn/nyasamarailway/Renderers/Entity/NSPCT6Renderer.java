@@ -106,8 +106,6 @@ public class NSPCT6Renderer extends RenderMinecart {
             this.bindEntityTexture(minecart);
         }
 
-        GL11.glScalef(-1.0F, -1.0F, 1.0F);
-
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
