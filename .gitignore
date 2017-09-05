@@ -11,5 +11,4 @@ gradle-app.setting
 .gradletasknamecache
 
 # IDEA config
-.idea/gradle.xml
-.idea/workspace.xml
+.idea/
