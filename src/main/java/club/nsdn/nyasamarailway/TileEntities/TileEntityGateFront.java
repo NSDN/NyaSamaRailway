@@ -332,9 +332,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                     if (getGateBase(world, x, y, z + 1).player.equals(player.getDisplayName())) {
                                         getGateBase(world, x, y, z + 1).openDoor();
                                         gateFront.over = -2;
-                                        world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                        world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                 "nyasamarailway:info.gate.beep",
-                                                0.5F, 1.0F, false
+                                                0.5F, 1.0F
                                         );
                                         world.markBlockForUpdate(x, y, z);
                                     }
@@ -345,9 +345,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                     if (getGateBase(world, x - 1, y, z).player.equals(player.getDisplayName())) {
                                         getGateBase(world, x - 1, y, z).openDoor();
                                         gateFront.over = -2;
-                                        world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                        world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                 "nyasamarailway:info.gate.beep",
-                                                0.5F, 1.0F, false
+                                                0.5F, 1.0F
                                         );
                                         world.markBlockForUpdate(x, y, z);
                                     }
@@ -358,9 +358,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                     if (getGateBase(world, x, y, z - 1).player.equals(player.getDisplayName())) {
                                         getGateBase(world, x, y, z - 1).openDoor();
                                         gateFront.over = -2;
-                                        world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                        world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                 "nyasamarailway:info.gate.beep",
-                                                0.5F, 1.0F, false
+                                                0.5F, 1.0F
                                         );
                                         world.markBlockForUpdate(x, y, z);
                                     }
@@ -371,9 +371,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                     if (getGateBase(world, x + 1, y, z).player.equals(player.getDisplayName())) {
                                         getGateBase(world, x + 1, y, z).openDoor();
                                         gateFront.over = -2;
-                                        world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                        world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                 "nyasamarailway:info.gate.beep",
-                                                0.5F, 1.0F, false
+                                                0.5F, 1.0F
                                         );
                                         world.markBlockForUpdate(x, y, z);
                                     }
@@ -405,9 +405,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                                 gateFront.over = ItemTicketBase.getOver(stack);
                                                 ItemTicketBase.setState(stack, true);
                                             }
-                                            world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                            world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                     "nyasamarailway:info.gate.beep",
-                                                    0.5F, 1.0F, false
+                                                    0.5F, 1.0F
                                             );
                                         }
                                         world.markBlockForUpdate(x, y, z);
@@ -431,9 +431,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                                 gateFront.over = ItemTicketBase.getOver(stack);
                                                 ItemTicketBase.setState(stack, true);
                                             }
-                                            world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                            world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                     "nyasamarailway:info.gate.beep",
-                                                    0.5F, 1.0F, false
+                                                    0.5F, 1.0F
                                             );
                                         }
                                         world.markBlockForUpdate(x, y, z);
@@ -457,9 +457,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                                 gateFront.over = ItemTicketBase.getOver(stack);
                                                 ItemTicketBase.setState(stack, true);
                                             }
-                                            world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                            world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                     "nyasamarailway:info.gate.beep",
-                                                    0.5F, 1.0F, false
+                                                    0.5F, 1.0F
                                             );
                                         }
                                         world.markBlockForUpdate(x, y, z);
@@ -483,9 +483,9 @@ public class TileEntityGateFront extends TileEntityBase {
                                                 gateFront.over = ItemTicketBase.getOver(stack);
                                                 ItemTicketBase.setState(stack, true);
                                             }
-                                            world.playSound(x + 0.5, y + 1.0, z + 0.5,
+                                            world.playSoundEffect(x + 0.5, y + 1.0, z + 0.5,
                                                     "nyasamarailway:info.gate.beep",
-                                                    0.5F, 1.0F, false
+                                                    0.5F, 1.0F
                                             );
                                         }
                                         world.markBlockForUpdate(x, y, z);

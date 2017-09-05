@@ -44,6 +44,9 @@ public class GateRenderer extends TileEntitySpecialRenderer {
     private static final int TEXT_L = 15;
     private final ResourceLocation textureText[];
 
+    private final WavefrontObject modelBaseTop;
+    private final ResourceLocation textureBaseTop;
+
     public static final int GATE_BASE = 0;
     public static final int GATE_DOOR = 1;
     public static final int GATE_FRONT_N = 2;
@@ -103,6 +106,11 @@ public class GateRenderer extends TileEntitySpecialRenderer {
         textureText[TEXT_U] = new ResourceLocation("nyasamarailway", "textures/blocks/gate/gate_text_u.png");
         textureText[TEXT_L] = new ResourceLocation("nyasamarailway", "textures/blocks/gate/gate_text_l.png");
 
+        modelBaseTop = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/gate/gate_base_top.obj")
+        );
+        textureBaseTop = new ResourceLocation("nyasamarailway", "textures/blocks/gate/gate_base_top.png");
+
         this.renderType = renderType;
     }
 
@@ -126,10 +134,10 @@ public class GateRenderer extends TileEntitySpecialRenderer {
         int meta = te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         int angle = (meta & 0x3) * 90;
 
-        switch (renderType)
-        {
+        switch (renderType) {
             case GATE_BASE:
                 RendererHelper.renderWithResourceAndRotation(modelBase, angle, textureMain);
+                RendererHelper.renderWithResourceAndRotation(modelBaseTop, angle, textureBaseTop);
                 break;
             case GATE_DOOR:
                 if (te instanceof TileEntityGateDoor.GateDoor) {
