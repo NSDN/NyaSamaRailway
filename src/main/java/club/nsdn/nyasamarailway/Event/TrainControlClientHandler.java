@@ -31,6 +31,7 @@ public class TrainControlClientHandler {
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
         if (player == null)
         return;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiChat)

@@ -53,6 +53,8 @@ public class GateRenderer extends TileEntitySpecialRenderer {
     public static final int GATE_FRONT = 3;
     private final int renderType;
 
+    public static final float ANIMATION_STEP = 10;
+
     public GateRenderer(int renderType) {
         modelBase = new WavefrontObject(
                 new ResourceLocation("nyasamarailway", "models/blocks/gate/gate_base.obj")
@@ -151,8 +153,8 @@ public class GateRenderer extends TileEntitySpecialRenderer {
                             if (dist > gateDoor.prevDist) gateDoor.prevDist = dist - 1 / max * 0.5F;
                             else gateDoor.prevDist = dist + 1 / max * 0.5F;
                         }
-                        if (dist > gateDoor.prevDist) gateDoor.prevDist += 1 / max * 0.5F / 5;
-                        else gateDoor.prevDist -= 1 / max * 0.5F / 5;
+                        if (dist > gateDoor.prevDist) gateDoor.prevDist += 1 / max * 0.5F / ANIMATION_STEP;
+                        else gateDoor.prevDist -= 1 / max * 0.5F / ANIMATION_STEP;
                     }
 
                     RendererHelper.renderWithResourceAndRotation(modelDoorAxis, angle, textureMain);

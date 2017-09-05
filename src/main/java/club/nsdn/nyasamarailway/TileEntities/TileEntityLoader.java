@@ -201,6 +201,10 @@ public class TileEntityLoader {
                 TileEntityTicketBlockCard.TicketBlock.class,
                 "tileEntityTicketBlockCard");
 
+        GameRegistry.registerTileEntity(
+                TileEntityCoinBlock.CoinBlock.class,
+                "tileEntityCoinBlock");
+
     }
 
 }

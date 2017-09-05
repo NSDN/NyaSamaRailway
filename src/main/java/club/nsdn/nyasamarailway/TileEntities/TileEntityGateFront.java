@@ -27,9 +27,14 @@ public class TileEntityGateFront extends TileEntityBase {
 
     public static class GateFront extends TileEntityRailReceiver {
 
+        public static final int DELAY = 5;
+        public int delay;
+
         public int over = -1;
         public boolean isEnabled = true;
         public ForgeDirection direction;
+
+        public int setOver = 1;
 
         @Override
         @SideOnly(Side.CLIENT)
@@ -46,6 +51,7 @@ public class TileEntityGateFront extends TileEntityBase {
             direction = ForgeDirection.getOrientation(
                     tagCompound.getInteger("direction")
             );
+            setOver = tagCompound.getInteger("setOver");
             super.fromNBT(tagCompound);
         }
 
@@ -53,6 +59,7 @@ public class TileEntityGateFront extends TileEntityBase {
             tagCompound.setInteger("over", over);
             tagCompound.setBoolean("isEnabled", isEnabled);
             tagCompound.setInteger("direction", direction.ordinal());
+            tagCompound.setInteger("setOver", setOver);
             return super.toNBT(tagCompound);
         }
 
@@ -150,7 +157,7 @@ public class TileEntityGateFront extends TileEntityBase {
 
     @Override
     public int tickRate(World world) {
-        return 10;
+        return 20;
     }
 
     @Override
@@ -221,60 +228,108 @@ public class TileEntityGateFront extends TileEntityBase {
             switch (gateFront.direction) {
                 case SOUTH:
                     player = findPlayer(world, x - 1, y , z);
-                    if (player != null) {
-                        if (getGateBase(world, x, y, z + 1) != null) {
-                            if (getGateBase(world, x, y, z + 1).player.equals(player.getDisplayName())) {
-                                getGateBase(world, x, y, z + 1).player = "";
-                                getGateBase(world, x, y, z + 1).closeDoor();
-                                if (getGateFront(world, x, y, z + 2) != null) {
-                                    getGateFront(world, x, y, z + 2).over = -1;
-                                    world.markBlockForUpdate(x, y, z + 2);
-                                }
+                    if (getGateBase(world, x, y, z + 1) != null) {
+                        boolean delayed = false, playerOK = false;
+                        if (player != null) {
+                            playerOK = getGateBase(world, x, y, z + 1).player.equals(player.getDisplayName());
+                        }
+
+                        if (getGateBase(world, x, y, z + 1).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                            gateFront.delay += 1;
+                            if (gateFront.delay > GateFront.DELAY * 20) {
+                                delayed = true;
+                            }
+                        } else {
+                            gateFront.delay = 0;
+                        }
+
+                        if (delayed || playerOK) {
+                            getGateBase(world, x, y, z + 1).player = "";
+                            getGateBase(world, x, y, z + 1).closeDoor();
+                            if (getGateFront(world, x, y, z + 2) != null) {
+                                getGateFront(world, x, y, z + 2).over = -1;
+                                world.markBlockForUpdate(x, y, z + 2);
                             }
                         }
                     }
                     break;
                 case WEST:
                     player = findPlayer(world, x, y , z - 1);
-                    if (player != null) {
-                        if (getGateBase(world, x - 1, y, z) != null) {
-                            if (getGateBase(world, x - 1, y, z).player.equals(player.getDisplayName())) {
-                                getGateBase(world, x - 1, y, z).player = "";
-                                getGateBase(world, x - 1, y, z).closeDoor();
-                                if (getGateFront(world, x - 2, y, z) != null) {
-                                    getGateFront(world, x - 2, y, z).over = -1;
-                                    world.markBlockForUpdate(x - 2, y, z);
-                                }
+                    if (getGateBase(world, x - 1, y, z) != null) {
+                        boolean delayed = false, playerOK = false;
+                        if (player != null) {
+                            playerOK = getGateBase(world, x - 1, y, z).player.equals(player.getDisplayName());
+                        }
+
+                        if (getGateBase(world, x - 1, y, z).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                            gateFront.delay += 1;
+                            if (gateFront.delay > GateFront.DELAY * 20) {
+                                delayed = true;
+                            }
+                        } else {
+                            gateFront.delay = 0;
+                        }
+
+                        if (delayed || playerOK) {
+                            getGateBase(world, x - 1, y, z).player = "";
+                            getGateBase(world, x - 1, y, z).closeDoor();
+                            if (getGateFront(world, x - 2, y, z) != null) {
+                                getGateFront(world, x - 2, y, z).over = -1;
+                                world.markBlockForUpdate(x - 2, y, z);
                             }
                         }
                     }
                     break;
                 case NORTH:
                     player = findPlayer(world, x + 1, y , z);
-                    if (player != null) {
-                        if (getGateBase(world, x, y, z - 1) != null) {
-                            if (getGateBase(world, x, y, z - 1).player.equals(player.getDisplayName())) {
-                                getGateBase(world, x, y, z - 1).player = "";
-                                getGateBase(world, x, y, z - 1).closeDoor();
-                                if (getGateFront(world, x, y, z - 2) != null) {
-                                    getGateFront(world, x, y, z - 2).over = -1;
-                                    world.markBlockForUpdate(x, y, z - 2);
-                                }
+                    if (getGateBase(world, x, y, z - 1) != null) {
+                        boolean delayed = false, playerOK = false;
+                        if (player != null) {
+                            playerOK = getGateBase(world, x, y, z - 1).player.equals(player.getDisplayName());
+                        }
+
+                        if (getGateBase(world, x, y, z - 1).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                            gateFront.delay += 1;
+                            if (gateFront.delay > GateFront.DELAY * 20) {
+                                delayed = true;
+                            }
+                        } else {
+                            gateFront.delay = 0;
+                        }
+
+                        if (delayed || playerOK) {
+                            getGateBase(world, x, y, z - 1).player = "";
+                            getGateBase(world, x, y, z - 1).closeDoor();
+                            if (getGateFront(world, x, y, z - 2) != null) {
+                                getGateFront(world, x, y, z - 2).over = -1;
+                                world.markBlockForUpdate(x, y, z - 2);
                             }
                         }
                     }
                     break;
                 case EAST:
                     player = findPlayer(world, x, y , z + 1);
-                    if (player != null) {
-                        if (getGateBase(world, x + 1, y, z) != null) {
-                            if (getGateBase(world, x + 1, y, z).player.equals(player.getDisplayName())) {
-                                getGateBase(world, x + 1, y, z).player = "";
-                                getGateBase(world, x + 1, y, z).closeDoor();
-                                if (getGateFront(world, x + 2, y, z) != null) {
-                                    getGateFront(world, x + 2, y, z).over = -1;
-                                    world.markBlockForUpdate(x + 2, y, z);
-                                }
+                    if (getGateBase(world, x + 1, y, z) != null) {
+                        boolean delayed = false, playerOK = false;
+                        if (player != null) {
+                            playerOK = getGateBase(world, x + 1, y, z).player.equals(player.getDisplayName());
+                        }
+
+                        if (getGateBase(world, x + 1, y, z).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                            gateFront.delay += 1;
+                            if (gateFront.delay > GateFront.DELAY * 20) {
+                                delayed = true;
+                            }
+                        } else {
+                            gateFront.delay = 0;
+                        }
+
+                        if (delayed || playerOK) {
+                            getGateBase(world, x + 1, y, z).player = "";
+                            getGateBase(world, x + 1, y, z).closeDoor();
+                            if (getGateFront(world, x + 2, y, z) != null) {
+                                getGateFront(world, x + 2, y, z).over = -1;
+                                world.markBlockForUpdate(x + 2, y, z);
                             }
                         }
                     }
@@ -391,10 +446,16 @@ public class TileEntityGateFront extends TileEntityBase {
                             case SOUTH:
                                 if (getGateBase(world, x, y, z + 1) != null) {
                                     if (getGateBase(world, x, y, z + 1).player.equals(player.getDisplayName())) {
+                                        if (stack.getItem() instanceof ItemTicketOnce) {
+                                            if (gateFront.setOver != ItemTicketBase.getOver(stack))
+                                                return true;
+                                        }
+
                                         if (ItemTicketBase.getOver(stack) > 0) {
                                             if (ItemTicketBase.getState(stack)) {
                                                 ItemTicketBase.decOver(stack);
-                                                if (ItemTicketBase.getOver(stack) == 0 && stack.getItem() instanceof ItemTicketOnce) {
+                                                if (stack.getItem() instanceof ItemTicketOnce) {
+                                                    ItemTicketBase.setOver(stack, 0);
                                                     player.destroyCurrentEquippedItem();
                                                 }
                                                 getGateBase(world, x, y, z + 1).openDoor();
@@ -417,10 +478,16 @@ public class TileEntityGateFront extends TileEntityBase {
                             case WEST:
                                 if (getGateBase(world, x - 1, y, z) != null) {
                                     if (getGateBase(world, x - 1, y, z).player.equals(player.getDisplayName())) {
+                                        if (stack.getItem() instanceof ItemTicketOnce) {
+                                            if (gateFront.setOver != ItemTicketBase.getOver(stack))
+                                                return true;
+                                        }
+
                                         if (ItemTicketBase.getOver(stack) > 0) {
                                             if (ItemTicketBase.getState(stack)) {
                                                 ItemTicketBase.decOver(stack);
-                                                if (ItemTicketBase.getOver(stack) == 0 && stack.getItem() instanceof ItemTicketOnce) {
+                                                if (stack.getItem() instanceof ItemTicketOnce) {
+                                                    ItemTicketBase.setOver(stack, 0);
                                                     player.destroyCurrentEquippedItem();
                                                 }
                                                 getGateBase(world, x - 1, y, z).openDoor();
@@ -443,10 +510,16 @@ public class TileEntityGateFront extends TileEntityBase {
                             case NORTH:
                                 if (getGateBase(world, x, y, z - 1) != null) {
                                     if (getGateBase(world, x, y, z - 1).player.equals(player.getDisplayName())) {
+                                        if (stack.getItem() instanceof ItemTicketOnce) {
+                                            if (gateFront.setOver != ItemTicketBase.getOver(stack))
+                                                return true;
+                                        }
+
                                         if (ItemTicketBase.getOver(stack) > 0) {
                                             if (ItemTicketBase.getState(stack)) {
                                                 ItemTicketBase.decOver(stack);
-                                                if (ItemTicketBase.getOver(stack) == 0 && stack.getItem() instanceof ItemTicketOnce) {
+                                                if (stack.getItem() instanceof ItemTicketOnce) {
+                                                    ItemTicketBase.setOver(stack, 0);
                                                     player.destroyCurrentEquippedItem();
                                                 }
                                                 getGateBase(world, x, y, z - 1).openDoor();
@@ -469,10 +542,16 @@ public class TileEntityGateFront extends TileEntityBase {
                             case EAST:
                                 if (getGateBase(world, x + 1, y, z) != null) {
                                     if (getGateBase(world, x + 1, y, z).player.equals(player.getDisplayName())) {
+                                        if (stack.getItem() instanceof ItemTicketOnce) {
+                                            if (gateFront.setOver != ItemTicketBase.getOver(stack))
+                                                return true;
+                                        }
+
                                         if (ItemTicketBase.getOver(stack) > 0) {
                                             if (ItemTicketBase.getState(stack)) {
                                                 ItemTicketBase.decOver(stack);
-                                                if (ItemTicketBase.getOver(stack) == 0 && stack.getItem() instanceof ItemTicketOnce) {
+                                                if (stack.getItem() instanceof ItemTicketOnce) {
+                                                    ItemTicketBase.setOver(stack, 0);
                                                     player.destroyCurrentEquippedItem();
                                                 }
                                                 getGateBase(world, x + 1, y, z).openDoor();

@@ -25,11 +25,13 @@ public class ItemLoader {
     public static Item itemNSPCT4;
     public static Item itemNSPCT5;
     public static Item itemNSPCT5L;
+    public static Item itemNSPCT6;
     public static Item itemNSBT1;
     public static Item itemNSET1;
 
     public static Item itemTicketOnce;
     public static Item itemNyaCard;
+    public static Item itemNyaCoin;
 
     private static void register(Item item, String name) {
         GameRegistry.registerItem(item, name);
@@ -75,6 +77,9 @@ public class ItemLoader {
         itemNSPCT5L = new ItemNSPCT5L();
         register(itemNSPCT5L, "item_nspc_5l");
 
+        itemNSPCT6 = new ItemNSPCT6();
+        register(itemNSPCT6, "item_nspc_6");
+
         itemNSBT1 = new ItemNSBT1();
         register(itemNSBT1, "item_nsb_1");
 
@@ -86,6 +91,9 @@ public class ItemLoader {
 
         itemNyaCard = new ItemNyaCard();
         register(itemNyaCard, "item_nyacard");
+
+        itemNyaCoin = new ItemNyaCoin();
+        register(itemNyaCoin, "item_nyacoin");
 
         itemTrainBase = new ItemTrainBase();
         if (NyaSamaRailway.isDebug) register(itemTrainBase, "item_train_base");

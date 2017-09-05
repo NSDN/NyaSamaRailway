@@ -197,6 +197,11 @@ public class TileEntityModelBinder {
                 new TicketBlockRenderer(TicketBlockRenderer.TICKET_CARD)
         );
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityCoinBlock.CoinBlock.class,
+                new TicketBlockRenderer(TicketBlockRenderer.COIN)
+        );
+
     }
 
 }

@@ -37,6 +37,34 @@ public class TileEntityGateBase extends TileEntityBase {
             ))).state;
         }
 
+        public int getDoorState() {
+            switch (direction) {
+                case SOUTH:
+                    if (isDoor(1, 0)) {
+                        return getDoorState(1, 0);
+                    }
+                    break;
+                case WEST:
+                    if (isDoor(0, 1)) {
+                        return getDoorState(0, 1);
+                    }
+                    break;
+                case NORTH:
+                    if (isDoor(-1, 0)) {
+                        return getDoorState(-1, 0);
+                    }
+                    break;
+                case EAST:
+                    if (isDoor(0, -1)) {
+                        return getDoorState(0, -1);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return TileEntityGateDoor.GateDoor.STATE_CLOSE;
+        }
+
         public void setDoorState(int dx, int dz, int state) {
             ((TileEntityGateDoor.GateDoor) (worldObj.getTileEntity(
             xCoord + dx, yCoord, zCoord + dz

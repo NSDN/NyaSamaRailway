@@ -44,6 +44,10 @@ public class EntityModelBinder {
 
         RenderingRegistry.registerEntityRenderingHandler(
                 NSPCT5L.class, new NSPCT5LRenderer(new ModelBase[] { new NSPCT5HeadModel(), new NSPCT5BodyWWModel(), new NSPCT5BodyNWModel() }, "textures/carts/nspc_5l.png"));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT6.class, new NSPCT6Renderer());
+
     }
 
 }

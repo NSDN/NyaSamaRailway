@@ -27,7 +27,7 @@ public class TileEntityGateDoor extends TileEntityBase {
         public int progress = 0;
         public float prevDist;
 
-        public static final int PROGRESS_MAX = 20;
+        public static final int PROGRESS_MAX = 10;
 
         public static final int STATE_CLOSE = 0;
         public static final int STATE_CLOSING = 1;

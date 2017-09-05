@@ -99,6 +99,7 @@ public class BlockLoader {
 
     public static Block blockTicketOnce;
     public static Block blockTicketCard;
+    public static Block blockCoin;
 
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
@@ -331,6 +332,9 @@ public class BlockLoader {
 
         blockTicketCard = new TileEntityTicketBlockCard();
         register(blockTicketCard, "block_ticket_card");
+
+        blockCoin = new TileEntityCoinBlock();
+        register(blockCoin, "block_coin");
 
     }
 
