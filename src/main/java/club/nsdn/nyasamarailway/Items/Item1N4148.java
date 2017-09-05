@@ -118,76 +118,78 @@ public class Item1N4148 extends ItemToolBase {
 
         if (tileEntity == null) return false;
 
-        if (tileEntity instanceof TileEntityCoinBlock.CoinBlock) {
-            TileEntityCoinBlock.CoinBlock coinBlock = (TileEntityCoinBlock.CoinBlock) tileEntity;
-            if (coinBlock.value <= 0) coinBlock.value = 1;
+        if (player.isSneaking()) {
+            if (tileEntity instanceof TileEntityCoinBlock.CoinBlock) {
+                TileEntityCoinBlock.CoinBlock coinBlock = (TileEntityCoinBlock.CoinBlock) tileEntity;
+                if (coinBlock.value <= 0) coinBlock.value = 1;
 
-            switch (coinBlock.value) {
-                case 1:
-                    coinBlock.value = 5;
-                    break;
-                case 5:
-                    coinBlock.value = 10;
-                    break;
-                case 10:
-                    coinBlock.value = 20;
-                    break;
-                case 20:
-                    coinBlock.value = 50;
-                    break;
-                case 50:
-                    coinBlock.value = 1;
-                    break;
-            }
-            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
-                    new ChatComponentTranslation("info.coin.value", coinBlock.value)
-            );
-        } else if (tileEntity instanceof TileEntityTicketBlockOnce.TicketBlock) {
-            TileEntityTicketBlockOnce.TicketBlock ticketBlock = (TileEntityTicketBlockOnce.TicketBlock) tileEntity;
+                switch (coinBlock.value) {
+                    case 1:
+                        coinBlock.value = 5;
+                        break;
+                    case 5:
+                        coinBlock.value = 10;
+                        break;
+                    case 10:
+                        coinBlock.value = 20;
+                        break;
+                    case 20:
+                        coinBlock.value = 50;
+                        break;
+                    case 50:
+                        coinBlock.value = 1;
+                        break;
+                }
+                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
+                        new ChatComponentTranslation("info.coin.value", coinBlock.value)
+                );
+            } else if (tileEntity instanceof TileEntityTicketBlockOnce.TicketBlock) {
+                TileEntityTicketBlockOnce.TicketBlock ticketBlock = (TileEntityTicketBlockOnce.TicketBlock) tileEntity;
 
-            switch (ticketBlock.setOver) {
-                case 1:
-                    ticketBlock.setOver = 5;
-                    break;
-                case 5:
-                    ticketBlock.setOver = 10;
-                    break;
-                case 10:
-                    ticketBlock.setOver = 20;
-                    break;
-                case 20:
-                    ticketBlock.setOver = 50;
-                    break;
-                case 50:
-                    ticketBlock.setOver = 1;
-                    break;
-            }
-            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
-                    new ChatComponentTranslation("info.ticket.over", ticketBlock.setOver)
-            );
-        } else if (tileEntity instanceof TileEntityGateFront.GateFront) {
-            TileEntityGateFront.GateFront gateFront = (TileEntityGateFront.GateFront) tileEntity;
+                switch (ticketBlock.setOver) {
+                    case 1:
+                        ticketBlock.setOver = 5;
+                        break;
+                    case 5:
+                        ticketBlock.setOver = 10;
+                        break;
+                    case 10:
+                        ticketBlock.setOver = 20;
+                        break;
+                    case 20:
+                        ticketBlock.setOver = 50;
+                        break;
+                    case 50:
+                        ticketBlock.setOver = 1;
+                        break;
+                }
+                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
+                        new ChatComponentTranslation("info.ticket.over", ticketBlock.setOver)
+                );
+            } else if (tileEntity instanceof TileEntityGateFront.GateFront) {
+                TileEntityGateFront.GateFront gateFront = (TileEntityGateFront.GateFront) tileEntity;
 
-            switch (gateFront.setOver) {
-                case 1:
-                    gateFront.setOver = 5;
-                    break;
-                case 5:
-                    gateFront.setOver = 10;
-                    break;
-                case 10:
-                    gateFront.setOver = 20;
-                    break;
-                case 20:
-                    gateFront.setOver = 50;
-                    break;
-                case 50:
-                    gateFront.setOver = 1;
-                    break;
+                switch (gateFront.setOver) {
+                    case 1:
+                        gateFront.setOver = 5;
+                        break;
+                    case 5:
+                        gateFront.setOver = 10;
+                        break;
+                    case 10:
+                        gateFront.setOver = 20;
+                        break;
+                    case 20:
+                        gateFront.setOver = 50;
+                        break;
+                    case 50:
+                        gateFront.setOver = 1;
+                        break;
+                }
+                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
+                        new ChatComponentTranslation("info.gate.over", gateFront.setOver)
+                );
             }
-            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
-                    new ChatComponentTranslation("info.gate.over", gateFront.setOver)
-            );
         }
 
         if (tileEntity instanceof TileEntityRailTransceiver) {
