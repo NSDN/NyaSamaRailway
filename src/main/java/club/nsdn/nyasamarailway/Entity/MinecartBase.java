@@ -53,16 +53,20 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
     public static final int DATA_LINK = 28;
 
+    public static boolean canMakePlayerTurn;
+
     //public int prevLinkTrain = -1;
     //public int nextLinkTrain = -1;
 
     public MinecartBase(World world) {
         super(world);
+        canMakePlayerTurn = true;
         getDataWatcher().addObject(DATA_LINK, 0);
     }
 
     public MinecartBase(World world, double x, double y, double z) {
         super(world, x, y, z);
+        canMakePlayerTurn = true;
         getDataWatcher().addObject(DATA_LINK, 0);
     }
 
@@ -296,7 +300,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
             double detlaYaw = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
             /* Driver Heading */
-            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
@@ -450,7 +454,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
             }
 
             /* Driver Heading */
-            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
