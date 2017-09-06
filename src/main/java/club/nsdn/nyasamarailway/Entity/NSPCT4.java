@@ -26,10 +26,14 @@ public class NSPCT4 extends MinecartBase {
 
     public double shiftY = -1.0;
 
-    public NSPCT4(World world) { super(world); }
+    public NSPCT4(World world) {
+        super(world);
+        canMakePlayerTurn = false;
+    }
 
     public NSPCT4(World world, double x, double y, double z) {
         super(world, x, y, z);
+        canMakePlayerTurn = false;
     }
 
     @Override

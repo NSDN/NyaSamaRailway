@@ -10,11 +10,16 @@ import net.minecraft.world.World;
  */
 public class NSPCT3 extends MinecartBase {
 
-    public NSPCT3(World world) { super(world); ignoreFrustumCheck = true; }
+    public NSPCT3(World world) {
+        super(world);
+        ignoreFrustumCheck = true;
+        canMakePlayerTurn = false;
+    }
 
     public NSPCT3(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+        canMakePlayerTurn = false;
     }
 
     @Override
