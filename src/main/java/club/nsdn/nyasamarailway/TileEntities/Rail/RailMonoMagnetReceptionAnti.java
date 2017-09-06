@@ -112,6 +112,9 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             } else if (rail.cartType.equals(NSPCT5L.class.getName())) {
                 MinecartBase cart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT6.class.getName())) {
+                MinecartBase cart = new NSPCT6(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
             } else {
                 EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
                 world.spawnEntityInWorld(cart);
