@@ -1,13 +1,14 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
 
 /**
  * Created by drzzm32 on 2016.5.6.
  */
 
-public class BlockRailProtectBody extends BlockRailBase {
+public class BlockRailProtectBody extends BlockRailBase implements IRailSpeedKeep {
 
     public BlockRailProtectBody() {
         super("BlockRailProtectBody");

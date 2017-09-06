@@ -6,8 +6,9 @@ package club.nsdn.nyasamarailway.Blocks;
 
 import net.minecraft.world.World;
 import net.minecraft.entity.item.EntityMinecart;
+import org.thewdj.physics.Dynamics;
 
-public class BlockRailSignalTransfer extends BlockRailPoweredBase {
+public class BlockRailSignalTransfer extends BlockRailPoweredBase implements IRailSpeedKeep {
 
     public BlockRailSignalTransfer() {
         super("BlockRailSignalTransfer");

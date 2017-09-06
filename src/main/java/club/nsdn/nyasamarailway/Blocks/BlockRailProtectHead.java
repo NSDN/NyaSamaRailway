@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
  * Created by drzzm32 on 2016.5.6.
  */
 
-public class BlockRailProtectHead extends BlockRailBase implements IRailDirectional {
+public class BlockRailProtectHead extends BlockRailBase implements IRailDirectional, IRailSpeedKeep {
 
     public BlockRailProtectHead() {
         super("BlockRailProtectHead");
@@ -38,4 +39,5 @@ public class BlockRailProtectHead extends BlockRailBase implements IRailDirectio
             this.func_150048_a(world, x, y, z, l, i1, block);
         }
     }
+
 }
