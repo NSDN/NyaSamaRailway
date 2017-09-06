@@ -97,6 +97,11 @@ public class BlockLoader {
     public static Block blockGateFront;
     public static Block blockGateFrontN;
 
+    public static Block blockGlassShield;
+    public static Block blockGlassShieldHalf;
+    public static Block blockGlassShieldAl;
+    public static Block blockGlassShieldAlHalf;
+
     public static Block blockTicketOnce;
     public static Block blockTicketCard;
     public static Block blockCoin;
@@ -326,6 +331,18 @@ public class BlockLoader {
 
         blockGateFrontN = new TileEntityGateFrontN();
         register(blockGateFrontN, "block_gate_front_n");
+
+        blockGlassShield = new TileEntityGlassShield();
+        register(blockGlassShield, "block_glass_shield");
+
+        blockGlassShieldHalf = new TileEntityGlassShieldHalf();
+        register(blockGlassShieldHalf, "block_glass_shield_half");
+
+        blockGlassShieldAl = new TileEntityGlassShieldAl();
+        register(blockGlassShieldAl, "block_glass_shield_al");
+
+        blockGlassShieldAlHalf = new TileEntityGlassShieldAlHalf();
+        register(blockGlassShieldAlHalf, "block_glass_shield_al_half");
 
         blockTicketOnce = new TileEntityTicketBlockOnce();
         register(blockTicketOnce, "block_ticket_once");

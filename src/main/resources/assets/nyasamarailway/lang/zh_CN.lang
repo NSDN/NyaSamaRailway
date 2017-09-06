@@ -140,3 +140,7 @@ item.ItemNyaCoin.name=喵玉币
 info.coin.value=[NSR] 取币机面值设置为 %d
 info.ticket.over=[NSR] 单程票售票机的售票面值设置为 %d
 info.gate.over=[NSR] 闸机的单程票检票面值设置为 %d
+tile.GlassShield.name=全高站台门
+tile.GlassShieldHalf.name=半高站台门
+tile.GlassShieldAl.name=铝边玻璃板
+tile.GlassShieldAlHalf.name=半高铝边玻璃板

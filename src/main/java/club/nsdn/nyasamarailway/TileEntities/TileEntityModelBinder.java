@@ -202,6 +202,26 @@ public class TileEntityModelBinder {
                 new TicketBlockRenderer(TicketBlockRenderer.COIN)
         );
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShield.GlassShield.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldHalf.GlassShield.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_HALF)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldAl.GlassShieldAl.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldAlHalf.GlassShieldAl.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_HALF)
+        );
+
     }
 
 }

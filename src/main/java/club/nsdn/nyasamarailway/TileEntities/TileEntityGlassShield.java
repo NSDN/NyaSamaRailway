@@ -3,11 +3,9 @@ package club.nsdn.nyasamarailway.TileEntities;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -15,19 +13,23 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.9.4.
+ * Created by drzzm32 on 2017.9.6.
  */
-public class TileEntityGateDoor extends TileEntityBase {
+public class TileEntityGlassShield extends TileEntityBase {
 
-    public static class GateDoor extends TileEntity {
+    public static class GlassShield extends TileEntityRailReceiver {
 
         public int progress = 0;
         public float prevDist;
 
-        public static final int PROGRESS_MAX = 10;
+        public static final int DELAY = 2;
+        public int delay;
+
+        public static final int PROGRESS_MAX = 30;
 
         public static final int STATE_CLOSE = 0;
         public static final int STATE_CLOSING = 1;
@@ -44,54 +46,32 @@ public class TileEntityGateDoor extends TileEntityBase {
                     .expand(4, 4, 4);
         }
 
+        @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             progress = tagCompound.getInteger("progress");
             state = tagCompound.getInteger("state");
+            super.fromNBT(tagCompound);
         }
 
+        @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("progress", progress);
             tagCompound.setInteger("state", state);
-            return tagCompound;
-        }
-
-        @Override
-        public void writeToNBT(NBTTagCompound tagCompound) {
-            super.writeToNBT(tagCompound);
-            toNBT(tagCompound);
-        }
-
-        @Override
-        public void readFromNBT(NBTTagCompound tagCompound) {
-            super.readFromNBT(tagCompound);
-            fromNBT(tagCompound);
-        }
-
-        @Override
-        public Packet getDescriptionPacket() {
-            NBTTagCompound tagCompound = new NBTTagCompound();
-            toNBT(tagCompound);
-            return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, tagCompound);
-        }
-
-        @Override
-        public void onDataPacket(NetworkManager manager, S35PacketUpdateTileEntity packet) {
-            NBTTagCompound tagCompound = packet.func_148857_g();
-            fromNBT(tagCompound);
+            return super.toNBT(tagCompound);
         }
 
     }
 
-    public TileEntityGateDoor() {
-        super("GateDoor");
-        setIconLocation("gate_door");
-        setLightOpacity(0);
+    public TileEntityGlassShield() {
+        super("GlassShield");
+        setIconLocation("glass_shield");
+        setLightOpacity(1);
         setLightLevel(0);
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new GateDoor();
+        return new GlassShield();
     }
 
     @Override
@@ -108,7 +88,7 @@ public class TileEntityGateDoor extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = -0.25F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.25F, y2 = 1.5F, z2 = 0.5625F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 2.0F, z2 = 0.5625F;
 
         switch (meta & 3) {
             case 0:
@@ -149,11 +129,42 @@ public class TileEntityGateDoor extends TileEntityBase {
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if (!world.isRemote) {
-            if (world.getTileEntity(x, y, z) instanceof GateDoor) {
-                GateDoor gateDoor = (GateDoor) world.getTileEntity(x, y, z);
+            if (world.getTileEntity(x, y, z) instanceof GlassShield) {
+                GlassShield glassShield = (GlassShield) world.getTileEntity(x, y, z);
+                GlassShield nearByShield = getNearbyShield(world, x, y, z);
+                boolean control;
 
-                switch (gateDoor.state) {
-                    case GateDoor.STATE_CLOSE:
+                if (glassShield.getSenderRail() == null) {
+                    control = hasPlayer(world, x, y, z);
+                } else {
+                    control = glassShield.senderRailIsPowered();
+                }
+
+                if (control) {
+                    if (glassShield.state == GlassShield.STATE_CLOSE) {
+                        glassShield.state = GlassShield.STATE_OPENING;
+                        if (nearByShield != null) {
+                            nearByShield.state = GlassShield.STATE_OPENING;
+                        }
+                    }
+                } else {
+                    if (glassShield.state == GlassShield.STATE_OPEN) {
+                        if (glassShield.delay < GlassShield.DELAY * 20 &&
+                                glassShield.getSenderRail() == null
+                                ) glassShield.delay += 1;
+                        else {
+                            glassShield.state = GlassShield.STATE_CLOSING;
+                            if (nearByShield != null) {
+                                nearByShield.state = GlassShield.STATE_CLOSING;
+                            }
+                        }
+                    } else {
+                        glassShield.delay = 0;
+                    }
+                }
+
+                switch (glassShield.state) {
+                    case GlassShield.STATE_CLOSE:
                         if ((world.getBlockMetadata(x, y, z) & 0x8) != 0) {
                             world.setBlockMetadataWithNotify(x, y, z,
                                     world.getBlockMetadata(x, y, z) & 0x7, 3
@@ -161,17 +172,17 @@ public class TileEntityGateDoor extends TileEntityBase {
                             world.markBlockForUpdate(x, y, z);
                         }
                         break;
-                    case GateDoor.STATE_CLOSING:
-                        if (gateDoor.progress > 0) gateDoor.progress -= 1;
+                    case GlassShield.STATE_CLOSING:
+                        if (glassShield.progress > 0) glassShield.progress -= 1;
                         else {
-                            gateDoor.state = GateDoor.STATE_CLOSE;
+                            glassShield.state = GlassShield.STATE_CLOSE;
                             world.setBlockMetadataWithNotify(x, y, z,
                                     world.getBlockMetadata(x, y, z) & 0x7, 3
                             );
                             world.markBlockForUpdate(x, y, z);
                         }
                         break;
-                    case GateDoor.STATE_OPEN:
+                    case GlassShield.STATE_OPEN:
                         if ((world.getBlockMetadata(x, y, z) & 0x8) == 0) {
                             world.setBlockMetadataWithNotify(x, y, z,
                                     world.getBlockMetadata(x, y, z) | 0x8, 3
@@ -179,10 +190,10 @@ public class TileEntityGateDoor extends TileEntityBase {
                             world.markBlockForUpdate(x, y, z);
                         }
                         break;
-                    case GateDoor.STATE_OPENING:
-                        if (gateDoor.progress < GateDoor.PROGRESS_MAX) gateDoor.progress += 1;
+                    case GlassShield.STATE_OPENING:
+                        if (glassShield.progress < GlassShield.PROGRESS_MAX) glassShield.progress += 1;
                         else {
-                            gateDoor.state = GateDoor.STATE_OPEN;
+                            glassShield.state = GlassShield.STATE_OPEN;
                             world.setBlockMetadataWithNotify(x, y, z,
                                     world.getBlockMetadata(x, y, z) | 0x8, 3
                             );
@@ -193,12 +204,44 @@ public class TileEntityGateDoor extends TileEntityBase {
                         break;
                 }
 
-                if (gateDoor.state == GateDoor.STATE_OPENING || gateDoor.state == GateDoor.STATE_CLOSING) {
+                if (glassShield.state == GlassShield.STATE_OPENING || glassShield.state == GlassShield.STATE_CLOSING) {
                     world.markBlockForUpdate(x, y, z);
                 }
                 world.scheduleBlockUpdate(x, y, z, this, 1);
             }
         }
+    }
+
+    public boolean hasPlayer(World world, int x, int y, int z) {
+        float bBoxExpand = 1.0F;
+        y += 1; //player's bounding box is higher than cart
+        List bBox = world.getEntitiesWithinAABB(
+                EntityPlayer.class,
+                AxisAlignedBB.getBoundingBox((double) ((float) x - bBoxExpand),
+                        (double) y - 1,
+                        (double) ((float) z - bBoxExpand),
+                        (double) ((float) x + 1 + bBoxExpand),
+                        (double) ((float) y + 1),
+                        (double) ((float) z + 1 + bBoxExpand))
+        );
+
+        return !bBox.isEmpty();
+    }
+
+    public GlassShield getNearbyShield(World world, int x, int y, int z) {
+        if (world.getTileEntity(x + 1, y, z) instanceof GlassShield) {
+            return (GlassShield) world.getTileEntity(x + 1, y, z);
+        }
+        if (world.getTileEntity(x - 1, y, z) instanceof GlassShield) {
+            return (GlassShield) world.getTileEntity(x - 1, y, z);
+        }
+        if (world.getTileEntity(x, y, z + 1) instanceof GlassShield) {
+            return (GlassShield) world.getTileEntity(x, y, z + 1);
+        }
+        if (world.getTileEntity(x, y, z - 1) instanceof GlassShield) {
+            return (GlassShield) world.getTileEntity(x, y, z - 1);
+        }
+        return null;
     }
 
 }

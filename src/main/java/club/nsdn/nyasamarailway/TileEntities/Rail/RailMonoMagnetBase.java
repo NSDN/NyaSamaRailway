@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
+import club.nsdn.nyasamarailway.Blocks.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * Created by drzzm32 on 2017.1.13.
  */
-public class RailMonoMagnetBase extends RailBase {
+public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
 
     public static class TileEntityRail extends TileEntity {
 
