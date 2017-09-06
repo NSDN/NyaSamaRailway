@@ -1,13 +1,14 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
 
 /**
  * Created by drzzm32 on 2016.5.6.
  */
 
-public class BlockRailProtectHeadAnti extends BlockRailBase implements IRailDirectional {
+public class BlockRailProtectHeadAnti extends BlockRailBase implements IRailDirectional, IRailSpeedKeep {
 
     public BlockRailProtectHeadAnti() {
         super("BlockRailProtectHeadAnti");
@@ -34,4 +35,5 @@ public class BlockRailProtectHeadAnti extends BlockRailBase implements IRailDire
             this.func_150048_a(world, x, y, z, l, i1, block);
         }
     }
+
 }

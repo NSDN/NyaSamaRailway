@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
+import club.nsdn.nyasamarailway.Blocks.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.Items.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
@@ -527,6 +528,52 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
             return this.func_70489_a(doubleX, doubleY, doubleZ);
         }
+    }
+
+    @Override
+    protected void func_94088_b(double v) {
+        if(this.motionX < -v) {
+            this.motionX = -v;
+        }
+
+        if(this.motionX > v) {
+            this.motionX = v;
+        }
+
+        if(this.motionZ < -v) {
+            this.motionZ = -v;
+        }
+
+        if(this.motionZ > v) {
+            this.motionZ = v;
+        }
+
+        double moveY = this.motionY;
+        if(this.getMaxSpeedAirVertical() > 0.0F && this.motionY > (double)this.getMaxSpeedAirVertical()) {
+            moveY = (double)this.getMaxSpeedAirVertical();
+            if(Math.abs(this.motionX) < 0.30000001192092896D && Math.abs(this.motionZ) < 0.30000001192092896D) {
+                moveY = 0.15000000596046448D;
+                this.motionY = moveY;
+            }
+        }
+
+        boolean isOnSpeedKeepRail = false;
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            isOnSpeedKeepRail = true;
+
+        if(this.onGround && !isOnSpeedKeepRail) {
+            this.motionX *= 0.5D;
+            this.motionY *= 0.5D;
+            this.motionZ *= 0.5D;
+        }
+
+        this.moveEntity(this.motionX, moveY, this.motionZ);
+        if(!this.onGround) {
+            this.motionX *= this.getDragAir();
+            this.motionY *= this.getDragAir();
+            this.motionZ *= this.getDragAir();
+        }
+
     }
 
     @Override
