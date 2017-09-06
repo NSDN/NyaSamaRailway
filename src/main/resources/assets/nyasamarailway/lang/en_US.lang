@@ -138,3 +138,7 @@ tile.TicketBlockCard.name=NyaCard Ticket Block
 tile.CoinBlock.name=Coin Block
 item.ItemNyaCoin.name=NyaCoin
 info.coin.value=[NSR] Set coin block value to %d
+tile.GlassShield.name=Platform Door
+tile.GlassShieldHalf.name=Platform Gate
+tile.GlassShieldAl.name=Platform Shield
+tile.GlassShieldAlHalf.name=Short Platform Shield

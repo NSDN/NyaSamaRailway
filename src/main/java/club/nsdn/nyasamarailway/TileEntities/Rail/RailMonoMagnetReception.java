@@ -205,7 +205,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
         double maxV;
         if (!playerDetectable) {
             maxV = 0.1;
-            if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+            if ((world.getBlockMetadata(x, y, z) & 0x8) != 0) {
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ > maxV) { //cart.motionZ > maxV
                         if (cart.motionZ < maxV * 1.5) cart.motionZ = maxV * 1.5;
@@ -233,7 +233,6 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                     } else {
                         cart.motionX = 0.0D;
                     }
-                    cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             }
         } else {

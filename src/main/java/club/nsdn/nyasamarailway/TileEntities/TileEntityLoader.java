@@ -205,6 +205,22 @@ public class TileEntityLoader {
                 TileEntityCoinBlock.CoinBlock.class,
                 "tileEntityCoinBlock");
 
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShield.GlassShield.class,
+                "tileEntityGlassShield");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldHalf.GlassShield.class,
+                "tileEntityGlassShieldHalf");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldAl.GlassShieldAl.class,
+                "tileEntityGlassShieldAl");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldAlHalf.GlassShieldAl.class,
+                "tileEntityGlassShieldAlHalf");
+
     }
 
 }
