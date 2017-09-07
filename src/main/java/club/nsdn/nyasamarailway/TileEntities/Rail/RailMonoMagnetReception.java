@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.IRailDirectional;
+import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
@@ -358,22 +359,6 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
 
         }
 
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        RailMonoMagnetReception.TileEntityRail rail = null;
-        if (world.getTileEntity(x, y, z) instanceof RailMonoMagnetReception.TileEntityRail) {
-            rail = (RailMonoMagnetReception.TileEntityRail) world.getTileEntity(x, y, z);
-        }
-        if (rail != null) {
-            if (player.isSneaking() && !world.isRemote) {
-                rail.cartType = "";
-                player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
-                return true;
-            }
-        }
-        return false;
     }
 
     public EntityMinecart getMinecart(World world, int x, int y, int z) {
