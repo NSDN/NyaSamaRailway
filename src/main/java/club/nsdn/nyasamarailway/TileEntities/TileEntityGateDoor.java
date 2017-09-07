@@ -135,6 +135,28 @@ public class TileEntityGateDoor extends TileEntityBase {
         return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        float x1 = 0.25F, y1 = 0.125F, z1 = 0.0F, x2 = 0.75F, y2 = 0.875F, z2 = 1.0F;
+        switch (meta & 3) {
+            case 0:
+                setBlockBounds(x1, y1, z1, x2, y2, z2);
+                break;
+            case 1:
+                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
+                break;
+            case 2:
+                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
+                break;
+            case 3:
+                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
+                break;
+        }
+        return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
+    }
+
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
