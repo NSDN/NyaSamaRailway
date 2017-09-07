@@ -75,8 +75,8 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     public AxisAlignedBB getCollisionBox(Entity entity) {
         double size = 1.5;
         return AxisAlignedBB.getBoundingBox(
-                posX + 1 - size, posY + 1 - size, posZ + 1 - size,
-                posX + size, posY + size, posZ + size
+                posX + 1 - size, posY, posZ + 1 - size,
+                posX + size, posY + 1, posZ + size
         );
     }
 

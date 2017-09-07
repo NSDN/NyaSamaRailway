@@ -23,6 +23,7 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
     private final WavefrontObject[] modelMainAl;
 
     private final ResourceLocation textureMain;
+    private final ResourceLocation textureMainAl;
 
     public static final int SHIELD = 0;
     public static final int SHIELD_HALF = 1;
@@ -52,6 +53,7 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
         };
 
         textureMain = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_main.png");
+        textureMainAl = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_al_main.png");
 
         this.renderType = renderType;
     }
@@ -132,10 +134,10 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 }
                 break;
             case SHIELD_AL:
-                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_NORMAL], angle, textureMain);
+                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_NORMAL], angle, textureMainAl);
                 break;
             case SHIELD_AL_HALF:
-                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_HALF], angle, textureMain);
+                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_HALF], angle, textureMainAl);
                 break;
             default:
                 break;
