@@ -43,6 +43,29 @@ public class Item1N4148 extends ItemToolBase {
             return false;
 
         if (block instanceof IRailDirectional) {
+            if (player.isSneaking()) {
+                TileEntity rail = world.getTileEntity(x, y, z);
+                if (rail == null) return false;
+
+                if (rail instanceof BlockRailReception.TileEntityRailReception) {
+                    ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    return !world.isRemote;
+                } else if (rail instanceof BlockRailReceptionAnti.TileEntityRailReceptionAnti) {
+                    ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    return !world.isRemote;
+                } else if (rail instanceof RailMonoMagnetReception.TileEntityRail) {
+                    ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    return !world.isRemote;
+                } else if (rail instanceof RailMonoMagnetReceptionAnti.TileEntityRail) {
+                    ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
+                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    return !world.isRemote;
+                }
+            }
+
             if (((IRailDirectional) block).isForward()) {
                 if (block instanceof BlockRailReception) world.setBlock(x, y, z, BlockLoader.blockRailReceptionAnti);
                 if (block instanceof BlockRailProtectHead) world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);

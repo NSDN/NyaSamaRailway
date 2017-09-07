@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.Entity.*;
+import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
@@ -348,22 +349,6 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             }
         }
 
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        TileEntityRailReceptionAnti rail = null;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
-            rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
-        }
-        if (rail != null) {
-            if (player.isSneaking() && !world.isRemote) {
-                rail.cartType = "";
-                player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
-                return true;
-            }
-        }
-        return false;
     }
 
     public EntityMinecart getMinecart(World world, int x, int y, int z) {
