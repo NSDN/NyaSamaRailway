@@ -72,20 +72,6 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     }
 
     @Override
-    public AxisAlignedBB getCollisionBox(Entity entity) {
-        double size = 1.5;
-        return AxisAlignedBB.getBoundingBox(
-                posX + 1 - size, posY, posZ + 1 - size,
-                posX + size, posY + 1, posZ + size
-        );
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox() {
-        return getCollisionBox(null);
-    }
-
-    @Override
     public boolean interactFirst(EntityPlayer player) {
         if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player))) {
             return true;
