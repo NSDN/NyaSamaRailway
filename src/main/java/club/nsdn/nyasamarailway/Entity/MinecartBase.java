@@ -425,6 +425,12 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
 
             AxisAlignedBB box = getBoundingBox();
 
+            if (box == null) {
+                box = AxisAlignedBB.getBoundingBox(
+                        chunkCoordX, chunkCoordY, chunkCoordZ,
+                        chunkCoordX + 1, chunkCoordY + 1, chunkCoordZ + 1
+                );
+            }
             List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
             if (list != null && !list.isEmpty())

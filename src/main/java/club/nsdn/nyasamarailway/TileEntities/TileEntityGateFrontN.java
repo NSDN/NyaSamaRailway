@@ -47,6 +47,7 @@ public class TileEntityGateFrontN extends TileEntityBase {
         }
 
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
+            if (direction == null) direction = ForgeDirection.UNKNOWN;
             tagCompound.setInteger("direction", direction.ordinal());
             return tagCompound;
         }

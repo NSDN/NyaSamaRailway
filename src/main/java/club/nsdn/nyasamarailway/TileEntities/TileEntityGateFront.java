@@ -58,6 +58,7 @@ public class TileEntityGateFront extends TileEntityBase {
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("over", over);
             tagCompound.setBoolean("isEnabled", isEnabled);
+            if (direction == null) direction = ForgeDirection.UNKNOWN;
             tagCompound.setInteger("direction", direction.ordinal());
             tagCompound.setInteger("setOver", setOver);
             return super.toNBT(tagCompound);

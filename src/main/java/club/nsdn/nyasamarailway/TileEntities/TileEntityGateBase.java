@@ -159,6 +159,7 @@ public class TileEntityGateBase extends TileEntityBase {
 
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("player", player);
+            if (direction == null) direction = ForgeDirection.UNKNOWN;
             tagCompound.setInteger("direction", direction.ordinal());
             return tagCompound;
         }
