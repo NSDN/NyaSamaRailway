@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class StationSignRenderer extends TileEntitySpecialRenderer {
@@ -25,13 +24,6 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
     public StationSignRenderer() {
         this.model = new StationSignModel();
         this.texture = new ResourceLocation("nyasamarailway", "textures/blocks/StationSign.png");
-    }
-
-    private void adjustRotatePivotViaMeta(World world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-        GL11.glPushMatrix();
-        GL11.glRotatef(meta * (-90), 0.0F, 0.0F, 1.0F);
-        GL11.glPopMatrix();
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -87,15 +79,23 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         GL11.glDepthMask(false);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(-0.75F + 0.25F, -1.0F + 0.125F, -0.05F);
-        GL11.glScalef(0.03F, 0.03F, 1.0F);
-        renderer.drawString(sign.StationNameCN, 8, 0, 0);
-        GL11.glScalef(0.5F, 0.5F, 1.0F);
-        renderer.drawString(sign.StationNameEN, 16, 16, 0);
-        GL11.glScalef(1.1F, 1.1F, 1.0F);
-        renderer.drawString(sign.LeftStations, 0, 28, 0);
-        renderer.drawString("<==>", 24, 28, 0);
-        renderer.drawString(sign.RightStations, 44, 28, 0);
+
+        GL11.glTranslatef(0.0F, -0.85F, -0.05F);
+
+        drawCenteredString(sign.StationNameCN, 0, 2.0F);
+        drawCenteredString(sign.StationNameEN, 20, 0.8F);
+
+        String left = "", right = "";
+        if (sign.LeftStations.length() < sign.RightStations.length()) {
+            for (int i = 0; i < sign.RightStations.length() - sign.LeftStations.length(); i++)
+                left = left.concat(" ");
+        } else if (sign.LeftStations.length() > sign.RightStations.length()) {
+            for (int i = 0; i < sign.LeftStations.length() - sign.RightStations.length(); i++)
+                right = right.concat(" ");
+        }
+        String stations = sign.LeftStations + left + " <==> " + right + sign.RightStations;
+        drawCenteredString(stations, 28, 1.0F);
+
         GL11.glPopMatrix();
 
         GL11.glDepthMask(true);
@@ -105,6 +105,20 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
 
         RenderHelper.enableStandardItemLighting();
 
+        GL11.glPopMatrix();
+    }
+
+    public void drawCenteredString(String string, int y, float scale) {
+        FontRenderer renderer = this.func_147498_b();
+        GL11.glPushMatrix();
+        GL11.glScalef(1.0F / 60.0F, 1.0F / 60.0F, 1.0F);
+        GL11.glScalef(scale, scale, 1.0F);
+        if ((float) renderer.getStringWidth(string) * scale > 70.0F) {
+            float fix = 70.0F / ((float) renderer.getStringWidth(string) * scale);
+            GL11.glScalef(fix, fix, 1.0F);
+            if (scale <= 1.0F) y += (int) (1.0F / scale) + 1;
+        }
+        renderer.drawString(string, -renderer.getStringWidth(string) / 2, y, 0);
         GL11.glPopMatrix();
     }
 
