@@ -117,7 +117,9 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         if ((float) renderer.getStringWidth(string) * scale > 70.0F) {
             float fix = 70.0F / ((float) renderer.getStringWidth(string) * scale);
             GL11.glScalef(fix, fix, 1.0F);
-            if (scale <= 1.0F) y += (int) (1.0F / scale) + 1;
+            fix = (1.0F / fix - 1.0F) * 25.0F;
+            if (scale > 1.0F) GL11.glTranslatef(0.0F, -fix * 0.05F, 0.0F);
+            else GL11.glTranslatef(0.0F, fix, 0.0F);
         }
         renderer.drawString(string, -renderer.getStringWidth(string) / 2, y, 0);
         GL11.glPopMatrix();
