@@ -99,7 +99,7 @@ public class TileEntityStationSign extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.0F, x2 = 1.0F, y2 = 1.0F, z2 = 1.0F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.375F, x2 = 1.0F, y2 = 2.0F, z2 = 0.625F;
         switch (meta % 13) {
             case 1:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);
