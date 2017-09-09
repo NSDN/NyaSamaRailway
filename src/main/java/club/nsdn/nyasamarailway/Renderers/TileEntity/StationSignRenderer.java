@@ -94,7 +94,8 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
                 right = right.concat(" ");
         }
         String stations = sign.LeftStations + left + " <==> " + right + sign.RightStations;
-        drawCenteredString(stations, 28, 1.0F);
+        if (!stations.equals(" <==> "))
+            drawCenteredString(stations, 28, 1.0F);
 
         GL11.glPopMatrix();
 
