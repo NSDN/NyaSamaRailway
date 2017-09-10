@@ -29,7 +29,7 @@ import java.util.Set;
  * Created by drzzm32 on 2016.6.23.
  */
 
-public class LocoBase extends EntityMinecart implements ITrainLinkable {
+public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.railcraft.api.carts.ILinkableCart {
 
     public int P;
     public int R;
@@ -72,6 +72,46 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable {
             this.R = packet.R;
             this.Dir = packet.Dir;
         }
+
+    }
+
+    @Override
+    public float getLinkageDistance(EntityMinecart cart) {
+        return 1.5F;
+    }
+
+    @Override
+    public float getOptimalDistance(EntityMinecart cart) {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean isLinkable() {
+        return true;
+    }
+
+    @Override
+    public boolean canLinkWithCart(EntityMinecart cart) {
+        return true;
+    }
+
+    @Override
+    public boolean hasTwoLinks() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeAdjusted(EntityMinecart cart) {
+        return true;
+    }
+
+    @Override
+    public void onLinkCreated(EntityMinecart cart) {
+
+    }
+
+    @Override
+    public void onLinkBroken(EntityMinecart cart) {
 
     }
 

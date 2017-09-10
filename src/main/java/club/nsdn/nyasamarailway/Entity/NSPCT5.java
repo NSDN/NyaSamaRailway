@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.*;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +37,16 @@ public class NSPCT5 extends MinecartBase {
     @Override
     public double getMountedYOffset() {
         return -0.6;
+    }
+
+    @Override
+    public float getLinkageDistance(EntityMinecart cart) {
+        return 1.5F;
+    }
+
+    @Override
+    public float getOptimalDistance(EntityMinecart cart) {
+        return 1.0F;
     }
 
     @Override

@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * Created by drzzm32 on 2016.5.23.
  */
-public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable {
+public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable, mods.railcraft.api.carts.ILinkableCart {
 
     /** Minecart rotational logic matrix */
     public static int[][][] matrix = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
@@ -111,6 +111,46 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable 
     @Override
     public float getMaxCartSpeedOnRail() {
         return 1.0F;
+    }
+
+    @Override
+    public float getLinkageDistance(EntityMinecart cart) {
+        return 1.5F;
+    }
+
+    @Override
+    public float getOptimalDistance(EntityMinecart cart) {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean isLinkable() {
+        return true;
+    }
+
+    @Override
+    public boolean canLinkWithCart(EntityMinecart cart) {
+        return true;
+    }
+
+    @Override
+    public boolean hasTwoLinks() {
+        return true;
+    }
+
+    @Override
+    public boolean canBeAdjusted(EntityMinecart cart) {
+        return true;
+    }
+
+    @Override
+    public void onLinkCreated(EntityMinecart cart) {
+
+    }
+
+    @Override
+    public void onLinkBroken(EntityMinecart cart) {
+
     }
 
     public int getPrevTrainID() {

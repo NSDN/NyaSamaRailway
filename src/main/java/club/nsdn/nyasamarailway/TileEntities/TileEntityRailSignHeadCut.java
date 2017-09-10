@@ -12,7 +12,7 @@ public class TileEntityRailSignHeadCut extends TileEntityBase {
     public static class RailSignHeadCut extends TileEntity {}
 
     public TileEntityRailSignHeadCut() {
-        super("RailSignHeadCut");
+        super("RailSignHeadCutLink");
         setIconLocation("rail_sign_head_cut");
     }
 

@@ -66,6 +66,11 @@ public class RailMonoSwitch extends RailBase {
             return tagCompound;
         }
 
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 16384.0D;
+        }
+
     }
 
     @Override

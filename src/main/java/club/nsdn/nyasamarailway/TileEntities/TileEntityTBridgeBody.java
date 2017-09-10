@@ -12,10 +12,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityTBridgeBody extends TileEntityBase {
 
     public static class TBridgeBody extends TileEntity {
+
         @Override
         public boolean shouldRenderInPass(int pass) {
             return true;
         }
+
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 16384.0D;
+        }
+
     }
 
     public TileEntityTBridgeBody() {
