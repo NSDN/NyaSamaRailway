@@ -42,6 +42,11 @@ public class RailMono extends RailBase {
             super.readFromNBT(tagCompound);
         }
 
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 16384.0D;
+        }
+
     }
 
     @Override
@@ -57,6 +62,7 @@ public class RailMono extends RailBase {
     public RailMono() {
         super(false);
         setBlockName("RailMono");
+        setLightOpacity(0);
         setIconLocation("rail_mono");
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }

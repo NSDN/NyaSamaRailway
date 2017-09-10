@@ -74,6 +74,10 @@ public class TileEntityLoader {
                 "tileEntityRailSignHeadLink");
 
         GameRegistry.registerTileEntity(
+                TileEntityRailSignHeadCutLink.RailSignHeadCutLink.class,
+                "tileEntityRailSignHeadCutLink");
+
+        GameRegistry.registerTileEntity(
                 TileEntityRailSignHeadT.RailSignHeadT.class,
                 "tileEntityRailSignHeadT");
 
@@ -220,6 +224,26 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityGlassShieldAlHalf.GlassShieldAl.class,
                 "tileEntityGlassShieldAlHalf");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical1.RailSignVertical.class,
+                "tileEntityRailSignVertical1");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical2.RailSignVertical.class,
+                "tileEntityRailSignVertical2");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical3.RailSignVertical.class,
+                "tileEntityRailSignVertical3");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical4.RailSignVertical.class,
+                "tileEntityRailSignVertical4");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical5.RailSignVertical.class,
+                "tileEntityRailSignVertical5");
 
     }
 

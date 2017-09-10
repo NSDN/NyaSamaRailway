@@ -85,6 +85,10 @@ public class TileEntityModelBinder {
                 new BaseRenderer(new RailSignHeadModel(), "textures/blocks/rail_sign_link.png"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignHeadCutLink.RailSignHeadCutLink.class,
+                new BaseRenderer(new RailSignHeadModel(), "textures/blocks/rail_sign_cutlink.png"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailSignHeadT.RailSignHeadT.class,
                 new BaseRenderer(new RailSignHeadModel(), "textures/blocks/rail_sign_t.png"));
 
@@ -220,6 +224,31 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityGlassShieldAlHalf.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_HALF)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical1.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_1")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical2.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_2")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical3.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_3")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical4.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_4")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical5.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_5")
         );
 
     }

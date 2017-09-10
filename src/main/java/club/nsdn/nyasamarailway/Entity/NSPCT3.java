@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.ItemLoader;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -25,6 +26,16 @@ public class NSPCT3 extends MinecartBase {
     @Override
     public float getMaxCartSpeedOnRail() {
         return 5.0F;
+    }
+
+    @Override
+    public float getLinkageDistance(EntityMinecart cart) {
+        return 2.5F;
+    }
+
+    @Override
+    public float getOptimalDistance(EntityMinecart cart) {
+        return 1.5F;
     }
 
     @Override

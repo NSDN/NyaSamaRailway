@@ -65,7 +65,14 @@ public class BlockLoader {
     public static Block blockRailSignHeadCut;
     public static Block blockRailSignHeadJoe;
     public static Block blockRailSignHeadLink;
+    public static Block blockRailSignHeadCutLink;
     public static Block blockRailSignHeadT;
+
+    public static Block blockRailSignVertical1;
+    public static Block blockRailSignVertical2;
+    public static Block blockRailSignVertical3;
+    public static Block blockRailSignVertical4;
+    public static Block blockRailSignVertical5;
 
     public static Block railNoSleeperStraight;
     public static Block railMono;
@@ -251,8 +258,26 @@ public class BlockLoader {
         blockRailSignHeadLink = new TileEntityRailSignHeadLink();
         register(blockRailSignHeadLink, "block_rail_sign_head_link");
 
+        blockRailSignHeadCutLink = new TileEntityRailSignHeadCutLink();
+        register(blockRailSignHeadCutLink, "block_rail_sign_head_cutlink");
+
         blockRailSignHeadT = new TileEntityRailSignHeadT();
         register(blockRailSignHeadT, "block_rail_sign_head_t");
+
+        blockRailSignVertical1 = new TileEntityRailSignVertical1();
+        register(blockRailSignVertical1, "block_rail_sign_vertical_1");
+
+        blockRailSignVertical2 = new TileEntityRailSignVertical2();
+        register(blockRailSignVertical2, "block_rail_sign_vertical_2");
+
+        blockRailSignVertical3 = new TileEntityRailSignVertical3();
+        register(blockRailSignVertical3, "block_rail_sign_vertical_3");
+
+        blockRailSignVertical4 = new TileEntityRailSignVertical4();
+        register(blockRailSignVertical4, "block_rail_sign_vertical_4");
+
+        blockRailSignVertical5 = new TileEntityRailSignVertical5();
+        register(blockRailSignVertical5, "block_rail_sign_vertical_5");
 
         //railNoSleeperStraight = new RailNoSleeperStraight();
         //register(railNoSleeperStraight, "rail_ns_s");
