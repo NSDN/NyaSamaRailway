@@ -32,7 +32,6 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        FontRenderer renderer = this.func_147498_b();
 
         RenderHelper.disableStandardItemLighting();
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -85,17 +84,57 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         drawCenteredString(sign.StationNameCN, 0, 2.0F);
         drawCenteredString(sign.StationNameEN, 20, 0.8F);
 
-        String left = "", right = "";
-        if (sign.LeftStations.length() < sign.RightStations.length()) {
-            for (int i = 0; i < sign.RightStations.length() - sign.LeftStations.length(); i++)
-                left = left.concat(" ");
-        } else if (sign.LeftStations.length() > sign.RightStations.length()) {
-            for (int i = 0; i < sign.LeftStations.length() - sign.RightStations.length(); i++)
-                right = right.concat(" ");
+        final String SPLIT = "/";
+        final String CENTER = " <==> ";
+        final int SPACE = len(" ");
+
+        String left = sign.LeftStations.split(SPLIT)[0], right = sign.RightStations.split(SPLIT)[0];
+        String leftSpace, rightSpace;
+        boolean hasMultiStations = false;
+        
+        leftSpace = getSpaces(left, right).left;
+        rightSpace = getSpaces(left, right).right;
+        
+        String stations = leftSpace + left + leftSpace + CENTER + rightSpace + right + rightSpace;
+
+        if (sign.LeftStations.split(SPLIT).length > 1) hasMultiStations = true;
+        if (sign.RightStations.split(SPLIT).length > 1) hasMultiStations = true;
+
+        if (!hasMultiStations) {
+            if (!stations.equals(CENTER))
+                drawCenteredString(stations, 24, 1.0F);
+        } else {
+            String leftA, leftB = "", rightA, rightB = "";
+            leftA = sign.LeftStations.split(SPLIT)[0];
+            rightA = sign.RightStations.split(SPLIT)[0];
+            if (sign.LeftStations.split(SPLIT).length > 1) leftB = sign.LeftStations.split(SPLIT)[1];
+            if (sign.RightStations.split(SPLIT).length > 1) rightB = sign.RightStations.split(SPLIT)[1];
+            
+            String leftLarger = leftA.length() > leftB.length() ? leftA : leftB;
+            String rightLarger = rightA.length() > rightB.length() ? rightA : rightB;
+            
+            leftSpace = getSpaces(leftLarger, rightLarger).left;
+            rightSpace = getSpaces(leftLarger, rightLarger).right;
+
+            String space = spaces(Math.abs(len(leftA) - len(leftB)) / 2 / SPACE);
+            if (leftLarger.equals(leftA)) {
+                leftB = space + leftB + space;
+            } else {
+                leftA = space + leftA + space;
+            }
+
+            space = spaces(Math.abs(len(rightA) - len(rightB)) / 2 / SPACE);
+            if (rightLarger.equals(rightA)) {
+                rightB = space + rightB + space;
+            } else {
+                rightA = space + rightA + space;
+            }
+
+            stations = leftSpace + leftA + leftSpace + CENTER + rightSpace + rightA + rightSpace;
+            drawCenteredString(stations, 24, 1.0F);
+            stations = leftSpace + leftB + leftSpace + spaces(len(CENTER) / SPACE) + rightSpace + rightB + rightSpace;
+            drawCenteredString(stations, 32, 1.0F);
         }
-        String stations = sign.LeftStations + left + " <==> " + right + sign.RightStations;
-        if (!stations.equals(" <==> "))
-            drawCenteredString(stations, 28, 1.0F);
 
         GL11.glPopMatrix();
 
@@ -107,6 +146,32 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
         RenderHelper.enableStandardItemLighting();
 
         GL11.glPopMatrix();
+    }
+    
+    public class Spaces {
+        public String left; public String right;
+        public Spaces() { left = ""; right = ""; }
+    }
+    
+    public Spaces getSpaces(String left, String right) {
+        Spaces spaces = new Spaces();
+        if (len(left) < len(right)) {
+            spaces.left = spaces((len(right) - len(left)) / 2 / len(" "));
+        } else if (len(left) > len(right)) {
+            spaces.right = spaces((len(left) - len(right)) / 2 / len(" "));
+        }
+        return spaces;
+    }
+
+    public String spaces(int count) {
+        String s = "";
+        for (int i = 0; i < count; i++)
+            s = s.concat(" ");
+        return s;
+    }
+
+    public int len(String string) {
+        return this.func_147498_b().getStringWidth(string);
     }
 
     public void drawCenteredString(String string, int y, float scale) {
