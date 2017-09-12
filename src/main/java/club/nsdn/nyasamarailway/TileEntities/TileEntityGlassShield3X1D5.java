@@ -1,12 +1,8 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -22,46 +18,7 @@ import java.util.Random;
  */
 public class TileEntityGlassShield3X1D5 extends TileEntityBase {
 
-    public static class GlassShield extends TileEntityRailReceiver {
-
-        public int progress = 0;
-        public float prevDist;
-
-        public static final int DELAY = 2;
-        public int delay;
-
-        public static final int PROGRESS_MAX = 32;
-
-        public static final int STATE_CLOSE = 0;
-        public static final int STATE_CLOSING = 1;
-        public static final int STATE_OPEN = 2;
-        public static final int STATE_OPENING = 3;
-        public int state = STATE_CLOSE;
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        public AxisAlignedBB getRenderBoundingBox()
-        {
-            return AxisAlignedBB
-                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
-                    .expand(4, 4, 4);
-        }
-
-        @Override
-        public void fromNBT(NBTTagCompound tagCompound) {
-            progress = tagCompound.getInteger("progress");
-            state = tagCompound.getInteger("state");
-            super.fromNBT(tagCompound);
-        }
-
-        @Override
-        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setInteger("progress", progress);
-            tagCompound.setInteger("state", state);
-            return super.toNBT(tagCompound);
-        }
-
-    }
+    public static class GlassShield extends TileEntityGlassShieldBase { }
 
     public TileEntityGlassShield3X1D5() {
         super("GlassShield3X1D5");
@@ -89,7 +46,7 @@ public class TileEntityGlassShield3X1D5 extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.5F, y2 = 3.0F, z2 = 0.5625F;
+        float x1 = -0.5F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 3.0F, z2 = 0.5625F;
 
         switch (meta & 3) {
             case 0:

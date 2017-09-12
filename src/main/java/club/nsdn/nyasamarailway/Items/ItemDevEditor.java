@@ -41,74 +41,71 @@ public class ItemDevEditor extends ItemToolBase {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         UUID uuid = player.getUniqueID();
 
-        if (tileEntity == null) {
-            sender.remove(uuid);
-            target.remove(uuid);
-            if (player instanceof EntityPlayerMP)
+        if (!world.isRemote) {
+            if (tileEntity == null) {
+                if (sender.containsKey(uuid)) sender.remove(uuid);
+                if (target.containsKey(uuid)) target.remove(uuid);
                 player.addChatComponentMessage(
                         new ChatComponentTranslation("info.editor.clear")
                 );
-            return !world.isRemote;
-        }
+                return true;
+            }
 
-        if (player.isSneaking()) {
-            if (!target.containsKey(uuid)) {
-                if (tileEntity instanceof TileEntityRailActuator) {
-                    target.put(uuid, ((TileEntityRailActuator) tileEntity).getTarget());
-                    if (player instanceof EntityPlayerMP)
+            if (player.isSneaking()) {
+                if (!target.containsKey(uuid)) {
+                    if (tileEntity instanceof TileEntityRailActuator) {
+                        target.put(uuid, ((TileEntityRailActuator) tileEntity).getTarget());
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.copy.target")
                         );
-                } else {
-                    if (player instanceof EntityPlayerMP)
+                    } else {
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.error")
                         );
-                }
-            } else {
-                if (tileEntity instanceof TileEntityRailActuator) {
-                    ((TileEntityRailActuator) tileEntity).setTarget(target.get(uuid));
-                    if (player instanceof EntityPlayerMP)
+                    }
+                } else {
+                    if (tileEntity instanceof TileEntityRailActuator) {
+                        ((TileEntityRailActuator) tileEntity).setTarget(target.get(uuid));
+                        world.markBlockForUpdate(x, y, z);
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.paste.target")
                         );
-                } else {
-                    if (player instanceof EntityPlayerMP)
+                    } else {
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.error")
                         );
+                    }
                 }
-            }
-        } else {
-            if (!sender.containsKey(uuid)) {
-                if (tileEntity instanceof TileEntityRailReceiver) {
-                    sender.put(uuid, ((TileEntityRailActuator) tileEntity).getSender());
-                    if (player instanceof EntityPlayerMP)
+            } else {
+                if (!sender.containsKey(uuid)) {
+                    if (tileEntity instanceof TileEntityRailReceiver) {
+                        sender.put(uuid, ((TileEntityRailActuator) tileEntity).getSender());
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.copy.sender")
                         );
-                } else {
-                    if (player instanceof EntityPlayerMP)
+                    } else {
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.error")
                         );
-                }
-            } else {
-                if (tileEntity instanceof TileEntityRailReceiver) {
-                    ((TileEntityRailActuator) tileEntity).setSender(sender.get(uuid));
-                    if (player instanceof EntityPlayerMP)
+                    }
+                } else {
+                    if (tileEntity instanceof TileEntityRailReceiver) {
+                        ((TileEntityRailActuator) tileEntity).setSender(sender.get(uuid));
+                        world.markBlockForUpdate(x, y, z);
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.paste.sender")
                         );
-                } else {
-                    if (player instanceof EntityPlayerMP)
+                    } else {
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.error")
                         );
+                    }
                 }
             }
+
+            return true;
         }
 
-        return !world.isRemote;
+        return false;
     }
 }

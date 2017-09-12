@@ -1,8 +1,7 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityGlassShield;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityGlassShieldHalf;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityGlassShieldBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -74,10 +73,10 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
     }
 
     public void doInterpolation(TileEntity tileEntity) {
-        if (tileEntity instanceof TileEntityGlassShield.GlassShield) {
-            TileEntityGlassShield.GlassShield glassShield = (TileEntityGlassShield.GlassShield) tileEntity;
+        if (tileEntity instanceof TileEntityGlassShieldBase) {
+            TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) tileEntity;
 
-            float max = (float) TileEntityGlassShield.GlassShield.PROGRESS_MAX;
+            float max = (float) TileEntityGlassShieldBase.PROGRESS_MAX;
             float dist = ((float) glassShield.progress) / max * MOVE_DIST;
 
             if (dist != glassShield.prevDist) {
@@ -114,8 +113,8 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
         switch (renderType) {
             case SHIELD:
                 MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShield.GlassShield) {
-                    TileEntityGlassShield.GlassShield glassShield = (TileEntityGlassShield.GlassShield) te;
+                if (te instanceof TileEntityGlassShieldBase) {
+                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
                     doInterpolation(te);
 
@@ -132,8 +131,8 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 break;
             case SHIELD_HALF:
                 MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
-                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+                if (te instanceof TileEntityGlassShieldBase) {
+                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
                     doInterpolation(te);
 
@@ -150,8 +149,8 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 break;
             case SHIELD_1X1:
                 MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
-                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+                if (te instanceof TileEntityGlassShieldBase) {
+                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
                     doInterpolation(te);
 
@@ -168,8 +167,8 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 break;
             case SHIELD_3X1:
                 MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
-                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+                if (te instanceof TileEntityGlassShieldBase) {
+                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
                     doInterpolation(te);
 
@@ -189,8 +188,8 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 break;
             case SHIELD_3X1D5:
                 MOVE_DIST = 1.5F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
-                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+                if (te instanceof TileEntityGlassShieldBase) {
+                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
                     doInterpolation(te);
 
