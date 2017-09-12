@@ -217,6 +217,21 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShield1X1.GlassShield.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_1X1)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShield3X1.GlassShield.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_3X1)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShield3X1D5.GlassShield.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_3X1D5)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityGlassShieldAl.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL)
         );

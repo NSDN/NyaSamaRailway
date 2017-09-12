@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 

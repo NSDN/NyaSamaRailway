@@ -6,6 +6,8 @@ package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.Blocks.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.*;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -216,6 +218,18 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityGlassShieldHalf.GlassShield.class,
                 "tileEntityGlassShieldHalf");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShield1X1.GlassShield.class,
+                "tileEntityGlassShield1X1");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShield3X1.GlassShield.class,
+                "tileEntityGlassShield3X1");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShield3X1D5.GlassShield.class,
+                "tileEntityGlassShield3X1D5");
 
         GameRegistry.registerTileEntity(
                 TileEntityGlassShieldAl.GlassShieldAl.class,

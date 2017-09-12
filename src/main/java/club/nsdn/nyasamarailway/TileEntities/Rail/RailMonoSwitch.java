@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -10,9 +10,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;

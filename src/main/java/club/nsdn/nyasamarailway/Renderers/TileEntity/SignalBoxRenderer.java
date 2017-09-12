@@ -6,10 +6,11 @@ package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
 import club.nsdn.nyasamarailway.TileEntities.*;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailMultiSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -69,7 +70,7 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
 
         if (te instanceof TileEntityRailActuator) {
             txState = ((TileEntityRailActuator) te).getTarget() != null;
-            rxState = ((TileEntityRailActuator) te).getSenderRail() != null;
+            rxState = ((TileEntityRailActuator) te).getSender() != null;
             if (te instanceof TileEntitySignalBox.SignalBox) {
                 inverted = ((TileEntitySignalBox.SignalBox) te).inverterEnabled;
             }
@@ -78,7 +79,7 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
                 isEnabled = ((TileEntitySignalBoxSender.SignalBoxSender) te).isEnabled;
             }
             txState = ((TileEntityRailMultiSender) te).targetCount > 0;
-            rxState = ((TileEntityRailMultiSender) te).getTransceiverRail() != null;
+            rxState = ((TileEntityRailMultiSender) te).getTransceiver() != null;
         } else return;
 
         GL11.glPushMatrix();

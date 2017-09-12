@@ -1,19 +1,20 @@
-package club.nsdn.nyasamarailway.TileEntities;
+package club.nsdn.nyasamarailway.TileEntities.Signals;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import org.thewdj.telecom.ITransceiver;
 
 /**
  * Created by drzzm32 on 2017.6.17.
  */
-public class TileEntityRailTransceiver extends TileEntity {
+public class TileEntityRailTransceiver extends TileEntity implements ITransceiver<TileEntityRailTransceiver> {
 
     public String transceiverX, transceiverY, transceiverZ;
 
-    public TileEntityRailTransceiver getTransceiverRail() {
+    public TileEntityRailTransceiver getTransceiver() {
         if (transceiverX.equals("null") || transceiverY.equals("null") || transceiverZ.equals("null")) return null;
 
         TileEntity tileEntity; int x, y, z;
@@ -32,7 +33,7 @@ public class TileEntityRailTransceiver extends TileEntity {
         return (TileEntityRailTransceiver) tileEntity;
     }
 
-    public void setTransceiverRail(TileEntityRailTransceiver rail) {
+    public void setTransceiver(TileEntityRailTransceiver rail) {
         if (rail == null) {
             transceiverX = "null";
             transceiverY = "null";
@@ -44,8 +45,8 @@ public class TileEntityRailTransceiver extends TileEntity {
         }
     }
 
-    public boolean transceiverRailIsPowered() {
-        TileEntityRailTransceiver rail = getTransceiverRail();
+    public boolean transceiverIsPowered() {
+        TileEntityRailTransceiver rail = getTransceiver();
         if (rail == null) return false;
         int meta = worldObj.getBlockMetadata(rail.xCoord, rail.yCoord, rail.zCoord);
         return (meta & 8) != 0;
@@ -64,7 +65,7 @@ public class TileEntityRailTransceiver extends TileEntity {
     }
 
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-        if (getTransceiverRail() == null) {
+        if (getTransceiver() == null) {
             tagCompound.setString("transceiverRailX", "null");
             tagCompound.setString("transceiverRailY", "null");
             tagCompound.setString("transceiverRailZ", "null");

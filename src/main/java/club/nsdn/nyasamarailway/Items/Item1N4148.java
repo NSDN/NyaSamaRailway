@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.Items;
 import club.nsdn.nyasamarailway.Blocks.*;
 import club.nsdn.nyasamarailway.TileEntities.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.*;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -222,16 +223,16 @@ public class Item1N4148 extends ItemToolBase {
                 UUID uuid = player.getUniqueID();
                 if (tmpRails.containsKey(uuid)) {
                     if (tmpRails.get(uuid) == thisRail) {
-                        thisRail.setTransceiverRail(null);
+                        thisRail.setTransceiver(null);
                         if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.abort"));
                     } else {
-                        if (thisRail.getTransceiverRail() == tmpRails.get(uuid)) {
-                            thisRail.getTransceiverRail().setTransceiverRail(null);
-                            thisRail.setTransceiverRail(null);
+                        if (thisRail.getTransceiver() == tmpRails.get(uuid)) {
+                            thisRail.getTransceiver().setTransceiver(null);
+                            thisRail.setTransceiver(null);
                             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.disconnected"));
                         } else {
-                            thisRail.setTransceiverRail(tmpRails.get(uuid));
-                            thisRail.getTransceiverRail().setTransceiverRail(thisRail);
+                            thisRail.setTransceiver(tmpRails.get(uuid));
+                            thisRail.getTransceiver().setTransceiver(thisRail);
                             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.connected"));
                         }
                     }

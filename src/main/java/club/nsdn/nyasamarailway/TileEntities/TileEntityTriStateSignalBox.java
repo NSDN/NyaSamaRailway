@@ -1,6 +1,8 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoSwitch;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -159,11 +161,11 @@ public class TileEntityTriStateSignalBox extends TileEntityBase {
             int old = meta;
             boolean isEnabled;
 
-            if (signalBox.getSenderRail() == null) {
+            if (signalBox.getSender() == null) {
                 isEnabled = (meta & 0x8) != 0;
                 meta &= 0x7;
             } else {
-                isEnabled = signalBox.senderRailIsPowered();
+                isEnabled = signalBox.senderIsPowered();
 
                 if (isEnabled) meta |= 0x8;
                 else meta &= 0x7;
