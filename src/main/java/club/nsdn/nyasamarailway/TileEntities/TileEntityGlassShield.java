@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,7 +30,7 @@ public class TileEntityGlassShield extends TileEntityBase {
         public static final int DELAY = 2;
         public int delay;
 
-        public static final int PROGRESS_MAX = 30;
+        public static final int PROGRESS_MAX = 32;
 
         public static final int STATE_CLOSE = 0;
         public static final int STATE_CLOSING = 1;
@@ -134,10 +135,10 @@ public class TileEntityGlassShield extends TileEntityBase {
                 GlassShield nearByShield = getNearbyShield(world, x, y, z);
                 boolean control;
 
-                if (glassShield.getSenderRail() == null) {
+                if (glassShield.getSender() == null) {
                     control = hasPlayer(world, x, y, z);
                 } else {
-                    control = glassShield.senderRailIsPowered();
+                    control = glassShield.senderIsPowered();
                 }
 
                 if (control) {
@@ -150,7 +151,7 @@ public class TileEntityGlassShield extends TileEntityBase {
                 } else {
                     if (glassShield.state == GlassShield.STATE_OPEN) {
                         if (glassShield.delay < GlassShield.DELAY * 20 &&
-                                glassShield.getSenderRail() == null
+                                glassShield.getSender() == null
                                 ) glassShield.delay += 1;
                         else {
                             glassShield.state = GlassShield.STATE_CLOSING;

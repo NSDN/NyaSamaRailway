@@ -1,10 +1,9 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.Entity.*;
-import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -263,7 +262,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
 
                                 if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
                                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
-                                    if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                                    if (railReceiver.senderIsPowered()) isEnabled = true;
                                 }
 
                                 if (!isEnabled) rail.delay += 1;

@@ -1,8 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.IRailDirectional;
-import club.nsdn.nyasamarailway.Items.Item1N4148;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
@@ -273,7 +272,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
 
                                 if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
                                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
-                                    if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                                    if (railReceiver.senderIsPowered()) isEnabled = true;
                                 }
 
                                 if (!isEnabled) rail.delay += 1;

@@ -65,7 +65,7 @@ public class TriStateSignalBoxRenderer extends TileEntitySpecialRenderer {
 
         if (te instanceof TileEntityTriStateSignalBox.TriStateSignalBox) {
             txState = ((TileEntityTriStateSignalBox.TriStateSignalBox) te).getTarget() != null;
-            rxState = ((TileEntityTriStateSignalBox.TriStateSignalBox) te).getSenderRail() != null;
+            rxState = ((TileEntityTriStateSignalBox.TriStateSignalBox) te).getSender() != null;
             inverted = ((TileEntityTriStateSignalBox.TriStateSignalBox) te).inverterEnabled;
             triStateIsNeg = ((TileEntityTriStateSignalBox.TriStateSignalBox) te).triStateIsNeg;
         }

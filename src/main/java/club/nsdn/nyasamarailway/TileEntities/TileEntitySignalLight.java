@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -116,10 +117,10 @@ public class TileEntitySignalLight extends TileEntityBase {
         if (world.getTileEntity(x, y, z) instanceof SignalLight) {
             SignalLight signalLight = (SignalLight) world.getTileEntity(x, y, z);
             boolean isEnable;
-            if (signalLight.getSenderRail() == null) {
+            if (signalLight.getSender() == null) {
                 isEnable = signalLight.isPowered ^ thisBlockIsPowered(world, x, y, z);
             } else {
-                isEnable = signalLight.senderRailIsPowered() ^ thisBlockIsPowered(world, x, y, z);
+                isEnable = signalLight.senderIsPowered() ^ thisBlockIsPowered(world, x, y, z);
             }
             int meta = world.getBlockMetadata(x, y, z);
             int old = meta;

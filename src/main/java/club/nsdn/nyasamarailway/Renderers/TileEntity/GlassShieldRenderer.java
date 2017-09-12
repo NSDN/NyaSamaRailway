@@ -19,6 +19,9 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
 
     private static final int MODEL_NORMAL = 0;
     private static final int MODEL_HALF = 1;
+    private static final int MODEL_1X1 = 2;
+    private static final int MODEL_3X1 = 3;
+    private static final int MODEL_3X1D5 = 4;
     private final WavefrontObject[] modelMain;
     private final WavefrontObject[] modelMainAl;
 
@@ -27,12 +30,15 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
 
     public static final int SHIELD = 0;
     public static final int SHIELD_HALF = 1;
-    public static final int SHIELD_AL = 2;
-    public static final int SHIELD_AL_HALF = 3;
+    public static final int SHIELD_1X1 = 2;
+    public static final int SHIELD_3X1 = 3;
+    public static final int SHIELD_3X1D5 = 4;
+    public static final int SHIELD_AL = 5;
+    public static final int SHIELD_AL_HALF = 6;
     private final int renderType;
 
-    public static final float ANIMATION_STEP = 5;
-    public static final float MOVE_DIST = 1.0F - (1.0F / 16.0F);
+    public static final float ANIMATION_STEP = 4;
+    public float MOVE_DIST = 1.0F - (1.0F / 16.0F);
 
     public GlassShieldRenderer(int renderType) {
         modelMain = new WavefrontObject[] {
@@ -41,6 +47,15 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 ),
                 new WavefrontObject(
                         new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_half.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_1x1.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_3x1.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_3x1d5.obj")
                 )
         };
         modelMainAl = new WavefrontObject[] {
@@ -56,6 +71,24 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
         textureMainAl = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_al_main.png");
 
         this.renderType = renderType;
+    }
+
+    public void doInterpolation(TileEntity tileEntity) {
+        if (tileEntity instanceof TileEntityGlassShield.GlassShield) {
+            TileEntityGlassShield.GlassShield glassShield = (TileEntityGlassShield.GlassShield) tileEntity;
+
+            float max = (float) TileEntityGlassShield.GlassShield.PROGRESS_MAX;
+            float dist = ((float) glassShield.progress) / max * MOVE_DIST;
+
+            if (dist != glassShield.prevDist) {
+                if (Math.abs(dist - glassShield.prevDist) > 1 / max * MOVE_DIST) {
+                    if (dist > glassShield.prevDist) glassShield.prevDist = dist - 1 / max * MOVE_DIST;
+                    else glassShield.prevDist = dist + 1 / max * MOVE_DIST;
+                }
+                if (dist > glassShield.prevDist) glassShield.prevDist += 1 / max * MOVE_DIST / ANIMATION_STEP;
+                else if (dist < glassShield.prevDist) glassShield.prevDist -= 1 / max * MOVE_DIST / ANIMATION_STEP;
+            }
+        }
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -80,20 +113,11 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
 
         switch (renderType) {
             case SHIELD:
+                MOVE_DIST = 1.0F - (1.0F / 16.0F);
                 if (te instanceof TileEntityGlassShield.GlassShield) {
                     TileEntityGlassShield.GlassShield glassShield = (TileEntityGlassShield.GlassShield) te;
 
-                    float max = (float) TileEntityGlassShield.GlassShield.PROGRESS_MAX;
-                    float dist = ((float) glassShield.progress) / max * MOVE_DIST;
-
-                    if (dist != glassShield.prevDist) {
-                        if (Math.abs(dist - glassShield.prevDist) > 1 / max * MOVE_DIST) {
-                            if (dist > glassShield.prevDist) glassShield.prevDist = dist - 1 / max * MOVE_DIST;
-                            else glassShield.prevDist = dist + 1 / max * MOVE_DIST;
-                        }
-                        if (dist > glassShield.prevDist) glassShield.prevDist += 1 / max * MOVE_DIST / ANIMATION_STEP;
-                        else glassShield.prevDist -= 1 / max * MOVE_DIST / ANIMATION_STEP;
-                    }
+                    doInterpolation(te);
 
                     GL11.glPushMatrix();
                     GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
@@ -107,20 +131,11 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 }
                 break;
             case SHIELD_HALF:
+                MOVE_DIST = 1.0F - (1.0F / 16.0F);
                 if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
                     TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
 
-                    float max = (float) TileEntityGlassShield.GlassShield.PROGRESS_MAX;
-                    float dist = ((float) glassShield.progress) / max * MOVE_DIST;
-
-                    if (dist != glassShield.prevDist) {
-                        if (Math.abs(dist - glassShield.prevDist) > 1 / max * MOVE_DIST) {
-                            if (dist > glassShield.prevDist) glassShield.prevDist = dist - 1 / max * MOVE_DIST;
-                            else glassShield.prevDist = dist + 1 / max * MOVE_DIST;
-                        }
-                        if (dist > glassShield.prevDist) glassShield.prevDist += 1 / max * MOVE_DIST / ANIMATION_STEP;
-                        else glassShield.prevDist -= 1 / max * MOVE_DIST / ANIMATION_STEP;
-                    }
+                    doInterpolation(te);
 
                     GL11.glPushMatrix();
                     GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
@@ -130,6 +145,66 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                     RendererHelper.renderWithResource(modelMain[MODEL_HALF], textureMain);
                     GL11.glPopMatrix();
 
+                    GL11.glPopMatrix();
+                }
+                break;
+            case SHIELD_1X1:
+                MOVE_DIST = 1.0F - (1.0F / 16.0F);
+                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
+                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+
+                    doInterpolation(te);
+
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
+                    RendererHelper.renderWithResource(modelMain[MODEL_1X1], textureMain);
+                    GL11.glPopMatrix();
+
+                    GL11.glPopMatrix();
+                }
+                break;
+            case SHIELD_3X1:
+                MOVE_DIST = 1.0F - (1.0F / 16.0F);
+                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
+                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+
+                    doInterpolation(te);
+
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(0.0F, 1.0F, 0.0F);
+
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
+                    RendererHelper.renderWithResource(modelMain[MODEL_3X1], textureMain);
+                    GL11.glPopMatrix();
+
+                    GL11.glPopMatrix();
+                    GL11.glPopMatrix();
+                }
+                break;
+            case SHIELD_3X1D5:
+                MOVE_DIST = 1.5F - (1.0F / 16.0F);
+                if (te instanceof TileEntityGlassShieldHalf.GlassShield) {
+                    TileEntityGlassShieldHalf.GlassShield glassShield = (TileEntityGlassShieldHalf.GlassShield) te;
+
+                    doInterpolation(te);
+
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(0.0F, 1.0F, 0.0F);
+
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
+                    RendererHelper.renderWithResource(modelMain[MODEL_3X1D5], textureMain);
+                    GL11.glPopMatrix();
+
+                    GL11.glPopMatrix();
                     GL11.glPopMatrix();
                 }
                 break;

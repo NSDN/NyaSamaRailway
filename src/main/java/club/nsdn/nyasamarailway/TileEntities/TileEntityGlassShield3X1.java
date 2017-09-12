@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.9.6.
+ * Created by drzzm32 on 2017.9.12.
  */
-public class TileEntityGlassShieldHalf extends TileEntityBase {
+public class TileEntityGlassShield3X1 extends TileEntityBase {
 
     public static class GlassShield extends TileEntityRailReceiver {
 
@@ -63,9 +63,9 @@ public class TileEntityGlassShieldHalf extends TileEntityBase {
 
     }
 
-    public TileEntityGlassShieldHalf() {
-        super("GlassShieldHalf");
-        setIconLocation("glass_shield_half");
+    public TileEntityGlassShield3X1() {
+        super("GlassShield3X1");
+        setIconLocation("glass_shield_3x1");
         setLightOpacity(1);
         setLightLevel(0);
     }
@@ -89,7 +89,7 @@ public class TileEntityGlassShieldHalf extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 1.5F, z2 = 0.5625F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 3.0F, z2 = 0.5625F;
 
         switch (meta & 3) {
             case 0:

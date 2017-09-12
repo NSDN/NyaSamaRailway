@@ -3,11 +3,11 @@ package club.nsdn.nyasamarailway.TileEntities;
 import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemTicketBase;
 import club.nsdn.nyasamarailway.Items.ItemTicketOnce;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -168,10 +168,10 @@ public class TileEntityGateFront extends TileEntityBase {
                 GateFront gateFront = (GateFront) world.getTileEntity(x, y, z);
                 boolean isEnable;
 
-                if (gateFront.getSenderRail() == null) {
+                if (gateFront.getSender() == null) {
                     isEnable = true;
                 } else {
-                    isEnable = gateFront.senderRailIsPowered();
+                    isEnable = gateFront.senderIsPowered();
                 }
 
                 if (isEnable != gateFront.isEnabled) {
