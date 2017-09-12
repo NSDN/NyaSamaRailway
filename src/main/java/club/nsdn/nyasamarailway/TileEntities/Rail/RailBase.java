@@ -6,6 +6,8 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -149,6 +151,11 @@ public class RailBase extends net.minecraft.block.BlockRailBase implements ITile
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 src, Vec3 dst) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        return super.collisionRayTrace(world, x, y, z, src, dst);
     }
 
     @Override
