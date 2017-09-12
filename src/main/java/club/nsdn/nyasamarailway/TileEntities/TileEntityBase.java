@@ -7,12 +7,10 @@ package club.nsdn.nyasamarailway.TileEntities;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.block.material.Material;
@@ -75,6 +73,11 @@ public class TileEntityBase extends BlockContainer {
     public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
         this.setBlockBoundsBasedOnState(world, x, y, z);
         return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 src, Vec3 dst) {
+        this.setBlockBoundsBasedOnState(world, x, y, z);
+        return super.collisionRayTrace(world, x, y, z, src, dst);
     }
 
     @Override
