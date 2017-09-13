@@ -79,7 +79,7 @@ public class ItemDevEditor extends ItemToolBase {
             } else {
                 if (!sender.containsKey(uuid)) {
                     if (tileEntity instanceof TileEntityRailReceiver) {
-                        sender.put(uuid, ((TileEntityRailActuator) tileEntity).getSender());
+                        sender.put(uuid, ((TileEntityRailReceiver) tileEntity).getSender());
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.copy.sender")
                         );
@@ -90,7 +90,7 @@ public class ItemDevEditor extends ItemToolBase {
                     }
                 } else {
                     if (tileEntity instanceof TileEntityRailReceiver) {
-                        ((TileEntityRailActuator) tileEntity).setSender(sender.get(uuid));
+                        ((TileEntityRailReceiver) tileEntity).setSender(sender.get(uuid));
                         world.markBlockForUpdate(x, y, z);
                         player.addChatComponentMessage(
                                 new ChatComponentTranslation("info.editor.paste.sender")
