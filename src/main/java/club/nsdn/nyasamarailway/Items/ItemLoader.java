@@ -18,7 +18,7 @@ public class ItemLoader {
     public static Item itemPierBuilder;
     public static Item itemDevEditor;
     public static Item itemStationSign;
-    public static Item itemMinecartBase;
+    public static Item itemNSTCT1;
     public static Item itemTrainBase;
     public static Item itemNSPCT1;
     public static Item itemNSPCT2;
@@ -29,6 +29,7 @@ public class ItemLoader {
     public static Item itemNSPCT6;
     public static Item itemNSBT1;
     public static Item itemNSET1;
+    public static Item itemNSET2;
 
     public static Item itemTicketOnce;
     public static Item itemNyaCard;
@@ -60,8 +61,8 @@ public class ItemLoader {
         itemStationSign = new ItemStationSign();
         register(itemStationSign, "item_station_sign");
 
-        itemMinecartBase = new ItemMinecartBase();
-        register(itemMinecartBase, "item_minecart_base");
+        itemNSTCT1 = new ItemNSTCT1();
+        register(itemNSTCT1, "item_nstc_1");
 
         itemNSPCT1 = new ItemNSPCT1();
         register(itemNSPCT1, "item_nspc_1");
@@ -89,6 +90,9 @@ public class ItemLoader {
 
         itemNSET1 = new ItemNSET1();
         register(itemNSET1, "item_nse_1");
+
+        itemNSET2 = new ItemNSET2();
+        register(itemNSET2, "item_nse_2");
 
         itemTicketOnce = new ItemTicketOnce();
         register(itemTicketOnce, "item_ticket_once");

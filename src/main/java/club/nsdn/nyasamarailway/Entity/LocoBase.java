@@ -44,6 +44,10 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
 
     protected TrainPacket tmpPacket;
 
+    protected boolean isHighSpeed() {
+        return false;
+    }
+
     public LocoBase(World world) { super(world); }
 
     public LocoBase(World world, double x, double y, double z) {
@@ -79,7 +83,7 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 0.75F;
     }
 
     @Override
@@ -129,7 +133,7 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
     protected void applyDrag() {
         //Do engine code
         tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
-        //tmpPacket.isUnits = true; //this is high speed loco
+        tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
         this.Velocity = tmpPacket.Velocity;

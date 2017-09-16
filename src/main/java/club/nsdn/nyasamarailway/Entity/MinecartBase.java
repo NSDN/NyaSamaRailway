@@ -52,19 +52,16 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     /** appears to be the progress of the turn */
     public boolean isInReverse = false;
 
-    public static boolean canMakePlayerTurn;
-
-    //public int prevLinkTrain = -1;
-    //public int nextLinkTrain = -1;
+    public boolean canMakePlayerTurn() {
+        return true;
+    }
 
     public MinecartBase(World world) {
         super(world);
-        canMakePlayerTurn = true;
     }
 
     public MinecartBase(World world, double x, double y, double z) {
         super(world, x, y, z);
-        canMakePlayerTurn = true;
     }
 
     @Override
@@ -116,7 +113,7 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 0.75F;
     }
 
     @Override
@@ -219,15 +216,6 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     }
 
     @Override
-    public void killMinecart(DamageSource source)
-    {
-        this.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemMinecartBase, 1);
-        itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
-    }
-
-    @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
     }
@@ -251,11 +239,12 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
 
             double detlaYaw = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
             /* Driver Heading */
-            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
-                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
+                        if (canMakePlayerTurn())
+                            ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
                     }
                 }
             }
@@ -411,11 +400,12 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
             }
 
             /* Driver Heading */
-            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
-                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
+                        if (canMakePlayerTurn())
+                            ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
                     }
                 }
             }

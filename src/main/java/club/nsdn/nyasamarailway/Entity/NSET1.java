@@ -19,14 +19,6 @@ public class NSET1 extends LocoBase {
     }
 
     @Override
-    protected void applyDrag() {
-        //Do engine code
-        calcLink(worldObj);
-
-        super.applyDrag();
-    }
-
-    @Override
     public void killMinecart(DamageSource source)
     {
         this.setDead();
