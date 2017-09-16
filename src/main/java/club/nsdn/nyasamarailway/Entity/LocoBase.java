@@ -29,7 +29,7 @@ import java.util.Set;
  * Created by drzzm32 on 2016.6.23.
  */
 
-public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.railcraft.api.carts.ILinkableCart {
+public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts.ILinkableCart {
 
     public int P;
     public int R;
@@ -41,9 +41,6 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
     public static final byte MAX_CHUNKS = 25;
     public Set<ChunkCoordIntPair> chunks;
     public ForgeChunkManager.Ticket ticket;
-
-    //public int prevLinkTrain = -1;
-    public int nextLinkTrain = -1;
 
     protected TrainPacket tmpPacket;
 
@@ -107,79 +104,10 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
 
     @Override
     public void onLinkCreated(EntityMinecart cart) {
-
     }
 
     @Override
     public void onLinkBroken(EntityMinecart cart) {
-
-    }
-
-    public int getPrevTrainID() {
-        return -1;
-    }
-
-    public int getNextTrainID() {
-        return this.nextLinkTrain;
-    }
-
-    public boolean LinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == -1) {
-            this.prevLinkTrain = ID;
-        } else
-        */
-        if (this.nextLinkTrain == -1) {
-            this.nextLinkTrain = ID;
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    public void deLinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == ID) {
-            this.prevLinkTrain = -1;
-        } else
-        */
-        if (this.nextLinkTrain == ID) {
-            this.nextLinkTrain = -1;
-        }
-    }
-
-    double calcDist(EntityMinecart a, EntityMinecart b) {
-        return Math.sqrt(Math.pow(a.posX - b.posX, 2) + Math.pow(a.posY - b.posY, 2) + Math.pow(a.posZ - b.posZ, 2));
-    }
-
-    public void calcLink(World world) {
-        if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) instanceof EntityMinecart) {
-            EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
-            double Ks = 500.0;
-            double Kd = 500.0;
-            double m = 1.0;
-            double length = 1.5;
-            double dt = 0.001;
-
-            Vec3d sPos = Vec3d.fromEntityPos(this);
-            Vec3d tPos = Vec3d.fromEntityPos(cart);
-            Vec3d sV = Vec3d.fromEntityMotion(this);
-            Vec3d tV = Vec3d.fromEntityMotion(cart);
-            Vec3d SdV = new Vec3d(sPos.subtract(tPos).normalize()).dotProduct(
-                    Ks * (calcDist(this, cart) - length) / m * dt
-            );
-            Vec3d DdV = new Vec3d(sV.subtract(tV)).dotProduct(Kd / m * dt);
-            Vec3d dV = SdV.addVector(DdV);
-
-            cart.motionX += -dV.xCoord;
-            cart.motionY += -dV.yCoord;
-            cart.motionZ += -dV.zCoord;
-
-            this.motionX += dV.xCoord;
-            this.motionY += dV.yCoord;
-            this.motionZ += dV.zCoord;
-
-        }
     }
 
     @Override
@@ -201,11 +129,10 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
     protected void applyDrag() {
         //Do engine code
         tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        //tmpPacket.isUnits = true; //this is high speed loco
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
         this.Velocity = tmpPacket.Velocity;
-
-        calcLink(worldObj);
 
         super.applyDrag();
     }
@@ -258,7 +185,6 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
         this.R = tagCompound.getInteger("LocoR");
         this.Dir = tagCompound.getInteger("LocoDir");
         this.Velocity = tagCompound.getDouble("LocoV");
-        this.nextLinkTrain = tagCompound.getInteger("nextLinkTrain");
     }
 
     @Override
@@ -268,7 +194,6 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
         tagCompound.setInteger("LocoR", this.R);
         tagCompound.setInteger("LocoDir", this.Dir);
         tagCompound.setDouble("LocoV", this.Velocity);
-        tagCompound.setInteger("nextLinkTrain", this.nextLinkTrain);
     }
 
     @Override
