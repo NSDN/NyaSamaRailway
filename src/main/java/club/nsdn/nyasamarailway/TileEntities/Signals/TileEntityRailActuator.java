@@ -63,6 +63,12 @@ public class TileEntityRailActuator extends TileEntityRailReceiver implements IR
         }
     }
 
+    public void controlTarget(boolean state) {
+        int meta = getTargetMetadata();
+        if (meta < 0) return;
+        setTargetMetadata(state ? meta | 0x8 : meta & 0x7);
+    }
+
     public int getTargetMetadata() {
         TileEntity railTarget = getTarget();
 

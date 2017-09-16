@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiverWithPassive;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +22,7 @@ public class TileEntitySignalLight extends TileEntityBase {
     private static final int LIGHT_Y = 2;
     private static final int LIGHT_G = 3;
 
-    public static class SignalLight extends TileEntityRailReceiver {
+    public static class SignalLight extends TileEntityRailReceiverWithPassive {
 
         public String lightType = "red&green";
         public String prevLightType = "null";
@@ -89,8 +89,8 @@ public class TileEntitySignalLight extends TileEntityBase {
         super.onBlockPreDestroy(world, x, y, z, meta);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null) {
-            if (tileEntity instanceof TileEntityRailReceiver) {
-                ((TileEntityRailReceiver) tileEntity).onDestroy();
+            if (tileEntity instanceof TileEntityRailReceiverWithPassive) {
+                ((TileEntityRailReceiverWithPassive) tileEntity).onDestroy();
             }
         }
     }

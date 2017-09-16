@@ -3,7 +3,7 @@ package club.nsdn.nyasamarailway.TileEntities;
 import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemTicketBase;
 import club.nsdn.nyasamarailway.Items.ItemTicketOnce;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiverWithPassive;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +25,7 @@ import java.util.Random;
  */
 public class TileEntityGateFront extends TileEntityBase {
 
-    public static class GateFront extends TileEntityRailReceiver {
+    public static class GateFront extends TileEntityRailReceiverWithPassive {
 
         public static final int DELAY = 5;
         public int delay;
