@@ -1,15 +1,12 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
-import club.nsdn.nyasamarailway.Items.Item1N4148;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailTransceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
@@ -125,11 +122,11 @@ public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
             thisRail = (TileEntityRailTransceiver) world.getTileEntity(x, y, z);
 
         if (thisRail != null) {
-            if (thisRail.getTransceiverRail() != null) {
+            if (thisRail.getTransceiver() != null) {
                 if (railHasCart(world, x, y, z) && !railHasPowered(world, x, y, z)) {
                     if (nearbyRailPowered(world, x, y, z)) {
                         setOutputSignal(thisRail, true);
-                        setOutputSignal(thisRail.getTransceiverRail(), true);
+                        setOutputSignal(thisRail.getTransceiver(), true);
                     }
                 }
             } else {
@@ -139,15 +136,15 @@ public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
                         for (TileEntityRailTransceiver rail : rails) {
                             if (rail != null) {
                                 setOutputSignal(rail, false);
-                                if (rail.getTransceiverRail() != null)
-                                    setOutputSignal(rail.getTransceiverRail(), false);
+                                if (rail.getTransceiver() != null)
+                                    setOutputSignal(rail.getTransceiver(), false);
                             }
                         }
                     }
                 }
             }
 
-            if (thisRail.getTransceiverRail() == null) {
+            if (thisRail.getTransceiver() == null) {
                 if (railHasCart(world, x, y, z) && !railHasPowered(world, x, y, z)) {
                     world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
                     world.notifyBlocksOfNeighborChange(x, y, z, this);

@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
-import club.nsdn.nyasamarailway.TileEntities.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.command.IEntitySelector;
@@ -210,7 +210,7 @@ public class RailMonoMagnetDetector extends RailMonoMagnetBase {
                     }
                     if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceiver) {
                         TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) world.getTileEntity(x, y, z);
-                        if (railReceiver.senderRailIsPowered()) isEnabled = true;
+                        if (railReceiver.senderIsPowered()) isEnabled = true;
                     }
 
                     if (!isEnabled) {

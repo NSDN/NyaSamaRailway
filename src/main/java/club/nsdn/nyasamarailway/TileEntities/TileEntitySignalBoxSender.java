@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailMultiSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -153,8 +154,8 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
             int old = meta;
             boolean isEnabled = sender.isEnabled;
 
-            if (sender.getTransceiverRail() != null) {
-                isEnabled = isEnabled && sender.transceiverRailIsPowered();
+            if (sender.getTransceiver() != null) {
+                isEnabled = isEnabled && sender.transceiverIsPowered();
             }
 
             if (isEnabled) meta |= 0x8;

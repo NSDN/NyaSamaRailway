@@ -3,6 +3,10 @@ package club.nsdn.nyasamarailway.Items;
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
 import club.nsdn.nyasamarailway.TileEntities.*;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoSwitch;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailMultiSender;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -65,19 +69,19 @@ public class Item74HC04 extends ItemToolBase {
                 } else if (tileEntity instanceof TileEntityRailReceiver) {
                     TileEntityRailReceiver railReceiver = (TileEntityRailReceiver) tileEntity;
                     if (tmpRails.containsKey(uuid)) {
-                        if (railReceiver.getSenderRail() != tmpRails.get(uuid)) {
-                            if (tmpRails.get(uuid).getTransceiverRail() == null) {
+                        if (railReceiver.getSender() != tmpRails.get(uuid)) {
+                            if (tmpRails.get(uuid).getTransceiver() == null) {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
-                                railReceiver.setSenderRail(tmpRails.get(uuid));
+                                railReceiver.setSender(tmpRails.get(uuid));
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                 updateTileEntity(tmpRails.get(uuid));
                                 updateTileEntity(railReceiver);
                             }
                             tmpRails.remove(uuid);
                         } else {
-                            if (railReceiver.getSenderRail() == tmpRails.get(uuid)) {
-                                railReceiver.setSenderRail(null);
+                            if (railReceiver.getSender() == tmpRails.get(uuid)) {
+                                railReceiver.setSender(null);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 updateTileEntity(tmpRails.get(uuid));
                                 updateTileEntity(railReceiver);
@@ -102,15 +106,15 @@ public class Item74HC04 extends ItemToolBase {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             }
                         } else {
-                            if (senderRails.get(uuid).getTransceiverRail() == sender) {
-                                sender.setTransceiverRail(null);
-                                senderRails.get(uuid).setTransceiverRail(null);
+                            if (senderRails.get(uuid).getTransceiver() == sender) {
+                                sender.setTransceiver(null);
+                                senderRails.get(uuid).setTransceiver(null);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 updateTileEntity(senderRails.get(uuid));
                                 updateTileEntity(sender);
                             } else {
-                                sender.setTransceiverRail(senderRails.get(uuid));
-                                senderRails.get(uuid).setTransceiverRail(sender);
+                                sender.setTransceiver(senderRails.get(uuid));
+                                senderRails.get(uuid).setTransceiver(sender);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
                                 updateTileEntity(senderRails.get(uuid));
                                 updateTileEntity(sender);
@@ -126,9 +130,9 @@ public class Item74HC04 extends ItemToolBase {
                     TileEntityRailTransceiver transceiver = (TileEntityRailTransceiver) tileEntity;
                     if (senderRails.containsKey(uuid)) {
                         if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
-                            if (senderRails.get(uuid).getTransceiverRail() == transceiver) {
-                                transceiver.setTransceiverRail(null);
-                                senderRails.get(uuid).setTransceiverRail(null);
+                            if (senderRails.get(uuid).getTransceiver() == transceiver) {
+                                transceiver.setTransceiver(null);
+                                senderRails.get(uuid).setTransceiver(null);
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
                                 updateTileEntity(senderRails.get(uuid));
                                 updateTileEntity(transceiver);
@@ -147,8 +151,8 @@ public class Item74HC04 extends ItemToolBase {
                 } else if (tileEntity instanceof TileEntityRailReceiver) {
                     TileEntityRailReceiver receiver = (TileEntityRailReceiver) tileEntity;
                     if (senderRails.containsKey(uuid)) {
-                        if (receiver.getSenderRail() != senderRails.get(uuid)) {
-                            receiver.setSenderRail(senderRails.get(uuid));
+                        if (receiver.getSender() != senderRails.get(uuid)) {
+                            receiver.setSender(senderRails.get(uuid));
                             if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
                                 ((TileEntityRailMultiSender) senderRails.get(uuid)).incTarget();
                             }
@@ -156,7 +160,7 @@ public class Item74HC04 extends ItemToolBase {
                             updateTileEntity(senderRails.get(uuid));
                             updateTileEntity(receiver);
                         } else {
-                            receiver.setSenderRail(null);
+                            receiver.setSender(null);
                             if (senderRails.get(uuid) instanceof TileEntityRailMultiSender) {
                                 ((TileEntityRailMultiSender) senderRails.get(uuid)).decTarget();
                             }

@@ -154,7 +154,7 @@ public class GateRenderer extends TileEntitySpecialRenderer {
                             else gateDoor.prevDist = dist + 1 / max * 0.5F;
                         }
                         if (dist > gateDoor.prevDist) gateDoor.prevDist += 1 / max * 0.5F / ANIMATION_STEP;
-                        else gateDoor.prevDist -= 1 / max * 0.5F / ANIMATION_STEP;
+                        else if (dist < gateDoor.prevDist) gateDoor.prevDist -= 1 / max * 0.5F / ANIMATION_STEP;
                     }
 
                     RendererHelper.renderWithResourceAndRotation(modelDoorAxis, angle, textureMain);
