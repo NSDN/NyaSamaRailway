@@ -24,6 +24,8 @@ public class BlockLoader {
     public static Block blockRailNoSleeperPowered;
     public static Block blockRailStoneSleeperDetector;
     public static Block blockRailNoSleeperDetector;
+    public static Block blockRailRFID;
+    public static Block blockRailNoSleeperRFID;
 
     /*------*/
     public static Block blockRailStoneSleeperDetector5s;
@@ -156,6 +158,12 @@ public class BlockLoader {
 
         blockRailNoSleeperDetector = new BlockRailNoSleeperDetector();
         register(blockRailNoSleeperDetector, "block_rail_no_sleeper_detector");
+
+        blockRailRFID = new BlockRailRFID();
+        register(blockRailRFID, "block_rail_rfid");
+
+        blockRailNoSleeperRFID = new BlockRailNoSleeperRFID();
+        register(blockRailNoSleeperRFID, "block_rail_no_sleeper_rfid");
 
         /*------*/
         blockRailStoneSleeperDetector5s = new BlockRailStoneSleeperDetector(5);

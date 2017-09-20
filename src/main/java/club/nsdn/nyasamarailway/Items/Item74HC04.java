@@ -196,7 +196,7 @@ public class Item74HC04 extends ItemToolBase {
                             }
                             receiverRails.remove(uuid);
                         } else {
-                            if (receiver instanceof TileEntityRailReceiverWithPassive) {
+                            if (receiver instanceof TileEntityRailPassiveReceiver) {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 receiverRails.put(uuid, receiver);

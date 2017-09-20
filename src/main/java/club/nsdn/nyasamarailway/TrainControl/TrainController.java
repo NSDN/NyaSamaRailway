@@ -159,6 +159,8 @@ public class TrainController {
             cart.motionZ = -Math.sin(train.Yaw * Math.PI / 180.0) * train.Dir * train.Velocity;
         } else {
             train.Velocity = Math.abs(cart.motionX / Math.cos(train.Yaw * Math.PI / 180.0));
+            if (Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0)) > train.Velocity)
+                train.Velocity = Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0));
         }
 
     }

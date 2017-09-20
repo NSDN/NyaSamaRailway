@@ -96,6 +96,14 @@ public class TileEntityLoader {
                 "tileEntityRailReceptionAnti");
 
         GameRegistry.registerTileEntity(
+                BlockRailRFID.TileEntityRailRFID.class,
+                "TileEntityRailRFID");
+
+        GameRegistry.registerTileEntity(
+                BlockRailNoSleeperRFID.TileEntityRailRFID.class,
+                "TileEntityRailNoSleeperRFID");
+
+        GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
                 "railNoSleeperStraight");
 

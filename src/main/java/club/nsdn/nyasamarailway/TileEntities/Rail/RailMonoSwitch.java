@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiverWithPassive;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -24,7 +24,7 @@ import java.util.Random;
  */
 public class RailMonoSwitch extends RailBase {
 
-    public static class MonoSwitch extends TileEntityRailReceiverWithPassive {
+    public static class MonoSwitch extends TileEntityRailPassiveReceiver {
 
         public static final int STATE_POS = 1;
         public static final int STATE_ZERO = 0;

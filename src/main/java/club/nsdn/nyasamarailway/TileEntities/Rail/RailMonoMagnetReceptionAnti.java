@@ -85,6 +85,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
         }
         if (rail != null) {
             if (rail.cartType.isEmpty()) return;
+            if (rail.cartType.equals("loco")) return;
 
             if (rail.cartType.equals(MinecartBase.class.getName())) {
                 MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
@@ -141,40 +142,42 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             );
             boolean hasCart = !bBox.isEmpty();
 
-            if (hasCart) {
-                for (Object obj : bBox) {
-                    if (obj instanceof EntityMinecart) {
-                        TileEntityRail rail = null;
-                        if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
-                            rail = (TileEntityRail) world.getTileEntity(x, y, z);
-                        }
-                        if (rail != null) {
-                            if (((EntityMinecart) obj).riddenByEntity == null) {
-                                rail.delay = 0;
-                                rail.count = 0;
-                                rail.enable = false;
-
-                                rail.prev = true;
-                            } else if (rail.prev) {
-                                rail.prev = false;
-                                //rail.delay = DELAY_TIME * 15 - 1;
-                            }
-                        }
-                        break;
-                    }
-                }
-            } else {
-                TileEntityRail rail = null;
-                if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
-                    rail = (TileEntityRail) world.getTileEntity(x, y, z);
-                }
-                if (rail != null) {
-                    rail.count += 1;
-                    if (rail.count >= DELAY_TIME * 20) {
+            TileEntityRail rail = null;
+            if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
+                rail = (TileEntityRail) world.getTileEntity(x, y, z);
+            }
+            if (rail != null) {
+                if (rail.cartType.equals("loco")) {
+                    if (!hasCart) {
                         rail.count = 0;
-                        spawnCart(world, x, y, z);
                         rail.delay = 0;
                         rail.enable = false;
+                    }
+                } else {
+                    if (hasCart) {
+                        for (Object obj : bBox) {
+                            if (obj instanceof EntityMinecart) {
+                                if (((EntityMinecart) obj).riddenByEntity == null) {
+                                    rail.delay = 0;
+                                    rail.count = 0;
+                                    rail.enable = false;
+
+                                    rail.prev = true;
+                                } else if (rail.prev) {
+                                    rail.prev = false;
+                                    //rail.delay = DELAY_TIME * 15 - 1;
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        rail.count += 1;
+                        if (rail.count >= DELAY_TIME * 20) {
+                            rail.count = 0;
+                            spawnCart(world, x, y, z);
+                            rail.delay = 0;
+                            rail.enable = false;
+                        }
                     }
                 }
             }
@@ -182,6 +185,10 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             world.scheduleBlockUpdate(x, y, z, this, 1);
         }
         super.updateTick(world, x, y, z, random);
+    }
+
+    public void onLocoPass(LocoBase loco, TileEntityRail rail) {
+
     }
 
     @Override
@@ -205,7 +212,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
         double maxV;
         if (!playerDetectable) {
             maxV = 0.1;
-            if ((world.getBlockMetadata(x, y, z) & 0x8) != 0) {
+            if (isRailPowered(world, x, y, z)) {
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ < -maxV) { //cart.motionZ < -maxV
                         if (cart.motionZ > -maxV * 1.5) cart.motionZ = -maxV * 1.5;
@@ -242,6 +249,13 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 rail = (TileEntityRail) world.getTileEntity(x, y, z);
             }
             if (rail != null) {
+                if (rail.cartType.equals("loco")) {
+                    if (cart instanceof LocoBase) {
+                        onLocoPass((LocoBase) cart, rail);
+                    }
+                    return;
+                }
+
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
                     rail.cartType = cart.getClass().getName();
 
