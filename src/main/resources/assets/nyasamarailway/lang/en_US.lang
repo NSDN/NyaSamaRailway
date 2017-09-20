@@ -163,3 +163,5 @@ info.editor.copy.target=[NSR] Target Copied
 info.editor.paste.target=[NSR] Target Pasted
 info.editor.copy.sender=[NSR] Sender Copied
 info.editor.paste.sender=[NSR] Sender Pasted
+info.rfid.pwr=[NSR] RFID's Power set to %d
+info.rfid.res=[NSR] RFID's Brake set to %d

@@ -165,3 +165,5 @@ info.editor.copy.target=[NSR] 控制目标已复制
 info.editor.paste.target=[NSR] 控制目标已粘贴
 info.editor.copy.sender=[NSR] 发射源已复制
 info.editor.paste.sender=[NSR] 发射源已粘贴
+info.rfid.pwr=[NSR] 标签轨功率设为 %d
+info.rfid.res=[NSR] 标签轨制动设为 %d

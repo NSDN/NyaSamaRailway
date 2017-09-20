@@ -3,13 +3,21 @@ package club.nsdn.nyasamarailway.Blocks;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.Util.NSASM;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -106,6 +114,64 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
             }
 
         }
+    }
+
+    public void setPower(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+        rfid.P = value;
+        player.addChatComponentMessage(
+                new ChatComponentTranslation("info.rfid.pwr", value));
+    }
+
+    public void setResistance(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+        rfid.R = value;
+        player.addChatComponentMessage(
+                new ChatComponentTranslation("info.rfid.res", 10 - value));
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (world.getTileEntity(x, y, z) == null) return false;
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRailRFID) {
+            TileEntityRailRFID rfid = (TileEntityRailRFID) world.getTileEntity(x, y, z);
+            if (!world.isRemote) {
+                ItemStack stack = player.getCurrentEquippedItem();
+                if (stack != null) {
+
+                    NBTTagList list = Util.getTagListFromBook(stack);
+                    String[][] code = NSASM.getCode(list);
+                    new NSASM(code) {
+                        @Override
+                        public void loadFunc(LinkedHashMap<String, Operator> funcList) {
+                            funcList.put("pwr", ((dst, src) -> {
+                                if (src != null) return Result.ERR;
+                                if (dst == null) return Result.ERR;
+
+                                if (dst.type == RegType.INT) {
+                                    setPower(rfid, player, (int) dst.data);
+                                    return Result.OK;
+                                }
+                                return Result.ERR;
+                            }));
+                            funcList.put("res", ((dst, src) -> {
+                                if (src != null) return Result.ERR;
+                                if (dst == null) return Result.ERR;
+
+                                if (dst.type == RegType.INT) {
+                                    setResistance(rfid, player, (int) dst.data);
+                                    return Result.OK;
+                                }
+                                return Result.ERR;
+                            }));
+                        }
+                    }.run();
+
+                }
+
+            }
+            return true;
+        }
+
+        return false;
     }
 
 }

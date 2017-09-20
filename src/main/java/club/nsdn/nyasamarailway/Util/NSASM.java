@@ -8,11 +8,8 @@ import java.util.LinkedHashMap;
 /**
  * Created by drzzm32 on 2016.9.20.
  */
-public class NSASM extends cn.ac.nya.nsasm.NSASM {
+public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
 
-    public interface IFuncLoader {
-        void load(LinkedHashMap<String, Operator> funcList);
-    }
 
     public static String[][] getCode(NBTTagList list) {
         String codeBuf = "";
@@ -26,9 +23,16 @@ public class NSASM extends cn.ac.nya.nsasm.NSASM {
         return Util.getSegments(codeBuf);
     }
 
-    public NSASM(String[][] code, IFuncLoader loader) {
+    public NSASM(String[][] code) {
         super(64, 32, 32, code);
-        loader.load(funList);
     }
+
+    @Override
+    protected void loadFunList() {
+        super.loadFunList();
+        loadFunc(funList);
+    }
+
+    public abstract void loadFunc(LinkedHashMap<String, Operator> funcList);
 
 }
