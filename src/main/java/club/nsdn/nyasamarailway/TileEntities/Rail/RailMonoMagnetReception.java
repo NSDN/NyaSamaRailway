@@ -152,6 +152,13 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                         rail.count = 0;
                         rail.delay = 0;
                         rail.enable = false;
+                    } else {
+                        for (Object obj : bBox) {
+                            if (obj instanceof LocoBase) {
+                                onLocoPass((LocoBase) obj, rail);
+                                break;
+                            }
+                        }
                     }
                 } else {
                     if (hasCart) {
@@ -250,9 +257,6 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
             }
             if (rail != null) {
                 if (rail.cartType.equals("loco")) {
-                    if (cart instanceof LocoBase) {
-                        onLocoPass((LocoBase) cart, rail);
-                    }
                     return;
                 }
 

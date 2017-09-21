@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
+import club.nsdn.nyasamarailway.Blocks.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
@@ -114,14 +115,17 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
     @Override
     protected void func_145821_a(int x, int y, int z, double v1, double v, Block block, int meta) {
         //applyPush
-        int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (metadata < 8) return;
+                if (!((BlockRailReception) block).timeExceed(worldObj, x, y, z)) {
+                    return;
+                }
         }
         if (block instanceof BlockRailReceptionAnti) {
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (metadata < 8) return;
+                if (!((BlockRailReceptionAnti) block).timeExceed(worldObj, x, y, z)) {
+                    return;
+                }
         }
         super.func_145821_a(x, y, z, v1, v, block, meta);
     }
@@ -135,6 +139,8 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
         TrainController.doMotion(tmpPacket, this);
         this.Velocity = tmpPacket.Velocity;
 
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            return;
         super.applyDrag();
     }
 

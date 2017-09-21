@@ -162,6 +162,15 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                                 }
                                 return Result.ERR;
                             }));
+
+                            funcList.replace("prt", ((dst, src) -> {
+                                if (src != null) return Result.ERR;
+                                if (dst == null) return Result.ERR;
+                                if (dst.type == RegType.STR) {
+                                    player.addChatComponentMessage(new ChatComponentText(((String) dst.data).substring(dst.strPtr)));
+                                } else player.addChatComponentMessage(new ChatComponentText(dst.data.toString()));
+                                return Result.OK;
+                            }));
                         }
                     }.run();
 

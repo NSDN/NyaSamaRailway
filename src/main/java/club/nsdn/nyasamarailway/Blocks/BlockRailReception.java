@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -35,6 +36,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         public int count = 0;
         public boolean enable = false;
         public boolean prev = false;
+
         public String cartType = "";
 
         @Override
@@ -185,6 +187,14 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         super.updateTick(world, x, y, z, random);
     }
 
+    public boolean timeExceed(World world, int x, int y, int z) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReception) {
+            TileEntityRailReception rail = (TileEntityRailReception) world.getTileEntity(x, y, z);
+            return rail.delay >= this.DELAY_TIME * 20;
+        }
+        return false;
+    }
+
     public void onLocoPass(LocoBase loco, TileEntityRailReception rail) {
         double maxV = 0.2;
         int x = rail.xCoord, y = rail.yCoord, z = rail.zCoord;
@@ -234,8 +244,13 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                     loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             } else {
-                // start, dir = pos
-                loco.Dir = 1; loco.P = 1; loco.R = 10;
+                // start, dir = pos, +x | -z
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    loco.Dir = (int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                } else {
+                    loco.Dir = (int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                }
+                loco.P = 1; loco.R = 10;
             }
         }
     }

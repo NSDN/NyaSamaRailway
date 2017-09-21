@@ -147,16 +147,21 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     @Override  //applyPush()
     protected void func_145821_a(int x, int y, int z, double v1, double v, Block block, int meta) {
         //applyPush
-        int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
             BlockRailReception.TileEntityRailReception tile = (BlockRailReception.TileEntityRailReception) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) {
+                    if (!tile.cartType.equals("loco"))
+                        return;
+                }
         }
         if (block instanceof BlockRailReceptionAnti) {
             BlockRailReceptionAnti.TileEntityRailReceptionAnti tile = (BlockRailReceptionAnti.TileEntityRailReceptionAnti) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) {
+                    if (!tile.cartType.equals("loco"))
+                        return;
+                }
         }
         if (block instanceof RailMonoMagnetReception) {
             RailMonoMagnetReception.TileEntityRail tile = (RailMonoMagnetReception.TileEntityRail) worldObj.getTileEntity(x, y, z);
@@ -175,7 +180,8 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     @Override
     protected void applyDrag() {
         //Do engine code
-
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            return;
         super.applyDrag();
     }
 

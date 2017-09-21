@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
@@ -159,6 +160,15 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
                                     return Result.OK;
                                 }
                                 return Result.ERR;
+                            }));
+
+                            funcList.replace("prt", ((dst, src) -> {
+                                if (src != null) return Result.ERR;
+                                if (dst == null) return Result.ERR;
+                                if (dst.type == RegType.STR) {
+                                    player.addChatComponentMessage(new ChatComponentText(((String) dst.data).substring(dst.strPtr)));
+                                } else player.addChatComponentMessage(new ChatComponentText(dst.data.toString()));
+                                return Result.OK;
                             }));
                         }
                     }.run();

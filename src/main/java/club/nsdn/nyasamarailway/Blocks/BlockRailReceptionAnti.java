@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -184,6 +185,14 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         super.updateTick(world, x, y, z, random);
     }
 
+    public boolean timeExceed(World world, int x, int y, int z) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+            TileEntityRailReceptionAnti rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+            return rail.delay >= this.DELAY_TIME * 20;
+        }
+        return false;
+    }
+
     public void onLocoPass(LocoBase loco, TileEntityRailReceptionAnti rail) {
         double maxV = 0.2;
         int x = rail.xCoord, y = rail.yCoord, z = rail.zCoord;
@@ -233,8 +242,13 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             } else {
-                // start, dir = neg
-                loco.Dir = -1; loco.P = 1; loco.R = 10;
+                // start, dir = neg, -x | +z
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    loco.Dir = -(int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                } else {
+                    loco.Dir = -(int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                }
+                loco.P = 1; loco.R = 10;
             }
         }
     }

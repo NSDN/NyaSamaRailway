@@ -130,6 +130,10 @@ public class TrainController {
         train.Yaw = 180.0 - cart.rotationYaw;
     }
 
+    public static double calcYaw(Entity cart) {
+        return 180.0 - cart.rotationYaw;
+    }
+
     public static void doMotion(TrainPacket train, Entity cart) {
         calcYaw(train, cart);
 
