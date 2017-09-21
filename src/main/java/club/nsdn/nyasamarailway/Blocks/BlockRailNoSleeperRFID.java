@@ -117,13 +117,13 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
     }
 
     public void setPower(TileEntityRailRFID rfid, EntityPlayer player, int value) {
-        rfid.P = value;
+        rfid.P = value > 20 ? 20 : (value < 0 ? 0 : value);
         player.addChatComponentMessage(
                 new ChatComponentTranslation("info.rfid.pwr", value));
     }
 
     public void setResistance(TileEntityRailRFID rfid, EntityPlayer player, int value) {
-        rfid.R = value;
+        rfid.R = value > 10 ? 10 : (value < 1 ? 1 : value);
         player.addChatComponentMessage(
                 new ChatComponentTranslation("info.rfid.res", 10 - value));
     }
