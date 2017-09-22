@@ -21,11 +21,14 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
     private static final int MODEL_1X1 = 2;
     private static final int MODEL_3X1 = 3;
     private static final int MODEL_3X1D5 = 4;
+    private static final int MODEL_ALBASE = 2;
     private final WavefrontObject[] modelMain;
     private final WavefrontObject[] modelMainAl;
+    private final WavefrontObject[] modelCorner;
 
     private final ResourceLocation textureMain;
     private final ResourceLocation textureMainAl;
+    private final ResourceLocation textureCorner;
 
     public static final int SHIELD = 0;
     public static final int SHIELD_HALF = 1;
@@ -34,6 +37,9 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
     public static final int SHIELD_3X1D5 = 4;
     public static final int SHIELD_AL = 5;
     public static final int SHIELD_AL_HALF = 6;
+    public static final int SHIELD_AL_BASE = 7;
+    public static final int SHIELD_CORNER = 8;
+    public static final int SHIELD_CORNER_HALF = 9;
     private final int renderType;
 
     public static final float ANIMATION_STEP = 4;
@@ -63,11 +69,23 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 ),
                 new WavefrontObject(
                         new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_al_half.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_albase.obj")
+                )
+        };
+        modelCorner = new WavefrontObject[] {
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_corner.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_corner_half.obj")
                 )
         };
 
         textureMain = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_main.png");
         textureMainAl = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_al_main.png");
+        textureCorner = new ResourceLocation("nyasamarailway", "textures/blocks/BrushedAluminum.png");
 
         this.renderType = renderType;
     }
@@ -208,10 +226,37 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                 }
                 break;
             case SHIELD_AL:
-                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_NORMAL], angle, textureMainAl);
+                GL11.glPushMatrix();
+                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                GL11.glPushMatrix();
+                GL11.glScalef(1.0F, 1.0F, 1.5F);
+                RendererHelper.renderWithResource(modelMainAl[MODEL_NORMAL], textureMainAl);
+                GL11.glPopMatrix();
+                GL11.glPopMatrix();
                 break;
             case SHIELD_AL_HALF:
-                RendererHelper.renderWithResourceAndRotation(modelMainAl[MODEL_HALF], angle, textureMainAl);
+                GL11.glPushMatrix();
+                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                GL11.glPushMatrix();
+                GL11.glScalef(1.0F, 1.0F, 1.5F);
+                RendererHelper.renderWithResource(modelMainAl[MODEL_HALF], textureMainAl);
+                GL11.glPopMatrix();
+                GL11.glPopMatrix();
+                break;
+            case SHIELD_AL_BASE:
+                GL11.glPushMatrix();
+                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                GL11.glPushMatrix();
+                GL11.glScalef(1.0F, 1.0F, 1.5F);
+                RendererHelper.renderWithResource(modelMainAl[MODEL_ALBASE], textureMainAl);
+                GL11.glPopMatrix();
+                GL11.glPopMatrix();
+                break;
+            case SHIELD_CORNER:
+                RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_NORMAL], angle, textureCorner);
+                break;
+            case SHIELD_CORNER_HALF:
+                RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_HALF], angle, textureCorner);
                 break;
             default:
                 break;

@@ -35,7 +35,7 @@ public class TileEntityGlassShield3X1D5 extends TileEntityBase {
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
     {
-        return side == ForgeDirection.UP;
+        return side != ForgeDirection.UP;
     }
 
     @Override
@@ -48,6 +48,7 @@ public class TileEntityGlassShield3X1D5 extends TileEntityBase {
     protected void setBoundsByMeta(int meta) {
         float x1 = -0.5F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 3.0F, z2 = 0.5625F;
 
+        if ((meta & 0x8) != 0) x1 = 0.875F;
         switch (meta & 3) {
             case 0:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);

@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by drzzm32 on 2017.9.6.
+ * Created by drzzm32 on 2017.9.22.
  */
-public class TileEntityGlassShieldAl extends TileEntityBase {
+public class TileEntityGlassShieldCornerHalf extends TileEntityBase {
 
     public static class GlassShieldAl extends TileEntity {
         @Override
@@ -27,9 +27,9 @@ public class TileEntityGlassShieldAl extends TileEntityBase {
         }
     }
 
-    public TileEntityGlassShieldAl() {
-        super("GlassShieldAl");
-        setIconLocation("glass_shield_al");
+    public TileEntityGlassShieldCornerHalf() {
+        super("GlassShieldCornerHalf");
+        setIconLocation("glass_shield_corner_half");
         setLightOpacity(1);
         setLightLevel(0);
     }
@@ -42,7 +42,7 @@ public class TileEntityGlassShieldAl extends TileEntityBase {
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
     {
-        return true;
+        return side != ForgeDirection.UP;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class TileEntityGlassShieldAl extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 1.0F, z2 = 0.5625F;
+        float x1 = 0.0F, y1 = 0.0F, z1 = 0.0F, x2 = 0.5625F, y2 = 0.5F, z2 = 0.5625F;
         switch (meta & 3) {
             case 0:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);

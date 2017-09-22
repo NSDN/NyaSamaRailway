@@ -248,6 +248,18 @@ public class TileEntityLoader {
                 "tileEntityGlassShieldAlHalf");
 
         GameRegistry.registerTileEntity(
+                TileEntityGlassShieldAlBase.GlassShieldAl.class,
+                "tileEntityGlassShieldAlBase");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldCorner.GlassShieldAl.class,
+                "tileEntityGlassShieldCorner");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldCornerHalf.GlassShieldAl.class,
+                "tileEntityGlassShieldCornerHalf");
+
+        GameRegistry.registerTileEntity(
                 TileEntityRailSignVertical1.RailSignVertical.class,
                 "tileEntityRailSignVertical1");
 
