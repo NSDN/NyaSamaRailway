@@ -49,6 +49,12 @@ public class EntityModelBinder {
                 NSPCT6.class, new NSPCT6Renderer());
 
         RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT6L.class, new NSPCT6LRenderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT7.class, new NSPCT7Renderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
                 NSET2.class, new NSET2Renderer());
 
     }
