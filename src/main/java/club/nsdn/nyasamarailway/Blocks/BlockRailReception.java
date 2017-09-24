@@ -203,7 +203,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         if (loco.Velocity > 0 && !rail.enable) {
             if (loco.Velocity > maxV / 2) {
                 // speed down
-                loco.Dir = 0; loco.P = 0; loco.R = 9;
+                loco.Dir = 0; loco.P = 0; loco.R = 1;
             } else {
                 // stop
                 loco.Dir = 0; loco.P = 0; loco.R = 10;
@@ -237,7 +237,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
 
                 if (loco.Velocity > maxV / 2) {
                     // keep speed down
-                    loco.Dir = 0; loco.P = 0; loco.R = 9;
+                    loco.Dir = 0; loco.P = 0; loco.R = 1;
                 } else {
                     // keep stop
                     loco.Dir = 0; loco.P = 0; loco.R = 10;
@@ -464,6 +464,10 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             }
             if (rail != null) {
                 if (!rail.cartType.isEmpty() && !world.isRemote) {
+                    if (rail.cartType.equals("loco")) {
+                        return;
+                    }
+
                     if(!hasCart && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
                         spawnCart(world, x, y, z);
                         rail.delay = 0;

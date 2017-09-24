@@ -118,12 +118,14 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
         if (block instanceof BlockRailReception) {
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
                 if (!((BlockRailReception) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
                     return;
                 }
         }
         if (block instanceof BlockRailReceptionAnti) {
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
                 if (!((BlockRailReceptionAnti) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
                     return;
                 }
         }
