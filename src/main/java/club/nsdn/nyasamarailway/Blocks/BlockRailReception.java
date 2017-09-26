@@ -6,7 +6,6 @@ import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,12 +200,12 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         World world = loco.worldObj;
 
         if (loco.Velocity > 0 && !rail.enable) {
-            if (loco.Velocity > maxV / 2) {
+            if (loco.Velocity > maxV) {
                 // speed down
-                loco.Dir = 0; loco.P = 0; loco.R = 1;
+                loco.P = 0; loco.R = 5;
             } else {
                 // stop
-                loco.Dir = 0; loco.P = 0; loco.R = 10;
+                loco.P = 0; loco.R = 1;
 
                 rail.enable = true;
                 loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
@@ -235,12 +234,12 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                     world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                 }
 
-                if (loco.Velocity > maxV / 2) {
+                if (loco.Velocity > maxV) {
                     // keep speed down
-                    loco.Dir = 0; loco.P = 0; loco.R = 1;
+                    loco.P = 0; loco.R = 5;
                 } else {
                     // keep stop
-                    loco.Dir = 0; loco.P = 0; loco.R = 10;
+                    loco.P = 0; loco.R = 1;
                     loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             } else {

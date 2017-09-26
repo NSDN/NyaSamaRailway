@@ -199,12 +199,12 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         World world = loco.worldObj;
 
         if (loco.Velocity > 0 && !rail.enable) {
-            if (loco.Velocity > maxV / 2) {
+            if (loco.Velocity > maxV) {
                 // speed down
-                loco.Dir = 0; loco.P = 0; loco.R = 1;
+                loco.P = 0; loco.R = 5;
             } else {
                 // stop
-                loco.Dir = 0; loco.P = 0; loco.R = 10;
+                loco.P = 0; loco.R = 1;
 
                 rail.enable = true;
                 loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
@@ -233,12 +233,12 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                 }
 
-                if (loco.Velocity > maxV / 2) {
+                if (loco.Velocity > maxV) {
                     // keep speed down
-                    loco.Dir = 0; loco.P = 0; loco.R = 1;
+                    loco.P = 0; loco.R = 5;
                 } else {
                     // keep stop
-                    loco.Dir = 0; loco.P = 0; loco.R = 10;
+                    loco.P = 0; loco.R = 1;
                     loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             } else {
