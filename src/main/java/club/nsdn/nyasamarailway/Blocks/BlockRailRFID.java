@@ -137,7 +137,7 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
                 if (stack != null) {
 
                     NBTTagList list = Util.getTagListFromBook(stack);
-                    if (list == null) return false;
+                    if (list == null) return true;
                     String[][] code = NSASM.getCode(list);
                     new NSASM(code) {
                         @Override

@@ -134,7 +134,7 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 if (stack != null) {
 
                     NBTTagList list = Util.getTagListFromBook(stack);
-                    if (list == null) return false;
+                    if (list == null) return true;
                     String[][] code = NSASM.getCode(list);
                     new NSASM(code) {
                         @Override
