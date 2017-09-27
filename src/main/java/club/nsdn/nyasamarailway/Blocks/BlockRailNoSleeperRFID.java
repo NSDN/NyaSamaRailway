@@ -1,7 +1,6 @@
 package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.Entity.LocoBase;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Util.NSASM;
 import club.nsdn.nyasamarailway.Util.Util;
@@ -15,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-import org.thewdj.physics.Dynamics;
 
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -25,7 +23,7 @@ import java.util.Random;
  */
 public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITileEntityProvider {
 
-    public static class TileEntityRailRFID extends TileEntityRailPassiveReceiver {
+    public static class TileEntityRailRFID extends TileEntityRailReceiver {
 
         public int P = 0;
         public int R = 10;
@@ -73,30 +71,28 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
     }
 
     @Override
-    public int tickRate(World world) {
-        return 20;
-    }
-
-    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if (!world.isRemote) {
             if (world.getTileEntity(x, y, z) instanceof TileEntityRailRFID) {
                 TileEntityRailRFID rfid = (TileEntityRailRFID) world.getTileEntity(x, y, z);
                 int meta = rfid.getBlockMetadata();
 
-                if (!isRailPowered(world, x, y, z) && rfid.senderIsPowered()) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta | 0x8, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, this);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-                } else if (!world.isBlockIndirectlyGettingPowered(x, y, z) && !rfid.senderIsPowered()) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta & 0x7, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, this);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                if (rfid.getSender() != null) {
+                    if (!isRailPowered(world, x, y, z) && rfid.senderIsPowered()) {
+                        world.setBlockMetadataWithNotify(x, y, z, meta | 0x8, 3);
+                        world.notifyBlocksOfNeighborChange(x, y, z, this);
+                        world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                    } else if (isRailPowered(world, x, y, z) && !rfid.senderIsPowered()) {
+                        world.setBlockMetadataWithNotify(x, y, z, meta & 0x7, 3);
+                        world.notifyBlocksOfNeighborChange(x, y, z, this);
+                        world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                    }
                 }
             }
 
             world.scheduleBlockUpdate(x, y, z, this, 1);
         }
+        super.updateTick(world, x, y, z, random);
     }
 
     @Override
@@ -138,6 +134,7 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 if (stack != null) {
 
                     NBTTagList list = Util.getTagListFromBook(stack);
+                    if (list == null) return false;
                     String[][] code = NSASM.getCode(list);
                     new NSASM(code) {
                         @Override
@@ -173,11 +170,10 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                             }));
                         }
                     }.run();
+                    return true;
 
                 }
-
             }
-            return true;
         }
 
         return false;

@@ -23,10 +23,12 @@ public class NSPCT6L extends LocoBase {
 
     public NSPCT6L(World world) {
         super(world);
+        ignoreFrustumCheck = true;
     }
 
     public NSPCT6L(World world, double x, double y, double z) {
         super(world, x, y, z);
+        ignoreFrustumCheck = true;
     }
 
     @Override

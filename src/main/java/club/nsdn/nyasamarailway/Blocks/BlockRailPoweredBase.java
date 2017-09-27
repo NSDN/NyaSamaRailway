@@ -169,7 +169,7 @@ public class BlockRailPoweredBase extends BlockRailPowered {
                     baseMeta = 0;
             }
 
-            return func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && this.func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
+            return func_150057_a(world, x, y, z, bool, r, baseMeta) ? true : var9 && func_150057_a(world, x, y - 1, z, bool, r, baseMeta);
         }
     }
 
