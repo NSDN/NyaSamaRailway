@@ -170,10 +170,10 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                             }));
                         }
                     }.run();
-                    return true;
 
                 }
             }
+            return true;
         }
 
         return false;

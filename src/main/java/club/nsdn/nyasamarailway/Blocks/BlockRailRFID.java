@@ -173,10 +173,10 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
                             }));
                         }
                     }.run();
-                    return true;
 
                 }
             }
+            return true;
         }
 
         return false;
