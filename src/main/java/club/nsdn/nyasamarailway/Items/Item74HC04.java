@@ -1,12 +1,7 @@
 package club.nsdn.nyasamarailway.Items;
 
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
-import club.nsdn.nyasamarailway.TileEntities.*;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoSwitch;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailMultiSender;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -201,10 +196,7 @@ public class Item74HC04 extends ItemToolBase {
                             }
                             receiverRails.remove(uuid);
                         } else {
-                            if (receiver instanceof TileEntitySignalLight.SignalLight ||
-                                    receiver instanceof RailMonoSwitch.MonoSwitch ||
-                                    receiver instanceof TileEntityGateFront.GateFront
-                                ) {
+                            if (receiver instanceof TileEntityRailPassiveReceiver) {
                                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
                             } else {
                                 receiverRails.put(uuid, receiver);

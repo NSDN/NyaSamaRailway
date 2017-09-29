@@ -179,11 +179,7 @@ public class TileEntitySignalBox extends TileEntityBase {
             if (!signalBox.setSwitch(isEnabled)) {
                 if (!signalBox.setTargetLight(isEnabled)) {
                     if (signalBox.getTarget() != null) {
-                        if (signalBox.getTargetMetadata() >= 0 && isEnabled &&
-                            (signalBox.getTargetMetadata() & 0x8) == 0
-                        ) {
-                            signalBox.setTargetMetadata(signalBox.getTargetMetadata() | 0x8);
-                        }
+                        signalBox.controlTarget(isEnabled);
                     }
                 }
             }

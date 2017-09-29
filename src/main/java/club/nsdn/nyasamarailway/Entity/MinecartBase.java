@@ -45,30 +45,23 @@ import java.util.List;
 /**
  * Created by drzzm32 on 2016.5.23.
  */
-public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable, mods.railcraft.api.carts.ILinkableCart {
+public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.api.carts.ILinkableCart {
 
     /** Minecart rotational logic matrix */
     public static int[][][] matrix = new int[][][] {{{0, 0, -1}, {0, 0, 1}}, {{ -1, 0, 0}, {1, 0, 0}}, {{ -1, -1, 0}, {1, 0, 0}}, {{ -1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, { -1, 0, 0}}, {{0, 0, -1}, { -1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
     /** appears to be the progress of the turn */
     public boolean isInReverse = false;
 
-    public static final int DATA_LINK = 28;
-
-    public static boolean canMakePlayerTurn;
-
-    //public int prevLinkTrain = -1;
-    //public int nextLinkTrain = -1;
+    public boolean canMakePlayerTurn() {
+        return true;
+    }
 
     public MinecartBase(World world) {
         super(world);
-        canMakePlayerTurn = true;
-        getDataWatcher().addObject(DATA_LINK, 0);
     }
 
     public MinecartBase(World world, double x, double y, double z) {
         super(world, x, y, z);
-        canMakePlayerTurn = true;
-        getDataWatcher().addObject(DATA_LINK, 0);
     }
 
     @Override
@@ -120,7 +113,7 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 0.75F;
     }
 
     @Override
@@ -145,94 +138,30 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
 
     @Override
     public void onLinkCreated(EntityMinecart cart) {
-
     }
 
     @Override
     public void onLinkBroken(EntityMinecart cart) {
-
-    }
-
-    public int getPrevTrainID() {
-        return -1;
-    }
-
-    public int getNextTrainID() {
-        return this.getDataWatcher().getWatchableObjectInt(DATA_LINK);
-    }
-
-    public boolean LinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == -1) {
-            this.prevLinkTrain = ID;
-        } else 
-        */
-        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) == -1) {
-            this.getDataWatcher().updateObject(DATA_LINK, ID);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    public void deLinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == ID) {
-            this.prevLinkTrain = -1;
-        } else 
-        */
-        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) == ID) {
-            this.getDataWatcher().updateObject(DATA_LINK, -1);
-        }
-    }
-
-    double calcDist(EntityMinecart a, EntityMinecart b) {
-        return Math.sqrt(Math.pow(a.posX - b.posX, 2) + Math.pow(a.posY - b.posY, 2) + Math.pow(a.posZ - b.posZ, 2));
-    }
-
-    public void calcLink(World world) {
-        if (this.getDataWatcher().getWatchableObjectInt(DATA_LINK) > 0 && world.getEntityByID(this.getDataWatcher().getWatchableObjectInt(DATA_LINK)) instanceof EntityMinecart) {
-            EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.getDataWatcher().getWatchableObjectInt(DATA_LINK));
-            double Ks = 500.0;
-            double Kd = 500.0;
-            double m = 1.0;
-            double length = 1.5;
-            double dt = 0.001;
-
-            Vec3d sPos = Vec3d.fromEntityPos(this);
-            Vec3d tPos = Vec3d.fromEntityPos(cart);
-            Vec3d sV = Vec3d.fromEntityMotion(this);
-            Vec3d tV = Vec3d.fromEntityMotion(cart);
-            Vec3d SdV = new Vec3d(sPos.subtract(tPos).normalize()).dotProduct(
-                    Ks * (calcDist(this, cart) - length) / m * dt
-            );
-            Vec3d DdV = new Vec3d(sV.subtract(tV)).dotProduct(Kd / m * dt);
-            Vec3d dV = SdV.addVector(DdV);
-
-            cart.motionX += -dV.xCoord;
-            cart.motionY += -dV.yCoord;
-            cart.motionZ += -dV.zCoord;
-
-            this.motionX += dV.xCoord;
-            this.motionY += dV.yCoord;
-            this.motionZ += dV.zCoord;
-
-        }
     }
 
     @Override  //applyPush()
     protected void func_145821_a(int x, int y, int z, double v1, double v, Block block, int meta) {
         //applyPush
-        int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
             BlockRailReception.TileEntityRailReception tile = (BlockRailReception.TileEntityRailReception) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) {
+                    if (!tile.cartType.equals("loco"))
+                        return;
+                }
         }
         if (block instanceof BlockRailReceptionAnti) {
             BlockRailReceptionAnti.TileEntityRailReceptionAnti tile = (BlockRailReceptionAnti.TileEntityRailReceptionAnti) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (riddenByEntity == null && !tile.cartType.isEmpty()) return;
+                if (riddenByEntity == null && !tile.cartType.isEmpty()) {
+                    if (!tile.cartType.equals("loco"))
+                        return;
+                }
         }
         if (block instanceof RailMonoMagnetReception) {
             RailMonoMagnetReception.TileEntityRail tile = (RailMonoMagnetReception.TileEntityRail) worldObj.getTileEntity(x, y, z);
@@ -251,8 +180,8 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
     @Override
     protected void applyDrag() {
         //Do engine code
-        calcLink(worldObj);
-
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            return;
         super.applyDrag();
     }
 
@@ -293,24 +222,13 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
     }
 
     @Override
-    public void killMinecart(DamageSource source)
-    {
-        this.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemMinecartBase, 1);
-        itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
-    }
-
-    @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.getDataWatcher().updateObject(DATA_LINK,tagCompound.getInteger("nextLinkTrain"));
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("nextLinkTrain", this.getDataWatcher().getWatchableObjectInt(DATA_LINK));
     }
 
     public boolean checkBlockIsRail(World world, int x, int y, int z, Class<?> cls) {
@@ -327,11 +245,12 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
 
             double detlaYaw = (double)MathHelper.wrapAngleTo180_float(this.rotationYaw - this.prevRotationYaw);
             /* Driver Heading */
-            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
-                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
+                        if (canMakePlayerTurn())
+                            ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
                     }
                 }
             }
@@ -487,11 +406,12 @@ public class MinecartBase extends EntityMinecartEmpty implements ITrainLinkable,
             }
 
             /* Driver Heading */
-            if (canMakePlayerTurn && this.riddenByEntity != null && !this.riddenByEntity.isDead) {
+            if (this.riddenByEntity != null && !this.riddenByEntity.isDead) {
                 if (this.riddenByEntity.ridingEntity == this)
                 {
                     if (this.riddenByEntity instanceof EntityPlayer) {
-                        ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
+                        if (canMakePlayerTurn())
+                            ((EntityPlayer) this.riddenByEntity).rotationYaw += detlaYaw;
                     }
                 }
             }

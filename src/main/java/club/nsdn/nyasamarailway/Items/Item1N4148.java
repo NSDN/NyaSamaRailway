@@ -49,20 +49,60 @@ public class Item1N4148 extends ItemToolBase {
                 if (rail == null) return false;
 
                 if (rail instanceof BlockRailReception.TileEntityRailReception) {
-                    ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    if (((BlockRailReception.TileEntityRailReception) rail).cartType.isEmpty()) {
+                        ((BlockRailReception.TileEntityRailReception) rail).cartType = "loco";
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                    } else {
+                        if (((BlockRailReception.TileEntityRailReception) rail).cartType.equals("loco")) {
+                            ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                        } else {
+                            ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                        }
+                    }
                     return !world.isRemote;
                 } else if (rail instanceof BlockRailReceptionAnti.TileEntityRailReceptionAnti) {
-                    ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.isEmpty()) {
+                        ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "loco";
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                    } else {
+                        if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.equals("loco")) {
+                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                        } else {
+                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                        }
+                    }
                     return !world.isRemote;
                 } else if (rail instanceof RailMonoMagnetReception.TileEntityRail) {
-                    ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.isEmpty()) {
+                        ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "loco";
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                    } else {
+                        if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.equals("loco")) {
+                            ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                        } else {
+                            ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                        }
+                    }
                     return !world.isRemote;
                 } else if (rail instanceof RailMonoMagnetReceptionAnti.TileEntityRail) {
-                    ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                    if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.isEmpty()) {
+                        ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "loco";
+                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                    } else {
+                        if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.equals("loco")) {
+                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                        } else {
+                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                        }
+                    }
                     return !world.isRemote;
                 }
             }

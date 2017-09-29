@@ -242,6 +242,21 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldAlBase.GlassShieldAl.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_BASE)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldCorner.GlassShieldAl.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityGlassShieldCornerHalf.GlassShieldAl.class,
+                new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER_HALF)
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailSignVertical1.RailSignVertical.class,
                 new RailSignVerticalRenderer("rail_sign_vertical_1")
         );

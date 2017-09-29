@@ -130,6 +130,10 @@ public class TrainController {
         train.Yaw = 180.0 - cart.rotationYaw;
     }
 
+    public static double calcYaw(Entity cart) {
+        return 180.0 - cart.rotationYaw;
+    }
+
     public static void doMotion(TrainPacket train, Entity cart) {
         calcYaw(train, cart);
 
@@ -139,9 +143,9 @@ public class TrainController {
 
         if (train.R > 5) {
             if (train.isUnits) {
-                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.02);
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.01);
             } else {
-                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 50.0, 0.02);
+                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 20.0, 0.02);
             }
 
             if (train.Velocity < train.nextVelocity) {
@@ -159,6 +163,8 @@ public class TrainController {
             cart.motionZ = -Math.sin(train.Yaw * Math.PI / 180.0) * train.Dir * train.Velocity;
         } else {
             train.Velocity = Math.abs(cart.motionX / Math.cos(train.Yaw * Math.PI / 180.0));
+            if (Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0)) > train.Velocity)
+                train.Velocity = Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0));
         }
 
     }

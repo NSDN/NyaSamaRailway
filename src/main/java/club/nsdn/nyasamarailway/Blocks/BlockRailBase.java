@@ -45,4 +45,9 @@ public class BlockRailBase extends BlockRail {
         return 1.0F;
     }
 
+    @Override
+    public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
+
+    }
+
 }

@@ -96,6 +96,14 @@ public class TileEntityLoader {
                 "tileEntityRailReceptionAnti");
 
         GameRegistry.registerTileEntity(
+                BlockRailRFID.TileEntityRailRFID.class,
+                "TileEntityRailRFID");
+
+        GameRegistry.registerTileEntity(
+                BlockRailNoSleeperRFID.TileEntityRailRFID.class,
+                "TileEntityRailNoSleeperRFID");
+
+        GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
                 "railNoSleeperStraight");
 
@@ -238,6 +246,18 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityGlassShieldAlHalf.GlassShieldAl.class,
                 "tileEntityGlassShieldAlHalf");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldAlBase.GlassShieldAl.class,
+                "tileEntityGlassShieldAlBase");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldCorner.GlassShieldAl.class,
+                "tileEntityGlassShieldCorner");
+
+        GameRegistry.registerTileEntity(
+                TileEntityGlassShieldCornerHalf.GlassShieldAl.class,
+                "tileEntityGlassShieldCornerHalf");
 
         GameRegistry.registerTileEntity(
                 TileEntityRailSignVertical1.RailSignVertical.class,

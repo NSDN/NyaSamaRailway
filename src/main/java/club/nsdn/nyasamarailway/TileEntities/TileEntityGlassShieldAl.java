@@ -42,7 +42,7 @@ public class TileEntityGlassShieldAl extends TileEntityBase {
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
     {
-        return side == ForgeDirection.UP;
+        return true;
     }
 
     @Override

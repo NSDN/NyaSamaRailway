@@ -3,7 +3,7 @@ package club.nsdn.nyasamarailway.Event;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.minecraft.entity.Entity;
-import club.nsdn.nyasamarailway.Entity.NSET1;
+import club.nsdn.nyasamarailway.Entity.LocoBase;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -26,11 +26,11 @@ public class ChunkLoaderHandler implements ForgeChunkManager.LoadingCallback, Fo
     @SubscribeEvent
     public void entityEnteredChunk(EntityEvent.EnteringChunk event) {
         Entity entity = event.entity;
-        if (entity instanceof NSET1) {
+        if (entity instanceof LocoBase) {
             if (!entity.worldObj.isRemote) {
-                ((NSET1) entity).forceChunkLoading(event.newChunkX, event.newChunkZ);
+                ((LocoBase) entity).forceChunkLoading(event.newChunkX, event.newChunkZ);
             } else {
-                ((NSET1) entity).setupChunks(event.newChunkX, event.newChunkZ);
+                ((LocoBase) entity).setupChunks(event.newChunkX, event.newChunkZ);
             }
         }
     }
@@ -41,8 +41,8 @@ public class ChunkLoaderHandler implements ForgeChunkManager.LoadingCallback, Fo
             if (ticket.isPlayerTicket())
                 continue;
             Entity entity = ticket.getEntity();
-            if (entity instanceof NSET1) {
-                NSET1 anchor = (NSET1) entity;
+            if (entity instanceof LocoBase) {
+                LocoBase anchor = (LocoBase) entity;
                 anchor.setChunkTicket(ticket);
                 anchor.forceChunkLoading(anchor.chunkCoordX, anchor.chunkCoordZ);
             }
@@ -61,7 +61,7 @@ public class ChunkLoaderHandler implements ForgeChunkManager.LoadingCallback, Fo
                     worldTickets.add(ticket);
                 }
             } else {
-                if (entity instanceof NSET1) {
+                if (entity instanceof LocoBase) {
                     cartTickets.add(ticket);
                 }
             }

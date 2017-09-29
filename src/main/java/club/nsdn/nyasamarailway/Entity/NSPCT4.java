@@ -28,12 +28,15 @@ public class NSPCT4 extends MinecartBase {
 
     public NSPCT4(World world) {
         super(world);
-        canMakePlayerTurn = false;
     }
 
     public NSPCT4(World world, double x, double y, double z) {
         super(world, x, y, z);
-        canMakePlayerTurn = false;
+    }
+
+    @Override
+    public boolean canMakePlayerTurn() {
+        return false;
     }
 
     @Override

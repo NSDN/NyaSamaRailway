@@ -1,7 +1,8 @@
 package club.nsdn.nyasamarailway.Items;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.Entity.MinecartBase;
+import club.nsdn.nyasamarailway.Entity.LocoBase;
+import club.nsdn.nyasamarailway.Entity.NSPCT7;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -9,14 +10,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2016.5.23.
+ * Created by drzzm32 on 2017.9.24.
  */
-public class ItemMinecartBase extends ItemMinecart {
+public class ItemNSPCT7 extends ItemMinecart {
 
-    public ItemMinecartBase() {
+    public ItemNSPCT7() {
         super(-1);
-        setUnlocalizedName("ItemMinecartBase");
-        setTexName("item_nstc_1");
+        setUnlocalizedName("ItemNSPCT7");
+        setTexName("item_nspc_7");
         setMaxStackSize(64);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
@@ -31,7 +32,7 @@ public class ItemMinecartBase extends ItemMinecart {
         {
             if (!world.isRemote)
             {
-                MinecartBase entityminecart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                LocoBase entityminecart = new NSPCT7(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
 
                 if (itemStack.hasDisplayName())
                 {

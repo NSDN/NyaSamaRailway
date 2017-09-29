@@ -14,7 +14,7 @@ public class EntityModelBinder {
     public EntityModelBinder(FMLInitializationEvent event) {
 
         RenderingRegistry.registerEntityRenderingHandler(
-                MinecartBase.class, new MinecartRenderer(new MinecartModel(), "textures/carts/nstc_1.png"));
+                NSTCT1.class, new MinecartRenderer(new NSTCT1Model(), "textures/carts/nstc_1.png"));
 
         RenderingRegistry.registerEntityRenderingHandler(
                 NSPCT1.class, new MinecartRenderer(new NSPCT1Model(), "textures/carts/nspc_1.png"));
@@ -47,6 +47,15 @@ public class EntityModelBinder {
 
         RenderingRegistry.registerEntityRenderingHandler(
                 NSPCT6.class, new NSPCT6Renderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT6L.class, new NSPCT6LRenderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSPCT7.class, new NSPCT7Renderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSET2.class, new NSET2Renderer());
 
     }
 

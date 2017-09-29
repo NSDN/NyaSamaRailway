@@ -13,8 +13,8 @@ public class EntityLoader {
     public EntityLoader(FMLInitializationEvent event) {
 
         EntityRegistry.registerModEntity(
-                MinecartBase.class,
-                "MinecartBase",
+                NSTCT1.class,
+                "NSTCT1",
                 233,
                 NyaSamaRailway.getInstance(), 256, 3, true);
 
@@ -70,6 +70,24 @@ public class EntityLoader {
                 NSPCT6.class,
                 "NSPCT6",
                 9,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSET2.class,
+                "NSET2",
+                10,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSPCT6L.class,
+                "NSPCT6L",
+                11,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSPCT7.class,
+                "NSPCT7",
+                12,
                 NyaSamaRailway.getInstance(), 256, 3, true);
 
         EntityRegistry.registerModEntity(

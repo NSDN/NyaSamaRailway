@@ -2,25 +2,23 @@ package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockRailReception;
 import club.nsdn.nyasamarailway.Blocks.BlockRailReceptionAnti;
+import club.nsdn.nyasamarailway.Blocks.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.Items.Item1N4148;
-import club.nsdn.nyasamarailway.Items.Item74HC04;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
 import net.minecraft.block.Block;
+import club.nsdn.nyasamarailway.Blocks.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
-import org.thewdj.physics.Vec3d;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +27,7 @@ import java.util.Set;
  * Created by drzzm32 on 2016.6.23.
  */
 
-public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.railcraft.api.carts.ILinkableCart {
+public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts.ILinkableCart {
 
     public int P;
     public int R;
@@ -42,10 +40,11 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
     public Set<ChunkCoordIntPair> chunks;
     public ForgeChunkManager.Ticket ticket;
 
-    //public int prevLinkTrain = -1;
-    public int nextLinkTrain = -1;
-
     protected TrainPacket tmpPacket;
+
+    protected boolean isHighSpeed() {
+        return false;
+    }
 
     public LocoBase(World world) { super(world); }
 
@@ -82,7 +81,7 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 0.75F;
     }
 
     @Override
@@ -107,92 +106,28 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
 
     @Override
     public void onLinkCreated(EntityMinecart cart) {
-
     }
 
     @Override
     public void onLinkBroken(EntityMinecart cart) {
-
-    }
-
-    public int getPrevTrainID() {
-        return -1;
-    }
-
-    public int getNextTrainID() {
-        return this.nextLinkTrain;
-    }
-
-    public boolean LinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == -1) {
-            this.prevLinkTrain = ID;
-        } else
-        */
-        if (this.nextLinkTrain == -1) {
-            this.nextLinkTrain = ID;
-        } else {
-            return false;
-        }
-        return true;
-    }
-
-    public void deLinkTrain(int ID) {
-        /*
-        if (this.prevLinkTrain == ID) {
-            this.prevLinkTrain = -1;
-        } else
-        */
-        if (this.nextLinkTrain == ID) {
-            this.nextLinkTrain = -1;
-        }
-    }
-
-    double calcDist(EntityMinecart a, EntityMinecart b) {
-        return Math.sqrt(Math.pow(a.posX - b.posX, 2) + Math.pow(a.posY - b.posY, 2) + Math.pow(a.posZ - b.posZ, 2));
-    }
-
-    public void calcLink(World world) {
-        if (this.nextLinkTrain > 0 && world.getEntityByID(this.nextLinkTrain) instanceof EntityMinecart) {
-            EntityMinecart cart = (EntityMinecart) world.getEntityByID(this.nextLinkTrain);
-            double Ks = 500.0;
-            double Kd = 500.0;
-            double m = 1.0;
-            double length = 1.5;
-            double dt = 0.001;
-
-            Vec3d sPos = Vec3d.fromEntityPos(this);
-            Vec3d tPos = Vec3d.fromEntityPos(cart);
-            Vec3d sV = Vec3d.fromEntityMotion(this);
-            Vec3d tV = Vec3d.fromEntityMotion(cart);
-            Vec3d SdV = new Vec3d(sPos.subtract(tPos).normalize()).dotProduct(
-                    Ks * (calcDist(this, cart) - length) / m * dt
-            );
-            Vec3d DdV = new Vec3d(sV.subtract(tV)).dotProduct(Kd / m * dt);
-            Vec3d dV = SdV.addVector(DdV);
-
-            cart.motionX += -dV.xCoord;
-            cart.motionY += -dV.yCoord;
-            cart.motionZ += -dV.zCoord;
-
-            this.motionX += dV.xCoord;
-            this.motionY += dV.yCoord;
-            this.motionZ += dV.zCoord;
-
-        }
     }
 
     @Override
     protected void func_145821_a(int x, int y, int z, double v1, double v, Block block, int meta) {
         //applyPush
-        int metadata = worldObj.getBlockMetadata(x, y, z);
         if (block instanceof BlockRailReception) {
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
-                if (metadata < 8) return;
+                if (!((BlockRailReception) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
+                    return;
+                }
         }
         if (block instanceof BlockRailReceptionAnti) {
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
-                if (metadata < 8) return;
+                if (!((BlockRailReceptionAnti) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
+                    return;
+                }
         }
         super.func_145821_a(x, y, z, v1, v, block, meta);
     }
@@ -201,12 +136,13 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
     protected void applyDrag() {
         //Do engine code
         tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
         this.Velocity = tmpPacket.Velocity;
 
-        calcLink(worldObj);
-
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            return;
         super.applyDrag();
     }
 
@@ -258,7 +194,6 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
         this.R = tagCompound.getInteger("LocoR");
         this.Dir = tagCompound.getInteger("LocoDir");
         this.Velocity = tagCompound.getDouble("LocoV");
-        this.nextLinkTrain = tagCompound.getInteger("nextLinkTrain");
     }
 
     @Override
@@ -268,7 +203,6 @@ public class LocoBase extends EntityMinecart implements ITrainLinkable, mods.rai
         tagCompound.setInteger("LocoR", this.R);
         tagCompound.setInteger("LocoDir", this.Dir);
         tagCompound.setDouble("LocoV", this.Velocity);
-        tagCompound.setInteger("nextLinkTrain", this.nextLinkTrain);
     }
 
     @Override

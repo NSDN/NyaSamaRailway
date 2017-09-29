@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -75,6 +76,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         }
         if (rail != null) {
             if (rail.cartType.isEmpty()) return;
+            if (rail.cartType.equals("loco")) return;
 
             if (rail.cartType.equals(MinecartBase.class.getName())) {
                 MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
@@ -131,40 +133,49 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             );
             boolean hasCart = !bBox.isEmpty();
 
-            if (hasCart) {
-                for (Object obj : bBox) {
-                    if (obj instanceof EntityMinecart) {
-                        TileEntityRailReceptionAnti rail = null;
-                        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
-                            rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
-                        }
-                        if (rail != null) {
-                            if (((EntityMinecart) obj).riddenByEntity == null) {
-                                rail.delay = 0;
-                                rail.count = 0;
-                                rail.enable = false;
-
-                                rail.prev = true;
-                            } else if (rail.prev) {
-                                rail.prev = false;
-                                //rail.delay = DELAY_TIME * 15 - 1;
-                            }
-                        }
-                        break;
-                    }
-                }
-            } else {
-                TileEntityRailReceptionAnti rail = null;
-                if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
-                    rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
-                }
-                if (rail != null) {
-                    rail.count += 1;
-                    if (rail.count >= DELAY_TIME * 20) {
+            TileEntityRailReceptionAnti rail = null;
+            if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+                rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+            }
+            if (rail != null) {
+                if (rail.cartType.equals("loco")) {
+                    if (!hasCart) {
                         rail.count = 0;
-                        spawnCart(world, x, y, z);
                         rail.delay = 0;
                         rail.enable = false;
+                    } else {
+                        for (Object obj : bBox) {
+                            if (obj instanceof LocoBase) {
+                                onLocoPass((LocoBase) obj, rail);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (hasCart) {
+                        for (Object obj : bBox) {
+                            if (obj instanceof EntityMinecart) {
+                                if (((EntityMinecart) obj).riddenByEntity == null) {
+                                    rail.delay = 0;
+                                    rail.count = 0;
+                                    rail.enable = false;
+
+                                    rail.prev = true;
+                                } else if (rail.prev) {
+                                    rail.prev = false;
+                                    //rail.delay = DELAY_TIME * 15 - 1;
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        rail.count += 1;
+                        if (rail.count >= DELAY_TIME * 20) {
+                            rail.count = 0;
+                            spawnCart(world, x, y, z);
+                            rail.delay = 0;
+                            rail.enable = false;
+                        }
                     }
                 }
             }
@@ -172,6 +183,74 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             world.scheduleBlockUpdate(x, y, z, this, 1);
         }
         super.updateTick(world, x, y, z, random);
+    }
+
+    public boolean timeExceed(World world, int x, int y, int z) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
+            TileEntityRailReceptionAnti rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
+            return rail.delay >= this.DELAY_TIME * 20;
+        }
+        return false;
+    }
+
+    public void onLocoPass(LocoBase loco, TileEntityRailReceptionAnti rail) {
+        double maxV = 0.2;
+        int x = rail.xCoord, y = rail.yCoord, z = rail.zCoord;
+        World world = loco.worldObj;
+
+        if (loco.Velocity > 0 && !rail.enable) {
+            if (loco.Velocity > maxV) {
+                // speed down
+                loco.P = 0; loco.R = 5;
+            } else {
+                // stop
+                loco.P = 0; loco.R = 1;
+
+                rail.enable = true;
+                loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
+                world.playSoundAtEntity(loco, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
+            }
+        } else {
+            if (rail.delay < DELAY_TIME * 20 && rail.enable) {
+                boolean isEnabled = false;
+
+                if (rail.getSender() != null)
+                    isEnabled = rail.senderIsPowered();
+
+                if (!isEnabled) rail.delay += 1;
+                else {
+                    rail.count += 1;
+
+                    if (rail.delay + rail.count == DELAY_TIME * 15) {
+                        rail.delay = DELAY_TIME * 15 - 1;
+                        rail.count += 1;
+                        world.playSoundAtEntity(loco, "nyasamarailway:info.reception.delay", 0.5F, 1.0F);
+                    }
+                }
+
+                if (rail.delay == DELAY_TIME * 15) {
+                    rail.count = 0;
+                    world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
+                }
+
+                if (loco.Velocity > maxV) {
+                    // keep speed down
+                    loco.P = 0; loco.R = 5;
+                } else {
+                    // keep stop
+                    loco.P = 0; loco.R = 1;
+                    loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
+                }
+            } else {
+                // start, dir = neg, -x | +z
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    loco.Dir = -(int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                } else {
+                    loco.Dir = -(int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                }
+                loco.P = 1; loco.R = 10;
+            }
+        }
     }
 
     @Override
@@ -195,7 +274,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         double maxV;
         if (!playerDetectable) {
             maxV = 0.1;
-            if ((world.getBlockMetadata(x, y, z) & 0x8) != 0) {
+            if (isRailPowered(world, x, y, z)) {
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                     if (cart.motionZ < -maxV) { //cart.motionZ < -maxV
                         if (cart.motionZ > -maxV * 1.5) cart.motionZ = -maxV * 1.5;
@@ -232,6 +311,10 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
             }
             if (rail != null) {
+                if (rail.cartType.equals("loco")) {
+                    return;
+                }
+
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
                     rail.cartType = cart.getClass().getName();
 
@@ -378,6 +461,10 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             }
             if (rail != null) {
                 if (!rail.cartType.isEmpty() && !world.isRemote) {
+                    if (rail.cartType.equals("loco")) {
+                        return;
+                    }
+
                     if (!hasCart && (isRailPowered(world, x - 1, y, z) || isRailPowered(world, x, y, z + 1))) {
                         spawnCart(world, x, y, z);
                         rail.delay = 0;

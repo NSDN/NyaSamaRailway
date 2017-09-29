@@ -28,13 +28,16 @@ public class NSPCT6 extends MinecartBase {
     public NSPCT6(World world) {
         super(world);
         ignoreFrustumCheck = true;
-        canMakePlayerTurn = false;
     }
 
     public NSPCT6(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
-        canMakePlayerTurn = false;
+    }
+
+    @Override
+    public boolean canMakePlayerTurn() {
+        return false;
     }
 
     @Override
@@ -45,6 +48,16 @@ public class NSPCT6 extends MinecartBase {
     @Override
     public double getMountedYOffset() {
         return -0.3;
+    }
+
+    @Override
+    public float getLinkageDistance(EntityMinecart cart) {
+        return 1.5F;
+    }
+
+    @Override
+    public float getOptimalDistance(EntityMinecart cart) {
+        return 1.0F;
     }
 
     @Override

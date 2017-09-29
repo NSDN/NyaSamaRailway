@@ -53,7 +53,7 @@ public class EdgeRenderer implements ISimpleBlockRenderingHandler {
         }
         this.attachedBlock = world.getBlock(x + this.xOffset, y + this.yOffset, z + this.zOffset);
         this.attachedBlockMetadata = world.getBlockMetadata(x + this.xOffset, y + this.yOffset, z + this.zOffset);
-        if (this.attachedBlock.equals(Blocks.air)) {
+        if (this.attachedBlock.equals(Blocks.air) || this.attachedBlock.getIcon(2, this.attachedBlockMetadata) == null) {
             this.attachedBlock = block;
         }
         this.sidesIcon = this.attachedBlock.getIcon(2, this.attachedBlockMetadata);

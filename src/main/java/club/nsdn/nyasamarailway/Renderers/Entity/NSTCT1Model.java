@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
  * Created by drzzm32 on 2016.5.23.
  */
 
-public class MinecartModel extends ModelBase {
+public class NSTCT1Model extends ModelBase {
     public ModelRenderer Shape1;
     public ModelRenderer Shape2;
     public ModelRenderer Shape3;
@@ -26,7 +26,7 @@ public class MinecartModel extends ModelBase {
     public ModelRenderer Shape14;
     public ModelRenderer Shape15;
 
-    public MinecartModel() {
+    public NSTCT1Model() {
         textureWidth = 64;
         textureHeight = 32;
 
