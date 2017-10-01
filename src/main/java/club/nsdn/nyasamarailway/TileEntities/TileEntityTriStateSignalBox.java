@@ -50,6 +50,13 @@ public class TileEntityTriStateSignalBox extends TileEntityBase {
                 }
 
                 return true;
+            } else if (getTarget() instanceof TileEntityRailTriSwitch.TriSwitch) {
+                TileEntityRailTriSwitch.TriSwitch triSwitch = (TileEntityRailTriSwitch.TriSwitch) getTarget();
+                if (triStateIsNeg) {
+                    if (state) triSwitch.setStateNeg();
+                } else {
+                    if (state) triSwitch.setStatePos();
+                }
             }
 
             return false;

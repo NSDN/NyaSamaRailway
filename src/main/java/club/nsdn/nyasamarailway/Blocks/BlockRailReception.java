@@ -79,8 +79,8 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             if (rail.cartType.isEmpty()) return;
             if (rail.cartType.equals("loco")) return;
 
-            if (rail.cartType.equals(MinecartBase.class.getName())) {
-                MinecartBase cart = new MinecartBase(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+            if (rail.cartType.equals(NSTCT1.class.getName())) {
+                MinecartBase cart = new NSTCT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
             } else if (rail.cartType.equals(NSBT1.class.getName())) {
                 MinecartBase cart = new NSBT1(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
@@ -94,17 +94,14 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             } else if (rail.cartType.equals(NSPCT3.class.getName())) {
                 MinecartBase cart = new NSPCT3(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
-            } else if (rail.cartType.equals(NSPCT4.class.getName())) {
-                MinecartBase cart = new NSPCT4(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                world.spawnEntityInWorld(cart);
-            } else if (rail.cartType.equals(NSPCT5.class.getName())) {
-                MinecartBase cart = new NSPCT5(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
-                world.spawnEntityInWorld(cart);
             } else if (rail.cartType.equals(NSPCT5L.class.getName())) {
                 MinecartBase cart = new NSPCT5L(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
             } else if (rail.cartType.equals(NSPCT6.class.getName())) {
                 MinecartBase cart = new NSPCT6(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT8.class.getName())) {
+                MinecartBase cart = new NSPCT8(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
             } else {
                 EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);

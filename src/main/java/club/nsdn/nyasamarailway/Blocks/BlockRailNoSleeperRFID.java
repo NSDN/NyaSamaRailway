@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.Blocks;
 
+import club.nsdn.nyasamarailway.Entity.IMotorCart;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Util.NSASM;
@@ -27,11 +28,13 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
 
         public int P = 0;
         public int R = 10;
+        public boolean state = false;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             P = tagCompound.getInteger("P");
             R = tagCompound.getInteger("R");
+            state = tagCompound.getBoolean("state");
             super.fromNBT(tagCompound);
         }
 
@@ -39,6 +42,7 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("P", P);
             tagCompound.setInteger("R", R);
+            tagCompound.setBoolean("state", state);
             return super.toNBT(tagCompound);
         }
 
@@ -106,6 +110,14 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
                     loco.P = rfid.P;
                     loco.R = rfid.R;
+                } else if (cart instanceof IMotorCart) {
+                    IMotorCart motorCart = (IMotorCart) cart;
+
+                    if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                        motorCart.setMotorPower(rfid.P);
+                        motorCart.setMotorBrake(rfid.R);
+                        motorCart.setMotorState(rfid.state);
+                    }
                 }
             }
 
@@ -115,13 +127,20 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
     public void setPower(TileEntityRailRFID rfid, EntityPlayer player, int value) {
         rfid.P = value > 20 ? 20 : (value < 0 ? 0 : value);
         player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.pwr", value));
+                new ChatComponentTranslation("info.rfid.pwr", rfid.P));
     }
 
-    public void setResistance(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+    public void setBrake(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+        value = 10 - value;
         rfid.R = value > 10 ? 10 : (value < 1 ? 1 : value);
         player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.res", 10 - value));
+                new ChatComponentTranslation("info.rfid.brk", 10 - rfid.R));
+    }
+
+    public void setState(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+        rfid.state = value > 0;
+        player.addChatComponentMessage(
+                new ChatComponentTranslation("info.rfid.ste", rfid.state ? 1 : 0));
     }
 
     @Override
@@ -149,12 +168,22 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                                 }
                                 return Result.ERR;
                             }));
-                            funcList.put("res", ((dst, src) -> {
+                            funcList.put("brk", ((dst, src) -> {
                                 if (src != null) return Result.ERR;
                                 if (dst == null) return Result.ERR;
 
                                 if (dst.type == RegType.INT) {
-                                    setResistance(rfid, player, (int) dst.data);
+                                    setBrake(rfid, player, (int) dst.data);
+                                    return Result.OK;
+                                }
+                                return Result.ERR;
+                            }));
+                            funcList.put("ste", ((dst, src) -> {
+                                if (src != null) return Result.ERR;
+                                if (dst == null) return Result.ERR;
+
+                                if (dst.type == RegType.INT) {
+                                    setState(rfid, player, (int) dst.data);
                                     return Result.OK;
                                 }
                                 return Result.ERR;

@@ -1,13 +1,18 @@
-package club.nsdn.nyasamarailway.TileEntities.Rail;
+package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
+import club.nsdn.nyasamarailway.Blocks.BlockRailBase;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
+import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -20,11 +25,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.8.30.
+ * Created by drzzm32 on 2017.10.1.
  */
-public class RailMonoSwitch extends RailBase {
+public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntityProvider {
 
-    public static class MonoSwitch extends TileEntityRailPassiveReceiver {
+    public static class TriSwitch extends TileEntityRailPassiveReceiver {
 
         public static final int STATE_POS = 1;
         public static final int STATE_ZERO = 0;
@@ -73,7 +78,7 @@ public class RailMonoSwitch extends RailBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new MonoSwitch();
+        return new TriSwitch();
     }
 
     @Override
@@ -81,16 +86,20 @@ public class RailMonoSwitch extends RailBase {
         return Material.rock;
     }
 
-    public RailMonoSwitch() {
-        super(false);
-        setBlockName("RailMonoSwitch");
-        setIconLocation("rail_mono_switch");
+    public TileEntityRailTriSwitch() {
+        super("RailTriSwitch");
+        setTextureName("rail_tri_switch_straight");
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 
     @Override
-    protected void setBoundsByMeta(int meta) {
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+    public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
+        return 2.0F;
+    }
+
+    @Override
+    public int getRenderType() {
+        return -1;
     }
 
     @Override
@@ -104,31 +113,22 @@ public class RailMonoSwitch extends RailBase {
     }
 
     @Override
-    protected void func_150052_a(World world, int x, int y, int z, boolean control)
-    {
-        if (!world.isRemote)
-        {
-            (new Rail(world, x, y, z)).func_150655_a(world.isBlockIndirectlyGettingPowered(x, y, z), control);
-        }
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
         int meta = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        if (world.getTileEntity(x, y, z) instanceof MonoSwitch) {
-            MonoSwitch monoSwitch = (MonoSwitch) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TriSwitch) {
+            TriSwitch triSwitch = (TriSwitch) world.getTileEntity(x, y, z);
             switch (meta) {
                 case 0:
-                    monoSwitch.direction = ForgeDirection.SOUTH;
+                    triSwitch.direction = ForgeDirection.SOUTH;
                     break;
                 case 1:
-                    monoSwitch.direction = ForgeDirection.WEST;
+                    triSwitch.direction = ForgeDirection.WEST;
                     break;
                 case 2:
-                    monoSwitch.direction = ForgeDirection.NORTH;
+                    triSwitch.direction = ForgeDirection.NORTH;
                     break;
                 case 3:
-                    monoSwitch.direction = ForgeDirection.EAST;
+                    triSwitch.direction = ForgeDirection.EAST;
                     break;
                 default:
                     break;
@@ -153,14 +153,14 @@ public class RailMonoSwitch extends RailBase {
     }
 
     public void doSwitch(World world, int x ,int y, int z) {
-        if (world.getTileEntity(x, y, z) instanceof MonoSwitch) {
-            MonoSwitch monoSwitch = (MonoSwitch) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TriSwitch) {
+            TriSwitch triSwitch = (TriSwitch) world.getTileEntity(x, y, z);
             int old = world.getBlockMetadata(x, y, z);
             int meta = 0;
 
-            switch (monoSwitch.switchState) {
-                case MonoSwitch.STATE_POS: //left
-                    switch (monoSwitch.direction) {
+            switch (triSwitch.switchState) {
+                case TriSwitch.STATE_POS: //left
+                    switch (triSwitch.direction) {
                         case SOUTH:
                             meta = 9;
                             break;
@@ -175,8 +175,8 @@ public class RailMonoSwitch extends RailBase {
                             break;
                     }
                     break;
-                case MonoSwitch.STATE_NEG: //right
-                    switch (monoSwitch.direction) {
+                case TriSwitch.STATE_NEG: //right
+                    switch (triSwitch.direction) {
                         case SOUTH:
                             meta = 8;
                             break;
@@ -191,8 +191,8 @@ public class RailMonoSwitch extends RailBase {
                             break;
                     }
                     break;
-                case MonoSwitch.STATE_ZERO:
-                    switch (monoSwitch.direction) {
+                case TriSwitch.STATE_ZERO:
+                    switch (triSwitch.direction) {
                         case SOUTH:
                             meta = 0;
                             break;
@@ -211,7 +211,7 @@ public class RailMonoSwitch extends RailBase {
                     break;
             }
 
-            monoSwitch.switchState = MonoSwitch.STATE_ZERO;
+            triSwitch.switchState = TriSwitch.STATE_ZERO;
 
             if (world.getBlock(x, y + 1, z) instanceof RailMonoMagnet) {
                 if (world.getBlockMetadata(x, y + 1, z) != meta) {
@@ -228,33 +228,5 @@ public class RailMonoSwitch extends RailBase {
             }
             world.scheduleBlockUpdate(x, y, z, this, 1);
         }
-    }
-
-    public class Rail extends RailBase.Rail {
-
-        @Override
-        public boolean checkBlockIsMe(World world, int x, int y, int z) {
-            return world.getBlock(x, y, z).getClass() == RailMonoSwitch.class;
-        }
-
-        @Override
-        protected RailBase.Rail func_150654_a(ChunkPosition chunkPosition)
-        {
-            return checkBlockIsMe(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY, chunkPosition.chunkPosZ) ?
-                    new Rail(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY, chunkPosition.chunkPosZ)
-                    : (
-                    checkBlockIsMe(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY + 1, chunkPosition.chunkPosZ) ?
-                            new Rail(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY + 1, chunkPosition.chunkPosZ)
-                            : (
-                            checkBlockIsMe(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY - 1, chunkPosition.chunkPosZ) ?
-                                    new Rail(this.world, chunkPosition.chunkPosX, chunkPosition.chunkPosY - 1, chunkPosition.chunkPosZ)
-                                    : null)
-            );
-        }
-
-        public Rail(World world, int x, int y, int z) {
-            super(world, x, y, z);
-        }
-
     }
 }

@@ -31,6 +31,19 @@ public class Dynamics {
             }
         }
 
+        public static double calcVelocityUpWithAir(double vp, double u, double m, double P, double dt) {
+            if (vp > 0) {
+                double k = 0.25;
+                double f = k * vp * vp;
+                double amax = (1.0 - u) * G;
+                double a = (P - f * vp) / (vp * m);
+                if (a > amax) a = amax;
+                return vp + a * dt;
+            } else {
+                return 0.0;
+            }
+        }
+
         public static double calcVelocityDown(double vp, double u, double m, double B, double L, double R, double dt) {
             if (vp > 0) {
                 double f = u * m * G;
@@ -56,6 +69,21 @@ public class Dynamics {
                 return 0.0;
             }
         }
+
+        public static double calcVelocityDownWithAir(double vp, double u, double m, double B, double L, double R, double dt) {
+            if (vp > 0) {
+                double k = 0.25;
+                double f = k * vp * vp;
+                double amax = (1.0 + u) * G;
+                double a = (B * B * L * L * vp / R + f) / m;
+                if (a > amax) a = amax;
+                if (a < u * G) a = u * G;
+                return vp - a * dt;
+            } else {
+                return 0.0;
+            }
+        }
+
 
     }
 

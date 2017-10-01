@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.Renderers.TileEntity.Rail;
+package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
 import net.minecraft.client.Minecraft;
@@ -13,21 +13,19 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by drzzm32 on 2017.8.30.
  */
-public class RailMonoSwitchRenderer extends TileEntitySpecialRenderer {
+public class RailTriSwitchRenderer extends TileEntitySpecialRenderer {
 
-    private static final int STRAIGHT = 0, TURNED = 1;
+    private static final int STRAIGHT = 0, TURNED_L = 1, TURNED_R = 2;
 
-    private final WavefrontObject[] model;
+    private final WavefrontObject model;
     private final ResourceLocation[] textures;
 
-    public RailMonoSwitchRenderer() {
-        this.model = new WavefrontObject[] {
-                new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_straight.obj")),
-                new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_turned.obj"))
-        };
+    public RailTriSwitchRenderer() {
+        this.model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/rai_tril_switch.obj"));
         this.textures = new ResourceLocation[] {
-                new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_switch.png"),
-                new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_switch.png")
+                new ResourceLocation("nyasamarailway", "textures/blocks/rail_tri_switch_straight.png"),
+                new ResourceLocation("nyasamarailway", "textures/blocks/rail_tri_switch_left.png"),
+                new ResourceLocation("nyasamarailway", "textures/blocks/rail_tri_switch_right.png")
         };
     }
 
@@ -50,22 +48,22 @@ public class RailMonoSwitchRenderer extends TileEntitySpecialRenderer {
 
         switch (te.getBlockMetadata()) {
             case 0: //N=S
-                RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 0.0F, textures[STRAIGHT]);
+                RendererHelper.renderWithResourceAndRotation(this.model, 0.0F, textures[STRAIGHT]);
                 break;
             case 1: //W=E
-                RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 90.0F, textures[STRAIGHT]);
+                RendererHelper.renderWithResourceAndRotation(this.model, 90.0F, textures[STRAIGHT]);
                 break;
             case 6: //S-E
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 180.0F, textures[TURNED]);
+                RendererHelper.renderWithResourceAndRotation(this.model, 180.0F, textures[TURNED_L]);
                 break;
             case 7: //S-W
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], -90.0F, textures[TURNED]);
+                RendererHelper.renderWithResourceAndRotation(this.model, -90.0F, textures[TURNED_L]);
                 break;
             case 8: //N-W
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 0.0F, textures[TURNED]);
+                RendererHelper.renderWithResourceAndRotation(this.model, 0.0F, textures[TURNED_R]);
                 break;
             case 9: //N-E
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 90.0F, textures[TURNED]);
+                RendererHelper.renderWithResourceAndRotation(this.model, 90.0F, textures[TURNED_R]);
                 break;
         }
 
