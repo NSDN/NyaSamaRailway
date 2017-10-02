@@ -47,6 +47,7 @@ public class BlockLoader {
     public static Block blockRailDirectionalAnti;
     public static Block blockRailBlocking;
     public static Block blockRailNoSleeperBlocking;
+    public static Block blockRailSniffer;
 
     public static Block blockBumperStoneSleeper;
     public static Block blockBumperNoSleeper;
@@ -217,6 +218,9 @@ public class BlockLoader {
 
         blockRailNoSleeperBlocking = new BlockRailNoSleeperBlocking();
         register(blockRailNoSleeperBlocking, "block_rail_no_sleeper_blocking");
+
+        blockRailSniffer = new BlockRailSniffer();
+        register(blockRailSniffer, "block_rail_sniffer");
 
 
         blockBumperStoneSleeper = new TileEntityBumperStoneSleeper();

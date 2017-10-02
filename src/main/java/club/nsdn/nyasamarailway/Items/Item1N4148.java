@@ -121,7 +121,7 @@ public class Item1N4148 extends ItemToolBase {
                 if ((block instanceof RailMonoMagnetDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectional);
             }
             return !world.isRemote;
-        } else if (block instanceof BlockRailDetectorBase && !(block instanceof BlockRailBlocking)) {
+        } else if (block instanceof BlockRailDetectorBase && !(block instanceof IRailNoDelay)) {
             int nowDelay = ((BlockRailDetectorBase) block).getDelaySecond();
             if (block instanceof BlockRailStoneSleeperDetector) {
                 switch (nowDelay) {

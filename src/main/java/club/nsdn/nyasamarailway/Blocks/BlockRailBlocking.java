@@ -7,16 +7,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by drzzm32 on 2017.6.16.
  */
-public class BlockRailBlocking extends BlockRailDetectorBase {
-
-    public static LinkedHashMap<UUID, TileEntityRailTransceiver> tmpRails;
+public class BlockRailBlocking extends BlockRailDetectorBase implements IRailNoDelay {
 
     public TileEntity createNewTileEntity(World world, int i) {
         return new TileEntityRailTransceiver();
@@ -25,15 +21,11 @@ public class BlockRailBlocking extends BlockRailDetectorBase {
     public BlockRailBlocking() {
         super("BlockRailBlocking");
         setTextureName("rail_blocking");
-
-        tmpRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
     }
 
     public BlockRailBlocking(String name, String texture) {
         super(name);
         setTextureName(texture);
-
-        tmpRails = new LinkedHashMap<UUID, TileEntityRailTransceiver>();
     }
 
     public void setOutputSignal(World world, int x, int y, int z, boolean state) {
