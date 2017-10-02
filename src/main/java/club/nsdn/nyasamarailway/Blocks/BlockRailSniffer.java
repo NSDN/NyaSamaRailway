@@ -81,11 +81,11 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
 
             if (railHasCart(world, x, y, z) && !railHasPowered(world, x, y, z)) {
                 setOutputSignal(thisRail, true);
-                setOutputSignal(thisRail.getTransceiver(), true);
+                if (thisRail.getTransceiver() != null) setOutputSignal(thisRail.getTransceiver(), true);
             }
             if (!railHasCart(world, x, y, z) && railHasPowered(world, x, y, z)) {
                 setOutputSignal(thisRail, false);
-                setOutputSignal(thisRail.getTransceiver(), false);
+                if (thisRail.getTransceiver() != null) setOutputSignal(thisRail.getTransceiver(), false);
             }
 
             if (railHasCart(world, x, y, z)) {
