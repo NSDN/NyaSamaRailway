@@ -36,6 +36,7 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
         public static final int STATE_NEG = -1;
 
         public int switchState;
+        public int prevSwitchState;
         public ForgeDirection direction;
 
         public void setStatePos() {
@@ -57,6 +58,7 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
 
         public void fromNBT(NBTTagCompound tagCompound) {
             switchState = tagCompound.getInteger("switchState");
+            prevSwitchState = tagCompound.getInteger("prevSwitchState");
             direction = ForgeDirection.getOrientation(
                     tagCompound.getInteger("direction")
             );
@@ -64,6 +66,7 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
 
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("switchState", switchState);
+            tagCompound.setInteger("prevSwitchState", prevSwitchState);
             if (direction == null) direction = ForgeDirection.UNKNOWN;
             tagCompound.setInteger("direction", direction.ordinal());
             return tagCompound;
@@ -211,19 +214,12 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
                     break;
             }
 
+            triSwitch.prevSwitchState = triSwitch.switchState;
             triSwitch.switchState = TriSwitch.STATE_ZERO;
-
-            if (world.getBlock(x, y + 1, z) instanceof RailMonoMagnet) {
-                if (world.getBlockMetadata(x, y + 1, z) != meta) {
-                    world.setBlockMetadataWithNotify(x, y + 1, z, meta, 3);
-                    world.notifyBlockChange(x, y + 1, z, BlockLoader.railMonoMagnet);
-                    world.markBlockForUpdate(x, y + 1, z);
-                }
-            }
 
             if (old != meta) {
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-                world.notifyBlockChange(x, y, z, BlockLoader.railMono);
+                world.notifyBlockChange(x, y, z, this);
                 world.markBlockForUpdate(x, y, z);
             }
             world.scheduleBlockUpdate(x, y, z, this, 1);

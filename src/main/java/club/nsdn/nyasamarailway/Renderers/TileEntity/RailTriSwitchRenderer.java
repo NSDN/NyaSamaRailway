@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityRailTriSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,7 +22,7 @@ public class RailTriSwitchRenderer extends TileEntitySpecialRenderer {
     private final ResourceLocation[] textures;
 
     public RailTriSwitchRenderer() {
-        this.model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/rai_tril_switch.obj"));
+        this.model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/rail_tri_switch.obj"));
         this.textures = new ResourceLocation[] {
                 new ResourceLocation("nyasamarailway", "textures/blocks/rail_tri_switch_straight.png"),
                 new ResourceLocation("nyasamarailway", "textures/blocks/rail_tri_switch_left.png"),
@@ -46,25 +47,41 @@ public class RailTriSwitchRenderer extends TileEntitySpecialRenderer {
 
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
-        switch (te.getBlockMetadata()) {
-            case 0: //N=S
-                RendererHelper.renderWithResourceAndRotation(this.model, 0.0F, textures[STRAIGHT]);
-                break;
-            case 1: //W=E
-                RendererHelper.renderWithResourceAndRotation(this.model, 90.0F, textures[STRAIGHT]);
-                break;
-            case 6: //S-E
-                RendererHelper.renderWithResourceAndRotation(this.model, 180.0F, textures[TURNED_L]);
-                break;
-            case 7: //S-W
-                RendererHelper.renderWithResourceAndRotation(this.model, -90.0F, textures[TURNED_L]);
-                break;
-            case 8: //N-W
-                RendererHelper.renderWithResourceAndRotation(this.model, 0.0F, textures[TURNED_R]);
-                break;
-            case 9: //N-E
-                RendererHelper.renderWithResourceAndRotation(this.model, 90.0F, textures[TURNED_R]);
-                break;
+        if (te instanceof TileEntityRailTriSwitch.TriSwitch) {
+            TileEntityRailTriSwitch.TriSwitch triSwitch = (TileEntityRailTriSwitch.TriSwitch) te;
+
+            float angle = 0.0F;
+            if (triSwitch.direction != null) {
+                switch (triSwitch.direction) {
+                    case SOUTH:
+                        angle = 0.0F;
+                        break;
+                    case WEST:
+                        angle = 90.0F;
+                        break;
+                    case NORTH:
+                        angle = 180.0F;
+                        break;
+                    case EAST:
+                        angle = 270.0F;
+                        break;
+                }
+            }
+
+            int direction = STRAIGHT;
+            switch (triSwitch.prevSwitchState) {
+                case TileEntityRailTriSwitch.TriSwitch.STATE_POS:
+                    direction = TURNED_L;
+                    break;
+                case TileEntityRailTriSwitch.TriSwitch.STATE_NEG:
+                    direction = TURNED_R;
+                    break;
+                case TileEntityRailTriSwitch.TriSwitch.STATE_ZERO:
+                    direction = STRAIGHT;
+                    break;
+            }
+
+            RendererHelper.renderWithResourceAndRotation(this.model, angle, textures[direction]);
         }
 
         RenderHelper.enableStandardItemLighting();
