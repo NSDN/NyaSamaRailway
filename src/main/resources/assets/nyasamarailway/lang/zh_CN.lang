@@ -24,6 +24,7 @@ tile.BlockRailBlocking.name=闭塞轨
 tile.BlockRailNoSleeperBlocking.name=无砟闭塞轨
 tile.BlockRailRFID.name=标签轨
 tile.BlockRailNoSleeperRFID.name=无砟标签轨
+tile.BlockRailSniffer.name=嗅探轨
 tile.BumperStoneSleeper.name=混凝土枕车挡
 tile.BumperNoSleeper.name=无砟车挡
 item.ItemTrainController8Bit.name=喵玉列车控制器8位版
