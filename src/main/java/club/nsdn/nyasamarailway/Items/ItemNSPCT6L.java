@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.Items;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Entity.NSPCT6L;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -20,6 +21,7 @@ public class ItemNSPCT6L extends ItemMinecart {
         setTexName("item_nspc_6l");
         setMaxStackSize(64);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     protected void setTexName(String name) {

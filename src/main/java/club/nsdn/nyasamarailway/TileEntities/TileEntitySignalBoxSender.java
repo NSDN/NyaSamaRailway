@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailMultiSender;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -42,6 +43,7 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
         setIconLocation("signal_box_sender");
         setLightOpacity(0);
         setLightLevel(0.1F);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override

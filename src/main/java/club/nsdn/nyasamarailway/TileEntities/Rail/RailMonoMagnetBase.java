@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 
 import club.nsdn.nyasamarailway.Blocks.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -70,6 +71,7 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
         setBlockName(name);
         setIconLocation(icon);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     public enum RailDirection {

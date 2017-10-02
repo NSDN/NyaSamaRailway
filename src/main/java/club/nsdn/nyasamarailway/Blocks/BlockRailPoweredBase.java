@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.Blocks;
  */
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.Entity;
@@ -22,6 +23,7 @@ public class BlockRailPoweredBase extends BlockRailPowered {
         super();
         setBlockName(name);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     protected void setTextureName(String name) {

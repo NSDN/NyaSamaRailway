@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
@@ -14,8 +15,6 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.Display;
 
 /**
@@ -48,7 +47,7 @@ public class TrainControlClientHandler {
                 }
             }
         } else {
-            Display.setTitle(Display.getTitle().replace(" | using mods by NSDN-MC", ""));
+            if (!Util.loadIf()) Display.setTitle(Display.getTitle().replace(" | using mods by NSDN-MC", ""));
         }
 
         if (player == null)

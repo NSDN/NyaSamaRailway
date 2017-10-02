@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.TileEntities;
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,6 +66,7 @@ public class TileEntitySignalBox extends TileEntityBase {
         setIconLocation("signal_box");
         setLightOpacity(0);
         setLightLevel(0.1F);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override

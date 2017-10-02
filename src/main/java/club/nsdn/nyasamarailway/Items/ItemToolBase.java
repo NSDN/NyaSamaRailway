@@ -5,6 +5,7 @@ package club.nsdn.nyasamarailway.Items;
  */
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,6 +31,7 @@ public class ItemToolBase extends Item {
         this.setMaxStackSize(1);
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     protected void setTexName(String name) {

@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.Blocks;
 
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.BlockRailDetector;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
@@ -32,6 +33,7 @@ public class BlockRailDetectorBase extends BlockRailDetector implements ITileEnt
         tmpDelay = new LinkedHashMap<Point3D, Integer>();
         setBlockName(name);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     public BlockRailDetectorBase(String name, int delay) {

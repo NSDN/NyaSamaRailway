@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.Entity.MinecartBase;
 import club.nsdn.nyasamarailway.Entity.NSBT1;
 import club.nsdn.nyasamarailway.Entity.TrainBase;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -22,6 +23,7 @@ public class ItemTrainBase extends ItemMinecart {
         setTexName("item_nsft_1");
         setMaxStackSize(64);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     public enum RailDirection {

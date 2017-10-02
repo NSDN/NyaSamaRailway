@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.Util;
 
+import cpw.mods.fml.common.Loader;
 import net.minecraft.item.ItemEditableBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
@@ -18,6 +19,10 @@ public class Util {
             return itemStack.getTagCompound().getTagList("pages", 8);
         }
         return null;
+    }
+
+    public static boolean loadIf() {
+        return Loader.isModLoaded("NyaSamaTelecom");
     }
 
 }
