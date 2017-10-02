@@ -21,7 +21,7 @@ public class RailMonoSwitchRenderer extends TileEntitySpecialRenderer {
     private final ResourceLocation[] textures;
 
     public RailMonoSwitchRenderer() {
-        this.model  = new WavefrontObject[] {
+        this.model = new WavefrontObject[] {
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_straight.obj")),
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_turned.obj"))
         };

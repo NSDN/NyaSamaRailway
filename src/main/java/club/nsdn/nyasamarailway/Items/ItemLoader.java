@@ -29,6 +29,7 @@ public class ItemLoader {
     public static Item itemNSPCT6;
     public static Item itemNSPCT6L;
     public static Item itemNSPCT7;
+    public static Item itemNSPCT8;
     public static Item itemNSBT1;
     public static Item itemNSET1;
     public static Item itemNSET2;
@@ -92,6 +93,9 @@ public class ItemLoader {
 
         itemNSPCT7 = new ItemNSPCT7();
         register(itemNSPCT7, "item_nspc_7");
+
+        itemNSPCT8 = new ItemNSPCT8();
+        register(itemNSPCT8, "item_nspc_8");
 
         itemNSBT1 = new ItemNSBT1();
         register(itemNSBT1, "item_nsb_1");

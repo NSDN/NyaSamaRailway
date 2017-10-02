@@ -279,6 +279,10 @@ public class TileEntityLoader {
                 TileEntityRailSignVertical5.RailSignVertical.class,
                 "tileEntityRailSignVertical5");
 
+        GameRegistry.registerTileEntity(
+                TileEntityRailTriSwitch.TriSwitch.class,
+                "tileEntityRailTriSwitch");
+
     }
 
 }

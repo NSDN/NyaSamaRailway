@@ -281,6 +281,9 @@ public class TileEntityModelBinder {
                 new RailSignVerticalRenderer("rail_sign_vertical_5")
         );
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailTriSwitch.TriSwitch.class, new RailTriSwitchRenderer());
+
     }
 
 }

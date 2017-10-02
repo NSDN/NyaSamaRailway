@@ -94,6 +94,8 @@ public class BlockLoader {
     public static Block railMonoMagnetSignalTransfer;
     public static Block railMonoMagnetBlocking;
 
+    public static Block railTriSwitch;
+
     public static Block blockStationSign;
 
     public static Block blockSignalLight;
@@ -346,6 +348,11 @@ public class BlockLoader {
 
         railMonoMagnetBlocking = new RailMonoMagnetBlocking();
         register(railMonoMagnetBlocking, "rail_mono_magnet_blocking");
+
+
+        railTriSwitch = new TileEntityRailTriSwitch();
+        register(railTriSwitch, "rail_tri_switch");
+
 
         blockSignalLight = new TileEntitySignalLight();
         register(blockSignalLight, "block_signal_light");

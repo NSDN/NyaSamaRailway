@@ -23,6 +23,8 @@ import java.util.Random;
  */
 public class TileEntityTicketBlockCard extends TileEntityBase {
 
+    public final int MAX_OVER = 500;
+
     public static class TicketBlock extends TileEntity {
 
         public static final int DELAY = 5;
@@ -154,7 +156,14 @@ public class TileEntityTicketBlockCard extends TileEntityBase {
                     } else if (stack.getItem() instanceof ItemTicketBase) {
                         if ((meta & 0x4) != 0) {
                             int over = ItemTicketBase.getOver(stack);
-                            ItemTicketBase.setOver(stack, over + ticketBlock.over);
+                            if (over > MAX_OVER) {
+                                ItemStack itemStack = new ItemStack(ItemLoader.itemNyaCoin);
+                                ItemNyaCoin.setValue(itemStack, ticketBlock.over);
+                                player.setCurrentItemOrArmor(0, itemStack);
+                                ticketBlock.over = 0;
+                            } else {
+                                ItemTicketBase.setOver(stack, over + ticketBlock.over);
+                            }
                         }
                         ticketBlock.over = ItemTicketBase.getOver(stack);
                         world.setBlockMetadataWithNotify(x, y, z, meta | 0x8, 3);
