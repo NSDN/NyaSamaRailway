@@ -152,6 +152,7 @@ public class Util {
         try {
             while (reader.ready())
                 str = str.concat(reader.readLine() + "\n");
+            reader.close();
         } catch (Exception e) {
             print("File read error.\n");
             print("At file: " + path + "\n\n");
