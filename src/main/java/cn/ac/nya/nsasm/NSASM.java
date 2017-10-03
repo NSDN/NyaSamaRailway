@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class NSASM {
 
-    public static final String version = "0.20 (Java)";
+    public static final String version = "0.30 (Java)";
 
     protected enum RegType {
         CHAR, STR, INT, FLOAT
@@ -57,7 +57,7 @@ public class NSASM {
 
     private enum WordType {
         REG, CHAR, STR, INT,
-        FLOAT, VAR, TAG
+        FLOAT, VAR, TAG, SEG
     }
 
     private boolean verifyBound(String var, char left, char right) {
@@ -96,7 +96,9 @@ public class NSASM {
                        !verifyWord(var, WordType.STR) && !verifyWord(var, WordType.INT) &&
                        !verifyWord(var, WordType.FLOAT) && !verifyWord(var, WordType.TAG);
             case TAG:
-                return verifyBound(var, '[', ']') || verifyBound(var, '<', '>');
+                return verifyBound(var, '[', ']');
+            case SEG:
+                return verifyBound(var, '<', '>');
         }
         return false;
     }
@@ -190,7 +192,7 @@ public class NSASM {
                 register.type = RegType.FLOAT;
                 register.readOnly = true;
                 register.data = tmp;
-            } else if (verifyWord(var, WordType.TAG)) {
+            } else if (verifyWord(var, WordType.TAG) || verifyWord(var, WordType.SEG)) {
                 register.type = RegType.STR;
                 register.readOnly = true;
                 register.data = var;
@@ -302,12 +304,22 @@ public class NSASM {
         if (code == null) return Result.OK;
         for (String[] seg : code) {
             if (seg[0].startsWith(".")) continue; //This is conf seg
-            if (this.code.containsKey(seg[0])) {
-                Util.print("\nNSASM loading error!\n");
-                Util.print("At "+ seg[0] + "\n");
-                return Result.ERR;
+            if (seg[0].startsWith("@")) { //This is override seg
+                if (!this.code.containsKey(seg[0].substring(1))) {
+                    Util.print("\nNSASM loading error!\n");
+                    Util.print("At "+ seg[0].substring(1) + "\n");
+                    return Result.ERR;
+                }
+                this.code.replace(seg[0].substring(1), convToArray(seg[1]));
+            } else {
+                if (this.code.containsKey(seg[0])) {
+                    if (seg[0].startsWith("_pub_")) continue; //This is pub seg
+                    Util.print("\nNSASM loading error!\n");
+                    Util.print("At "+ seg[0] + "\n");
+                    return Result.ERR;
+                }
+                this.code.put(seg[0], convToArray(seg[1]));
             }
-            this.code.put(seg[0], convToArray(seg[1]));
         }
         return Result.OK;
     }
@@ -795,6 +807,8 @@ public class NSASM {
         funList.put("run", (dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
+            if (dst.type != RegType.STR) return Result.ERR;
+            if (!verifyWord((String) dst.data, WordType.SEG)) return Result.ERR;
             String segBuf, target = (String) dst.data;
             for (int seg = 0; seg < code.keySet().size(); seg++) {
                 segBuf = (String) (code.keySet().toArray())[seg];
@@ -810,6 +824,8 @@ public class NSASM {
         funList.put("call", (dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
+            if (dst.type != RegType.STR) return Result.ERR;
+            if (!verifyWord((String) dst.data, WordType.SEG)) return Result.ERR;
             String segBuf, target = (String) dst.data;
             for (int seg = 0; seg < code.keySet().size(); seg++) {
                 segBuf = (String) (code.keySet().toArray())[seg];

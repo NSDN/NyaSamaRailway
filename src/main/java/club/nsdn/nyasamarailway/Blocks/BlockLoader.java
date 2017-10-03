@@ -52,6 +52,8 @@ public class BlockLoader {
     public static Block blockBumperStoneSleeper;
     public static Block blockBumperNoSleeper;
 
+    public static Block blockPierTag;
+
     public static Block blockIronBars;
     public static Block blockIronWeb;
     public static Block blockTBridgeHead;
@@ -228,6 +230,10 @@ public class BlockLoader {
 
         blockBumperNoSleeper = new TileEntityBumperNoSleeper();
         register(blockBumperNoSleeper, "block_bumper_no_sleeper");
+
+
+        blockPierTag = new TileEntityPierTag();
+        register(blockPierTag, "block_pier_tag");
 
 
         blockIronBars = new BlockIronBars();

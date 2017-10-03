@@ -1,9 +1,11 @@
 package club.nsdn.nyasamarailway.Items;
 
+import club.nsdn.nyasamarailway.TileEntities.TileEntityPierTag;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
@@ -84,12 +86,21 @@ public class ItemPierBuilder extends ItemToolBase {
             if (endBlock == null)
                 return false;
 
+            if (!(block instanceof TileEntityPierTag))
+                return false;
+            else {
+                world.setBlock(x, y, z, Blocks.air);
+                block = world.getBlock(x, y + 1, z);
+            }
+
+
             if (player instanceof EntityPlayerMP)
                 player.addChatComponentMessage(
                         new ChatComponentTranslation("info.PierBuilder.begin")
                 );
 
-            for (int dy = 0; !reachesEndBlock(world, x, y - dy - 1, z); dy++) {
+            // dy = -1 to use pier tag
+            for (int dy = -1; !reachesEndBlock(world, x, y - dy - 1, z); dy++) {
                 traversalCounter = 0;
                 TraversalBlocks(world, block, x, y - dy, z);
 

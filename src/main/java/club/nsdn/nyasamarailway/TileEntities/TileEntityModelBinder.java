@@ -284,6 +284,9 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailTriSwitch.TriSwitch.class, new RailTriSwitchRenderer());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityPierTag.PierTag.class, new PierTagRenderer());
+
     }
 
 }
