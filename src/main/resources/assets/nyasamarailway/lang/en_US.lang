@@ -27,6 +27,7 @@ tile.BlockRailNoSleeperRFID.name=Thin Sleeper RFID Rail
 tile.BlockRailSniffer.name=Sniffer Rail
 tile.BumperStoneSleeper.name=Stone Sleeper Bumper
 tile.BumperNoSleeper.name=No Sleeper Bumper
+tile.PierTag.name=Pier Tag
 item.ItemTrainController8Bit.name=NTP 8bit
 item.ItemTrainController32Bit.name=NTP 32bit
 tile.BlockIronBars.name=Railway Bars

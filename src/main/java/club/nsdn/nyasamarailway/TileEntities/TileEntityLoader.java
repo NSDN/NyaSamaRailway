@@ -283,6 +283,10 @@ public class TileEntityLoader {
                 TileEntityRailTriSwitch.TriSwitch.class,
                 "tileEntityRailTriSwitch");
 
+        GameRegistry.registerTileEntity(
+                TileEntityPierTag.PierTag.class,
+                "tileEntityPierTag");
+
     }
 
 }
