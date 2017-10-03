@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,6 +33,7 @@ public class TileEntityPierTag extends TileEntityBase {
         setIconLocation("pier_tag");
         setLightOpacity(0);
         setLightLevel(0);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override
