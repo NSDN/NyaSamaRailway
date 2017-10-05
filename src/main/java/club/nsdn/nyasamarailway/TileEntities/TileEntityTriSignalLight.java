@@ -94,11 +94,11 @@ public class TileEntityTriSignalLight extends TileEntityBase {
 
     public void updateLight(World world, int x , int y, int z) {
         if (world.getTileEntity(x, y, z) instanceof TriSignalLight) {
-            TriSignalLight triSwitch = (TriSignalLight) world.getTileEntity(x, y, z);
+            TriSignalLight triSignalLight = (TriSignalLight) world.getTileEntity(x, y, z);
             int old = world.getBlockMetadata(x, y, z);
             int meta = old & 0x3;
 
-            switch (triSwitch.state) {
+            switch (triSignalLight.state) {
                 case TriSignalLight.STATE_POS: // Y
                     meta |= 0x4;
                     break;
@@ -112,8 +112,8 @@ public class TileEntityTriSignalLight extends TileEntityBase {
                     break;
             }
 
-            triSwitch.prevState = triSwitch.state;
-            triSwitch.state = TriSignalLight.STATE_ZERO;
+            triSignalLight.prevState = triSignalLight.state;
+            triSignalLight.state = TriSignalLight.STATE_ZERO;
 
             if (old != meta) {
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
