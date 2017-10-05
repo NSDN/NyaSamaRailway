@@ -1,9 +1,8 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoSwitch;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
-import club.nsdn.nyasamarailway.Util.Util;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTriStateReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,24 +41,17 @@ public class TileEntityTriStateSignalBox extends TileEntityBase {
         }
 
         public boolean setSwitch(boolean state) {
-            if (getTarget() instanceof RailMonoSwitch.MonoSwitch) {
-                RailMonoSwitch.MonoSwitch monoSwitch = (RailMonoSwitch.MonoSwitch) getTarget();
+            if (getTarget() instanceof TileEntityRailTriStateReceiver) {
+                TileEntityRailTriStateReceiver target = (TileEntityRailTriStateReceiver) getTarget();
+
                 if (triStateIsNeg) {
-                    if (state) monoSwitch.setStateNeg();
+                    if (state) target.setStateNeg();
                 } else {
-                    if (state) monoSwitch.setStatePos();
+                    if (state) target.setStatePos();
                 }
 
                 return true;
-            } else if (getTarget() instanceof TileEntityRailTriSwitch.TriSwitch) {
-                TileEntityRailTriSwitch.TriSwitch triSwitch = (TileEntityRailTriSwitch.TriSwitch) getTarget();
-                if (triStateIsNeg) {
-                    if (state) triSwitch.setStateNeg();
-                } else {
-                    if (state) triSwitch.setStatePos();
-                }
             }
-
             return false;
         }
 
@@ -70,7 +62,6 @@ public class TileEntityTriStateSignalBox extends TileEntityBase {
         setIconLocation("tri_state_signal_box");
         setLightOpacity(0);
         setLightLevel(0.1F);
-        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override

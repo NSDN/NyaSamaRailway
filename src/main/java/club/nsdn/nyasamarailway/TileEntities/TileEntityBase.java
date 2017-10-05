@@ -81,8 +81,8 @@ public class TileEntityBase extends BlockContainer {
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess w, int x, int y, int z) {
-        int meta = w.getBlockMetadata(x, y, z);
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
         setBoundsByMeta(meta);
     }
 

@@ -87,7 +87,7 @@ public class NSPCT6L extends LocoBase {
     public void killMinecart(DamageSource source)
     {
         this.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT6, 1);
+        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT6L, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
         this.entityDropItem(itemstack, 0.0F);
     }
