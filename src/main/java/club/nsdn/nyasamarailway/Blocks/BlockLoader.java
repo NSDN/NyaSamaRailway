@@ -53,6 +53,7 @@ public class BlockLoader {
     public static Block blockBumperNoSleeper;
 
     public static Block blockPierTag;
+    public static Block blockPillar;
 
     public static Block blockIronBars;
     public static Block blockIronWeb;
@@ -102,6 +103,8 @@ public class BlockLoader {
     public static Block blockStationSign;
 
     public static Block blockSignalLight;
+    public static Block blockBiSignalLight;
+    public static Block blockTriSignalLight;
     public static Block blockSignalBox;
     public static Block blockSignalBoxSender;
     public static Block blockTriStateSignalBox;
@@ -235,6 +238,9 @@ public class BlockLoader {
         blockPierTag = new TileEntityPierTag();
         register(blockPierTag, "block_pier_tag");
 
+        blockPillar = new TileEntityPillar();
+        register(blockPillar, "block_pillar");
+
 
         blockIronBars = new BlockIronBars();
         register(blockIronBars, "rail_iron_bars");
@@ -366,6 +372,12 @@ public class BlockLoader {
 
         blockSignalLight = new TileEntitySignalLight();
         register(blockSignalLight, "block_signal_light");
+
+        blockBiSignalLight = new TileEntityBiSignalLight();
+        register(blockBiSignalLight, "block_bi_signal_light");
+
+        blockTriSignalLight = new TileEntityTriSignalLight();
+        register(blockTriSignalLight, "block_tri_signal_light");
 
         blockSignalBox = new TileEntitySignalBox();
         register(blockSignalBox, "block_signal_box");

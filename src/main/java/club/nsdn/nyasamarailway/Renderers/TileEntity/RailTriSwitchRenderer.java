@@ -69,7 +69,7 @@ public class RailTriSwitchRenderer extends TileEntitySpecialRenderer {
             }
 
             int direction = STRAIGHT;
-            switch (triSwitch.prevSwitchState) {
+            switch (triSwitch.prevState) {
                 case TileEntityRailTriSwitch.TriSwitch.STATE_POS:
                     direction = TURNED_L;
                     break;

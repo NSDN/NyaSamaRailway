@@ -1,11 +1,8 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
-import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.Blocks.BlockRailBase;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailBase;
-import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnet;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTriStateReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -18,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,23 +25,9 @@ import java.util.Random;
  */
 public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntityProvider {
 
-    public static class TriSwitch extends TileEntityRailPassiveReceiver {
+    public static class TriSwitch extends TileEntityRailTriStateReceiver {
 
-        public static final int STATE_POS = 1;
-        public static final int STATE_ZERO = 0;
-        public static final int STATE_NEG = -1;
-
-        public int switchState;
-        public int prevSwitchState;
         public ForgeDirection direction;
-
-        public void setStatePos() {
-            switchState = switchState == STATE_NEG ? STATE_ZERO : STATE_POS;
-        }
-
-        public void setStateNeg() {
-            switchState = switchState == STATE_POS ? STATE_ZERO : STATE_NEG;
-        }
 
         @Override
         @SideOnly(Side.CLIENT)
@@ -57,19 +39,16 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
         }
 
         public void fromNBT(NBTTagCompound tagCompound) {
-            switchState = tagCompound.getInteger("switchState");
-            prevSwitchState = tagCompound.getInteger("prevSwitchState");
+            super.fromNBT(tagCompound);
             direction = ForgeDirection.getOrientation(
                     tagCompound.getInteger("direction")
             );
         }
 
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setInteger("switchState", switchState);
-            tagCompound.setInteger("prevSwitchState", prevSwitchState);
             if (direction == null) direction = ForgeDirection.UNKNOWN;
             tagCompound.setInteger("direction", direction.ordinal());
-            return tagCompound;
+            return super.toNBT(tagCompound);
         }
 
         @Override
@@ -161,7 +140,7 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
             int old = world.getBlockMetadata(x, y, z);
             int meta = 0;
 
-            switch (triSwitch.switchState) {
+            switch (triSwitch.state) {
                 case TriSwitch.STATE_POS: //left
                     switch (triSwitch.direction) {
                         case SOUTH:
@@ -214,8 +193,8 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
                     break;
             }
 
-            triSwitch.prevSwitchState = triSwitch.switchState;
-            triSwitch.switchState = TriSwitch.STATE_ZERO;
+            triSwitch.prevState = triSwitch.state;
+            triSwitch.state = TriSwitch.STATE_ZERO;
 
             if (old != meta) {
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);

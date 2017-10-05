@@ -104,6 +104,10 @@ public class TileEntityLoader {
                 "TileEntityRailNoSleeperRFID");
 
         GameRegistry.registerTileEntity(
+                BlockRailSniffer.RailSniffer.class,
+                "tileEntityRailSniffer");
+
+        GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
                 "railNoSleeperStraight");
 
@@ -286,6 +290,18 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityPierTag.PierTag.class,
                 "tileEntityPierTag");
+
+        GameRegistry.registerTileEntity(
+                TileEntityPillar.Pillar.class,
+                "tileEntityPillar");
+
+        GameRegistry.registerTileEntity(
+                TileEntityBiSignalLight.BiSignalLight.class,
+                "tileBiSignalLight");
+
+        GameRegistry.registerTileEntity(
+                TileEntityTriSignalLight.TriSignalLight.class,
+                "tileTriSignalLight");
 
     }
 

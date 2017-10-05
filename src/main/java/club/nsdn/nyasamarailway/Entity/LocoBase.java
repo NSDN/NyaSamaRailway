@@ -132,14 +132,18 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
         super.func_145821_a(x, y, z, v1, v, block, meta);
     }
 
-    @Override
-    protected void applyDrag() {
+    protected void doEngine() {
         //Do engine code
         tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
         this.Velocity = tmpPacket.Velocity;
+    }
+
+    @Override
+    protected void applyDrag() {
+        doEngine();
 
         if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
             return;

@@ -287,6 +287,15 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityPierTag.PierTag.class, new PierTagRenderer());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityPillar.Pillar.class, new PillarRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityBiSignalLight.BiSignalLight.class, new BiSignalLightRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityTriSignalLight.TriSignalLight.class, new TriSignalLightRenderer());
+
     }
 
 }

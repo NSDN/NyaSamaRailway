@@ -4,6 +4,8 @@ import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemLoader;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.TrainControl.TrainController;
+import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -14,23 +16,23 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 /**
- * Created by drzzm32 on 2017.9.24.
+ * Created by drzzm32 on 2017.10.5.
  */
-public class NSPCT7 extends LocoBase {
+public class NSPCT8M extends LocoBase {
 
-    public NSPCT7(World world) {
+    public NSPCT8M(World world) {
         super(world);
         ignoreFrustumCheck = true;
     }
 
-    public NSPCT7(World world, double x, double y, double z) {
+    public NSPCT8M(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
     }
 
     @Override
     protected boolean isHighSpeed() {
-        return false;
+        return true;
     }
 
     @Override
@@ -40,12 +42,12 @@ public class NSPCT7 extends LocoBase {
 
     @Override
     public double getMountedYOffset() {
-        return 0.5;
+        return 0.1;
     }
 
     @Override
     public boolean shouldRiderSit() {
-        return false;
+        return true;
     }
 
     @Override
@@ -86,10 +88,19 @@ public class NSPCT7 extends LocoBase {
     }
 
     @Override
+    protected void doEngine() {
+        tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket.Velocity = this.Velocity;
+        TrainController.doMotionWithAir(tmpPacket, this);
+        this.Velocity = tmpPacket.Velocity;
+    }
+
+    @Override
     public void killMinecart(DamageSource source)
     {
         this.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT7, 1);
+        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8M, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
         this.entityDropItem(itemstack, 0.0F);
     }

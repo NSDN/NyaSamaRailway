@@ -10,7 +10,6 @@ import java.util.LinkedHashMap;
  */
 public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
 
-
     public static String[][] getCode(NBTTagList list) {
         String codeBuf = "";
         if (list != null) {
@@ -23,8 +22,24 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
         return Util.getSegments(codeBuf);
     }
 
+    public static String getCodeString(NBTTagList list) {
+        String codeBuf = "";
+        if (list != null) {
+            for (int i = 0; i < list.tagCount(); i++)
+                codeBuf = codeBuf.concat(list.getStringTagAt(i) + "\n");
+        } else {
+            codeBuf = "prt \"Code is Empty!\"\n";
+        }
+
+        return codeBuf;
+    }
+
     public NSASM(String[][] code) {
         super(64, 32, 32, code);
+    }
+
+    public NSASM(String code) {
+        super(64, 32, 32, Util.getSegments(code));
     }
 
     @Override
