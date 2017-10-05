@@ -138,8 +138,20 @@ public class TileEntityPillar extends TileEntityBase {
         if (block instanceof BlockPane) return false;
         if (block instanceof BlockWall) return false;
 
-        if (world.getTileEntity(x, y, z) != null)
+        if (
+            block instanceof TileEntitySignalBox ||
+            block instanceof TileEntitySignalBoxSender ||
+            block instanceof TileEntityTriStateSignalBox ||
+            block instanceof TileEntitySignalLight ||
+            block instanceof TileEntityBiSignalLight ||
+            block instanceof TileEntityTriSignalLight
+        ) {
+            if (world.getBlock(x, y - 1, z) == this) return true;
+        }
+
+        if (world.getTileEntity(x, y, z) != null) {
             if (!(world.getTileEntity(x, y, z) instanceof Pillar)) return false;
+        }
 
         Material material = block.getMaterial();
         if (material == Material.clay || material == Material.ground ||

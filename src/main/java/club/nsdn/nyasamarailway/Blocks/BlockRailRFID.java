@@ -79,7 +79,7 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
         if (!world.isRemote) {
             if (world.getTileEntity(x, y, z) instanceof TileEntityRailRFID) {
                 TileEntityRailRFID rfid = (TileEntityRailRFID) world.getTileEntity(x, y, z);
-                int meta = rfid.getBlockMetadata();
+                int meta = world.getBlockMetadata(x, y, z);
 
                 if (rfid.getSender() != null) {
                     if (!isRailPowered(world, x, y, z) && rfid.senderIsPowered()) {
