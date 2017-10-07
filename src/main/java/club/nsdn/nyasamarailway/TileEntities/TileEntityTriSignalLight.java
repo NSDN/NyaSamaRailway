@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTriStateReceiver;
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -51,6 +52,7 @@ public class TileEntityTriSignalLight extends TileEntityBase {
         setIconLocation("tri_signal_light");
         setLightOpacity(0);
         setLightLevel(0.75F);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override

@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.TileEntities.Rail;
 import club.nsdn.nyasamarailway.Blocks.BlockLoader;
 import club.nsdn.nyasamarailway.CreativeTab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTriStateReceiver;
+import club.nsdn.nyasamarailway.Util.Util;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -72,6 +73,7 @@ public class RailMonoSwitch extends RailBase {
         setBlockName("RailMonoSwitch");
         setIconLocation("rail_mono_switch");
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override
