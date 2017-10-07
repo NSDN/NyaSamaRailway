@@ -37,7 +37,7 @@ public class NSPCT8M extends LocoBase {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 1.0F;
+        return 2.0F;
     }
 
     @Override
