@@ -61,7 +61,7 @@ public class Dynamics {
             if (vp > 0) {
                 double k = 0.25;
                 double p = 0.5;
-                double f = p * u * G + (1 - p) *k * vp * vp;
+                double f = p * u * G + (1 - p) * k * vp * vp;
                 double a = (P - f * vp) / (vp * m);
                 return vp + a * dt;
             } else {
@@ -73,7 +73,7 @@ public class Dynamics {
             if (vp > 0) {
                 double k = 0.25;
                 double p = 0.5;
-                double f = p * u * G + (1 - p) *k * vp * vp;
+                double f = p * u * G + (1 - p) * k * vp * vp;
                 double a = (B * B * L * L * vp / R + f) / m;
                 return vp - a * dt;
             } else {
