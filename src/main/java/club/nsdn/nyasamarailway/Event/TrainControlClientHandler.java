@@ -62,6 +62,9 @@ public class TrainControlClientHandler {
                         for (int i : ToolHandler.controller32Bit.trainUnits) {
                             cart = ToolHandler.controller32Bit.getCartInClient(i);
                             if (cart != null) {
+                                if (cart instanceof LocoBase) {
+                                    return;
+                                }
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }
                         }

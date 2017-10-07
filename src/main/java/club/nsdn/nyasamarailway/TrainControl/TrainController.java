@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TrainControl;
 
+import club.nsdn.nyasamarailway.Entity.NSPCT8J;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -64,20 +65,20 @@ public class TrainController {
 
         if (KeyInput.DirUP == 1) {
             if (train.P > 0) {
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == -1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = 1;
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirUP = 2;
         } else if (KeyInput.DirDOWN == 1) {
             if (train.P > 0) {
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == 1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = -1;
-                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirDOWN = 2;
         }
@@ -85,24 +86,24 @@ public class TrainController {
         if (KeyInput.PowerDown == 1) {
             if (train.P > 0) train.P -= 1;
             if (train.P < 0) train.P = 0;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerDown = 2;
         } else if (KeyInput.PowerUp == 1) {
             if (train.P < MaxP) train.P += 1;
             if (train.P > MaxP) train.P = MaxP;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerUp = 2;
         }
 
         if (KeyInput.BrakeDown == 1) {
             if (train.R < 10) train.R += 1;
             if (train.R > 10) train.R = 10;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeDown = 2;
         } else if (KeyInput.BrakeUp == 1) {
             if (train.R > 1) train.R -= 1;
             if (train.R < 1) train.R = 1;
-            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeUp = 2;
         }
 
@@ -122,7 +123,6 @@ public class TrainController {
             KeyInput.BrakeUp = 0;
         }
 
-        //buildGUI(player.posX, player.posY, player.posZ);
     }
 
     private static void calcYaw(TrainPacket train, Entity cart) {
@@ -177,11 +177,7 @@ public class TrainController {
         }
 
         if (train.R > 5) {
-            if (train.isUnits) {
-                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.001);
-            } else {
-                train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, train.P / 20.0, 0.002);
-            }
+            train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.001);
 
             if (train.Velocity < train.nextVelocity) {
                 train.Velocity = train.nextVelocity;
@@ -189,7 +185,7 @@ public class TrainController {
         }
 
         if (train.R < 10) {
-            train.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(train.Velocity), 0.1, 1.0, 0.1, 1.0, train.R / 10.0, 0.002);
+            train.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(train.Velocity), 0.1, 1.0, 1.0, 1.0, train.R / 10.0, 0.001);
             if (train.Velocity < 0.005) train.Velocity = 0;
         }
 

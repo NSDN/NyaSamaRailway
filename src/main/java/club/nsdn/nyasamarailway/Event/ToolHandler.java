@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.Event;
 
+import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Entity.NSPCT5;
 import club.nsdn.nyasamarailway.Entity.NSPCT5L;
 import club.nsdn.nyasamarailway.ExtMod.ExRollerCoaster;
@@ -66,6 +67,10 @@ public class ToolHandler {
                         return;
                     }
                     if (entity instanceof EntityMinecart) {
+                        if (entity instanceof LocoBase) {
+                            player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.error"));
+                            return;
+                        }
                         controller32Bit.cartID = entity.getEntityId();
                         if (!controller32Bit.trainUnits.contains(controller32Bit.cartID)) {
                             controller32Bit.trainUnits.add(controller32Bit.cartID);

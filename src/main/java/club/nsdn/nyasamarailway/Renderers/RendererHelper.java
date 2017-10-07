@@ -41,6 +41,14 @@ public class RendererHelper {
         GL11.glPopMatrix();
     }
 
+    public static void renderPartWithResource(WavefrontObject model, String part, ResourceLocation texture) {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
+        model.renderPart(part);
+        GL11.glPopMatrix();
+    }
+
     public static void renderWithIconAndRotation(WavefrontObject model, float angle, IIcon icon, Tessellator tessellator) {
         for (GroupObject group : model.groupObjects) {
             for (Face face : group.faces) {
