@@ -17,8 +17,20 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     public int P;
     public int R;
     public int Dir;
-    public double Velocity;
+    public float Velocity;
     public boolean motorState;
+
+    private final int INDEX_P = 23, INDEX_R = 24, INDEX_DIR = 25, INDEX_V = 26, INDEX_STE = 27;
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(INDEX_P, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_R, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_DIR, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_V, Float.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_STE, Integer.valueOf("0"));
+    }
 
     public NSPCT8(World world) {
         super(world);
@@ -58,16 +70,56 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     @Override
     public void setMotorPower(int power) {
         this.P = power;
+        this.dataWatcher.updateObject(INDEX_P, power);
     }
 
     @Override
     public void setMotorBrake(int brake) {
         this.R = brake;
+        this.dataWatcher.updateObject(INDEX_R, brake);
     }
 
     @Override
     public void setMotorState(boolean motorState) {
         this.motorState = motorState;
+        this.dataWatcher.updateObject(INDEX_STE, motorState ? 1 : 0);
+    }
+
+    @Override
+    public void setMotorDir(int dir) {
+        this.Dir = dir;
+        this.dataWatcher.updateObject(INDEX_DIR, dir);
+    }
+
+    @Override
+    public void setMotorVel(float vel) {
+        this.Velocity = vel;
+        this.dataWatcher.updateObject(INDEX_V, vel);
+    }
+
+    @Override
+    public int getMotorPower() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_P);
+    }
+
+    @Override
+    public int getMotorBrake() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_R);
+    }
+
+    @Override
+    public int getMotorDir() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_DIR);
+    }
+
+    @Override
+    public float getMotorVel() {
+        return this.dataWatcher.getWatchableObjectFloat(INDEX_V);
+    }
+
+    @Override
+    public boolean getMotorState() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_STE) > 0;
     }
 
     @Override
@@ -82,15 +134,15 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     @Override
     protected void applyDrag() {
         if (this.motorState) {
-            TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+            TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), getMotorPower(), getMotorBrake(), getMotorDir());
             tmpPacket.isUnits = true; //High speed
-            tmpPacket.Velocity = this.Velocity;
+            tmpPacket.Velocity = getMotorVel();
             TrainController.doMotionWithAir(tmpPacket, this);
-            this.Velocity = tmpPacket.Velocity;
+            setMotorVel((float) tmpPacket.Velocity);
         } else {
-            if (this.motionX != 0) this.Dir = (int) Math.signum(this.motionX / Math.cos(TrainController.calcYaw(this) * Math.PI / 180.0));
-            else if (this.motionZ != 0) this.Dir = (int) Math.signum(this.motionZ / -Math.sin(TrainController.calcYaw(this) * Math.PI / 180.0));
-            else this.Dir = 0;
+            if (this.motionX != 0) setMotorDir((int) Math.signum(this.motionX / Math.cos(TrainController.calcYaw(this) * Math.PI / 180.0)));
+            else if (this.motionZ != 0) setMotorDir((int) Math.signum(this.motionZ / -Math.sin(TrainController.calcYaw(this) * Math.PI / 180.0)));
+            else setMotorDir(0);
         }
 
         super.applyDrag();
@@ -99,21 +151,21 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.P = tagCompound.getInteger("MotorP");
-        this.R = tagCompound.getInteger("MotorR");
-        this.Dir = tagCompound.getInteger("MotorDir");
-        this.Velocity = tagCompound.getDouble("MotorV");
-        this.motorState = tagCompound.getBoolean("MotorState");
+        setMotorPower(tagCompound.getInteger("MotorP"));
+        setMotorBrake(tagCompound.getInteger("MotorR"));
+        setMotorDir(tagCompound.getInteger("MotorDir"));
+        setMotorVel(tagCompound.getFloat("MotorV"));
+        setMotorState(tagCompound.getBoolean("MotorState"));
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("MotorP", this.P);
-        tagCompound.setInteger("MotorR", this.R);
-        tagCompound.setInteger("MotorDir", this.Dir);
-        tagCompound.setDouble("MotorV", this.Velocity);
-        tagCompound.setBoolean("MotorState", this.motorState);
+        tagCompound.setInteger("MotorP", getMotorPower());
+        tagCompound.setInteger("MotorR", getMotorBrake());
+        tagCompound.setInteger("MotorDir", getMotorDir());
+        tagCompound.setFloat("MotorV", getMotorVel());
+        tagCompound.setBoolean("MotorState", getMotorState());
     }
 
 

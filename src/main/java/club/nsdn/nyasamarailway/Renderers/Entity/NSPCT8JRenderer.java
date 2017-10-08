@@ -187,19 +187,20 @@ public class NSPCT8JRenderer extends RenderMinecart {
             float a = v - (float) loco.getPrevVelocity();
 
             float angle;
+            int d = loco.getDir(), p = loco.getP(), r = loco.getR();
 
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
-            String dir = loco.Dir == 1 ? "F" : (loco.Dir == 0 ? "N" : "R");
-            String pwr = String.format("%2d", loco.P);
-            String brk = String.format("%2d", 10 - loco.R);
+            String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
+            String pwr = String.format("%2d", p);
+            String brk = String.format("%2d", 10 - r);
             String sv = String.format("%1.2f", v);
             String sa = String.format("%1.2f", a * 100);
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (loco.R <= 5 ? " STOP" : "  RUN"));
-            doRenderText(3, "brk: " + brk + (loco.R == 1 ? " EME" : ""));
+            doRenderText(2, "pwr: " + pwr + (r <= 5 ? " STOP" : "  RUN"));
+            doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "acc:" + sa + "cm/t2");
 
