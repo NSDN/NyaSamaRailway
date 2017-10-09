@@ -198,10 +198,10 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         if (loco.Velocity > 0 && !rail.enable) {
             if (loco.Velocity > maxV) {
                 // speed down
-                loco.P = 0; loco.R = 5;
+                loco.setP(0); loco.setR(1);
             } else {
                 // stop
-                loco.P = 0; loco.R = 1;
+                loco.setP(0); loco.setR(1);
 
                 rail.enable = true;
                 loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
@@ -232,20 +232,20 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
 
                 if (loco.Velocity > maxV) {
                     // keep speed down
-                    loco.P = 0; loco.R = 5;
+                    loco.setP(0); loco.setR(1);
                 } else {
                     // keep stop
-                    loco.P = 0; loco.R = 1;
+                    loco.setP(0); loco.setR(1);
                     loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 }
             } else {
                 // start, dir = neg, -x | +z
                 if (getRailDirection(world, x, y, z) == RailDirection.NS) {
-                    loco.Dir = -(int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                    loco.setDir(-(int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0)));
                 } else {
-                    loco.Dir = -(int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                    loco.setDir(-(int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0)));
                 }
-                loco.P = 1; loco.R = 10;
+                loco.setP(1); loco.setR(10);
             }
         }
     }

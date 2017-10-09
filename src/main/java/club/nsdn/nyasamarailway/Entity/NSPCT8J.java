@@ -21,8 +21,6 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
  */
 public class NSPCT8J extends LocoBase {
 
-    public double prevVelocity;
-
     public NSPCT8J(World world) {
         super(world);
         ignoreFrustumCheck = true;
@@ -31,31 +29,6 @@ public class NSPCT8J extends LocoBase {
     public NSPCT8J(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
-    }
-
-    final int V = 23, PV = 24;
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataWatcher.addObject(V, Float.valueOf("0"));
-        this.dataWatcher.addObject(PV, Float.valueOf("0"));
-    }
-
-    public double getVelocity() {
-        return this.dataWatcher.getWatchableObjectFloat(V);
-    }
-
-    public void setVelocity(double value) {
-        this.dataWatcher.updateObject(V, (float) value);
-    }
-
-    public double getPrevVelocity() {
-        return this.dataWatcher.getWatchableObjectFloat(PV);
-    }
-
-    public void setPrevVelocity(double value) {
-        this.dataWatcher.updateObject(PV, (float) value);
     }
 
     @Override
@@ -116,20 +89,8 @@ public class NSPCT8J extends LocoBase {
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound tagCompound) {
-        super.readEntityFromNBT(tagCompound);
-        prevVelocity = tagCompound.getDouble("prevVelocity");
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
-        super.writeEntityToNBT(tagCompound);
-        tagCompound.setDouble("prevVelocity", prevVelocity);
-    }
-
-    @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        tmpPacket = new TrainPacket(this.getEntityId(), getP(), getR(), getDir());
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotionWithAir(tmpPacket, this);
@@ -140,8 +101,7 @@ public class NSPCT8J extends LocoBase {
     }
 
     @Override
-    public void killMinecart(DamageSource source)
-    {
+    public void killMinecart(DamageSource source) {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8J, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());

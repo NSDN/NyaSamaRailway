@@ -89,7 +89,7 @@ public class NSPCT8M extends LocoBase {
 
     @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        tmpPacket = new TrainPacket(this.getEntityId(), getP(), getR(), getDir());
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotionWithAir(tmpPacket, this);

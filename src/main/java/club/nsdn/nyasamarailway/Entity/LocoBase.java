@@ -8,7 +8,6 @@ import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.TrainControl.TrainController;
 import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
 import net.minecraft.block.Block;
-import club.nsdn.nyasamarailway.Blocks.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,12 +26,70 @@ import java.util.Set;
  * Created by drzzm32 on 2016.6.23.
  */
 
-public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts.ILinkableCart {
+public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcraft.api.carts.ILinkableCart {
 
     public int P;
     public int R;
     public int Dir;
     public double Velocity;
+    public double prevVelocity;
+
+    private final int INDEX_P = 23, INDEX_R = 24, INDEX_DIR = 25, INDEX_V = 26, INDEX_PV = 27;
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(INDEX_P, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_R, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_DIR, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_V, Float.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_PV, Float.valueOf("0"));
+    }
+
+    public int getP() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_P);
+    }
+
+    public void setP(int value) {
+        this.P = value;
+        this.dataWatcher.updateObject(INDEX_P, value);
+    }
+
+    public int getR() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_R);
+    }
+
+    public void setR(int value) {
+        this.R = value;
+        this.dataWatcher.updateObject(INDEX_R, value);
+    }
+
+    public int getDir() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_DIR);
+    }
+
+    public void setDir(int value) {
+        this.Dir = value;
+        this.dataWatcher.updateObject(INDEX_DIR, value);
+    }
+
+    public double getVelocity() {
+        return this.dataWatcher.getWatchableObjectFloat(INDEX_V);
+    }
+
+    public void setVelocity(double value) {
+        this.Velocity = (float) value;
+        this.dataWatcher.updateObject(INDEX_V, (float) value);
+    }
+
+    public double getPrevVelocity() {
+        return this.dataWatcher.getWatchableObjectFloat(INDEX_PV);
+    }
+
+    public void setPrevVelocity(double value) {
+        this.prevVelocity = (float) value;
+        this.dataWatcher.updateObject(INDEX_PV, (float) value);
+    }
 
     public static final byte TICKET_FLAG = 6;
     public static final byte ANCHOR_RADIUS = 2;
@@ -67,11 +124,10 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
 
     public void setTrainPacket(TrainPacket packet) {
         if (this.getEntityId() == packet.cartID) {
-            this.P = packet.P;
-            this.R = packet.R;
-            this.Dir = packet.Dir;
+            setP(packet.P);
+            setR(packet.R);
+            setDir(packet.Dir);
         }
-
     }
 
     @Override
@@ -134,7 +190,7 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
 
     protected void doEngine() {
         //Do engine code
-        tmpPacket = new TrainPacket(this.getEntityId(), this.P, this.R, this.Dir);
+        tmpPacket = new TrainPacket(this.getEntityId(), getP(), getR(), getDir());
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
@@ -194,19 +250,21 @@ public class LocoBase extends EntityMinecart implements mods.railcraft.api.carts
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
-        this.P = tagCompound.getInteger("LocoP");
-        this.R = tagCompound.getInteger("LocoR");
-        this.Dir = tagCompound.getInteger("LocoDir");
+        setP(tagCompound.getInteger("LocoP"));
+        setR(tagCompound.getInteger("LocoR"));
+        setDir(tagCompound.getInteger("LocoDir"));
         this.Velocity = tagCompound.getDouble("LocoV");
+        this.prevVelocity = tagCompound.getDouble("LocoPV");
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
-        tagCompound.setInteger("LocoP", this.P);
-        tagCompound.setInteger("LocoR", this.R);
-        tagCompound.setInteger("LocoDir", this.Dir);
+        tagCompound.setInteger("LocoP", getP());
+        tagCompound.setInteger("LocoR", getR());
+        tagCompound.setInteger("LocoDir", getDir());
         tagCompound.setDouble("LocoV", this.Velocity);
+        tagCompound.setDouble("LocoPV", this.prevVelocity);
     }
 
     @Override

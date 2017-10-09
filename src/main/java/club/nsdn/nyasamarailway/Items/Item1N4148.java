@@ -109,13 +109,21 @@ public class Item1N4148 extends ItemToolBase {
 
             if (((IRailDirectional) block).isForward()) {
                 if (block instanceof BlockRailReception) world.setBlock(x, y, z, BlockLoader.blockRailReceptionAnti);
-                if (block instanceof BlockRailProtectHead) world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);
+                if (block instanceof BlockRailProtectHead) {
+                    int meta = world.getBlockMetadata(x, y, z);
+                    world.setBlock(x, y, z, BlockLoader.blockRailProtectHeadAnti);
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 1);
+                }
                 if ((block instanceof BlockRailDirectional)) world.setBlock(x, y, z, BlockLoader.blockRailDirectionalAnti);
                 if (block instanceof RailMonoMagnetReception) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReceptionAnti);
                 if ((block instanceof RailMonoMagnetDirectional)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectionalAnti);
             } else {
                 if (block instanceof BlockRailReceptionAnti) world.setBlock(x, y, z, BlockLoader.blockRailReception);
-                if (block instanceof BlockRailProtectHeadAnti) world.setBlock(x, y, z, BlockLoader.blockRailProtectHead);
+                if (block instanceof BlockRailProtectHeadAnti) {
+                    int meta = world.getBlockMetadata(x, y, z);
+                    world.setBlock(x, y, z, BlockLoader.blockRailProtectHead);
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 1);
+                }
                 if ((block instanceof BlockRailDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.blockRailDirectional);
                 if (block instanceof RailMonoMagnetReceptionAnti) world.setBlock(x, y, z, BlockLoader.railMonoMagnetReception);
                 if ((block instanceof RailMonoMagnetDirectionalAnti)) world.setBlock(x, y, z, BlockLoader.railMonoMagnetDirectional);
