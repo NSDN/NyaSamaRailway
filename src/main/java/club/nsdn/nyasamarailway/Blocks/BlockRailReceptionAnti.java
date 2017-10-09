@@ -198,7 +198,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
         if (loco.Velocity > 0 && !rail.enable) {
             if (loco.Velocity > maxV) {
                 // speed down
-                loco.setP(0); loco.setR(5);
+                loco.setP(0); loco.setR(1);
             } else {
                 // stop
                 loco.setP(0); loco.setR(1);
@@ -232,7 +232,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
 
                 if (loco.Velocity > maxV) {
                     // keep speed down
-                    loco.setP(0); loco.setR(5);
+                    loco.setP(0); loco.setR(1);
                 } else {
                     // keep stop
                     loco.setP(0); loco.setR(1);

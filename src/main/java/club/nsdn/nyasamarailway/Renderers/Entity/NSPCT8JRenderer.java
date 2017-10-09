@@ -155,6 +155,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
         RenderHelper.disableStandardItemLighting();
+        GL11.glDepthMask(false);
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_BLEND);
@@ -174,6 +175,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
         doRenderHUD(minecart);
         GL11.glPopMatrix();
 
+        GL11.glDepthMask(true);
         RenderHelper.enableStandardItemLighting();
 
         GL11.glPopMatrix();
