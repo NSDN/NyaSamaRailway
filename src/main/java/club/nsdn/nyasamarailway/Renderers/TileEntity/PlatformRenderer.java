@@ -1,12 +1,17 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Blocks.BlockPlatform;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityGlassShieldBase;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IconFlipped;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -29,9 +34,12 @@ public class PlatformRenderer implements ISimpleBlockRenderingHandler {
     private Block attachedBlock;
     private IIcon topIcon;
     private IIcon sidesIcon;
-    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_top.obj"));
-    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides.obj"));
-    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides_tall.obj"));
+    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_top.obj"));
+    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_sides.obj"));
+    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_sides_tall.obj"));
+
+    private static final WavefrontObject pimpModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_pimp.obj"));
+    private static final IIcon pimpTexture = Minecraft.getMinecraft().getTextureMapBlocks().registerIcon("nyasamarailway:BlackMarble.png");
 
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         this.blockMetadata = world.getBlockMetadata(x, y, z);
@@ -65,6 +73,9 @@ public class PlatformRenderer implements ISimpleBlockRenderingHandler {
         Tessellator.instance.setColorOpaque(255, 255, 255);
         Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
         RendererHelper.renderWithIconAndRotation(topModel, (this.blockMetadata & 0x3) * 90.0F, this.topIcon, Tessellator.instance);
+        if (world.getTileEntity(x, y + 1, z) instanceof TileEntityGlassShieldBase) {
+            RendererHelper.renderWithIconAndRotation(pimpModel, (this.blockMetadata & 0x3) * 90.0F, pimpTexture, Tessellator.instance);
+        }
         if ((this.blockMetadata & 0xC) == 0) {
             RendererHelper.renderWithIconAndRotation(tallSidesModel, (this.blockMetadata & 0x3) * 90.0F, this.sidesIcon, Tessellator.instance);
         } else {
