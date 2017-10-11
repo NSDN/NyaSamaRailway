@@ -26,9 +26,9 @@ public class EdgeRenderer implements ISimpleBlockRenderingHandler {
     private Block attachedBlock;
     private IIcon topIcon;
     private IIcon sidesIcon;
-    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_top.obj"));
-    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides.obj"));
-    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/Platform_edge_sides_tall.obj"));
+    private static final WavefrontObject topModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_top.obj"));
+    private static final WavefrontObject sidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_sides.obj"));
+    private static final WavefrontObject tallSidesModel = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/platform_edge_sides_tall.obj"));
 
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         this.blockMetadata = world.getBlockMetadata(x, y, z);
