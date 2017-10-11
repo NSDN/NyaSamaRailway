@@ -58,6 +58,17 @@ public class TileEntitySignalBox extends TileEntityBase {
             return false;
         }
 
+        public boolean setTargetSender(boolean state) {
+            TileEntity railTarget = getTarget();
+            if (railTarget == null) return false;
+
+            if (railTarget instanceof TileEntitySignalBoxSender.SignalBoxSender) {
+                ((TileEntitySignalBoxSender.SignalBoxSender) railTarget).isEnabled = state;
+                return true;
+            }
+            return false;
+        }
+
     }
 
     public TileEntitySignalBox() {
@@ -178,8 +189,10 @@ public class TileEntitySignalBox extends TileEntityBase {
 
             if (!signalBox.setSwitch(isEnabled)) {
                 if (!signalBox.setTargetLight(isEnabled)) {
-                    if (signalBox.getTarget() != null) {
-                        signalBox.controlTarget(isEnabled);
+                    if (!signalBox.setTargetSender(isEnabled)) {
+                        if (signalBox.getTarget() != null) {
+                            signalBox.controlTarget(isEnabled);
+                        }
                     }
                 }
             }

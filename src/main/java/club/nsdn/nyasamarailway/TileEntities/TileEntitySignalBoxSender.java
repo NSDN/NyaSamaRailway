@@ -25,13 +25,13 @@ public class TileEntitySignalBoxSender extends TileEntityBase {
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
-            isEnabled = tagCompound.getBoolean("inverterEnabled");
+            isEnabled = tagCompound.getBoolean("isEnabled");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setBoolean("inverterEnabled", isEnabled);
+            tagCompound.setBoolean("isEnabled", isEnabled);
             return super.toNBT(tagCompound);
         }
 

@@ -117,8 +117,28 @@ public class Item74HC04 extends ItemToolBase {
                         }
                         senderRails.remove(uuid);
                     } else {
-                        senderRails.put(uuid, sender);
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                        if (receiverRails.containsKey(uuid)) { //Here is actuator to transceiver, 1 to 1
+                            if (receiverRails.get(uuid) instanceof TileEntityRailActuator) {
+                                TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
+                                if (actuator.getTarget() != sender) {
+                                    actuator.setTarget(sender);
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(sender);
+                                } else {
+                                    actuator.setTarget(null);
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.disconnected"));
+                                    updateTileEntity(actuator);
+                                    updateTileEntity(sender);
+                                }
+                            } else {
+                                if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                            }
+                            receiverRails.remove(uuid);
+                        } else {
+                            senderRails.put(uuid, sender);
+                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.begin"));
+                        }
                     }
                     return true;
                 } else if (tileEntity instanceof TileEntityRailTransceiver) {
@@ -170,7 +190,7 @@ public class Item74HC04 extends ItemToolBase {
                             if (receiverRails.get(uuid) instanceof TileEntityRailActuator) {
                                 TileEntityRailActuator actuator = (TileEntityRailActuator) receiverRails.get(uuid);
                                 if (actuator == receiver) {
-                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.error"));
+                                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.abort"));
                                 } else if (actuator.getTarget() != receiver) {
                                     actuator.setTarget(receiver);
                                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.connected"));
