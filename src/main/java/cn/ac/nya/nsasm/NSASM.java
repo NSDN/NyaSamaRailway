@@ -94,7 +94,8 @@ public class NSASM {
             case VAR:
                 return !verifyWord(var, WordType.REG) && !verifyWord(var, WordType.CHAR) &&
                        !verifyWord(var, WordType.STR) && !verifyWord(var, WordType.INT) &&
-                       !verifyWord(var, WordType.FLOAT) && !verifyWord(var, WordType.TAG);
+                       !verifyWord(var, WordType.FLOAT) && !verifyWord(var, WordType.TAG) &&
+                       !verifyWord(var, WordType.SEG);
             case TAG:
                 return verifyBound(var, '[', ']');
             case SEG:
