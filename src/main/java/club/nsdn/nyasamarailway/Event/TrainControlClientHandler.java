@@ -81,7 +81,7 @@ public class TrainControlClientHandler {
                             cart = ToolHandler.controller32Bit.getCartInClient(i);
                             if (cart != null) {
                                 if (cart instanceof LocoBase) {
-                                    return;
+                                    continue;
                                 }
                                 TrainController.doMotion(ToolHandler.controller32Bit, cart);
                             }

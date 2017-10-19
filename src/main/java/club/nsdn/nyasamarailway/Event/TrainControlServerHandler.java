@@ -66,7 +66,7 @@ public class TrainControlServerHandler {
                                     cart = ToolHandler.controller32Bit.getCartInServer(i);
                                     if (cart != null) {
                                         if (cart instanceof LocoBase) {
-                                            return;
+                                            continue;
                                         }
                                         if (Traincraft.getInstance() != null) {
                                             if (Traincraft.instance.isLocomotive(cart)) {
