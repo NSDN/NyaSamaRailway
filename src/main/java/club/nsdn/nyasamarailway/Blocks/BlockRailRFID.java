@@ -4,19 +4,16 @@ import club.nsdn.nyasamarailway.Entity.IMotorCart;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
 import club.nsdn.nyasamarailway.Util.NSASM;
+import club.nsdn.nyasamarailway.Util.RailRFIDCore;
 import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -24,28 +21,7 @@ import java.util.Random;
  */
 public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityProvider {
 
-    public static class TileEntityRailRFID extends TileEntityRailReceiver {
-
-        public int P = 0;
-        public int R = 10;
-        public boolean state = false;
-
-        @Override
-        public void fromNBT(NBTTagCompound tagCompound) {
-            P = tagCompound.getInteger("P");
-            R = tagCompound.getInteger("R");
-            state = tagCompound.getBoolean("state");
-            super.fromNBT(tagCompound);
-        }
-
-        @Override
-        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setInteger("P", P);
-            tagCompound.setInteger("R", R);
-            tagCompound.setBoolean("state", state);
-            return super.toNBT(tagCompound);
-        }
-
+    public static class TileEntityRailRFID extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailRFID {
     }
 
     public TileEntity createNewTileEntity(World world, int i) {
@@ -124,25 +100,6 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
         }
     }
 
-    public void setPower(TileEntityRailRFID rfid, EntityPlayer player, int value) {
-        rfid.P = value > 20 ? 20 : (value < 0 ? 0 : value);
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.pwr", rfid.P));
-    }
-
-    public void setBrake(TileEntityRailRFID rfid, EntityPlayer player, int value) {
-        value = 10 - value;
-        rfid.R = value > 10 ? 10 : (value < 1 ? 1 : value);
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.brk", 10 - rfid.R));
-    }
-
-    public void setState(TileEntityRailRFID rfid, EntityPlayer player, int value) {
-        rfid.state = value > 0;
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.ste", rfid.state ? 1 : 0));
-    }
-
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (world.getTileEntity(x, y, z) == null) return false;
@@ -152,51 +109,38 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromBook(stack);
+                    NBTTagList list = Util.getTagListFromNGT(stack);
                     if (list == null) return true;
                     String[][] code = NSASM.getCode(list);
-                    new NSASM(code) {
+                    new RailRFIDCore(code) {
                         @Override
-                        public void loadFunc(LinkedHashMap<String, Operator> funcList) {
-                            funcList.put("pwr", ((dst, src) -> {
-                                if (src != null) return Result.ERR;
-                                if (dst == null) return Result.ERR;
+                        public World getWorld() {
+                            return world;
+                        }
 
-                                if (dst.type == RegType.INT) {
-                                    setPower(rfid, player, (int) dst.data);
-                                    return Result.OK;
-                                }
-                                return Result.ERR;
-                            }));
-                            funcList.put("brk", ((dst, src) -> {
-                                if (src != null) return Result.ERR;
-                                if (dst == null) return Result.ERR;
+                        @Override
+                        public double getX() {
+                            return x;
+                        }
 
-                                if (dst.type == RegType.INT) {
-                                    setBrake(rfid, player, (int) dst.data);
-                                    return Result.OK;
-                                }
-                                return Result.ERR;
-                            }));
-                            funcList.put("ste", ((dst, src) -> {
-                                if (src != null) return Result.ERR;
-                                if (dst == null) return Result.ERR;
+                        @Override
+                        public double getY() {
+                            return y;
+                        }
 
-                                if (dst.type == RegType.INT) {
-                                    setState(rfid, player, (int) dst.data);
-                                    return Result.OK;
-                                }
-                                return Result.ERR;
-                            }));
+                        @Override
+                        public double getZ() {
+                            return z;
+                        }
 
-                            funcList.replace("prt", ((dst, src) -> {
-                                if (src != null) return Result.ERR;
-                                if (dst == null) return Result.ERR;
-                                if (dst.type == RegType.STR) {
-                                    player.addChatComponentMessage(new ChatComponentText(((String) dst.data).substring(dst.strPtr)));
-                                } else player.addChatComponentMessage(new ChatComponentText(dst.data.toString()));
-                                return Result.OK;
-                            }));
+                        @Override
+                        public EntityPlayer getPlayer() {
+                            return player;
+                        }
+
+                        @Override
+                        public TileEntityRailRFID getRFID() {
+                            return rfid;
                         }
                     }.run();
 

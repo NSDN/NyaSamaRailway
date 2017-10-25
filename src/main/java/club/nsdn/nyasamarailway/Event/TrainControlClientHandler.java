@@ -3,17 +3,15 @@ package club.nsdn.nyasamarailway.Event;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
-import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
-import club.nsdn.nyasamarailway.TrainControl.TrainController;
+import club.nsdn.nyasamarailway.Network.NetworkWrapper;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by drzzm32 on 2016.5.13.

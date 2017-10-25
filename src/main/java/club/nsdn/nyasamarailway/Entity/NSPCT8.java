@@ -1,8 +1,8 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.ItemLoader;
-import club.nsdn.nyasamarailway.TrainControl.TrainController;
-import club.nsdn.nyasamarailway.TrainControl.TrainPacket;
+import club.nsdn.nyasamarailway.Util.TrainController;
+import club.nsdn.nyasamarailway.Network.TrainPacket;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

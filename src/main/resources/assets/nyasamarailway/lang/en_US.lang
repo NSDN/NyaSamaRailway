@@ -182,3 +182,4 @@ info.sniffer.set=[NSR] Sniffer Rail's code flashed
 tile.Pillar.name=Pillar
 tile.BiSignalLight.name=Bi-Signal Light
 tile.TriSignalLight.name=Tri-Signal Light
+item.ItemNGT.name=NyaGame Tablet

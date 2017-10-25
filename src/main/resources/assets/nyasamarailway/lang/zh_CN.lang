@@ -184,3 +184,4 @@ info.sniffer.set=[NSR] 嗅探轨程序已更新
 tile.Pillar.name=信号机柱
 tile.BiSignalLight.name=双灯信号机
 tile.TriSignalLight.name=三灯信号机
+item.ItemNGT.name=NGT型终端

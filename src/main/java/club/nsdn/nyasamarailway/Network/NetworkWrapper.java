@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.TrainControl;
+package club.nsdn.nyasamarailway.Network;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -16,5 +16,6 @@ public class NetworkWrapper {
         packetSender = NetworkRegistry.INSTANCE.newSimpleChannel(NyaSamaRailway.MODID);
         packetSender.registerMessage(TrainPacket.PacketStCHandler.class, TrainPacket.class, 0, Side.CLIENT);
         packetSender.registerMessage(TrainPacket.PacketCtSHandler.class, TrainPacket.class, 1, Side.SERVER);
+        packetSender.registerMessage(NGTPacket.PacketCtSHandler.class, NGTPacket.class, 1, Side.SERVER);
     }
 }
