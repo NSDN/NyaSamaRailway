@@ -170,7 +170,7 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
             }
 
             if (railHasCart(world, x, y, z)) {
-                world.scheduleBlockUpdate(x, y, z, this, 100); // 5s
+                world.scheduleBlockUpdate(x, y, z, this, sniffer.keep);
             }
 
         }

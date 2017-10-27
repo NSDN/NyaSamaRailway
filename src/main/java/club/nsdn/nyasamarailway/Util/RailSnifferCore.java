@@ -16,6 +16,15 @@ public abstract class RailSnifferCore extends NSASM {
 
     @Override
     public void loadFunc(LinkedHashMap<String, Operator> funcList) {
+        funcList.put("keep", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+            if (dst.type == RegType.STR) return Result.ERR;
+
+            if (getRail() != null)
+                getRail().keep = Integer.valueOf(dst.data.toString());
+            return Result.OK;
+        }));
         funcList.put("enb", ((dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst != null) return Result.ERR;
