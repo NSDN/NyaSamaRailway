@@ -3,19 +3,15 @@ package club.nsdn.nyasamarailway.Event;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
-import club.nsdn.nyasamarailway.TrainControl.NetworkWrapper;
-import club.nsdn.nyasamarailway.TrainControl.TrainController;
-import club.nsdn.nyasamarailway.Util.Util;
+import club.nsdn.nyasamarailway.Network.NetworkWrapper;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.Display;
 
 /**
  * Created by drzzm32 on 2016.5.13.
@@ -33,22 +29,6 @@ public class TrainControlClientHandler {
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
-        if (Minecraft.getMinecraft().isIntegratedServerRunning()) {
-            if (Minecraft.getMinecraft().getIntegratedServer().getPublic()) {
-                Minecraft.stopIntegratedServer();
-                Minecraft.getMinecraft().crashed(
-                        new CrashReport("ERROR",
-                                new StackOverflowError()
-                        ));
-            } else {
-                if (!Display.getTitle().contains("NSDN-MC")) {
-                    Display.setTitle(Display.getTitle() + " | using mods by NSDN-MC");
-                }
-            }
-        } else {
-            if (!Util.loadIf()) Display.setTitle(Display.getTitle().replace(" | using mods by NSDN-MC", ""));
-        }
 
         if (player == null)
         return;

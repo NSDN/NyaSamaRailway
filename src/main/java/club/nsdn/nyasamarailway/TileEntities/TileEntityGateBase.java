@@ -72,6 +72,9 @@ public class TileEntityGateBase extends TileEntityBase {
         }
 
         public void openDoor() {
+            if (direction == null)
+                direction = ForgeDirection.UNKNOWN;
+
             switch (direction) {
                 case SOUTH:
                     if (isDoor(1, 0)) {
@@ -107,6 +110,9 @@ public class TileEntityGateBase extends TileEntityBase {
         }
 
         public void closeDoor() {
+            if (direction == null)
+                direction = ForgeDirection.UNKNOWN;
+
             switch (direction) {
                 case SOUTH:
                     if (isDoor(1, 0)) {

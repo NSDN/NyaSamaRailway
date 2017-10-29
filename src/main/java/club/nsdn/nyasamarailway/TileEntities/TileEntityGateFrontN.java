@@ -189,6 +189,10 @@ public class TileEntityGateFrontN extends TileEntityBase {
 
     public void doSniff(World world, int x, int y, int z, GateFrontN gateFrontN) {
         EntityPlayer player;
+
+        if (gateFrontN.direction == null)
+            gateFrontN.direction = ForgeDirection.UNKNOWN;
+
         switch (gateFrontN.direction) {
             case SOUTH:
                 player = findPlayer(world, x - 1, y , z);

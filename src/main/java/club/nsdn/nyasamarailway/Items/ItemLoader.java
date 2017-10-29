@@ -17,6 +17,7 @@ public class ItemLoader {
     public static Item item1N4148;
     public static Item itemPierBuilder;
     public static Item itemDevEditor;
+    public static Item itemNGT;
     public static Item itemStationSign;
     public static Item itemNSTCT1;
     public static Item itemTrainBase;
@@ -62,6 +63,9 @@ public class ItemLoader {
 
         itemDevEditor = new ItemDevEditor();
         register(itemDevEditor, "item_dev_editor");
+
+        itemNGT = new ItemNGT();
+        register(itemNGT, "item_ngt");
 
         itemStationSign = new ItemStationSign();
         register(itemStationSign, "item_station_sign");

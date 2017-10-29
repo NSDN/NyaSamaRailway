@@ -1,9 +1,8 @@
 package club.nsdn.nyasamarailway.Util;
 
+import club.nsdn.nyasamarailway.Items.ItemNGT;
 import cpw.mods.fml.common.Loader;
-import net.minecraft.item.ItemEditableBook;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemWritableBook;
 import net.minecraft.nbt.NBTTagList;
 
 /**
@@ -11,10 +10,9 @@ import net.minecraft.nbt.NBTTagList;
  */
 public class Util {
 
-    public static NBTTagList getTagListFromBook(ItemStack itemStack) {
+    public static NBTTagList getTagListFromNGT(ItemStack itemStack) {
         if (itemStack == null) return null;
-        if (itemStack.getItem() instanceof ItemWritableBook ||
-                itemStack.getItem() instanceof ItemEditableBook) {
+        if (itemStack.getItem() instanceof ItemNGT) {
             if (!itemStack.hasTagCompound()) return null;
             return itemStack.getTagCompound().getTagList("pages", 8);
         }

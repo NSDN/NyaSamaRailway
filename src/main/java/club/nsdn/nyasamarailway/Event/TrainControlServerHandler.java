@@ -4,7 +4,7 @@ import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.ExtMod.Traincraft;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
-import club.nsdn.nyasamarailway.TrainControl.TrainController;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.item.EntityMinecart;

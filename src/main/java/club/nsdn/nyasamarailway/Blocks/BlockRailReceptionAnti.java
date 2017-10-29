@@ -4,7 +4,7 @@ import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
-import club.nsdn.nyasamarailway.TrainControl.TrainController;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;

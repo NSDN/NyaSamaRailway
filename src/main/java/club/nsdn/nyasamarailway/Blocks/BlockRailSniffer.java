@@ -1,21 +1,20 @@
 package club.nsdn.nyasamarailway.Blocks;
 
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailSniffer;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import club.nsdn.nyasamarailway.Util.NSASM;
+import club.nsdn.nyasamarailway.Util.RailSnifferCore;
 import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -23,30 +22,7 @@ import java.util.List;
  */
 public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDelay {
 
-    public static class RailSniffer extends TileEntityRailTransceiver {
-
-        public static final boolean NSASM_IDLE = false;
-        public static final boolean NSASM_DONE = true;
-        public boolean nsasmState = NSASM_IDLE;
-        public String nsasmCode = "";
-
-        public boolean enable = false;
-
-        @Override
-        public void fromNBT(NBTTagCompound tagCompound) {
-            nsasmState = tagCompound.getBoolean("nsasmState");
-            nsasmCode = tagCompound.getString("nsasmCode");
-            enable = tagCompound.getBoolean("enable");
-            super.fromNBT(tagCompound);
-        }
-
-        @Override
-        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setBoolean("nsasmState", nsasmState);
-            tagCompound.setString("nsasmCode", nsasmCode);
-            tagCompound.setBoolean("enable", enable);
-            return super.toNBT(tagCompound);
-        }
+    public static class RailSniffer extends TileEntityRailSniffer {
     }
 
     public TileEntity createNewTileEntity(World world, int i) {
@@ -140,133 +116,43 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
                 else player = (EntityPlayer) cart.riddenByEntity;
                 RailSniffer rail = sniffer;
 
-
-                new NSASM(sniffer.nsasmCode) {
+                new RailSnifferCore(rail.nsasmCode) {
                     @Override
-                    public void loadFunc(LinkedHashMap<String, Operator> funcList) {
-                        funcList.replace("prt", ((dst, src) -> {
-                            if (src != null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
+                    public World getWorld() {
+                        return world;
+                    }
 
-                            if (player == null) return Result.OK;
-                            if (dst.type == RegType.STR) {
-                                player.addChatComponentMessage(new ChatComponentText(((String) dst.data).substring(dst.strPtr)));
-                            } else player.addChatComponentMessage(new ChatComponentText(dst.data.toString()));
-                            return Result.OK;
-                        }));
+                    @Override
+                    public double getX() {
+                        return x;
+                    }
 
-                        funcList.put("enb", ((dst, src) -> {
-                            if (src != null) return Result.ERR;
-                            if (dst != null) return Result.ERR;
+                    @Override
+                    public double getY() {
+                        return y;
+                    }
 
-                            rail.enable = true;
-                            return Result.OK;
-                        }));
-                        funcList.put("rnd", ((dst, src) -> {
-                            if (src != null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (dst.readOnly) return Result.ERR;
+                    @Override
+                    public double getZ() {
+                        return z;
+                    }
 
-                            dst.type = RegType.INT;
-                            dst.data = Math.round(Math.random() * 255);
-                            return Result.OK;
-                        }));
-                        funcList.put("equ", ((dst, src) -> {
-                            if (src == null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (src.type != RegType.STR) return Result.ERR;
-                            if (dst.type != RegType.STR) return Result.ERR;
-                            if (src.data.toString().isEmpty()) return Result.ERR;
-                            if (dst.data.toString().isEmpty()) return Result.ERR;
+                    @Override
+                    public EntityPlayer getPlayer() {
+                        return player;
+                    }
 
-                            if (dst.data.toString().equals(src.data.toString())) {
-                                funcList.get("push").run(regGroup[0], null);
-                                funcList.get("push").run(regGroup[1], null);
-                                regGroup[0].type = RegType.INT;
-                                regGroup[0].data = 0;
-                                regGroup[1].type = RegType.INT;
-                                regGroup[1].data = 0;
-                                funcList.get("cmp").run(regGroup[0], regGroup[1]);
-                                funcList.get("pop").run(regGroup[1], null);
-                                funcList.get("pop").run(regGroup[0], null);
-                            } else {
-                                funcList.get("push").run(regGroup[0], null);
-                                funcList.get("push").run(regGroup[1], null);
-                                regGroup[0].type = RegType.INT;
-                                regGroup[0].data = 1;
-                                regGroup[1].type = RegType.INT;
-                                regGroup[1].data = 0;
-                                funcList.get("cmp").run(regGroup[0], regGroup[1]);
-                                funcList.get("pop").run(regGroup[1], null);
-                                funcList.get("pop").run(regGroup[0], null);
-                            }
-                            return Result.OK;
-                        }));
-                        funcList.put("ctn", ((dst, src) -> {
-                            if (src == null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (src.type != RegType.STR) return Result.ERR;
-                            if (dst.type != RegType.STR) return Result.ERR;
-                            if (src.data.toString().isEmpty()) return Result.ERR;
-                            if (dst.data.toString().isEmpty()) return Result.ERR;
+                    @Override
+                    public TileEntityRailSniffer getRail() {
+                        return rail;
+                    }
 
-                            if (dst.data.toString().contains(src.data.toString())) {
-                                funcList.get("push").run(regGroup[0], null);
-                                funcList.get("push").run(regGroup[1], null);
-                                regGroup[0].type = RegType.INT;
-                                regGroup[0].data = 0;
-                                regGroup[1].type = RegType.INT;
-                                regGroup[1].data = 0;
-                                funcList.get("cmp").run(regGroup[0], regGroup[1]);
-                                funcList.get("pop").run(regGroup[1], null);
-                                funcList.get("pop").run(regGroup[0], null);
-                            } else {
-                                funcList.get("push").run(regGroup[0], null);
-                                funcList.get("push").run(regGroup[1], null);
-                                regGroup[0].type = RegType.INT;
-                                regGroup[0].data = 1;
-                                regGroup[1].type = RegType.INT;
-                                regGroup[1].data = 0;
-                                funcList.get("cmp").run(regGroup[0], regGroup[1]);
-                                funcList.get("pop").run(regGroup[1], null);
-                                funcList.get("pop").run(regGroup[0], null);
-                            }
-                            return Result.OK;
-                        }));
-                        funcList.put("sum", ((dst, src) -> {
-                            if (src == null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (src.type != RegType.STR) return Result.ERR;
-                            if (src.data.toString().isEmpty()) return Result.ERR;
-                            if (dst.readOnly) return Result.ERR;
-
-                            dst.type = RegType.INT;
-                            dst.data = 0;
-                            for (char c : src.data.toString().toCharArray())
-                                dst.data = (int) dst.data + (int) c;
-                            return Result.OK;
-                        }));
-                        funcList.put("cid", ((dst, src) -> {
-                            if (src != null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (dst.readOnly) return Result.ERR;
-
-                            dst.type = RegType.STR;
-                            dst.data = cart.getCommandSenderName();
-                            return Result.OK;
-                        }));
-                        funcList.put("pid", ((dst, src) -> {
-                            if (src != null) return Result.ERR;
-                            if (dst == null) return Result.ERR;
-                            if (dst.readOnly) return Result.ERR;
-
-                            dst.type = RegType.STR;
-                            if (player == null) dst.data = "null";
-                            else dst.data = player.getDisplayName();
-                            return Result.OK;
-                        }));
+                    @Override
+                    public EntityMinecart getCart() {
+                        return cart;
                     }
                 }.run();
+
             }
 
             if (!railHasCart(world, x, y, z) && sniffer.nsasmState == RailSniffer.NSASM_DONE) {
@@ -284,7 +170,7 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
             }
 
             if (railHasCart(world, x, y, z)) {
-                world.scheduleBlockUpdate(x, y, z, this, 100); // 5s
+                world.scheduleBlockUpdate(x, y, z, this, sniffer.keep);
             }
 
         }
@@ -299,7 +185,7 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromBook(stack);
+                    NBTTagList list = Util.getTagListFromNGT(stack);
                     if (list == null) return true;
                     String code = NSASM.getCodeString(list);
 

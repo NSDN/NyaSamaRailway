@@ -141,6 +141,9 @@ public class TileEntityRailTriSwitch extends BlockRailBase implements ITileEntit
             int old = world.getBlockMetadata(x, y, z);
             int meta = 0;
 
+            if (triSwitch.direction == null)
+                triSwitch.direction = ForgeDirection.UNKNOWN;
+
             switch (triSwitch.state) {
                 case TriSwitch.STATE_POS: //left
                     switch (triSwitch.direction) {
