@@ -16,6 +16,7 @@ public class NetworkWrapper {
         packetSender = NetworkRegistry.INSTANCE.newSimpleChannel(NyaSamaRailway.MODID);
         packetSender.registerMessage(TrainPacket.PacketStCHandler.class, TrainPacket.class, 0, Side.CLIENT);
         packetSender.registerMessage(TrainPacket.PacketCtSHandler.class, TrainPacket.class, 1, Side.SERVER);
-        packetSender.registerMessage(NGTPacket.PacketCtSHandler.class, NGTPacket.class, 1, Side.SERVER);
+        packetSender.registerMessage(NGTPacket.PacketCtSHandler.class, NGTPacket.class, 2, Side.SERVER);
+        packetSender.registerMessage(ParticlePacket.PacketStCHandler.class, ParticlePacket.class, 3, Side.CLIENT);
     }
 }
