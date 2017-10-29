@@ -188,6 +188,10 @@ public class TileEntityGateFront extends TileEntityBase {
 
     public void doSniff(World world, int x, int y, int z, GateFront gateFront) {
         EntityPlayer player;
+
+        if (gateFront.direction == null)
+            gateFront.direction = ForgeDirection.UNKNOWN;
+
         if (gateFront.isEnabled) { //left
             switch (gateFront.direction) {
                 case SOUTH:

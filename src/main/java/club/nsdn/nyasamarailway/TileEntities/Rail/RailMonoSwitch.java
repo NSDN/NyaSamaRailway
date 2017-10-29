@@ -144,6 +144,9 @@ public class RailMonoSwitch extends RailBase {
             int old = world.getBlockMetadata(x, y, z);
             int meta = 0;
 
+            if (monoSwitch.direction == null)
+                monoSwitch.direction = ForgeDirection.UNKNOWN;
+
             switch (monoSwitch.state) {
                 case MonoSwitch.STATE_POS: //left
                     switch (monoSwitch.direction) {
