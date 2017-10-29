@@ -24,6 +24,7 @@ public class ItemNGT extends ItemWritableBook {
         setMaxStackSize(1);
         setTextureName("nyasamarailway" + ":" + "item_ngt");
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override
