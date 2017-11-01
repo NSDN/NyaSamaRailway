@@ -1,5 +1,7 @@
 package club.nsdn.nyasamarailway.Util;
 
+import club.nsdn.nyasamarailway.Network.NetworkWrapper;
+import club.nsdn.nyasamarailway.Network.ParticlePacket;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailSniffer;
 import net.minecraft.entity.item.EntityMinecart;
 
@@ -135,6 +137,77 @@ public abstract class RailSnifferCore extends NSASM {
             dst.type = RegType.STR;
             if (getPlayer() == null) dst.data = "null";
             else dst.data = getPlayer().getDisplayName();
+            return Result.OK;
+        }));
+
+        funList.replace("nya", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+            if (dst.type != RegType.STR) return Result.ERR;
+            if (dst.data.toString().isEmpty()) return Result.ERR;
+
+            String type = dst.data.toString();
+            double tX, tY, tZ;
+            if (regGroup[0].type != RegType.STR)
+                tX = Double.valueOf(regGroup[0].data.toString());
+            else tX = 0;
+            if (regGroup[1].type != RegType.STR)
+                tY = Double.valueOf(regGroup[1].data.toString());
+            else tY = 0;
+            if (regGroup[2].type != RegType.STR)
+                tZ = Double.valueOf(regGroup[2].data.toString());
+            else tZ = 0;
+            if (getPlayer() != null)
+                NetworkWrapper.packetSender.sendToDimension(
+                        new ParticlePacket(type, getX(), getY(), getZ(), tX, tY, tZ),
+                        getPlayer().dimension
+                );
+            else if (getCart() != null)
+                NetworkWrapper.packetSender.sendToDimension(
+                        new ParticlePacket(type, getX(), getY(), getZ(), tX, tY, tZ),
+                        getCart().dimension
+                );
+
+            return Result.OK;
+        }));
+
+        funList.replace("nyaa", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+            if (dst.type != RegType.STR) return Result.ERR;
+            if (dst.data.toString().isEmpty()) return Result.ERR;
+
+            String type = dst.data.toString();
+            double x, y, z, tX, tY, tZ;
+            if (regGroup[0].type != RegType.STR)
+                x = Double.valueOf(regGroup[0].data.toString());
+            else x = 0;
+            if (regGroup[1].type != RegType.STR)
+                y = Double.valueOf(regGroup[1].data.toString());
+            else y = 0;
+            if (regGroup[2].type != RegType.STR)
+                z = Double.valueOf(regGroup[2].data.toString());
+            else z = 0;
+            if (regGroup[3].type != RegType.STR)
+                tX = Double.valueOf(regGroup[3].data.toString());
+            else tX = 0;
+            if (regGroup[4].type != RegType.STR)
+                tY = Double.valueOf(regGroup[4].data.toString());
+            else tY = 0;
+            if (regGroup[5].type != RegType.STR)
+                tZ = Double.valueOf(regGroup[5].data.toString());
+            else tZ = 0;
+            if (getPlayer() != null)
+                NetworkWrapper.packetSender.sendToDimension(
+                        new ParticlePacket(type, x, y, z, tX, tY, tZ),
+                        getPlayer().dimension
+                );
+            else if (getCart() != null)
+                NetworkWrapper.packetSender.sendToDimension(
+                        new ParticlePacket(type, x, y, z, tX, tY, tZ),
+                        getCart().dimension
+                );
+
             return Result.OK;
         }));
 

@@ -40,7 +40,6 @@ public class ItemNGT extends ItemWritableBook {
         return itemStack;
     }
 
-    @SideOnly(Side.SERVER)
     public void runNGT(ItemStack itemStack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
             NBTTagList list = Util.getTagListFromNGT(itemStack);
