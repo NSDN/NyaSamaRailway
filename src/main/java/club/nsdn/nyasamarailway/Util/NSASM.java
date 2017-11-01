@@ -80,7 +80,7 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             if (regGroup[2].type != RegType.STR)
                 tZ = Double.valueOf(regGroup[2].data.toString());
             else tZ = 0;
-            if (getWorld() != null)
+            if (getPlayer() != null)
                 NetworkWrapper.packetSender.sendToDimension(
                         new ParticlePacket(type, getX(), getY(), getZ(), tX, tY, tZ),
                         getPlayer().dimension
@@ -115,7 +115,7 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             if (regGroup[5].type != RegType.STR)
                 tZ = Double.valueOf(regGroup[5].data.toString());
             else tZ = 0;
-            if (getWorld() != null)
+            if (getPlayer() != null)
                 NetworkWrapper.packetSender.sendToDimension(
                         new ParticlePacket(type, x, y, z, tX, tY, tZ),
                         getPlayer().dimension
