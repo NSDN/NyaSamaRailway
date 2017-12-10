@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +31,7 @@ public class TileEntitySignalStick extends TileEntityBase {
         setIconLocation("signal_stick");
         setLightOpacity(0);
         setLightLevel(1.0F);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     @Override
