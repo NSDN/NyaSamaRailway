@@ -22,7 +22,7 @@ public class TileEntityBiSignalLight extends TileEntityBase {
     private static final int LIGHT_Y = 2;
     private static final int LIGHT_G = 3;
 
-    public static class BiSignalLight extends TileEntitySignalLight.SignalLight {
+    public static class BiSignalLight extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight {
     }
 
     public TileEntityBiSignalLight() {

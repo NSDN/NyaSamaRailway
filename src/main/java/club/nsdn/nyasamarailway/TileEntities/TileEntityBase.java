@@ -61,6 +61,49 @@ public class TileEntityBase extends BlockContainer {
         return false;
     }
 
+    protected void setBoundsByXYZ(int meta, float x1, float y1, float z1, float x2, float y2, float z2) {
+        switch (meta % 13) {
+            case 1:
+                setBlockBounds(x1, y1, z1, x2, y2, z2);
+                break;
+            case 2:
+                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
+                break;
+            case 3:
+                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
+                break;
+            case 4:
+                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
+                break;
+
+            case 7:
+                setBlockBounds(x1, z1, y1, x2, z2, y2);
+                break;
+            case 8:
+                setBlockBounds(1.0F - y2, z1, x1, 1.0F - y1, z2, x2);
+                break;
+            case 5:
+                setBlockBounds(1.0F - x2, z1, 1.0F - y2, 1.0F - x1, z2, 1.0F - y1);
+                break;
+            case 6:
+                setBlockBounds(y1, z1, 1.0F - x2, y2, z2, 1.0F - x1);
+                break;
+
+            case 9:
+                setBlockBounds(x1, 1.0F - y2, z1, x2, 1.0F - y1, z2);
+                break;
+            case 10:
+                setBlockBounds(1.0F - z2, 1.0F - y2, x1, 1.0F - z1, 1.0F - y1, x2);
+                break;
+            case 11:
+                setBlockBounds(1.0F - x2, 1.0F - y2, 1.0F - z2, 1.0F - x1, 1.0F - y1, 1.0F - z1);
+                break;
+            case 12:
+                setBlockBounds(z1, 1.0F - y2, 1.0F - x2, z2, 1.0F - y1, 1.0F - x1);
+                break;
+        }
+    }
+
     protected void setBoundsByMeta(int meta) {
     }
 

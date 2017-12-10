@@ -282,6 +282,16 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical6.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_6")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntityRailSignVertical7.RailSignVertical.class,
+                new RailSignVerticalRenderer("rail_sign_vertical_7")
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityRailTriSwitch.TriSwitch.class, new RailTriSwitchRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
@@ -295,6 +305,12 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TileEntityTriSignalLight.TriSignalLight.class, new TriSignalLightRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntitySignalLamp.SignalLight.class, new SignalLightRenderer("models/blocks/signal_lamp.obj"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TileEntitySignalStick.SignalLight.class, new SignalLightRenderer("models/blocks/signal_stick.obj"));
 
     }
 

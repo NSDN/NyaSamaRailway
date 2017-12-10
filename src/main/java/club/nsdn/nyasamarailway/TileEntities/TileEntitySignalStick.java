@@ -13,9 +13,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.7.4.
+ * Created by drzzm32 on 2017.12.10.
  */
-public class TileEntitySignalLight extends TileEntityBase {
+public class TileEntitySignalStick extends TileEntityBase {
 
     private static final int LIGHT_OFF = 0;
     private static final int LIGHT_R = 1;
@@ -25,11 +25,11 @@ public class TileEntitySignalLight extends TileEntityBase {
     public static class SignalLight extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight {
     }
 
-    public TileEntitySignalLight() {
-        super("SignalLight");
-        setIconLocation("signal_light");
+    public TileEntitySignalStick() {
+        super("SignalStick");
+        setIconLocation("signal_stick");
         setLightOpacity(0);
-        setLightLevel(0.75F);
+        setLightLevel(1.0F);
     }
 
     @Override
@@ -51,7 +51,8 @@ public class TileEntitySignalLight extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        float x = 0.25F, y = 1.0F, z = 0.25F;
+        setBoundsByXYZ(meta, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class TileEntitySignalLight extends TileEntityBase {
                 if (((meta >> 2) & 0x3) == 0) {
                     setLightLevel(0.0F);
                 } else {
-                    setLightLevel(0.75F);
+                    setLightLevel(1.0F);
                 }
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);

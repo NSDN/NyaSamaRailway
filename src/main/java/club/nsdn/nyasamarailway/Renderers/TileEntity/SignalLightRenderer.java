@@ -1,31 +1,22 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
+import org.lwjgl.opengl.GL11;
+import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.RenderHelper;
+import club.nsdn.nyasamarailway.Renderers.RendererHelper;
+import net.minecraftforge.client.model.obj.WavefrontObject;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight;
+
 /**
  * Created by drzzm32 on 2017.7.4.
  */
-
-import club.nsdn.nyasamarailway.Renderers.RendererHelper;
-import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalLight;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.obj.WavefrontObject;
-import org.lwjgl.opengl.GL11;
-
 public class SignalLightRenderer extends TileEntitySpecialRenderer {
 
-    private final WavefrontObject model = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/blocks/signal_light.obj")
-    );
+    private final WavefrontObject model;
     private final ResourceLocation[] textures = {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_none.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_r.png"),
@@ -37,6 +28,15 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
     };
 
     public SignalLightRenderer() {
+        model = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/signal_light.obj")
+        );
+    }
+
+    public SignalLightRenderer(String modelPath) {
+        model = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", modelPath)
+        );
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -61,12 +61,12 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
 
         int lightState = (meta >> 2) & 0x3;
 
-        if (te instanceof TileEntitySignalLight.SignalLight) {
-            if (((TileEntitySignalLight.SignalLight) te).lightType.equals("white&blue")) {
+        if (te instanceof TileEntitySignalLight) {
+            if (((TileEntitySignalLight) te).lightType.equals("white&blue")) {
                 if (lightState == 2) lightState = 4;
                 else if (lightState == 3) lightState = 5;
                 else lightState = 0;
-            } else if (((TileEntitySignalLight.SignalLight) te).lightType.equals("yellow&purple")) {
+            } else if (((TileEntitySignalLight) te).lightType.equals("yellow&purple")) {
                 if (lightState == 2) lightState = 2;
                 else if (lightState == 3) lightState = 6;
                 else lightState = 0;

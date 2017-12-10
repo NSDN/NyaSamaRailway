@@ -284,6 +284,14 @@ public class TileEntityLoader {
                 "tileEntityRailSignVertical5");
 
         GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical6.RailSignVertical.class,
+                "tileEntityRailSignVertical6");
+
+        GameRegistry.registerTileEntity(
+                TileEntityRailSignVertical7.RailSignVertical.class,
+                "tileEntityRailSignVertical7");
+
+        GameRegistry.registerTileEntity(
                 TileEntityRailTriSwitch.TriSwitch.class,
                 "tileEntityRailTriSwitch");
 
@@ -302,6 +310,14 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TileEntityTriSignalLight.TriSignalLight.class,
                 "tileTriSignalLight");
+
+        GameRegistry.registerTileEntity(
+                TileEntitySignalLamp.SignalLight.class,
+                "tileEntitySignalLamp");
+
+        GameRegistry.registerTileEntity(
+                TileEntitySignalStick.SignalLight.class,
+                "tileEntitySignalStick");
 
     }
 
