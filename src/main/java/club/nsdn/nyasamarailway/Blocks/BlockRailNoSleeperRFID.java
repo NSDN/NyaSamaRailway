@@ -86,14 +86,14 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
                     loco.setP(rfid.P);
                     loco.setR(rfid.R);
-                } else if (cart instanceof IMotorCart) {
-                    IMotorCart motorCart = (IMotorCart) cart;
+                }
+            } else if (cart instanceof IMotorCart) {
+                IMotorCart motorCart = (IMotorCart) cart;
 
-                    if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
-                        motorCart.setMotorPower(rfid.P);
-                        motorCart.setMotorBrake(rfid.R);
-                        motorCart.setMotorState(rfid.state);
-                    }
+                if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                    motorCart.setMotorPower(rfid.P);
+                    motorCart.setMotorBrake(rfid.R);
+                    motorCart.setMotorState(rfid.state);
                 }
             }
 

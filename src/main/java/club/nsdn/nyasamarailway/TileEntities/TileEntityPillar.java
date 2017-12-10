@@ -145,6 +145,8 @@ public class TileEntityPillar extends TileEntityBase {
             block instanceof TileEntitySignalBoxSender ||
             block instanceof TileEntityTriStateSignalBox ||
             block instanceof TileEntitySignalLight ||
+            block instanceof TileEntitySignalLamp ||
+            block instanceof TileEntitySignalStick ||
             block instanceof TileEntityBiSignalLight ||
             block instanceof TileEntityTriSignalLight
         ) {

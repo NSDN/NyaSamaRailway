@@ -1,7 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailPassiveReceiver;
-import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,34 +13,34 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.10.5.
+ * Created by drzzm32 on 2017.12.10.
  */
-public class TileEntityBiSignalLight extends TileEntityBase {
+public class TileEntitySignalLamp extends TileEntityBase {
 
     private static final int LIGHT_OFF = 0;
     private static final int LIGHT_R = 1;
     private static final int LIGHT_Y = 2;
     private static final int LIGHT_G = 3;
 
-    public static class BiSignalLight extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight {
+    public static class SignalLight extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight {
     }
 
-    public TileEntityBiSignalLight() {
-        super("BiSignalLight");
-        setIconLocation("bi_signal_light");
+    public TileEntitySignalLamp() {
+        super("SignalLamp");
+        setIconLocation("signal_lamp");
         setLightOpacity(0);
-        setLightLevel(0.75F);
-        if (!Util.loadIf()) setCreativeTab(null);
+        setLightLevel(1.0F);
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new BiSignalLight();
+        return new SignalLight();
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-        return side == ForgeDirection.DOWN;
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+    {
+        return side == ForgeDirection.UP;
     }
 
     @Override
@@ -52,22 +51,8 @@ public class TileEntityBiSignalLight extends TileEntityBase {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.34375F, y1 = 0.0F, z1 = 0.375F, x2 = 0.65625F, y2 = 0.6875F, z2 = 0.625F;
-
-        switch (meta & 3) {
-            case 0:
-                setBlockBounds(x1, y1, z1, x2, y2, z2);
-                break;
-            case 1:
-                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
-                break;
-            case 2:
-                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
-                break;
-            case 3:
-                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
-                break;
-        }
+        float x = 0.375F, y = 1.0F, z = 0.375F;
+        setBoundsByXYZ(meta, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
     }
 
     @Override
@@ -88,6 +73,11 @@ public class TileEntityBiSignalLight extends TileEntityBase {
     }
 
     @Override
+    public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+        return true;
+    }
+
+    @Override
     public int tickRate(World world) {
         return 10;
     }
@@ -101,39 +91,39 @@ public class TileEntityBiSignalLight extends TileEntityBase {
 
     public void updateLight(World world, int x ,int y, int z) {
         if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof BiSignalLight) {
-            BiSignalLight biSignalLight = (BiSignalLight) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof SignalLight) {
+            SignalLight signalLight = (SignalLight) world.getTileEntity(x, y, z);
             boolean isEnable;
-            if (biSignalLight.getSender() == null) {
-                isEnable = biSignalLight.isPowered;
+            if (signalLight.getSender() == null) {
+                isEnable = signalLight.isPowered ^ thisBlockIsPowered(world, x, y, z);
             } else {
-                isEnable = biSignalLight.senderIsPowered();
+                isEnable = signalLight.senderIsPowered() ^ thisBlockIsPowered(world, x, y, z);
             }
             int meta = world.getBlockMetadata(x, y, z);
             int old = meta;
 
             meta = meta & 0x3;
-            if (biSignalLight.isBlinking) {
-                if (biSignalLight.delay > 10) {
-                    if (biSignalLight.delay < 20) {
-                        biSignalLight.delay += 1;
+            if (signalLight.isBlinking) {
+                if (signalLight.delay > 10) {
+                    if (signalLight.delay < 20) {
+                        signalLight.delay += 1;
                     } else {
-                        biSignalLight.delay = 0;
+                        signalLight.delay = 0;
                     }
-                    meta = setLightState(isEnable, meta, biSignalLight.lightType);
+                    meta = setLightState(isEnable, meta, signalLight.lightType);
                 } else {
-                    biSignalLight.delay += 1;
+                    signalLight.delay += 1;
                 }
             } else {
-                meta = setLightState(isEnable, meta, biSignalLight.lightType);
+                meta = setLightState(isEnable, meta, signalLight.lightType);
             }
 
-            if (old != meta || !biSignalLight.prevLightType.equals(biSignalLight.lightType)) {
-                biSignalLight.prevLightType = biSignalLight.lightType;
+            if (old != meta || !signalLight.prevLightType.equals(signalLight.lightType)) {
+                signalLight.prevLightType = signalLight.lightType;
                 if (((meta >> 2) & 0x3) == 0) {
                     setLightLevel(0.0F);
                 } else {
-                    setLightLevel(0.75F);
+                    setLightLevel(1.0F);
                 }
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
@@ -163,6 +153,24 @@ public class TileEntityBiSignalLight extends TileEntityBase {
             return isEnable ? meta | (2 << 2) : meta | (3 << 2);
         else
             return meta;
+    }
+
+    public boolean nearbyBlockIsPowered(World world, int x, int y, int z) {
+        return (
+            world.isBlockIndirectlyGettingPowered(x, y, z) ||
+            world.isBlockIndirectlyGettingPowered(x + 1, y, z) ||
+            world.isBlockIndirectlyGettingPowered(x - 1, y, z) ||
+            world.isBlockIndirectlyGettingPowered(x, y, z + 1) ||
+            world.isBlockIndirectlyGettingPowered(x, y, z - 1) ||
+            world.isBlockIndirectlyGettingPowered(x, y - 1, z)
+        );
+    }
+
+    public boolean thisBlockIsPowered(World world, int x, int y, int z) {
+        return (
+            world.isBlockIndirectlyGettingPowered(x, y, z) ||
+            world.isBlockIndirectlyGettingPowered(x, y - 1, z)
+        );
     }
 
 }

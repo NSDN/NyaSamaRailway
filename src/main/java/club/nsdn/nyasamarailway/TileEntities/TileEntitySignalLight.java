@@ -23,31 +23,7 @@ public class TileEntitySignalLight extends TileEntityBase {
     private static final int LIGHT_Y = 2;
     private static final int LIGHT_G = 3;
 
-    public static class SignalLight extends TileEntityRailPassiveReceiver {
-
-        public String lightType = "red&green";
-        public String prevLightType = "null";
-        public boolean isBlinking = false;
-        public boolean isPowered = false;
-
-        public int delay;
-
-        @Override
-        public void fromNBT(NBTTagCompound tagCompound) {
-            lightType = tagCompound.getString("lightType");
-            isBlinking = tagCompound.getBoolean("isBlinking");
-            isPowered = tagCompound.getBoolean("isPowered");
-            super.fromNBT(tagCompound);
-        }
-
-        @Override
-        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setString("lightType", lightType);
-            tagCompound.setBoolean("isBlinking", isBlinking);
-            tagCompound.setBoolean("isPowered", isPowered);
-            return super.toNBT(tagCompound);
-        }
-
+    public static class SignalLight extends club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight {
     }
 
     public TileEntitySignalLight() {

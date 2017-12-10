@@ -328,8 +328,9 @@ public class Item1N4148 extends ItemToolBase {
                 }
             }
             return !world.isRemote;
-        } else if (tileEntity instanceof TileEntitySignalLight.SignalLight) {
-            TileEntitySignalLight.SignalLight signalLight = (TileEntitySignalLight.SignalLight) tileEntity;
+        } else if (tileEntity instanceof club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight) {
+            club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight signalLight =
+                    (club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight) tileEntity;
 
             if (player.isSneaking()) {
                 signalLight.prevLightType = signalLight.lightType;

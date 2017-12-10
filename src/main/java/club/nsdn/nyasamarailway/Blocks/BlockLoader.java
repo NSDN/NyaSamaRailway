@@ -79,6 +79,8 @@ public class BlockLoader {
     public static Block blockRailSignVertical3;
     public static Block blockRailSignVertical4;
     public static Block blockRailSignVertical5;
+    public static Block blockRailSignVertical6;
+    public static Block blockRailSignVertical7;
 
     public static Block railNoSleeperStraight;
     public static Block railMono;
@@ -103,6 +105,8 @@ public class BlockLoader {
     public static Block blockStationSign;
 
     public static Block blockSignalLight;
+    public static Block blockSignalLamp;
+    public static Block blockSignalStick;
     public static Block blockBiSignalLight;
     public static Block blockTriSignalLight;
     public static Block blockSignalBox;
@@ -311,6 +315,12 @@ public class BlockLoader {
         blockRailSignVertical5 = new TileEntityRailSignVertical5();
         register(blockRailSignVertical5, "block_rail_sign_vertical_5");
 
+        blockRailSignVertical6 = new TileEntityRailSignVertical6();
+        register(blockRailSignVertical6, "block_rail_sign_vertical_6");
+
+        blockRailSignVertical7 = new TileEntityRailSignVertical7();
+        register(blockRailSignVertical7, "block_rail_sign_vertical_7");
+
         //railNoSleeperStraight = new RailNoSleeperStraight();
         //register(railNoSleeperStraight, "rail_ns_s");
 
@@ -372,6 +382,12 @@ public class BlockLoader {
 
         blockSignalLight = new TileEntitySignalLight();
         register(blockSignalLight, "block_signal_light");
+
+        blockSignalLamp = new TileEntitySignalLamp();
+        register(blockSignalLamp, "block_signal_lamp");
+
+        blockSignalStick = new TileEntitySignalStick();
+        register(blockSignalStick, "block_signal_stick");
 
         blockBiSignalLight = new TileEntityBiSignalLight();
         register(blockBiSignalLight, "block_bi_signal_light");
