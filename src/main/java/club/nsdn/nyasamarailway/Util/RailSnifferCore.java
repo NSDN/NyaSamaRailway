@@ -140,7 +140,7 @@ public abstract class RailSnifferCore extends NSASM {
             return Result.OK;
         }));
 
-        funList.replace("nya", ((dst, src) -> {
+        funcList.replace("nya", ((dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
             if (dst.type != RegType.STR) return Result.ERR;
@@ -171,7 +171,7 @@ public abstract class RailSnifferCore extends NSASM {
             return Result.OK;
         }));
 
-        funList.replace("nyaa", ((dst, src) -> {
+        funcList.replace("nyaa", ((dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
             if (dst.type != RegType.STR) return Result.ERR;

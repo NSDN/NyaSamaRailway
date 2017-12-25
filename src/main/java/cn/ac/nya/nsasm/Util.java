@@ -1,5 +1,7 @@
 package cn.ac.nya.nsasm;
 
+import cn.ac.nya.nsasm.NSASM.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -34,7 +36,7 @@ public class Util {
         return tmp;
     }
 
-    public static String formatCode(String var) {
+    public static String formatLine(String var) {
         if (var.isEmpty()) return "";
         while (var.contains("\r")) {
             var = var.replace("\r", "");
@@ -69,42 +71,143 @@ public class Util {
         left = cleanSymbol(left, "=", " ");
         left = cleanSymbol(left, "{", "\t", " ");
         left = cleanSymbol(left, "}", "\t", " ");
+        left = cleanSymbol(left, "(", "\t", " ");
+        left = cleanSymbol(left, ")", "\t", " ");
+
+        left = cleanSymbol(left, "]", "\t", " ");
 
         return left + right;
     }
 
-    public static String[][] getSegments(String var) {
-        LinkedHashMap<String, String> segBuf = new LinkedHashMap<>();
+    public static String formatCode(String var) {
         String varBuf = ""; Scanner scanner = new Scanner(var);
-        LinkedList<String> pub = new LinkedList<>();
-
         while (scanner.hasNextLine()) {
-            varBuf = varBuf.concat(formatCode(scanner.nextLine()) + "\n");
+            varBuf = varBuf.concat(formatLine(scanner.nextLine()) + "\n");
         }
         while (varBuf.contains("\n\n")) {
             varBuf = varBuf.replace("\n\n", "\n");
         }
-        scanner = new Scanner(varBuf);
+        scanner.close();
+        return varBuf;
+    }
 
-        String head, body = "", tmp;
+    public static String repairBrackets(String var, String left, String right) {
+        while (var.contains('\n' + left))
+            var = var.replace('\n' + left, left);
+        var = var.replace(left, left + '\n');
+        var = var.replace(right, '\n' + right);
+        while (var.contains("\n\n"))
+            var = var.replace("\n\n", "\n");
+        while (var.contains(left + " "))
+            var = var.replace(left + " ", left);
+        while (var.contains(" \n" + right))
+            var = var.replace(" \n" + right, "\n" + right);
+        return var;
+    }
+
+    public static String encodeLambda(String var) {
+        return var.replace("\n", "\f");
+    }
+
+    public static String decodeLambda(String var) {
+        return var.replace("\f", "\n");
+    }
+
+    public static String formatString(String var) {
+        return var.replace("\\\"", "\"").replace("\\\'", "\'")
+                .replace("\\\\", "\\").replace("\\n", "\n")
+                .replace("\\t", "\t");
+    }
+
+    public static String formatLambda(String var) {
+        final int IDLE = 0, RUN = 1, DONE = 2;
+        int state = IDLE, count = 0, begin = 0, end = 0;
+
+        for (int i = 0; i < var.length(); i++) {
+            switch (state) {
+                case IDLE:
+                    count = begin = end = 0;
+                    if (var.charAt(i) == '(') {
+                        begin = i;
+                        count += 1;
+                        state = RUN;
+                    }
+                    break;
+                case RUN:
+                    if (var.charAt(i) == '(')
+                        count += 1;
+                    else if (var.charAt(i) == ')')
+                        count -= 1;
+                    if (count == 0) {
+                        end = i;
+                        state = DONE;
+                    }
+                    break;
+                case DONE:
+                    String a, b, c;
+                    a = var.substring(0, begin);
+                    b = var.substring(begin, end + 1);
+                    c = var.substring(end + 1);
+                    b = encodeLambda(b);
+                    var = a + b + c;
+                    state = IDLE;
+                    break;
+                default:
+                    return var;
+            }
+        }
+
+        return var;
+    }
+
+    public static String[][] getSegments(String var) {
+        LinkedHashMap<String, String> segBuf = new LinkedHashMap<>();
+        LinkedList<String> pub = new LinkedList<>();
+        String varBuf = var;
+
+        varBuf = formatCode(varBuf);
+        varBuf = repairBrackets(varBuf, "{", "}");
+        varBuf = repairBrackets(varBuf, "(", ")");
+        varBuf = formatCode(varBuf);
+
+        varBuf = formatLambda(varBuf);
+
+        Scanner scanner = new Scanner(varBuf);
+
+        String head = "", body = "", tmp;
+        final int IDLE = 0, RUN = 1;
+        int state = IDLE, count = 0;
         while (scanner.hasNextLine()) {
-            head = scanner.nextLine();
-            if (!head.contains("{")) {
-                pub.add(head);
-                continue;
+            switch (state) {
+                case IDLE:
+                    head = scanner.nextLine();
+                    count = 0; body = "";
+                    if (head.contains("{")) {
+                        head = head.replace("{", "");
+                        count += 1;
+                        state = RUN;
+                    } else pub.add(head);
+                    break;
+                case RUN:
+                    if (scanner.hasNextLine()) {
+                        tmp = scanner.nextLine();
+                        if (tmp.contains("{"))
+                            count += 1;
+                        else if (tmp.contains("}"))
+                            count -= 1;
+                        if (tmp.contains("(") && tmp.contains(")")) {
+                            count -= 1;
+                        }
+                        if (count == 0) {
+                            segBuf.put(head, body);
+                            state = IDLE;
+                        }
+                        body = body.concat(tmp + "\n");
+                    }
+                    break;
+                default:
+                    break;
             }
-            head = head.replace("{", "");
-
-            if (scanner.hasNextLine()) {
-                tmp = scanner.nextLine();
-                while (!tmp.contains("}") && scanner.hasNextLine()) {
-                    body = body.concat(tmp + "\n");
-                    tmp = scanner.nextLine();
-                }
-            }
-
-            segBuf.put(head, body);
-            body = "";
         }
 
         String[][] out = new String[segBuf.size() + 1][2];
@@ -245,6 +348,47 @@ public class Util {
         NSASM nsasm = new NSASM(heap, stack, regs, code);
         nsasm.run();
         print("\nNSASM running finished.\n\n");
+    }
+
+    public static void console() {
+        Util.print("Now in console mode.\n\n");
+        String buf;
+        int lines = 1; Result result;
+
+        String[][] code = getSegments("nop\n"); //ld func allowed
+        NSASM nsasm = new NSASM(64, 32, 16, code);
+
+        while (true) {
+            Util.print(lines + " >>> ");
+            buf = scan();
+            if (buf.length() == 0) {
+                lines += 1;
+                continue;
+            }
+            buf = formatLine(buf);
+
+            if (buf.contains("#")) {
+                Util.print("<" + buf + ">\n");
+                continue;
+            }
+
+            result = nsasm.execute(buf);
+            if (result == Result.ERR) {
+                Util.print("\nNSASM running error!\n");
+                Util.print("At line " + lines + ": " + buf + "\n\n");
+            } else if (result == Result.ETC) {
+                break;
+            }
+            if (buf.startsWith("run") || buf.startsWith("call")) {
+                nsasm.run();
+            }
+
+            lines += 1;
+        }
+    }
+
+    public static void gui() {
+
     }
 
 }

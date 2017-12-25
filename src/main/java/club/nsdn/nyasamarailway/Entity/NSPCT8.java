@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 /**
  * Created by drzzm32 on 2017.10.1.
  */
-public class NSPCT8 extends MinecartBase implements IMotorCart {
+public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     public int P;
     public int R;
@@ -22,6 +22,10 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
 
     private final int INDEX_P = 23, INDEX_R = 24, INDEX_DIR = 25, INDEX_V = 26, INDEX_STE = 27;
 
+    private final int INDEX_MV = 28;
+    public double maxVelocity = 0;
+    private int tmpMotorBrake = 0;
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -30,6 +34,8 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
         this.dataWatcher.addObject(INDEX_DIR, Integer.valueOf("0"));
         this.dataWatcher.addObject(INDEX_V, Float.valueOf("0"));
         this.dataWatcher.addObject(INDEX_STE, Integer.valueOf("0"));
+
+        this.dataWatcher.addObject(INDEX_MV, Float.valueOf("0"));
     }
 
     public NSPCT8(World world) {
@@ -92,9 +98,9 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     }
 
     @Override
-    public void setMotorVel(float vel) {
-        this.Velocity = vel;
-        this.dataWatcher.updateObject(INDEX_V, vel);
+    public void setMotorVel(double vel) {
+        this.Velocity = (float) vel;
+        this.dataWatcher.updateObject(INDEX_V, (float) vel);
     }
 
     @Override
@@ -113,13 +119,24 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
     }
 
     @Override
-    public float getMotorVel() {
+    public double getMotorVel() {
         return this.dataWatcher.getWatchableObjectFloat(INDEX_V);
     }
 
     @Override
     public boolean getMotorState() {
         return this.dataWatcher.getWatchableObjectInt(INDEX_STE) > 0;
+    }
+
+    @Override
+    public double getMaxVelocity() {
+        return this.dataWatcher.getWatchableObjectFloat(INDEX_MV);
+    }
+
+    @Override
+    public void setMaxVelocity(double value) {
+        this.maxVelocity = (float) value;
+        this.dataWatcher.updateObject(INDEX_MV, (float) value);
     }
 
     @Override
@@ -137,6 +154,15 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
             TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), getMotorPower(), getMotorBrake(), getMotorDir());
             tmpPacket.isUnits = true; //High speed
             tmpPacket.Velocity = getMotorVel();
+            if (this.maxVelocity > 0) {
+                if (this.Velocity > this.maxVelocity && tmpMotorBrake == 0) {
+                    tmpMotorBrake = getMotorBrake();
+                    setMotorBrake(1);
+                } else if (this.Velocity <= this.maxVelocity && tmpMotorBrake != 0) {
+                    setMotorBrake(tmpMotorBrake);
+                    tmpMotorBrake = 0;
+                }
+            }
             TrainController.doMotionWithAir(tmpPacket, this);
             setMotorVel((float) tmpPacket.Velocity);
         } else {
@@ -155,8 +181,10 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
         setMotorPower(tagCompound.getInteger("MotorP"));
         setMotorBrake(tagCompound.getInteger("MotorR"));
         setMotorDir(tagCompound.getInteger("MotorDir"));
-        setMotorVel(tagCompound.getFloat("MotorV"));
+        setMotorVel(tagCompound.getDouble("MotorV"));
         setMotorState(tagCompound.getBoolean("MotorState"));
+
+        setMaxVelocity(tagCompound.getDouble("MotorMaxV"));
     }
 
     @Override
@@ -165,8 +193,10 @@ public class NSPCT8 extends MinecartBase implements IMotorCart {
         tagCompound.setInteger("MotorP", getMotorPower());
         tagCompound.setInteger("MotorR", getMotorBrake());
         tagCompound.setInteger("MotorDir", getMotorDir());
-        tagCompound.setFloat("MotorV", getMotorVel());
+        tagCompound.setDouble("MotorV", getMotorVel());
         tagCompound.setBoolean("MotorState", getMotorState());
+
+        tagCompound.setDouble("MotorMaxV", getMaxVelocity());
     }
 
 

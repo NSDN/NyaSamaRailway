@@ -200,4 +200,37 @@ public class TrainController {
 
     }
 
+    public static void doMotionWithAirHigh(TrainPacket train, Entity cart) {
+        calcYaw(train, cart);
+
+        if (train.P > 0 && train.Velocity < 0.005) {
+            train.Velocity = 0.005;
+        }
+
+        if (train.R > 1) {
+            double MaxP = 20;
+            double OutP = MaxP / 400 * train.P * train.P;
+            train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, OutP, 0.001);
+
+            if (train.Velocity < train.nextVelocity) {
+                train.Velocity = train.nextVelocity;
+            }
+        }
+
+        if (train.R < 10) {
+            train.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(train.Velocity), 0.1, 1.0, 1.0, 1.0, train.R / 10.0, 0.001);
+            if (train.Velocity < 0.005) train.Velocity = 0;
+        }
+
+        if (train.Dir != 0) {
+            cart.motionX = Math.cos(train.Yaw * Math.PI / 180.0) * train.Dir * train.Velocity;
+            cart.motionZ = -Math.sin(train.Yaw * Math.PI / 180.0) * train.Dir * train.Velocity;
+        } else {
+            train.Velocity = Math.abs(cart.motionX / Math.cos(train.Yaw * Math.PI / 180.0));
+            if (Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0)) > train.Velocity)
+                train.Velocity = Math.abs(cart.motionZ / Math.sin(train.Yaw * Math.PI / 180.0));
+        }
+
+    }
+
 }

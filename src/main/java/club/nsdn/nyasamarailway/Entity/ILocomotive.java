@@ -5,18 +5,18 @@ package club.nsdn.nyasamarailway.Entity;
  * Created by drzzm32 on 2017.10.8.
  */
 public interface ILocomotive {
-    int getP();
-    void setP(int value);
+    int getEnginePower();
+    void setEnginePower(int value);
 
-    int getR();
-    void setR(int value);
+    int getEngineBrake();
+    void setEngineBrake(int value);
 
-    int getDir();
-    void setDir(int value);
+    int getEngineDir();
+    void setEngineDir(int value);
 
-    double getVelocity();
-    void setVelocity(double value);
+    double getEngineVel();
+    void setEngineVel(double value);
 
-    double getPrevVelocity();
-    void setPrevVelocity(double value);
+    double getEnginePrevVel();
+    void setEnginePrevVel(double value);
 }

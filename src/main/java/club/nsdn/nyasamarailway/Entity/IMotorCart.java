@@ -9,11 +9,11 @@ public interface IMotorCart {
     void setMotorPower(int power);
     void setMotorBrake(int brake);
     void setMotorDir(int dir);
-    void setMotorVel(float vel);
+    void setMotorVel(double vel);
 
     boolean getMotorState();
     int getMotorPower();
     int getMotorBrake();
     int getMotorDir();
-    float getMotorVel();
+    double getMotorVel();
 }
