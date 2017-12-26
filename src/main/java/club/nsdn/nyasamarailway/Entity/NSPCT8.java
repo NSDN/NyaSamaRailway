@@ -17,7 +17,7 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
     public int P;
     public int R;
     public int Dir;
-    public float Velocity;
+    public double Velocity;
     public boolean motorState;
 
     private final int INDEX_P = 23, INDEX_R = 24, INDEX_DIR = 25, INDEX_V = 26, INDEX_STE = 27;

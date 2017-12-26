@@ -107,7 +107,7 @@ public class ToolHandler {
                         NSPCT8J loco = (NSPCT8J) entity;
                         loco.setHighSpeedMode(!loco.getHighSpeedMode());
                         player.addChatComponentMessage(new ChatComponentTranslation(
-                                "info.nspc8j.mode", String.valueOf(loco.getHighSpeedMode())));
+                                "info.nspc8j.mode", String.valueOf(loco.getHighSpeedMode()).toUpperCase()));
                     }
                 }
 

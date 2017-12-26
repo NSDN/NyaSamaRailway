@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -183,11 +184,11 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
         this.fallDistance = 0.0F;
         Vec3 vec3 = this.func_70489_a(this.posX, this.posY, this.posZ);
         this.posY = (double)y;
-        boolean flag = false;
-        boolean flag1 = false;
-        if (block == Blocks.golden_rail) {
-            flag = (this.worldObj.getBlockMetadata(x, y, z) & 8) != 0;
-            flag1 = !flag;
+        boolean isRailPowered = false;
+        boolean slowDown = false;
+        if (block instanceof BlockRailPowered) {
+            isRailPowered = (this.worldObj.getBlockMetadata(x, y, z) & 8) != 0;
+            slowDown = !isRailPowered;
         }
 
         if (((BlockRailBase)block).isPowered()) {
@@ -224,13 +225,13 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
             d3 = -d3;
         }
 
-        double d6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-        if (d6 > getMaxCartSpeedOnRail()) {
-            d6 = getMaxCartSpeedOnRail();
+        double vel = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        if (vel > getMaxCartSpeedOnRail()) {
+            vel = getMaxCartSpeedOnRail();
         }
 
-        this.motionX = d6 * d2 / d4;
-        this.motionZ = d6 * d3 / d4;
+        this.motionX = vel * d2 / d4;
+        this.motionZ = vel * d3 / d4;
         double d7;
         double d8;
         double d9;
@@ -244,12 +245,12 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
                 if (d10 < 0.01D) {
                     this.motionX += d8 * 0.1D;
                     this.motionZ += d9 * 0.1D;
-                    flag1 = false;
+                    slowDown = false;
                 }
             }
         }
 
-        if (flag1 && this.shouldDoRailFunctions()) {
+        if (slowDown && this.shouldDoRailFunctions()) {
             d7 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             if (d7 < 0.03D) {
                 this.motionX *= 0.0D;
@@ -295,28 +296,28 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
         Vec3 vec31 = this.func_70489_a(this.posX, this.posY, this.posZ);
         if (vec31 != null && vec3 != null) {
             double d14 = (vec3.yCoord - vec31.yCoord) * 0.05D;
-            d6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            if (d6 > 0.0D) {
-                this.motionX = this.motionX / d6 * (d6 + d14);
-                this.motionZ = this.motionZ / d6 * (d6 + d14);
+            vel = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            if (vel > 0.0D) {
+                this.motionX = this.motionX / vel * (vel + d14);
+                this.motionZ = this.motionZ / vel * (vel + d14);
             }
 
             this.setPosition(this.posX, vec31.yCoord, this.posZ);
         }
-
-        int j1 = MathHelper.floor_double(this.posX);
-        int i1 = MathHelper.floor_double(this.posZ);
-        if (j1 != x || i1 != z) {
-            d6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.motionX = d6 * (double)(j1 - x);
-            this.motionZ = d6 * (double)(i1 - z);
+        /** HOLY SHIT! THE CODE CAUSES BUG!
+        int pX = MathHelper.floor_double(this.posX);
+        int pZ = MathHelper.floor_double(this.posZ);
+        if (pX != x || pZ != z) {
+            vel = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            this.motionX = vel * (double)(pX - x);
+            this.motionZ = vel * (double)(pZ - z);
         }
-
+        */
         if (this.shouldDoRailFunctions()) {
             ((BlockRailBase)block).onMinecartPass(this.worldObj, this, x, y, z);
         }
 
-        if (flag && this.shouldDoRailFunctions()) {
+        if (isRailPowered && this.shouldDoRailFunctions()) {
             double d15 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             if (d15 > 0.01D) {
                 double d16 = 0.06D;
@@ -529,7 +530,7 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
             if (canUseRail() && BlockRailBase.func_150051_a(block))
             {
                 float railMaxSpeed = ((BlockRailBase)block).getRailMaxSpeed(worldObj, this, x, y, z);
-                double maxSpeed = Math.min(railMaxSpeed, getCurrentCartSpeedCapOnRail());
+                double maxSpeed = Math.min(railMaxSpeed, getMaxCartSpeedOnRail());
                 this.func_145821_a(x, y, z, maxSpeed, getSlopeAdjustment(), block, ((BlockRailBase)block).getBasicRailMetadata(worldObj, this, x, y, z));
 
                 if (block == Blocks.activator_rail)

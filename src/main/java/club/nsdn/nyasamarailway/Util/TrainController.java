@@ -208,8 +208,8 @@ public class TrainController {
         }
 
         if (train.R > 1) {
-            double MaxP = 20;
-            double OutP = MaxP / 400 * train.P * train.P;
+            double MaxP = 20.0;
+            double OutP = MaxP / 400.0 * (double) train.P * (double) train.P;
             train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, OutP, 0.001);
 
             if (train.Velocity < train.nextVelocity) {
