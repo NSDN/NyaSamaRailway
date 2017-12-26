@@ -4,6 +4,8 @@ import club.nsdn.nyasamarailway.Items.Item1N4148;
 import club.nsdn.nyasamarailway.Items.ItemLoader;
 import club.nsdn.nyasamarailway.Items.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.Items.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.Network.TrainPacket;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,6 +83,16 @@ public class NSPCT6L extends LocoBase {
             }
             return true;
         }
+    }
+
+    @Override
+    protected void doEngine() {
+        //Do engine code
+        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket.Velocity = this.Velocity;
+        TrainController.doMotionWithAir(tmpPacket, this);
+        this.Velocity = tmpPacket.Velocity;
     }
 
     @Override

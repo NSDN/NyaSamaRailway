@@ -1,6 +1,8 @@
 package club.nsdn.nyasamarailway.Entity;
 
 import club.nsdn.nyasamarailway.Items.ItemLoader;
+import club.nsdn.nyasamarailway.Network.TrainPacket;
+import club.nsdn.nyasamarailway.Util.TrainController;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -32,6 +34,16 @@ public class NSET2 extends LocoBase {
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
         return 1.5F;
+    }
+
+    @Override
+    protected void doEngine() {
+        //Do engine code
+        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket.Velocity = this.Velocity;
+        TrainController.doMotionWithAir(tmpPacket, this);
+        this.Velocity = tmpPacket.Velocity;
     }
 
     @Override
