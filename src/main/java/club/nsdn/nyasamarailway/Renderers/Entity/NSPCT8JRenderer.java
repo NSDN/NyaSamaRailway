@@ -1,6 +1,5 @@
 package club.nsdn.nyasamarailway.Renderers.Entity;
 
-import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Entity.NSPCT8J;
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
 import net.minecraft.block.Block;
@@ -15,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
-import org.thewdj.physics.Vec3d;
 
 /**
  * Created by drzzm32 on 2017.10.6.
@@ -66,7 +64,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
             "nyasamarailway", "textures/carts/" + _name + "_meter_pointer.png"
     );
 
-    private final float ANGLE_HALF = 143;
+    private static final float ANGLE_HALF = 143;
 
     private final ResourceLocation textureText[];
 
@@ -185,11 +183,12 @@ public class NSPCT8JRenderer extends RenderMinecart {
         if (cart instanceof NSPCT8J) {
             NSPCT8J loco = (NSPCT8J) cart;
 
-            float v = (float) loco.getVelocity();
-            float a = v - (float) loco.getPrevVelocity();
+            float v = (float) loco.getEngineVel();
+            float a = v - (float) loco.getEnginePrevVel();
 
             float angle;
-            int d = loco.getDir(), p = loco.getP(), r = loco.getR();
+            int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
+            boolean high = loco.getHighSpeedMode();
 
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
@@ -201,13 +200,14 @@ public class NSPCT8JRenderer extends RenderMinecart {
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (r <= 5 ? " STOP" : "  RUN"));
+            doRenderText(2, "pwr: " + pwr + (r <= 5 ? " STOP" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "acc:" + sa + "cm/t2");
 
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
             angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+            if (angle > ANGLE_HALF) angle = ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
             GL11.glTranslatef(-0.00625F, 0.0F, 0.00625F);
@@ -222,6 +222,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
 
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
             angle = a / 0.03F * ANGLE_HALF;
+            if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
             GL11.glTranslatef(-0.00625F, 0.0F, -0.00625F);

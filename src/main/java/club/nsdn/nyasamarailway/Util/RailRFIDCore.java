@@ -37,6 +37,13 @@ public abstract class RailRFIDCore extends NSASM {
                 new ChatComponentTranslation("info.rfid.ste", rfid.state ? 1 : 0));
     }
 
+    public void setVelocity(TileEntityRailRFID rfid, EntityPlayer player, double value) {
+        if (rfid == null) return;
+        rfid.vel = value;
+        player.addChatComponentMessage(
+                new ChatComponentTranslation("info.rfid.vel", rfid.vel));
+    }
+
     @Override
     public void loadFunc(LinkedHashMap<String, Operator> funcList) {
         funcList.put("pwr", ((dst, src) -> {
@@ -65,6 +72,16 @@ public abstract class RailRFIDCore extends NSASM {
 
             if (dst.type == RegType.INT) {
                 setState(getRFID(), getPlayer(), (int) dst.data);
+                return Result.OK;
+            }
+            return Result.ERR;
+        }));
+        funcList.put("vel", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+
+            if (dst.type == RegType.FLOAT || dst.type == RegType.INT) {
+                setVelocity(getRFID(), getPlayer(), Double.valueOf(dst.data.toString()));
                 return Result.OK;
             }
             return Result.ERR;

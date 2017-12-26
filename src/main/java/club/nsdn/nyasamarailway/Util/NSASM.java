@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import java.util.LinkedHashMap;
 
@@ -48,22 +47,66 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
         super(64, 32, 32, Util.getSegments(code));
     }
 
+    private void print(String value) {
+        if (getPlayer() == null) return;
+        getPlayer().addChatComponentMessage(new ChatComponentText(value));
+    }
+
     @Override
-    protected void loadFunList() {
-        super.loadFunList();
+    protected void loadFuncList() {
+        super.loadFuncList();
 
-        funList.replace("prt", ((dst, src) -> {
-            if (src != null) return Result.ERR;
-            if (dst == null) return Result.ERR;
-
-            if (getPlayer() == null) return Result.OK;
-            if (dst.type == RegType.STR) {
-                getPlayer().addChatComponentMessage(new ChatComponentText(((String) dst.data).substring(dst.strPtr)));
-            } else getPlayer().addChatComponentMessage(new ChatComponentText(dst.data.toString()));
+        funcList.replace("prt", (dst, src) -> {
+            if (src != null) {
+                if (dst.type == RegType.STR) {
+                    if (dst.readOnly) return Result.ERR;
+                    if (src.type == RegType.CHAR && src.data.equals('\b')) {
+                        if (dst.data.toString().contains("\n")) {
+                            String[] parts = dst.data.toString().split("\n");
+                            String res = "";
+                            for (int i = 0; i < parts.length - 1; i++) {
+                                res = res.concat(parts[i]);
+                                if (i < parts.length - 2) res = res.concat("\n");
+                            }
+                        }
+                    } else if (src.type == RegType.CODE) {
+                        Register register = eval(src);
+                        if (register == null) return Result.ERR;
+                        dst.data = dst.data.toString().concat('\n' + register.data.toString());
+                    } else if (src.type == RegType.STR) {
+                        dst.data = dst.data.toString().concat('\n' + src.data.toString());
+                    } else return Result.ERR;
+                } else if (dst.type == RegType.CODE) {
+                    if (dst.readOnly) return Result.ERR;
+                    if (src.type == RegType.CHAR && src.data.equals('\b')) {
+                        if (dst.data.toString().contains("\n")) {
+                            String[] parts = dst.data.toString().split("\n");
+                            String res = "";
+                            for (int i = 0; i < parts.length - 1; i++) {
+                                res = res.concat(parts[i]);
+                                if (i < parts.length - 2) res = res.concat("\n");
+                            }
+                        }
+                    } else if (src.type == RegType.CODE) {
+                        dst.data = dst.data.toString().concat('\n' + src.data.toString());
+                    } else if (src.type == RegType.STR) {
+                        dst.data = dst.data.toString().concat('\n' + src.data.toString());
+                    } else return Result.ERR;
+                } else return Result.ERR;
+            } else {
+                if (dst == null) return Result.ERR;
+                if (dst.type == RegType.STR) {
+                    print(((String) dst.data).substring(dst.strPtr));
+                } else if (dst.type == RegType.CODE) {
+                    Register register = eval(dst);
+                    if (register == null) return Result.ERR;
+                    print(register.data.toString());
+                } else print(dst.data.toString());
+            }
             return Result.OK;
-        }));
+        });
 
-        funList.put("nya", ((dst, src) -> {
+        funcList.put("nya", ((dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
             if (dst.type != RegType.STR) return Result.ERR;
@@ -89,7 +132,7 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             return Result.OK;
         }));
 
-        funList.put("nyaa", ((dst, src) -> {
+        funcList.put("nyaa", ((dst, src) -> {
             if (src != null) return Result.ERR;
             if (dst == null) return Result.ERR;
             if (dst.type != RegType.STR) return Result.ERR;
@@ -124,7 +167,7 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             return Result.OK;
         }));
 
-        loadFunc(funList);
+        loadFunc(funcList);
     }
 
     public abstract World getWorld();

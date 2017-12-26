@@ -10,6 +10,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,6 +21,9 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
  */
 public class NSPCT8J extends LocoBase {
 
+    private final int INDEX_HIGH = 28;
+    public boolean isHighSpeedMode = false;
+
     public NSPCT8J(World world) {
         super(world);
         ignoreFrustumCheck = true;
@@ -28,6 +32,33 @@ public class NSPCT8J extends LocoBase {
     public NSPCT8J(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataWatcher.addObject(INDEX_HIGH, Integer.valueOf("0"));
+    }
+
+    public void setHighSpeedMode(boolean highSpeedMode) {
+        this.isHighSpeedMode = highSpeedMode;
+        this.dataWatcher.updateObject(INDEX_HIGH, highSpeedMode ? 1 : 0);
+    }
+
+    public boolean getHighSpeedMode() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_HIGH) > 0;
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        setHighSpeedMode(tagCompound.getBoolean("HighSpeed"));
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        tagCompound.setBoolean("HighSpeed", getHighSpeedMode());
     }
 
     @Override
@@ -73,8 +104,8 @@ public class NSPCT8J extends LocoBase {
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
                     if (stack.getItem() instanceof Item1N4148 ||
-                            stack.getItem() instanceof ItemTrainController8Bit ||
-                            stack.getItem() instanceof ItemTrainController32Bit) {
+                        stack.getItem() instanceof ItemTrainController8Bit ||
+                        stack.getItem() instanceof ItemTrainController32Bit) {
                         return true;
                     }
                     if (stack.getItem() instanceof ItemMinecart) return true;
@@ -89,14 +120,17 @@ public class NSPCT8J extends LocoBase {
 
     @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), getP(), getR(), getDir());
+        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
-        TrainController.doMotionWithAir(tmpPacket, this);
+        if (getHighSpeedMode())
+            TrainController.doMotionWithAirHigh(tmpPacket, this);
+        else
+            TrainController.doMotionWithAir(tmpPacket, this);
         this.prevVelocity = this.Velocity;
-        setPrevVelocity(this.prevVelocity);
+        setEnginePrevVel(this.prevVelocity);
         this.Velocity = tmpPacket.Velocity;
-        setVelocity(this.Velocity);
+        setEngineVel(this.Velocity);
     }
 
     @Override

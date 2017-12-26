@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.Blocks;
 
+import club.nsdn.nyasamarailway.Entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.Entity.IMotorCart;
 import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
@@ -84,8 +85,8 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 LocoBase loco = (LocoBase) cart;
 
                 if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
-                    loco.setP(rfid.P);
-                    loco.setR(rfid.R);
+                    loco.setEnginePower(rfid.P);
+                    loco.setEngineBrake(rfid.R);
                 }
             } else if (cart instanceof IMotorCart) {
                 IMotorCart motorCart = (IMotorCart) cart;
@@ -94,6 +95,14 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                     motorCart.setMotorPower(rfid.P);
                     motorCart.setMotorBrake(rfid.R);
                     motorCart.setMotorState(rfid.state);
+                }
+            }
+
+            if (cart instanceof ILimitVelCart) {
+                ILimitVelCart limitVelCart = (ILimitVelCart) cart;
+
+                if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                    limitVelCart.setMaxVelocity(rfid.vel);
                 }
             }
 

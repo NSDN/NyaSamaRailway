@@ -1,8 +1,6 @@
 package club.nsdn.nyasamarailway.Event;
 
-import club.nsdn.nyasamarailway.Entity.LocoBase;
-import club.nsdn.nyasamarailway.Entity.NSPCT5;
-import club.nsdn.nyasamarailway.Entity.NSPCT5L;
+import club.nsdn.nyasamarailway.Entity.*;
 import club.nsdn.nyasamarailway.ExtMod.ExRollerCoaster;
 import club.nsdn.nyasamarailway.ExtMod.RailsOfWar;
 import club.nsdn.nyasamarailway.Items.*;
@@ -101,6 +99,15 @@ public class ToolHandler {
                                 player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
                             }
                         }
+                    }
+                }
+
+                else if (stack.getItem() instanceof Item1N4148) {
+                    if (entity instanceof NSPCT8J) {
+                        NSPCT8J loco = (NSPCT8J) entity;
+                        loco.setHighSpeedMode(!loco.getHighSpeedMode());
+                        player.addChatComponentMessage(new ChatComponentTranslation(
+                                "info.nspc8j.mode", String.valueOf(loco.getHighSpeedMode()).toUpperCase()));
                     }
                 }
 
