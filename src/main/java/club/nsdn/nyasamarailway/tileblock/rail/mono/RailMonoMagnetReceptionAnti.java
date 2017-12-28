@@ -1,12 +1,14 @@
 package club.nsdn.nyasamarailway.tileblock.rail.mono;
 
 import club.nsdn.nyasamarailway.block.rail.IRailDirectional;
+import club.nsdn.nyasamarailway.entity.LocoBase;
+import club.nsdn.nyasamarailway.entity.MinecartBase;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT4;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT5;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
-import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.util.TrainController;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.item.EntityMinecart;
@@ -176,8 +178,72 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
         super.updateTick(world, x, y, z, random);
     }
 
-    public void onLocoPass(LocoBase loco, TileEntityRail rail) {
+    public boolean timeExceed(World world, int x, int y, int z) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
+            TileEntityRail rail = (TileEntityRail) world.getTileEntity(x, y, z);
+            return rail.delay >= this.DELAY_TIME * 20;
+        }
+        return false;
+    }
 
+    public void onLocoPass(LocoBase loco, TileEntityRail rail) {
+        double maxV = 0.2;
+        int x = rail.xCoord, y = rail.yCoord, z = rail.zCoord;
+        World world = loco.worldObj;
+
+        if (loco.Velocity > 0 && !rail.enable) {
+            if (loco.Velocity > maxV) {
+                // speed down
+                loco.setEnginePower(0); loco.setEngineBrake(1);
+            } else {
+                // stop
+                loco.setEnginePower(0); loco.setEngineBrake(1);
+
+                rail.enable = true;
+                loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
+                world.playSoundAtEntity(loco, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
+            }
+        } else {
+            if (rail.delay < DELAY_TIME * 20 && rail.enable) {
+                boolean isEnabled = false;
+
+                if (rail.getSender() != null)
+                    isEnabled = rail.senderIsPowered();
+
+                if (!isEnabled) rail.delay += 1;
+                else {
+                    rail.count += 1;
+
+                    if (rail.delay + rail.count == DELAY_TIME * 15) {
+                        rail.delay = DELAY_TIME * 15 - 1;
+                        rail.count += 1;
+                        world.playSoundAtEntity(loco, "nyasamarailway:info.reception.delay", 0.5F, 1.0F);
+                    }
+                }
+
+                if (rail.delay == DELAY_TIME * 15) {
+                    rail.count = 0;
+                    world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
+                }
+
+                if (loco.Velocity > maxV) {
+                    // keep speed down
+                    loco.setEnginePower(0); loco.setEngineBrake(1);
+                } else {
+                    // keep stop
+                    loco.setEnginePower(0); loco.setEngineBrake(1);
+                    loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
+                }
+            } else {
+                // start, dir = neg, -x | +z
+                if (getRailDirection(world, x, y, z) == RailDirection.NS) {
+                    loco.setEngineDir(-(int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0)));
+                } else {
+                    loco.setEngineDir(-(int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0)));
+                }
+                loco.setEnginePower(1); loco.setEngineBrake(10);
+            }
+        }
     }
 
     @Override

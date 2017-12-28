@@ -110,6 +110,8 @@ public class BlockLoader {
     public static Block railMonoMagnetSpeedLimit;
     public static Block railMonoMagnetSignalTransfer;
     public static Block railMonoMagnetBlocking;
+    public static Block railMonoMagnetRFID;
+    public static Block railMonoMagnetSniffer;
 
     public static Block railTriSwitch;
 
@@ -386,6 +388,11 @@ public class BlockLoader {
         railMonoMagnetBlocking = new RailMonoMagnetBlocking();
         register(railMonoMagnetBlocking, "rail_mono_magnet_blocking");
 
+        railMonoMagnetRFID = new RailMonoMagnetRFID();
+        register(railMonoMagnetRFID, "rail_mono_magnet_rfid");
+
+        railMonoMagnetSniffer = new RailMonoMagnetSniffer();
+        register(railMonoMagnetSniffer, "rail_mono_magnet_sniffer");
 
         railTriSwitch = new RailTriSwitch();
         register(railTriSwitch, "rail_tri_switch");

@@ -166,6 +166,16 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetRFID.RailRFID.class,
+                new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightRFID.png", "textures/rails/RailMonoMagnetSlopeRFID.png", "textures/rails/RailMonoMagnetTurnedRFID.png" })
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetSniffer.RailSniffer.class,
+                new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightSniffer.png", "textures/rails/RailMonoMagnetSlopeSniffer.png", "textures/rails/RailMonoMagnetTurnedSniffer.png" })
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockSignalLight.SignalLight.class, new SignalLightRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(

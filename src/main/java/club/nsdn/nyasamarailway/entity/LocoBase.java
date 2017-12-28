@@ -1,12 +1,14 @@
 package club.nsdn.nyasamarailway.entity;
 
+import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.block.rail.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReception;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReceptionAnti;
-import club.nsdn.nyasamarailway.block.rail.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.NyaSamaRailway;
-import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamarailway.network.TrainPacket;
+import club.nsdn.nyasamarailway.util.TrainController;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailPowered;
@@ -652,6 +654,179 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
             }
 
             MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, x, y, z));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Vec3 func_70495_a(double doubleX, double doubleY, double doubleZ, double v)
+    {
+        int x = MathHelper.floor_double(doubleX);
+        int y = MathHelper.floor_double(doubleY);
+        int z = MathHelper.floor_double(doubleZ);
+
+        if (!BlockRailBase.func_150049_b_(this.worldObj, x, y, z) && BlockRailBase.func_150049_b_(this.worldObj, x, y - 1, z))
+        {
+            --y;
+        }
+
+        Block block = this.worldObj.getBlock(x, y, z);
+
+        if (!BlockRailBase.func_150051_a(block))
+        {
+            return null;
+        }
+        else
+        {
+            int l = ((BlockRailBase)block).getBasicRailMetadata(worldObj, this, x, y, z);
+
+            doubleY = (double)y;
+
+            if (l >= 2 && l <= 5)
+            {
+                doubleY = (double)(y + 1);
+            }
+
+            int[][] aint = matrix[l];
+            double d4 = (double)(aint[1][0] - aint[0][0]);
+            double d5 = (double)(aint[1][2] - aint[0][2]);
+            double d6 = Math.sqrt(d4 * d4 + d5 * d5);
+            d4 /= d6;
+            d5 /= d6;
+            doubleX += d4 * v;
+            doubleZ += d5 * v;
+
+            if (aint[0][1] != 0 && MathHelper.floor_double(doubleX) - x == aint[0][0] && MathHelper.floor_double(doubleZ) - z == aint[0][2])
+            {
+                doubleY += (double)aint[0][1];
+            }
+            else if (aint[1][1] != 0 && MathHelper.floor_double(doubleX) - x == aint[1][0] && MathHelper.floor_double(doubleZ) - z == aint[1][2])
+            {
+                doubleY += (double)aint[1][1];
+            }
+
+            return this.func_70489_a(doubleX, doubleY, doubleZ);
+        }
+    }
+
+    @Override
+    protected void func_94088_b(double v) {
+        if(this.motionX < -v) {
+            this.motionX = -v;
+        }
+
+        if(this.motionX > v) {
+            this.motionX = v;
+        }
+
+        if(this.motionZ < -v) {
+            this.motionZ = -v;
+        }
+
+        if(this.motionZ > v) {
+            this.motionZ = v;
+        }
+
+        double moveY = this.motionY;
+        if(this.getMaxSpeedAirVertical() > 0.0F && this.motionY > (double)this.getMaxSpeedAirVertical()) {
+            moveY = (double)this.getMaxSpeedAirVertical();
+            if(Math.abs(this.motionX) < 0.30000001192092896D && Math.abs(this.motionZ) < 0.30000001192092896D) {
+                moveY = 0.15000000596046448D;
+                this.motionY = moveY;
+            }
+        }
+
+        boolean isOnSpeedKeepRail = false;
+        if (worldObj.getBlock(chunkCoordX, chunkCoordY, chunkCoordZ) instanceof IRailSpeedKeep)
+            isOnSpeedKeepRail = true;
+
+        if(this.onGround && !isOnSpeedKeepRail) {
+            this.motionX *= 0.5D;
+            this.motionY *= 0.5D;
+            this.motionZ *= 0.5D;
+        }
+
+        this.moveEntity(this.motionX, moveY, this.motionZ);
+        if(!this.onGround) {
+            this.motionX *= this.getDragAir();
+            this.motionY *= this.getDragAir();
+            this.motionZ *= this.getDragAir();
+        }
+
+    }
+
+    @Override
+    public Vec3 func_70489_a(double doubleX, double doubleY, double doubleZ)
+    {
+        int x = MathHelper.floor_double(doubleX);
+        int y = MathHelper.floor_double(doubleY);
+        int z = MathHelper.floor_double(doubleZ);
+
+        if (!BlockRailBase.func_150049_b_(this.worldObj, x, y, z) && BlockRailBase.func_150049_b_(this.worldObj, x, y - 1, z))
+        {
+            --y;
+        }
+
+        Block block = this.worldObj.getBlock(x, y, z);
+
+        if (BlockRailBase.func_150051_a(block))
+        {
+            int l = ((BlockRailBase)block).getBasicRailMetadata(worldObj, this, x, y, z);
+            doubleY = (double)y;
+
+            if (l >= 2 && l <= 5)
+            {
+                doubleY = (double)(y + 1);
+            }
+
+            int[][] aint = matrix[l];
+            double d3 = 0.0D;
+            double d4 = (double)x + 0.5D + (double)aint[0][0] * 0.5D;
+            double d5 = (double)y + 0.5D + (double)aint[0][1] * 0.5D;
+            double d6 = (double)z + 0.5D + (double)aint[0][2] * 0.5D;
+            double d7 = (double)x + 0.5D + (double)aint[1][0] * 0.5D;
+            double d8 = (double)y + 0.5D + (double)aint[1][1] * 0.5D;
+            double d9 = (double)z + 0.5D + (double)aint[1][2] * 0.5D;
+            double d10 = d7 - d4;
+            double d11 = (d8 - d5) * 2.0D;
+            double d12 = d9 - d6;
+
+            if (d10 == 0.0D)
+            {
+                doubleX = (double)x + 0.5D;
+                d3 = doubleZ - (double)z;
+            }
+            else if (d12 == 0.0D)
+            {
+                doubleZ = (double)z + 0.5D;
+                d3 = doubleX - (double)x;
+            }
+            else
+            {
+                double d13 = doubleX - d4;
+                double d14 = doubleZ - d6;
+                d3 = (d13 * d10 + d14 * d12) * 2.0D;
+            }
+
+            doubleX = d4 + d10 * d3;
+            doubleY = d5 + d11 * d3;
+            doubleZ = d6 + d12 * d3;
+
+            if (d11 < 0.0D)
+            {
+                ++doubleY;
+            }
+
+            if (d11 > 0.0D)
+            {
+                doubleY += 0.5D;
+            }
+
+            return Vec3.createVectorHelper(doubleX, doubleY, doubleZ);
+        }
+        else
+        {
+            return null;
         }
     }
 

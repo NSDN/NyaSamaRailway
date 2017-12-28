@@ -31,6 +31,7 @@ public class ItemLoader {
     public static Item itemNSPCT2;
     public static Item itemNSPCT3;
     public static Item itemNSPCT4;
+    public static Item itemNSPCT4M;
     public static Item itemNSPCT5;
     public static Item itemNSPCT5L;
     public static Item itemNSPCT6;
@@ -91,6 +92,9 @@ public class ItemLoader {
         itemNSPCT4 = new ItemNSPCT4();
         register(itemNSPCT4, "item_nspc_4");
 
+        itemNSPCT4M = new ItemNSPCT4M();
+        register(itemNSPCT4M, "item_nspc_4m");
+
         itemNSPCT5 = new ItemNSPCT5();
         register(itemNSPCT5, "item_nspc_5");
 
@@ -101,7 +105,7 @@ public class ItemLoader {
         register(itemNSPCT6, "item_nspc_6");
 
         itemNSPCT6L = new ItemNSPCT6L();
-        register(itemNSPCT6L, "item_nspc_6L");
+        register(itemNSPCT6L, "item_nspc_6l");
 
         itemNSPCT7 = new ItemNSPCT7();
         register(itemNSPCT7, "item_nspc_7");
