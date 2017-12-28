@@ -94,6 +94,7 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
 
     @Override
     public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
+        // TODO: Should we increase the speed ?
         return 1.0F;
     }
 
