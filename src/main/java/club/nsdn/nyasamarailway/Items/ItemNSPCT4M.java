@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.Entity.LocoBase;
 import club.nsdn.nyasamarailway.Entity.MinecartBase;
 import club.nsdn.nyasamarailway.Entity.NSPCT4M;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnetBase;
+import club.nsdn.nyasamarailway.Util.Util;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -22,6 +23,7 @@ public class ItemNSPCT4M extends ItemMinecart {
         setTexName("item_nspc_4m");
         setMaxStackSize(64);
         setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
+        if (!Util.loadIf()) setCreativeTab(null);
     }
 
     protected void setTexName(String name) {
