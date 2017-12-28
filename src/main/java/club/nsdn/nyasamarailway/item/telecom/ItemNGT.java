@@ -17,7 +17,7 @@ public class ItemNGT extends NGTablet {
     }
 
     @Override
-    public SimpleNetworkWrapper getWrapper() {
+    public SimpleNetworkWrapper getNetworkWrapper() {
         return NetworkWrapper.instance;
     }
 

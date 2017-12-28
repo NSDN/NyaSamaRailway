@@ -44,7 +44,7 @@ public class NGTablet extends ItemWritableBook {
         return itemStack;
     }
 
-    public SimpleNetworkWrapper getWrapper() {
+    public SimpleNetworkWrapper getNetworkWrapper() {
         return null;
     }
 
@@ -56,7 +56,7 @@ public class NGTablet extends ItemWritableBook {
             new NSASM(code) {
                 @Override
                 public SimpleNetworkWrapper getWrapper() {
-                    return getWrapper();
+                    return getNetworkWrapper();
                 }
 
                 @Override
