@@ -160,6 +160,14 @@ public class TileEntityLoader {
                 "railMonoMagnetBlocking");
 
         GameRegistry.registerTileEntity(
+                RailMonoMagnetRFID.RailRFID.class,
+                "railMonoMagnetRFID");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetSniffer.RailSniffer.class,
+                "railMonoMagnetSniffer");
+
+        GameRegistry.registerTileEntity(
                 TileEntityRailTransceiver.class,
                 "tileEntityRailTransceiver");
 

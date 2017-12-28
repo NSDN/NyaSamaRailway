@@ -12,7 +12,6 @@ import club.nsdn.nyasamarailway.TileEntities.Rail.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import net.minecraft.client.model.ModelBase;
 
 public class TileEntityModelBinder {
 
@@ -156,6 +155,16 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 RailMonoMagnetBlocking.TileEntityRail.class,
                 new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightBlocking.png", "textures/rails/RailMonoMagnetSlopeBlocking.png", "textures/rails/RailMonoMagnetTurnedBlocking.png" })
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetRFID.RailRFID.class,
+                new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightRFID.png", "textures/rails/RailMonoMagnetSlopeRFID.png", "textures/rails/RailMonoMagnetTurnedRFID.png" })
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetSniffer.RailSniffer.class,
+                new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightSniffer.png", "textures/rails/RailMonoMagnetSlopeSniffer.png", "textures/rails/RailMonoMagnetTurnedSniffer.png" })
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(

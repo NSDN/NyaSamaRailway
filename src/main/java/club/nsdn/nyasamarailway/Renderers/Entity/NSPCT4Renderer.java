@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.Renderers.Entity;
 
 import club.nsdn.nyasamarailway.Entity.NSPCT4;
+import club.nsdn.nyasamarailway.Entity.NSPCT4M;
 import club.nsdn.nyasamarailway.TileEntities.Rail.RailMonoMagnetBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBase;
@@ -103,6 +104,8 @@ public class NSPCT4Renderer extends RenderMinecart {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         if (minecart instanceof NSPCT4) {
             GL11.glTranslated(0.0, -((NSPCT4) minecart).shiftY, 0.0);
+        } else if (minecart instanceof NSPCT4M) {
+            GL11.glTranslated(0.0, -((NSPCT4M) minecart).shiftY, 0.0);
         }
         modelCart.render(minecart, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GL11.glPopMatrix();
