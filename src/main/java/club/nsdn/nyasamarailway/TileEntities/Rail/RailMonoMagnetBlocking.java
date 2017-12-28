@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.TileEntities.Rail;
 
+import club.nsdn.nyasamarailway.Blocks.IRailNoDelay;
 import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailTransceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +17,7 @@ import java.util.UUID;
 /**
  * Created by drzzm32 on 2017.6.17.
  */
-public class RailMonoMagnetBlocking extends RailMonoMagnetDetector {
+public class RailMonoMagnetBlocking extends RailMonoMagnetDetector implements IRailNoDelay {
 
     public static LinkedHashMap<UUID, TileEntityRail> tmpRails;
 

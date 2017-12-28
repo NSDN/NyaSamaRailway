@@ -165,7 +165,7 @@ public class Item1N4148 extends ItemToolBase {
             nowDelay = ((BlockRailDetectorBase) world.getBlock(x, y, z)).getDelaySecond();
             if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.1N4148.delay", nowDelay));
             return !world.isRemote;
-        } else if (block instanceof RailMonoMagnetDetector && !(block instanceof RailMonoMagnetBlocking)) {
+        } else if (block instanceof RailMonoMagnetDetector && !(block instanceof IRailNoDelay)) {
             int nowDelay = ((RailMonoMagnetDetector) block).getDelaySecond();
             switch (nowDelay) {
                 case 0:
