@@ -1,8 +1,7 @@
 package club.nsdn.nyasamarailway.TileEntities;
 
 import club.nsdn.nyasamarailway.ExtMod.Railcraft;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailActuator;
-import club.nsdn.nyasamarailway.TileEntities.Signals.TileEntityRailReceiver;
+import club.nsdn.nyasamarailway.TileEntities.Signals.*;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,8 +50,8 @@ public class TileEntitySignalBox extends TileEntityBase {
             TileEntity railTarget = getTarget();
             if (railTarget == null) return false;
 
-            if (railTarget instanceof TileEntitySignalLight.SignalLight) {
-                ((TileEntitySignalLight.SignalLight) railTarget).isPowered = state;
+            if (railTarget instanceof club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight) {
+                ((club.nsdn.nyasamarailway.TileEntities.Signals.TileEntitySignalLight) railTarget).isPowered = state;
                 return true;
             }
             return false;
