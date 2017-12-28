@@ -44,6 +44,10 @@ public class NGTablet extends ItemWritableBook {
         return itemStack;
     }
 
+    public SimpleNetworkWrapper getWrapper() {
+        return null;
+    }
+
     public void runNGT(ItemStack itemStack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
             NBTTagList list = Util.getTagListFromNGT(itemStack);
@@ -52,7 +56,7 @@ public class NGTablet extends ItemWritableBook {
             new NSASM(code) {
                 @Override
                 public SimpleNetworkWrapper getWrapper() {
-                    return null;
+                    return getWrapper();
                 }
 
                 @Override

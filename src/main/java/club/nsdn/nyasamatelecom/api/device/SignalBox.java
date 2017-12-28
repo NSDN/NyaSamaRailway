@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class SignalBox extends DeviceBase {
 
-    public class TileEntitySignalBox extends TileEntityActuator {
+    public static class TileEntitySignalBox extends TileEntityActuator {
 
         public boolean inverterEnabled;
         public boolean prevInverterEnabled;

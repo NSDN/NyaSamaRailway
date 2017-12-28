@@ -178,7 +178,7 @@ public class TrainController {
 
         if (train.R > 1) {
             double MaxP = 4.0;
-            double OutP = MaxP / 400.0 * (double) train.P * (double) train.P;
+            double OutP = MaxP / Math.pow(20.0, Math.E / 2.0) * Math.pow((double) train.P, Math.E / 2.0);
             train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, OutP, 0.001);
 
             if (train.Velocity < train.nextVelocity) {
@@ -211,7 +211,7 @@ public class TrainController {
 
         if (train.R > 1) {
             double MaxP = 20.0;
-            double OutP = MaxP / 400.0 * (double) train.P * (double) train.P;
+            double OutP = MaxP / Math.pow(20.0, 2.0) * Math.pow((double) train.P, 2.0);
             train.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(train.Velocity), 0.1, 1.0, OutP, 0.001);
 
             if (train.Velocity < train.nextVelocity) {

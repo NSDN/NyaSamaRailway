@@ -1,8 +1,9 @@
 package club.nsdn.nyasamarailway.tileblock.signal.core;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.extmod.Railcraft;
-import club.nsdn.nyasamarailway.tileblock.signal.block.BlockSignalLight;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntitySignalLight;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
  */
 public class BlockSignalBox extends club.nsdn.nyasamatelecom.api.device.SignalBox {
 
-    public class TileEntitySignalBox extends club.nsdn.nyasamatelecom.api.device.SignalBox.TileEntitySignalBox {
+    public static class TileEntitySignalBox extends club.nsdn.nyasamatelecom.api.device.SignalBox.TileEntitySignalBox {
 
         @Override
         public boolean tryControlFirst(boolean state) {
@@ -30,8 +31,8 @@ public class BlockSignalBox extends club.nsdn.nyasamatelecom.api.device.SignalBo
             TileEntity railTarget = getTarget();
             if (railTarget == null) return false;
 
-            if (railTarget instanceof BlockSignalLight.SignalLight) {
-                ((BlockSignalLight.SignalLight) railTarget).isPowered = state;
+            if (railTarget instanceof TileEntitySignalLight) {
+                ((TileEntitySignalLight) railTarget).isPowered = state;
                 return true;
             }
             return false;
@@ -46,6 +47,7 @@ public class BlockSignalBox extends club.nsdn.nyasamatelecom.api.device.SignalBo
 
     public BlockSignalBox() {
         super(NyaSamaRailway.MODID, "SignalBox", "signal_box");
+        setCreativeTab(CreativeTabLoader.tabNyaSamaRailway);
     }
 
 }

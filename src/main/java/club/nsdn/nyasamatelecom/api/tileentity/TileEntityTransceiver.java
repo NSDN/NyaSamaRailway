@@ -33,22 +33,22 @@ public class TileEntityTransceiver extends TileEntity implements ITransceiver<Ti
         return (TileEntityTransceiver) tileEntity;
     }
 
-    public void setTransceiver(TileEntityTransceiver rail) {
-        if (rail == null) {
+    public void setTransceiver(TileEntityTransceiver transceiver) {
+        if (transceiver == null) {
             transceiverX = "null";
             transceiverY = "null";
             transceiverZ = "null";
         } else {
-            transceiverX = String.valueOf(rail.xCoord);
-            transceiverY = String.valueOf(rail.yCoord);
-            transceiverZ = String.valueOf(rail.zCoord);
+            transceiverX = String.valueOf(transceiver.xCoord);
+            transceiverY = String.valueOf(transceiver.yCoord);
+            transceiverZ = String.valueOf(transceiver.zCoord);
         }
     }
 
     public boolean transceiverIsPowered() {
-        TileEntityTransceiver rail = getTransceiver();
-        if (rail == null) return false;
-        int meta = worldObj.getBlockMetadata(rail.xCoord, rail.yCoord, rail.zCoord);
+        TileEntityTransceiver transceiver = getTransceiver();
+        if (transceiver == null) return false;
+        int meta = worldObj.getBlockMetadata(transceiver.xCoord, transceiver.yCoord, transceiver.zCoord);
         return (meta & 8) != 0;
     }
 
@@ -59,20 +59,20 @@ public class TileEntityTransceiver extends TileEntity implements ITransceiver<Ti
     }
 
     public void fromNBT(NBTTagCompound tagCompound) {
-        transceiverX = tagCompound.getString("transceiverRailX");
-        transceiverY = tagCompound.getString("transceiverRailY");
-        transceiverZ = tagCompound.getString("transceiverRailZ");
+        transceiverX = tagCompound.getString("transceiverX");
+        transceiverY = tagCompound.getString("transceiverY");
+        transceiverZ = tagCompound.getString("transceiverZ");
     }
 
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (getTransceiver() == null) {
-            tagCompound.setString("transceiverRailX", "null");
-            tagCompound.setString("transceiverRailY", "null");
-            tagCompound.setString("transceiverRailZ", "null");
+            tagCompound.setString("transceiverX", "null");
+            tagCompound.setString("transceiverY", "null");
+            tagCompound.setString("transceiverZ", "null");
         } else {
-            tagCompound.setString("transceiverRailX", transceiverX);
-            tagCompound.setString("transceiverRailY", transceiverY);
-            tagCompound.setString("transceiverRailZ", transceiverZ);
+            tagCompound.setString("transceiverX", transceiverX);
+            tagCompound.setString("transceiverY", transceiverY);
+            tagCompound.setString("transceiverZ", transceiverZ);
         }
         return tagCompound;
     }

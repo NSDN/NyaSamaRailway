@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class TriStateSignalBox extends DeviceBase {
 
-    public class TileEntityTriStateSignalBox extends TileEntityTriStateTransmitter {
+    public static class TileEntityTriStateSignalBox extends TileEntityTriStateTransmitter {
     }
 
     public TriStateSignalBox(String modid, String name, String icon) {

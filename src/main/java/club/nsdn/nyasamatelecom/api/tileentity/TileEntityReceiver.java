@@ -33,22 +33,22 @@ public class TileEntityReceiver extends TileEntity implements IReceiver<TileEnti
         return (TileEntityTransceiver) tileEntity;
     }
 
-    public void setSender(TileEntityTransceiver rail) {
-        if (rail == null) {
+    public void setSender(TileEntityTransceiver sender) {
+        if (sender == null) {
             receiverX = "null";
             receiverY = "null";
             receiverZ = "null";
         } else {
-            receiverX = String.valueOf(rail.xCoord);
-            receiverY = String.valueOf(rail.yCoord);
-            receiverZ = String.valueOf(rail.zCoord);
+            receiverX = String.valueOf(sender.xCoord);
+            receiverY = String.valueOf(sender.yCoord);
+            receiverZ = String.valueOf(sender.zCoord);
         }
     }
 
     public boolean senderIsPowered() {
-        TileEntityTransceiver rail = getSender();
-        if (rail == null) return false;
-        int meta = worldObj.getBlockMetadata(rail.xCoord, rail.yCoord, rail.zCoord);
+        TileEntityTransceiver sender = getSender();
+        if (sender == null) return false;
+        int meta = worldObj.getBlockMetadata(sender.xCoord, sender.yCoord, sender.zCoord);
         return (meta & 8) != 0;
     }
 
@@ -59,20 +59,20 @@ public class TileEntityReceiver extends TileEntity implements IReceiver<TileEnti
     }
 
     public void fromNBT(NBTTagCompound tagCompound) {
-        receiverX = tagCompound.getString("receiverRailX");
-        receiverY = tagCompound.getString("receiverRailY");
-        receiverZ = tagCompound.getString("receiverRailZ");
+        receiverX = tagCompound.getString("receiverX");
+        receiverY = tagCompound.getString("receiverY");
+        receiverZ = tagCompound.getString("receiverZ");
     }
 
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (getSender() == null) {
-            tagCompound.setString("receiverRailX", "null");
-            tagCompound.setString("receiverRailY", "null");
-            tagCompound.setString("receiverRailZ", "null");
+            tagCompound.setString("receiverX", "null");
+            tagCompound.setString("receiverY", "null");
+            tagCompound.setString("receiverZ", "null");
         } else {
-            tagCompound.setString("receiverRailX", receiverX);
-            tagCompound.setString("receiverRailY", receiverY);
-            tagCompound.setString("receiverRailZ", receiverZ);
+            tagCompound.setString("receiverX", receiverX);
+            tagCompound.setString("receiverY", receiverY);
+            tagCompound.setString("receiverZ", receiverZ);
         }
         return tagCompound;
     }

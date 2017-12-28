@@ -50,15 +50,15 @@ public class TileEntitySingleSender extends TileEntityTransceiver {
         return tileEntity;
     }
 
-    public void setTarget(TileEntity rail) {
-        if (rail == null) {
+    public void setTarget(TileEntity target) {
+        if (target == null) {
             targetX = "null";
             targetY = "null";
             targetZ = "null";
         } else {
-            targetX = String.valueOf(rail.xCoord);
-            targetY = String.valueOf(rail.yCoord);
-            targetZ = String.valueOf(rail.zCoord);
+            targetX = String.valueOf(target.xCoord);
+            targetY = String.valueOf(target.yCoord);
+            targetZ = String.valueOf(target.zCoord);
         }
     }
 

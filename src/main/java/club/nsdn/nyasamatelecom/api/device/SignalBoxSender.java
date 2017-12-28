@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public class SignalBoxSender extends DeviceBase {
 
-    public class TileEntitySignalBoxSender extends TileEntityMultiSender {
+    public static class TileEntitySignalBoxSender extends TileEntityMultiSender {
 
         public boolean isEnabled;
         public boolean prevIsEnabled;

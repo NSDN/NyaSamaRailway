@@ -208,13 +208,13 @@ public abstract class RailSnifferCore extends NSASM {
             else tZ = 0;
             if (getPlayer() != null)
                 new ParticlePacket(
-                        type, getX(), getY(), getZ(), tX, tY, tZ
+                        type, x, y, z, tX, tY, tZ
                 ).send(
                         NetworkWrapper.instance, getPlayer().dimension
                 );
             else if (getCart() != null)
                 new ParticlePacket(
-                        type, getX(), getY(), getZ(), tX, tY, tZ
+                        type, x, y, z, tX, tY, tZ
                 ).send(
                         NetworkWrapper.instance, getCart().dimension
                 );

@@ -51,15 +51,15 @@ public class TileEntityActuator extends TileEntityReceiver implements IRelay<Til
         return tileEntity;
     }
 
-    public void setTarget(TileEntity rail) {
-        if (rail == null) {
+    public void setTarget(TileEntity target) {
+        if (target == null) {
             targetX = "null";
             targetY = "null";
             targetZ = "null";
         } else {
-            targetX = String.valueOf(rail.xCoord);
-            targetY = String.valueOf(rail.yCoord);
-            targetZ = String.valueOf(rail.zCoord);
+            targetX = String.valueOf(target.xCoord);
+            targetY = String.valueOf(target.yCoord);
+            targetZ = String.valueOf(target.zCoord);
         }
     }
 
@@ -70,26 +70,26 @@ public class TileEntityActuator extends TileEntityReceiver implements IRelay<Til
     }
 
     public int getTargetMetadata() {
-        TileEntity railTarget = getTarget();
+        TileEntity target = getTarget();
 
-        if (railTarget == null) return -1;
+        if (target == null) return -1;
 
-        int meta = railTarget.getWorldObj().getBlockMetadata(
-                railTarget.xCoord, railTarget.yCoord, railTarget.zCoord
+        int meta = target.getWorldObj().getBlockMetadata(
+                target.xCoord, target.yCoord, target.zCoord
         );
 
         return meta;
     }
 
     public boolean setTargetMetadata(int meta) {
-        TileEntity railTarget = getTarget();
+        TileEntity target = getTarget();
 
-        if (railTarget == null) return false;
+        if (target == null) return false;
 
-        railTarget.getWorldObj().setBlockMetadataWithNotify(
-                railTarget.xCoord, railTarget.yCoord, railTarget.zCoord, meta, 3
+        target.getWorldObj().setBlockMetadataWithNotify(
+                target.xCoord, target.yCoord, target.zCoord, meta, 3
         );
-        railTarget.getWorldObj().markBlockForUpdate(railTarget.xCoord, railTarget.yCoord, railTarget.zCoord);
+        target.getWorldObj().markBlockForUpdate(target.xCoord, target.yCoord, target.zCoord);
         return true;
     }
 
