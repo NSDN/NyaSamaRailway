@@ -1,0 +1,163 @@
+package club.nsdn.nyasamarailway.renderer.entity;
+
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
+
+/**
+ * Created by drzzm32 on 2016.5.23.
+ */
+
+public class NSTCT1Model extends ModelBase {
+    public ModelRenderer Shape1;
+    public ModelRenderer Shape2;
+    public ModelRenderer Shape3;
+    public ModelRenderer Shape4;
+    public ModelRenderer Shape5;
+    public ModelRenderer Shape6;
+    public ModelRenderer Shape7;
+    public ModelRenderer Shape8;
+    public ModelRenderer Shape9;
+    public ModelRenderer Shape10;
+    public ModelRenderer Shape11;
+    public ModelRenderer Shape12;
+    public ModelRenderer Shape13;
+    public ModelRenderer Shape14;
+    public ModelRenderer Shape15;
+
+    public NSTCT1Model() {
+        textureWidth = 64;
+        textureHeight = 32;
+
+        Shape1 = new ModelRenderer(this, 0, 0);
+        Shape1.addBox(0F, 0F, 0F, 7, 3, 16, 0F);
+        Shape1.setRotationPoint(-3.5F, 17.5F, -8F);
+        Shape1.rotateAngleX = 0F;
+        Shape1.rotateAngleY = 0F;
+        Shape1.rotateAngleZ = 0F;
+        Shape1.mirror = false;
+        Shape2 = new ModelRenderer(this, 0, 19);
+        Shape2.addBox(0F, 0F, 0F, 2, 4, 4, 0F);
+        Shape2.setRotationPoint(4F, 20F, 4F);
+        Shape2.rotateAngleX = 0F;
+        Shape2.rotateAngleY = 0F;
+        Shape2.rotateAngleZ = 0F;
+        Shape2.mirror = false;
+        Shape3 = new ModelRenderer(this, 0, 19);
+        Shape3.addBox(0F, 0F, 0F, 2, 4, 4, 0F);
+        Shape3.setRotationPoint(4F, 20F, -8F);
+        Shape3.rotateAngleX = 0F;
+        Shape3.rotateAngleY = 0F;
+        Shape3.rotateAngleZ = 0F;
+        Shape3.mirror = false;
+        Shape4 = new ModelRenderer(this, 0, 19);
+        Shape4.addBox(0F, 0F, 0F, 2, 4, 4, 0F);
+        Shape4.setRotationPoint(-6F, 20F, 4F);
+        Shape4.rotateAngleX = 0F;
+        Shape4.rotateAngleY = 0F;
+        Shape4.rotateAngleZ = 0F;
+        Shape4.mirror = false;
+        Shape5 = new ModelRenderer(this, 0, 19);
+        Shape5.addBox(0F, 0F, 0F, 2, 4, 4, 0F);
+        Shape5.setRotationPoint(-6F, 20F, -8F);
+        Shape5.rotateAngleX = 0F;
+        Shape5.rotateAngleY = 0F;
+        Shape5.rotateAngleZ = 0F;
+        Shape5.mirror = false;
+        Shape6 = new ModelRenderer(this, 0, 0);
+        Shape6.addBox(0F, 0F, 0F, 16, 1, 1, 0F);
+        Shape6.setRotationPoint(-8F, 21.5F, -6.5F);
+        Shape6.rotateAngleX = 0F;
+        Shape6.rotateAngleY = 0F;
+        Shape6.rotateAngleZ = 0F;
+        Shape6.mirror = false;
+        Shape7 = new ModelRenderer(this, 0, 0);
+        Shape7.addBox(0F, 0F, 0F, 16, 1, 1, 0F);
+        Shape7.setRotationPoint(-8F, 21.5F, 5.5F);
+        Shape7.rotateAngleX = 0F;
+        Shape7.rotateAngleY = 0F;
+        Shape7.rotateAngleZ = 0F;
+        Shape7.mirror = false;
+        Shape8 = new ModelRenderer(this, 0, 19);
+        Shape8.addBox(0F, 0F, 0F, 2, 1, 7, 0F);
+        Shape8.setRotationPoint(6.5F, 21.1F, -7F);
+        Shape8.rotateAngleX = 0.4363323F;
+        Shape8.rotateAngleY = 0F;
+        Shape8.rotateAngleZ = 0F;
+        Shape8.mirror = false;
+        Shape9 = new ModelRenderer(this, 0, 19);
+        Shape9.addBox(0F, 0F, 0F, 2, 1, 7, 0F);
+        Shape9.setRotationPoint(6.5F, 18.1F, 0.6F);
+        Shape9.rotateAngleX = -0.4363323F;
+        Shape9.rotateAngleY = 0F;
+        Shape9.rotateAngleZ = 0F;
+        Shape9.mirror = false;
+        Shape10 = new ModelRenderer(this, 0, 19);
+        Shape10.addBox(0F, 0F, 0F, 2, 1, 7, 0F);
+        Shape10.setRotationPoint(-8.5F, 18.1F, 0.6F);
+        Shape10.rotateAngleX = -0.4363323F;
+        Shape10.rotateAngleY = 0F;
+        Shape10.rotateAngleZ = 0F;
+        Shape10.mirror = false;
+        Shape11 = new ModelRenderer(this, 0, 19);
+        Shape11.addBox(0F, 0F, 0F, 2, 1, 7, 0F);
+        Shape11.setRotationPoint(-8.5F, 21.1F, -7F);
+        Shape11.rotateAngleX = 0.4363323F;
+        Shape11.rotateAngleY = 0F;
+        Shape11.rotateAngleZ = 0F;
+        Shape11.mirror = false;
+        Shape12 = new ModelRenderer(this, 0, 19);
+        Shape12.addBox(0F, 0F, 0F, 17, 1, 2, 0F);
+        Shape12.setRotationPoint(-8.5F, 18.1F, -1F);
+        Shape12.rotateAngleX = 0F;
+        Shape12.rotateAngleY = 0F;
+        Shape12.rotateAngleZ = 0F;
+        Shape12.mirror = false;
+        Shape13 = new ModelRenderer(this, 0, 19);
+        Shape13.addBox(0F, 0F, 0F, 1, 2, 5, 0F);
+        Shape13.setRotationPoint(0F, 18F, -11F);
+        Shape13.rotateAngleX = 0F;
+        Shape13.rotateAngleY = 0.4363323F;
+        Shape13.rotateAngleZ = 0F;
+        Shape13.mirror = false;
+        Shape14 = new ModelRenderer(this, 0, 19);
+        Shape14.addBox(0F, 0F, 0F, 1, 2, 5, 0F);
+        Shape14.setRotationPoint(-0.9F, 18F, -11.4F);
+        Shape14.rotateAngleX = 0F;
+        Shape14.rotateAngleY = -0.4363323F;
+        Shape14.rotateAngleZ = 0F;
+        Shape14.mirror = false;
+        Shape15 = new ModelRenderer(this, 0, 19);
+        Shape15.addBox(0F, 0F, 0F, 2, 2, 1, 0F);
+        Shape15.setRotationPoint(-1F, 18F, -12F);
+        Shape15.rotateAngleX = 0F;
+        Shape15.rotateAngleY = 0F;
+        Shape15.rotateAngleZ = 0F;
+        Shape15.mirror = false;
+    }
+
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        Shape1.render(f5);
+        Shape2.render(f5);
+        Shape3.render(f5);
+        Shape4.render(f5);
+        Shape5.render(f5);
+        Shape6.render(f5);
+        Shape7.render(f5);
+        Shape8.render(f5);
+        Shape9.render(f5);
+        Shape10.render(f5);
+        Shape11.render(f5);
+        Shape12.render(f5);
+        Shape13.render(f5);
+        Shape14.render(f5);
+        Shape15.render(f5);
+        GL11.glPushMatrix();
+        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+        Shape13.render(f5);
+        Shape14.render(f5);
+        Shape15.render(f5);
+        GL11.glPopMatrix();
+    }
+}
