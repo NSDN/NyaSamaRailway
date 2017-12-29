@@ -1,6 +1,5 @@
 package club.nsdn.nyasamatelecom.api.device;
 
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -14,52 +13,29 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.12.28.
+ * Created by drzzm32 on 2017.12.29.
  */
-public class SignalBox extends DeviceBase {
+public class SignalBoxGetter extends DeviceBase {
 
-    public static class TileEntitySignalBox extends TileEntityActuator {
+    public static class TileEntitySignalBoxGetter extends TileEntityReceiver {
 
         public boolean isEnabled;
-        public boolean inverterEnabled;
-        public boolean prevInverterEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             isEnabled = tagCompound.getBoolean("isEnabled");
-            inverterEnabled = tagCompound.getBoolean("inverterEnabled");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setBoolean("isEnabled", isEnabled);
-            tagCompound.setBoolean("inverterEnabled", inverterEnabled);
             return super.toNBT(tagCompound);
-        }
-
-        public boolean tryControlFirst(boolean state) {
-            return false;
-        }
-
-        public boolean tryControlSecond(boolean state) {
-            return false;
-        }
-
-        public boolean setTargetSender(boolean state) {
-            TileEntity target = getTarget();
-            if (target == null) return false;
-
-            if (target instanceof SignalBoxSender.TileEntitySignalBoxSender) {
-                ((SignalBoxSender.TileEntitySignalBoxSender) target).isEnabled = state;
-                return true;
-            }
-            return false;
         }
 
     }
 
-    public SignalBox(String modid, String name, String icon) {
+    public SignalBoxGetter(String modid, String name, String icon) {
         super(name);
         setIconLocation(modid, icon);
         setLightOpacity(0);
@@ -68,7 +44,7 @@ public class SignalBox extends DeviceBase {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntitySignalBox();
+        return new TileEntitySignalBoxGetter();
     }
 
     @Override
@@ -156,8 +132,8 @@ public class SignalBox extends DeviceBase {
 
     public void updateSignal(World world, int x , int y, int z) {
         if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntitySignalBox) {
-            TileEntitySignalBox signalBox = (TileEntitySignalBox) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TileEntitySignalBoxGetter) {
+            TileEntitySignalBoxGetter signalBox = (TileEntitySignalBoxGetter) world.getTileEntity(x, y, z);
 
             int meta = world.getBlockMetadata(x, y, z);
             int old = meta;
@@ -175,20 +151,7 @@ public class SignalBox extends DeviceBase {
 
             signalBox.isEnabled = isEnabled;
 
-            if (signalBox.inverterEnabled) isEnabled = !isEnabled;
-
-            if (!signalBox.tryControlFirst(isEnabled)) {
-                if (!signalBox.tryControlSecond(isEnabled)) {
-                    if (!signalBox.setTargetSender(isEnabled)) {
-                        if (signalBox.getTarget() != null) {
-                            signalBox.controlTarget(isEnabled);
-                        }
-                    }
-                }
-            }
-
-            if (old != meta || signalBox.prevInverterEnabled != signalBox.inverterEnabled) {
-                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
+            if (old != meta) {
                 world.markBlockForUpdate(x, y, z);
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
             }
