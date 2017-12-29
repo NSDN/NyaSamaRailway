@@ -52,7 +52,7 @@ public class BlockSignalStick extends TileBlock {
     @Override
     protected void setBoundsByMeta(int meta) {
         float x = 0.25F, y = 1.0F, z = 0.25F;
-        setBoundsByXYZ(meta, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
+        setBoundsByXYZ(meta & 0x3, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
     }
 
     @Override
