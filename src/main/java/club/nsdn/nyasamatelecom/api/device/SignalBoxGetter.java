@@ -20,6 +20,7 @@ public class SignalBoxGetter extends DeviceBase {
     public static class TileEntitySignalBoxGetter extends TileEntityReceiver {
 
         public boolean isEnabled;
+        boolean prevIsEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
@@ -137,23 +138,18 @@ public class SignalBoxGetter extends DeviceBase {
 
             int meta = world.getBlockMetadata(x, y, z);
             int old = meta;
-            boolean isEnabled;
+            boolean isEnabled = signalBox.isEnabled;
 
-            if (signalBox.getSender() == null) {
-                isEnabled = (meta & 0x8) != 0;
-                meta &= 0x7;
-            } else {
+            if (signalBox.getSender() != null)
                 isEnabled = signalBox.senderIsPowered();
 
-                if (isEnabled) meta |= 0x8;
-                else meta &= 0x7;
-            }
+            if (isEnabled) meta |= 0x8;
+            else meta &= 0x7;
 
-            signalBox.isEnabled = isEnabled;
-
-            if (old != meta) {
-                world.markBlockForUpdate(x, y, z);
+            if (old != meta || signalBox.isEnabled != signalBox.prevIsEnabled) {
+                signalBox.prevIsEnabled = signalBox.isEnabled;
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+                world.markBlockForUpdate(x, y, z);
             }
 
             world.scheduleBlockUpdate(x, y, z, this, 1);

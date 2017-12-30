@@ -22,7 +22,7 @@ public class SignalBox extends DeviceBase {
 
         public boolean isEnabled;
         public boolean inverterEnabled;
-        public boolean prevInverterEnabled;
+        boolean prevInverterEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {

@@ -325,7 +325,6 @@ public class Item1N4148 extends ItemToolBase {
             BlockSignalBox.TileEntitySignalBox signalBox = (BlockSignalBox.TileEntitySignalBox) tileEntity;
 
             if (player.isSneaking()) {
-                signalBox.prevInverterEnabled = signalBox.inverterEnabled;
                 if (signalBox.inverterEnabled) {
                     signalBox.inverterEnabled = false;
                     if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
