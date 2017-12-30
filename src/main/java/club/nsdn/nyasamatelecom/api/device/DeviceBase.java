@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 public class DeviceBase extends BlockContainer {
 
     protected String textureLocation = "";
-    protected void setIconLocation(String modid, String icon) { this.textureLocation = "nyasamarailway" + ":" + icon; }
+    protected void setIconLocation(String modid, String icon) { this.textureLocation = modid + ":" + icon; }
 
     public DeviceBase(String blockName) {
         super(Material.rock);

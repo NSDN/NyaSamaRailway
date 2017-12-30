@@ -57,6 +57,17 @@ public class SignalBox extends DeviceBase {
             return false;
         }
 
+        public boolean setTargetGetter(boolean state) {
+            TileEntity target = getTarget();
+            if (target == null) return false;
+
+            if (target instanceof SignalBoxGetter.TileEntitySignalBoxGetter) {
+                ((SignalBoxGetter.TileEntitySignalBoxGetter) target).isEnabled = state;
+                return true;
+            }
+            return false;
+        }
+
     }
 
     public SignalBox(String modid, String name, String icon) {
@@ -180,8 +191,10 @@ public class SignalBox extends DeviceBase {
             if (!signalBox.tryControlFirst(isEnabled)) {
                 if (!signalBox.tryControlSecond(isEnabled)) {
                     if (!signalBox.setTargetSender(isEnabled)) {
-                        if (signalBox.getTarget() != null) {
-                            signalBox.controlTarget(isEnabled);
+                        if (!signalBox.setTargetGetter(isEnabled)) {
+                            if (signalBox.getTarget() != null) {
+                                signalBox.controlTarget(isEnabled);
+                            }
                         }
                     }
                 }
