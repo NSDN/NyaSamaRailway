@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.Renderers.TileEntity;
 
 import club.nsdn.nyasamarailway.Renderers.RendererHelper;
-import club.nsdn.nyasamarailway.TileEntities.TileEntitySignalLight;
+import club.nsdn.nyasamarailway.TileEntities.TileEntityBiSignalLight;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -64,8 +64,8 @@ public class BiSignalLightRenderer extends TileEntitySpecialRenderer {
         int lightPos = 0;
         int lightState = (meta >> 2) & 0x3;
 
-        if (te instanceof TileEntitySignalLight.SignalLight) {
-            TileEntitySignalLight.SignalLight signalLight = (TileEntitySignalLight.SignalLight) te;
+        if (te instanceof TileEntityBiSignalLight.BiSignalLight) {
+            TileEntityBiSignalLight.BiSignalLight signalLight = (TileEntityBiSignalLight.BiSignalLight) te;
             if (signalLight.lightType.equals("white&blue")) {
                 if (lightState == 2) lightState = 4;
                 else if (lightState == 3) lightState = 5;
