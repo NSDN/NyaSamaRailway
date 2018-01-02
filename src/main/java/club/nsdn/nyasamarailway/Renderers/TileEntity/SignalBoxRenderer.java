@@ -73,6 +73,7 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
             rxState = ((TileEntityRailActuator) te).getSender() != null;
             if (te instanceof TileEntitySignalBox.SignalBox) {
                 inverted = ((TileEntitySignalBox.SignalBox) te).inverterEnabled;
+                sgnState = ((TileEntitySignalBox.SignalBox) te).isEnabled;
             }
         } else if (te instanceof TileEntityRailMultiSender) {
             if (te instanceof TileEntitySignalBoxSender.SignalBoxSender) {

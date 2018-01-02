@@ -20,17 +20,20 @@ public class TileEntitySignalBox extends TileEntityBase {
 
     public static class SignalBox extends TileEntityRailActuator {
 
+        public boolean isEnabled;
         public boolean inverterEnabled;
         public boolean prevInverterEnabled;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
+            isEnabled = tagCompound.getBoolean("isEnabled");
             inverterEnabled = tagCompound.getBoolean("inverterEnabled");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
+            tagCompound.setBoolean("isEnabled", isEnabled);
             tagCompound.setBoolean("inverterEnabled", inverterEnabled);
             return super.toNBT(tagCompound);
         }
@@ -183,6 +186,8 @@ public class TileEntitySignalBox extends TileEntityBase {
                 if (isEnabled) meta |= 0x8;
                 else meta &= 0x7;
             }
+
+            signalBox.isEnabled = isEnabled;
 
             if (signalBox.inverterEnabled) isEnabled = !isEnabled;
 
