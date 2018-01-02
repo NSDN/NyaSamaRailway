@@ -93,13 +93,13 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
             rxState = ((TileEntityActuator) te).getSender() != null;
             if (te instanceof SignalBox.TileEntitySignalBox) {
                 inverted = ((SignalBox.TileEntitySignalBox) te).inverterEnabled;
-                isEnabled = ((SignalBox.TileEntitySignalBox) te).isEnabled;
+                sgnState = ((SignalBox.TileEntitySignalBox) te).isEnabled;
             }
         } else if (te instanceof TileEntityReceiver) {
             txState = false;
             rxState = ((TileEntityReceiver) te).getSender() != null;
             if (te instanceof SignalBoxGetter.TileEntitySignalBoxGetter) {
-                isEnabled = ((SignalBoxGetter.TileEntitySignalBoxGetter) te).isEnabled;
+                sgnState = ((SignalBoxGetter.TileEntitySignalBoxGetter) te).isEnabled;
             }
         } else if (te instanceof TileEntityMultiSender && modelBtn == null) {
             txState = ((TileEntityMultiSender) te).targetCount > 0;
