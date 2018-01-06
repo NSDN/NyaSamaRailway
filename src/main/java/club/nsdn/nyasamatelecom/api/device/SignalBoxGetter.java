@@ -140,8 +140,10 @@ public class SignalBoxGetter extends DeviceBase {
             int old = meta;
             boolean isEnabled = signalBox.isEnabled;
 
-            if (signalBox.getSender() != null)
+            if (signalBox.getSender() != null) {
                 isEnabled = signalBox.senderIsPowered();
+                signalBox.isEnabled = isEnabled;
+            }
 
             if (isEnabled) meta |= 0x8;
             else meta &= 0x7;
