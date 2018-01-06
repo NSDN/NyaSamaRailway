@@ -134,7 +134,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
                 rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
             }
-            if (rail != null) {
+            if (rail != null && !checkNearbySameRail(world, x, y, z)) {
                 if (rail.cartType.equals("loco")) {
                     if (!hasCart) {
                         rail.count = 0;
