@@ -56,6 +56,24 @@ public class BlockSignalStick extends TileBlock {
     }
 
     @Override
+    protected void setBoundsByXYZ(int meta, float x1, float y1, float z1, float x2, float y2, float z2) {
+        switch (meta & 0x3) {
+            case 0:
+                setBlockBounds(x1, y1, z1, x2, y2, z2);
+                break;
+            case 1:
+                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
+                break;
+            case 2:
+                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
+                break;
+            case 3:
+                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
+                break;
+        }
+    }
+
+    @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, this, 1);
