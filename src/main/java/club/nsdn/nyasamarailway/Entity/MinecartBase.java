@@ -186,7 +186,7 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
         this.posY = (double)y;
         boolean isRailPowered = false;
         boolean slowDown = false;
-        if (block instanceof BlockRailPowered) {
+        if (block == Blocks.golden_rail) { //Stock Powered Rail, Push-Brake
             isRailPowered = (this.worldObj.getBlockMetadata(x, y, z) & 8) != 0;
             slowDown = !isRailPowered;
         }

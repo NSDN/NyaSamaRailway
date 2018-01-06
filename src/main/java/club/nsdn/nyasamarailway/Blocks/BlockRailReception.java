@@ -135,7 +135,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
             if (world.getTileEntity(x, y, z) instanceof TileEntityRailReception) {
                 rail = (TileEntityRailReception) world.getTileEntity(x, y, z);
             }
-            if (rail != null) {
+            if (rail != null && !checkNearbySameRail(world, x, y, z)) {
                 if (rail.cartType.equals("loco")) {
                     if (!hasCart) {
                         rail.count = 0;
