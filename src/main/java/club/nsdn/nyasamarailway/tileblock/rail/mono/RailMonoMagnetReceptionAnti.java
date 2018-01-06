@@ -125,7 +125,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
                 rail = (TileEntityRail) world.getTileEntity(x, y, z);
             }
-            if (rail != null) {
+            if (rail != null && !checkNearbySameRail(world, x, y, z)) {
                 if (rail.cartType.equals("loco")) {
                     if (!hasCart) {
                         rail.count = 0;
