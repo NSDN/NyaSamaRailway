@@ -7,7 +7,7 @@ package club.nsdn.nyasamarailway.tileblock;
 import club.nsdn.nyasamarailway.block.BlockEdge;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.renderer.tileentity.*;
-import club.nsdn.nyasamarailway.renderer.tileentity.Rail.*;
+import club.nsdn.nyasamarailway.renderer.tileentity.rail.*;
 import club.nsdn.nyasamarailway.tileblock.decoration.*;
 import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
@@ -328,6 +328,9 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockSignalStick.SignalLight.class, new SignalLightRenderer("models/blocks/signal_stick.obj"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                Rail3rd.TileEntityRail.class, new Rail3rdRenderer());
 
     }
 

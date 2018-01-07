@@ -1,11 +1,13 @@
-package club.nsdn.nyasamarailway.renderer.tileentity.Rail;
+package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
 /**
  * Created by drzzm32 on 2016.11.29.
  */
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
+import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMono;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetPowerable;
+import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -23,6 +25,8 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
     private final WavefrontObject[] model;
     private final ResourceLocation[] textures;
 
+    private final boolean isMagnet;
+
     public RailMonoRenderer() {
         this.model  = new WavefrontObject[] {
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_straight.obj")),
@@ -34,6 +38,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                 new ResourceLocation("nyasamarailway", "textures/rails/mono_rail.png"),
                 new ResourceLocation("nyasamarailway", "textures/rails/mono_rail.png")
         };
+        this.isMagnet = false;
     }
 
     public RailMonoRenderer(String[] texturePath) {
@@ -49,6 +54,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
         for (int i = 3; i < 6; i++) {
             textures[i] = new ResourceLocation("nyasamarailway", texturePath[i - 3].replace(".png", "_powered.png"));
         }
+        this.isMagnet = true;
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -67,6 +73,13 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
         }
 
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+
+        GL11.glPushMatrix();
+        if (isMagnet &&
+                !(te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) instanceof RailMono) &&
+                !(te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) instanceof RailMonoSwitch)) {
+            GL11.glTranslatef(0.0F, 0.25F, 0.0F);
+        }
 
         if (te instanceof RailMonoMagnetPowerable) {
             int meta = te.getBlockMetadata();
@@ -147,6 +160,8 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                     break;
             }
         }
+
+        GL11.glPopMatrix();
 
         RenderHelper.enableStandardItemLighting();
 

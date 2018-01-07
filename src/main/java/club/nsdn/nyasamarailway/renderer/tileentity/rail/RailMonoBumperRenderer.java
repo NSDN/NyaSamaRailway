@@ -1,6 +1,7 @@
-package club.nsdn.nyasamarailway.renderer.tileentity.Rail;
+package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
+import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMono;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -44,7 +45,8 @@ public class RailMonoBumperRenderer extends TileEntitySpecialRenderer {
         int angle = (meta & 0x3) * 90;
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
+        if (te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) instanceof RailMono)
+            GL11.glTranslatef(0.0F, -0.3125F, 0.0F);
         RendererHelper.renderWithResourceAndRotation(modelMain, angle, textureMain);
         GL11.glPopMatrix();
 

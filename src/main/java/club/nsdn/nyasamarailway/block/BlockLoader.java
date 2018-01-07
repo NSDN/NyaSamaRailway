@@ -11,6 +11,7 @@ import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
 import club.nsdn.nyasamarailway.tileblock.rail.BumperNoSleeper;
 import club.nsdn.nyasamarailway.tileblock.rail.BumperStoneSleeper;
+import club.nsdn.nyasamarailway.tileblock.rail.Rail3rd;
 import club.nsdn.nyasamarailway.tileblock.rail.RailTriSwitch;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
 import club.nsdn.nyasamarailway.tileblock.signal.block.*;
@@ -94,6 +95,7 @@ public class BlockLoader {
     public static Block blockRailSignVertical7;
 
     public static Block railNoSleeperStraight;
+    public static Block rail3rd;
     public static Block railMono;
     public static Block railMonoBumper;
     public static Block railMonoMagnet;
@@ -339,6 +341,9 @@ public class BlockLoader {
 
         blockStationSign = new TileEntityStationSign();
         register(blockStationSign, "block_station_sign");
+
+        rail3rd = new Rail3rd();
+        register(rail3rd, "rail_3rd");
 
         railMono = new RailMono();
         register(railMono, "rail_mono");

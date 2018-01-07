@@ -334,6 +334,10 @@ public class TileEntityLoader {
                 BlockSignalStick.SignalLight.class,
                 "tileEntitySignalStick");
 
+        GameRegistry.registerTileEntity(
+                Rail3rd.TileEntityRail.class,
+                "tileEntityRail3rd");
+
     }
 
 }

@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.renderer.tileentity.Rail;
+package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.client.Minecraft;

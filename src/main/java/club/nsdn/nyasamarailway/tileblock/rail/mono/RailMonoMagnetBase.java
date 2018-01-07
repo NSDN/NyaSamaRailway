@@ -15,6 +15,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -93,19 +94,30 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
 
     @Override
     public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
-        // TODO: Should we increase the speed ?
-        return 1.0F;
+        return 5.0F;
     }
 
     @Override
-    protected void setBoundsByMeta(int meta) {
-        if (meta >= 2 && meta <= 5)
-        {
-            this.setBlockBounds(0.0F, -0.25F, 0.0F, 1.0F, 0.5F, 1.0F);
-        }
-        else
-        {
-            this.setBlockBounds(0.0F, -0.25F, 0.0F, 1.0F, 0.125F, 1.0F);
+    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if (world.getBlock(x, y - 1, z) instanceof RailMono) {
+            if (meta >= 2 && meta <= 5)
+            {
+                this.setBlockBounds(0.0F, -0.25F, 0.0F, 1.0F, 0.5F, 1.0F);
+            }
+            else
+            {
+                this.setBlockBounds(0.0F, -0.25F, 0.0F, 1.0F, 0.125F, 1.0F);
+            }
+        } else {
+            if (meta >= 2 && meta <= 5)
+            {
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+            }
+            else
+            {
+                this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
+            }
         }
     }
 
@@ -116,7 +128,7 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return world.getBlock(x, y, z).isReplaceable(world, x, y, z) && world.getBlock(x, y - 1, z) instanceof RailMono;
+        return world.getBlock(x, y, z).isReplaceable(world, x, y, z) && !(world.getBlock(x, y - 1, z) instanceof RailMonoSwitch);
     }
 
     @Override

@@ -70,6 +70,7 @@ tile.RailSignVertical5.name=Vertical Rail Sign(Lookout)
 tile.RailSignVertical6.name=Vertical Rail Sign(Parking)
 tile.RailSignVertical7.name=Vertical Rail Sign(RFID)
 tile.RailNoSleeperStraight.name=Thin Sleeper Straight Rail(Reality)
+tile.Rail3rd.name=3rd Rail
 tile.RailMono.name=Mono Rail Base
 tile.RailMonoBumper.name=Mono Rail Bumper
 tile.RailMonoMagnet.name=Mono Rail Magnet Part
