@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.rail.mono;
 import club.nsdn.nyasamarailway.block.rail.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.tileblock.rail.RailBase;
+import club.nsdn.nyasamarailway.tileblock.rail.RailMagnetSwitch;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -100,7 +101,7 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        if (world.getBlock(x, y - 1, z) instanceof RailMono) {
+        if (world.getBlock(x, y - 1, z) instanceof RailMono || world.getBlock(x, y - 1, z) instanceof RailMonoSwitch) {
             if (meta >= 2 && meta <= 5)
             {
                 this.setBlockBounds(0.0F, -0.25F, 0.0F, 1.0F, 0.5F, 1.0F);
@@ -128,7 +129,9 @@ public class RailMonoMagnetBase extends RailBase implements IRailSpeedKeep {
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return world.getBlock(x, y, z).isReplaceable(world, x, y, z) && !(world.getBlock(x, y - 1, z) instanceof RailMonoSwitch);
+        return world.getBlock(x, y, z).isReplaceable(world, x, y, z) &&
+                !(world.getBlock(x, y - 1, z) instanceof RailMonoSwitch) &&
+                !(world.getBlock(x, y - 1, z) instanceof RailMagnetSwitch);
     }
 
     @Override

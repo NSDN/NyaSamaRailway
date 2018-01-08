@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
+import club.nsdn.nyasamarailway.tileblock.rail.RailMagnetSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -18,17 +19,30 @@ public class RailMonoSwitchRenderer extends TileEntitySpecialRenderer {
     private static final int STRAIGHT = 0, TURNED = 1;
 
     private final WavefrontObject[] model;
-    private final ResourceLocation[] textures;
+    private final ResourceLocation texture;
 
     public RailMonoSwitchRenderer() {
         this.model = new WavefrontObject[] {
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_straight.obj")),
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_turned.obj"))
         };
-        this.textures = new ResourceLocation[] {
-                new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_switch.png"),
-                new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_switch.png")
-        };
+        this.texture = new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_switch.png");
+    }
+
+    public RailMonoSwitchRenderer(boolean is3rdRail) {
+        if (is3rdRail) {
+            this.model = new WavefrontObject[] {
+                    new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/trd_rail_s.obj")),
+                    new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/trd_rail_t.obj"))
+            };
+            this.texture = new ResourceLocation("nyasamarailway", "textures/rails/trd_rail_ele.png");
+        } else {
+            this.model = new WavefrontObject[] {
+                    new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/rail_magnet_switch.obj")),
+                    new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/rail_magnet_switch.obj"))
+            };
+            this.texture = new ResourceLocation("nyasamarailway", "textures/rails/trd_rail_ele.png");
+        }
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -48,25 +62,31 @@ public class RailMonoSwitchRenderer extends TileEntitySpecialRenderer {
 
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
-        switch (te.getBlockMetadata()) {
-            case 0: //N=S
-                RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 0.0F, textures[STRAIGHT]);
-                break;
-            case 1: //W=E
-                RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 90.0F, textures[STRAIGHT]);
-                break;
-            case 6: //S-E
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 180.0F, textures[TURNED]);
-                break;
-            case 7: //S-W
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], -90.0F, textures[TURNED]);
-                break;
-            case 8: //N-W
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 0.0F, textures[TURNED]);
-                break;
-            case 9: //N-E
-                RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 90.0F, textures[TURNED]);
-                break;
+        if (te instanceof RailMagnetSwitch.MagnetSwitch) {
+            int meta = te.getBlockMetadata();
+            float angle = (meta & 0x3) * 90 + 180.0F; //rotate 180 to fix model
+            RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], angle, texture);
+        } else {
+            switch (te.getBlockMetadata()) {
+                case 0: //N=S
+                    RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 0.0F, texture);
+                    break;
+                case 1: //W=E
+                    RendererHelper.renderWithResourceAndRotation(this.model[STRAIGHT], 90.0F, texture);
+                    break;
+                case 6: //S-E
+                    RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 180.0F, texture);
+                    break;
+                case 7: //S-W
+                    RendererHelper.renderWithResourceAndRotation(this.model[TURNED], -90.0F, texture);
+                    break;
+                case 8: //N-W
+                    RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 0.0F, texture);
+                    break;
+                case 9: //N-E
+                    RendererHelper.renderWithResourceAndRotation(this.model[TURNED], 90.0F, texture);
+                    break;
+            }
         }
 
         RenderHelper.enableStandardItemLighting();

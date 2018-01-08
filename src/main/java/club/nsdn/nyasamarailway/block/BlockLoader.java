@@ -9,10 +9,7 @@ import club.nsdn.nyasamarailway.block.rail.special.*;
 import club.nsdn.nyasamarailway.tileblock.decoration.*;
 import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
-import club.nsdn.nyasamarailway.tileblock.rail.BumperNoSleeper;
-import club.nsdn.nyasamarailway.tileblock.rail.BumperStoneSleeper;
-import club.nsdn.nyasamarailway.tileblock.rail.Rail3rd;
-import club.nsdn.nyasamarailway.tileblock.rail.RailTriSwitch;
+import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
 import club.nsdn.nyasamarailway.tileblock.signal.block.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
@@ -96,6 +93,8 @@ public class BlockLoader {
 
     public static Block railNoSleeperStraight;
     public static Block rail3rd;
+    public static Block rail3rdSwitch;
+    public static Block railMagnetSwitch;
     public static Block railMono;
     public static Block railMonoBumper;
     public static Block railMonoMagnet;
@@ -344,6 +343,12 @@ public class BlockLoader {
 
         rail3rd = new Rail3rd();
         register(rail3rd, "rail_3rd");
+
+        rail3rdSwitch = new Rail3rdSwitch();
+        register(rail3rdSwitch, "rail_3rd_switch");
+
+        railMagnetSwitch = new RailMagnetSwitch();
+        register(railMagnetSwitch, "rail_magnet_switch");
 
         railMono = new RailMono();
         register(railMono, "rail_mono");

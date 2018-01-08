@@ -332,6 +332,11 @@ public class TileEntityModelBinder {
         ClientRegistry.bindTileEntitySpecialRenderer(
                 Rail3rd.TileEntityRail.class, new Rail3rdRenderer());
 
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                Rail3rdSwitch.MonoSwitch.class, new RailMonoSwitchRenderer(true));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMagnetSwitch.MagnetSwitch.class, new RailMonoSwitchRenderer(false));
     }
 
 }

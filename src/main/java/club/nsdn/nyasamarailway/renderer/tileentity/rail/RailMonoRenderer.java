@@ -79,6 +79,7 @@ public class RailMonoRenderer extends TileEntitySpecialRenderer {
                 !(te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) instanceof RailMono) &&
                 !(te.getWorldObj().getBlock(te.xCoord, te.yCoord - 1, te.zCoord) instanceof RailMonoSwitch)) {
             GL11.glTranslatef(0.0F, 0.25F, 0.0F);
+            GL11.glTranslatef(0.0F, 0.00625F, 0.0F);
         }
 
         if (te instanceof RailMonoMagnetPowerable) {

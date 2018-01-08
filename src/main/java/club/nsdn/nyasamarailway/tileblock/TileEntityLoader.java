@@ -338,6 +338,13 @@ public class TileEntityLoader {
                 Rail3rd.TileEntityRail.class,
                 "tileEntityRail3rd");
 
+        GameRegistry.registerTileEntity(
+                Rail3rdSwitch.MonoSwitch.class,
+                "tileEntityRail3rdSwitch");
+
+        GameRegistry.registerTileEntity(
+                RailMagnetSwitch.MagnetSwitch.class,
+                "tileEntityRailMagnetSwitch");
     }
 
 }
