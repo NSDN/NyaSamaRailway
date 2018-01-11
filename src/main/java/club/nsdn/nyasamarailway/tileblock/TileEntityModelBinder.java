@@ -274,38 +274,8 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical1.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_1")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical2.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_2")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical3.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_3")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical4.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_4")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical5.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_5")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical6.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_6")
-        );
-
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityRailSignVertical7.RailSignVertical.class,
-                new RailSignVerticalRenderer("rail_sign_vertical_7")
+                TileEntityRailSignVertical.RailSignVertical.class,
+                new RailSignVerticalRenderer()
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(

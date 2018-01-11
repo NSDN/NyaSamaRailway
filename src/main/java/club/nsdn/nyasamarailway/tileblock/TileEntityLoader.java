@@ -279,32 +279,8 @@ public class TileEntityLoader {
                 "tileEntityGlassShieldCornerHalf");
 
         GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical1.RailSignVertical.class,
-                "tileEntityRailSignVertical1");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical2.RailSignVertical.class,
-                "tileEntityRailSignVertical2");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical3.RailSignVertical.class,
-                "tileEntityRailSignVertical3");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical4.RailSignVertical.class,
-                "tileEntityRailSignVertical4");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical5.RailSignVertical.class,
-                "tileEntityRailSignVertical5");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical6.RailSignVertical.class,
-                "tileEntityRailSignVertical6");
-
-        GameRegistry.registerTileEntity(
-                TileEntityRailSignVertical7.RailSignVertical.class,
-                "tileEntityRailSignVertical7");
+                TileEntityRailSignVertical.RailSignVertical.class,
+                "tileEntityRailSignVertical");
 
         GameRegistry.registerTileEntity(
                 RailTriSwitch.TriSwitch.class,

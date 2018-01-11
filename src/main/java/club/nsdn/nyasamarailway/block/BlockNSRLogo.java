@@ -8,9 +8,9 @@ import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class BlockNyaSamaRailwayLogo extends Block {
+public class BlockNSRLogo extends Block {
 
-    public BlockNyaSamaRailwayLogo() {
+    public BlockNSRLogo() {
         super(Material.glass);
         setBlockName("NyaSamaRailwayLogo");
         setBlockTextureName("nyasamarailway:nsdn_r_logo");

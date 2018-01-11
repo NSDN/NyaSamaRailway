@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
+import club.nsdn.nyasamarailway.tileblock.decoration.sign.TileEntityRailSignVertical;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,13 +16,9 @@ import org.lwjgl.opengl.GL11;
  */
 public class RailSignVerticalRenderer extends TileEntitySpecialRenderer {
 
-    private final WavefrontObject modelMain = new WavefrontObject(
+    private final WavefrontObject model = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/blocks/rail_sign_vertical.obj")
     );
-    private final ResourceLocation textureMain;
-    public RailSignVerticalRenderer(String texture) {
-        textureMain = new ResourceLocation("nyasamarailway", "textures/blocks/" + texture + ".png");
-    }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
         GL11.glPushMatrix();
@@ -43,7 +40,13 @@ public class RailSignVerticalRenderer extends TileEntitySpecialRenderer {
         int meta = te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         int angle = (meta & 0x3) * 90;
 
-        RendererHelper.renderWithResourceAndRotation(modelMain, angle, textureMain);
+        if (te.getBlockType() instanceof TileEntityRailSignVertical) {
+            TileEntityRailSignVertical sign = (TileEntityRailSignVertical) te.getBlockType();
+            if (sign.location == null) sign.location = new ResourceLocation(
+                    "nyasamarailway", "textures/blocks/" + sign.texture + ".png"
+            );
+            RendererHelper.renderWithResourceAndRotation(model, angle, sign.location);
+        }
 
         RenderHelper.enableStandardItemLighting();
 

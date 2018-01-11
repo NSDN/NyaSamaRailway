@@ -8,14 +8,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by drzzm32 on 2017.12.10.
+ * Created by drzzm32 on 2018.1.11.
  */
-public class TileEntityRailSignVertical6 extends TileBlock {
+public class TileEntityRailSignVertical extends TileBlock {
 
     public static class RailSignVertical extends TileEntity {
         @Override
@@ -28,11 +29,16 @@ public class TileEntityRailSignVertical6 extends TileBlock {
         }
     }
 
-    public TileEntityRailSignVertical6() {
-        super("RailSignVertical6");
-        setIconLocation("rail_sign_vertical_head_6");
+    public final String texture;
+    @SideOnly(Side.CLIENT)
+    public ResourceLocation location;
+
+    public TileEntityRailSignVertical(String name, String icon, String texture) {
+        super(name);
+        setIconLocation(icon);
         setLightOpacity(1);
         setLightLevel(0);
+        this.texture = texture;
     }
 
     @Override
@@ -41,8 +47,7 @@ public class TileEntityRailSignVertical6 extends TileBlock {
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
-    {
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         return side == ForgeDirection.UP;
     }
 

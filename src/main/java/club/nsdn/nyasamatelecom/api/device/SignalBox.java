@@ -1,6 +1,7 @@
 package club.nsdn.nyasamatelecom.api.device;
 
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -193,7 +194,14 @@ public class SignalBox extends DeviceBase {
                     if (!signalBox.setTargetSender(isEnabled)) {
                         if (!signalBox.setTargetGetter(isEnabled)) {
                             if (signalBox.getTarget() != null) {
-                                signalBox.controlTarget(isEnabled);
+                                TileEntity tileEntity = signalBox.getTarget();
+                                if (tileEntity instanceof TileEntityReceiver) {
+                                    if (tileEntity instanceof TileEntityPassiveReceiver) {
+                                        signalBox.controlTarget(isEnabled);
+                                    }
+                                } else {
+                                    signalBox.controlTarget(isEnabled);
+                                }
                             }
                         }
                     }

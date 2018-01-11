@@ -17,7 +17,7 @@ public class CreativeTabLoader {
         tabNyaSamaRailway = new CreativeTabs("tabNyaSamaRailway") {
             @Override
             public Item getTabIconItem() {
-                return Item.getItemFromBlock(BlockLoader.blockNyaSamaRailwayLogo);
+                return Item.getItemFromBlock(BlockLoader.blockNSRLogo);
             }
         };
     }
