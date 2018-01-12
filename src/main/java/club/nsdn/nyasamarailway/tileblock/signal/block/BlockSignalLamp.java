@@ -2,6 +2,9 @@ package club.nsdn.nyasamarailway.tileblock.signal.block;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -107,6 +110,18 @@ public class BlockSignalLamp extends TileBlock {
         }
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getMixedBrightnessForBlock(IBlockAccess world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+        int light = block.getLightValue(world, x, y, z);
+
+        if (((meta >> 2) & 0x3) == 0) light = 0;
+
+        return world.getLightBrightnessForSkyBlocks(x, y, z, light);
+    }
+
     public void updateLight(World world, int x ,int y, int z) {
         if (world.getTileEntity(x, y, z) == null) return;
         if (world.getTileEntity(x, y, z) instanceof SignalLight) {
@@ -138,11 +153,6 @@ public class BlockSignalLamp extends TileBlock {
 
             if (old != meta || !signalLight.prevLightType.equals(signalLight.lightType)) {
                 signalLight.prevLightType = signalLight.lightType;
-                if (((meta >> 2) & 0x3) == 0) {
-                    setLightLevel(0.0F);
-                } else {
-                    setLightLevel(1.0F);
-                }
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
             }
