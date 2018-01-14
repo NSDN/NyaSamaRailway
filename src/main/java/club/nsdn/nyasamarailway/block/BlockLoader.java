@@ -4,6 +4,7 @@ package club.nsdn.nyasamarailway.block;
  * Created by drzzm32 on 2016.5.5.
  */
 
+import club.nsdn.nyasamaoptics.api.LightBeam;
 import club.nsdn.nyasamarailway.block.rail.*;
 import club.nsdn.nyasamarailway.block.rail.special.*;
 import club.nsdn.nyasamarailway.tileblock.decoration.*;
@@ -11,6 +12,7 @@ import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
 import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
+import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import club.nsdn.nyasamarailway.tileblock.signal.block.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
@@ -150,6 +152,9 @@ public class BlockLoader {
     public static Block blockTicketOnce;
     public static Block blockTicketCard;
     public static Block blockCoin;
+
+    public static LightBeam dotBeam;
+    public static LightBeam lineBeam;
 
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
@@ -520,6 +525,12 @@ public class BlockLoader {
 
         blockCoin = new TileEntityCoinBlock();
         register(blockCoin, "block_coin");
+
+        dotBeam = new LightBeam(AbsSignalLight.class, LightBeam.TYPE_DOT);
+        register(dotBeam, "signal_dot_beam");
+
+        lineBeam = new LightBeam(AbsSignalLight.class, LightBeam.TYPE_LINE, 0.75F);
+        register(lineBeam, "signal_line_beam");
 
     }
 

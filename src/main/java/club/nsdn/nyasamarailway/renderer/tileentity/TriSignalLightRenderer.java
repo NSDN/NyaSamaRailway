@@ -20,13 +20,13 @@ public class TriSignalLightRenderer extends TileEntitySpecialRenderer {
     );
     private final WavefrontObject modelLight[] = {
             new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_r.obj")
+                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_1.obj")
             ),
             new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_y.obj")
+                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_2.obj")
             ),
             new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_g.obj")
+                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_3.obj")
             )
     };
     private final ResourceLocation textureBase = new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_base.png");

@@ -1,23 +1,19 @@
 package club.nsdn.nyasamarailway.tileblock.signal.block;
 
-import club.nsdn.nyasamarailway.tileblock.TileBlock;
+import club.nsdn.nyasamarailway.block.BlockLoader;
+import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.Random;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Created by drzzm32 on 2017.10.5.
  */
-public class BlockTriSignalLight extends TileBlock {
+public class BlockTriSignalLight extends AbsSignalLight {
 
     public static class TriSignalLight extends TileEntityTriStateReceiver {
 
@@ -42,22 +38,9 @@ public class BlockTriSignalLight extends TileBlock {
         return new TriSignalLight();
     }
 
-    @Override
-    public Material getMaterial() {
-        return Material.rock;
-    }
-
     public BlockTriSignalLight() {
         super("TriSignalLight");
         setIconLocation("tri_signal_light");
-        setLightOpacity(0);
-        setLightLevel(0.75F);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-        int meta = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
 
     @Override
@@ -77,19 +60,6 @@ public class BlockTriSignalLight extends TileBlock {
             case 3:
                 setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
                 break;
-        }
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x, y, z);
-        world.scheduleBlockUpdate(x, y, z, this, 1);
-    }
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        if (!world.isRemote) {
-            updateLight(world, x, y, z);
         }
     }
 
@@ -116,12 +86,14 @@ public class BlockTriSignalLight extends TileBlock {
             triSignalLight.prevState = triSignalLight.state;
             triSignalLight.state = TriSignalLight.STATE_ZERO;
 
+            ForgeDirection lightDir = getLightDir(world, x, y, z);
+            BlockLoader.lineBeam.lightCtl(world, x, y, z, lightDir, 8, true);
+
             if (old != meta) {
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.notifyBlockChange(x, y, z, this);
                 world.markBlockForUpdate(x, y, z);
             }
-            world.scheduleBlockUpdate(x, y, z, this, 1);
         }
     }
 }

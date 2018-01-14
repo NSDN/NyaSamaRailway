@@ -1,29 +1,16 @@
 package club.nsdn.nyasamarailway.tileblock.signal.block;
 
-import club.nsdn.nyasamarailway.tileblock.TileBlock;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import club.nsdn.nyasamarailway.block.BlockLoader;
+import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.Random;
-
 /**
  * Created by drzzm32 on 2017.10.5.
  */
-public class BlockBiSignalLight extends TileBlock {
-
-    private static final int LIGHT_OFF = 0;
-    private static final int LIGHT_R = 1;
-    private static final int LIGHT_Y = 2;
-    private static final int LIGHT_G = 3;
+public class BlockBiSignalLight extends AbsSignalLight {
 
     public static class BiSignalLight extends club.nsdn.nyasamarailway.tileblock.signal.TileEntitySignalLight {
     }
@@ -31,8 +18,6 @@ public class BlockBiSignalLight extends TileBlock {
     public BlockBiSignalLight() {
         super("BiSignalLight");
         setIconLocation("bi_signal_light");
-        setLightOpacity(0);
-        setLightLevel(0.75F);
     }
 
     @Override
@@ -43,12 +28,6 @@ public class BlockBiSignalLight extends TileBlock {
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
         return side == ForgeDirection.DOWN;
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-        int meta = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
     }
 
     @Override
@@ -69,47 +48,6 @@ public class BlockBiSignalLight extends TileBlock {
                 setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
                 break;
         }
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x, y, z);
-        world.scheduleBlockUpdate(x, y, z, this, 1);
-    }
-
-    @Override
-    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
-        super.onBlockPreDestroy(world, x, y, z, meta);
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity != null) {
-            if (tileEntity instanceof TileEntityPassiveReceiver) {
-                ((TileEntityPassiveReceiver) tileEntity).onDestroy();
-            }
-        }
-    }
-
-    @Override
-    public int tickRate(World world) {
-        return 10;
-    }
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        if (!world.isRemote) {
-            updateLight(world, x, y, z);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getMixedBrightnessForBlock(IBlockAccess world, int x, int y, int z) {
-        Block block = world.getBlock(x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
-        int light = block.getLightValue(world, x, y, z);
-
-        if (((meta >> 2) & 0x3) == 0) light = 0;
-
-        return world.getLightBrightnessForSkyBlocks(x, y, z, light);
     }
 
     public void updateLight(World world, int x ,int y, int z) {
@@ -141,36 +79,16 @@ public class BlockBiSignalLight extends TileBlock {
                 meta = setLightState(isEnable, meta, biSignalLight.lightType);
             }
 
+            ForgeDirection lightDir = getLightDir(world, x, y, z);
+            boolean isLightOn = isLightOn(world, x, y, z);
+            BlockLoader.lineBeam.lightCtl(world, x, y, z, lightDir, 8, isLightOn);
+
             if (old != meta || !biSignalLight.prevLightType.equals(biSignalLight.lightType)) {
                 biSignalLight.prevLightType = biSignalLight.lightType;
                 world.setBlockMetadataWithNotify(x, y, z, meta, 3);
                 world.markBlockForUpdate(x, y, z);
             }
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
         }
-    }
-
-    public int setLightState(boolean isEnable, int meta, String type) {
-        String lightType = type.toLowerCase();
-        if (lightType.equals("red&off"))
-            return isEnable ? meta | (LIGHT_R << 2) : meta;
-        else if (lightType.equals("yellow&off"))
-            return isEnable ? meta | (LIGHT_Y << 2) : meta;
-        else if (lightType.equals("green&off"))
-            return isEnable ? meta | (LIGHT_G << 2) : meta;
-        else if (lightType.equals("red&yellow"))
-            return isEnable ? meta | (LIGHT_R << 2) : meta | (LIGHT_Y << 2);
-        else if (lightType.equals("red&green"))
-            return isEnable ? meta | (LIGHT_R << 2) : meta | (LIGHT_G << 2);
-        else if (lightType.equals("yellow&green"))
-            return isEnable ? meta | (LIGHT_Y << 2) : meta | (LIGHT_G << 2);
-        else if (lightType.equals("white&blue"))
-            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
-        else if (lightType.equals("yellow&purple"))
-            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
-        else
-            return meta;
     }
 
 }
