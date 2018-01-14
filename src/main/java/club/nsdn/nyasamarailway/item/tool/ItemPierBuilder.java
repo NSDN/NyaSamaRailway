@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.item.tool;
 
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityPierTag;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockPierTag;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,7 +86,7 @@ public class ItemPierBuilder extends ItemToolBase {
             if (endBlock == null)
                 return false;
 
-            if (!(block instanceof TileEntityPierTag))
+            if (!(block instanceof BlockPierTag))
                 return false;
             else {
                 world.setBlock(x, y, z, Blocks.air);

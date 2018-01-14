@@ -23,43 +23,43 @@ public class TileEntityLoader {
     public TileEntityLoader(FMLInitializationEvent event) {
 
         GameRegistry.registerTileEntity(
-                TileEntityTrackPlate.TrackPlate.class,
+                BlockTrackPlate.TrackPlate.class,
                 "tileEntityTrackPlate");
 
         GameRegistry.registerTileEntity(
-                TileEntityTrackShelf.TrackShelf.class,
+                BlockTrackShelf.TrackShelf.class,
                 "tileEntityTrackShelf");
 
         GameRegistry.registerTileEntity(
-                TileEntityTrackShelfLow.TrackShelfLow.class,
+                BlockTrackShelfLow.TrackShelfLow.class,
                 "tileEntityTrackShelfLow");
 
         GameRegistry.registerTileEntity(
-                TileEntityTBridgeHead.TBridgeHead.class,
+                BlockTBridgeHead.TBridgeHead.class,
                 "tileEntityTBridgeHead");
 
         GameRegistry.registerTileEntity(
-                TileEntityTBridgeHeadNoRib.TBridgeHeadNoRib.class,
+                BlockTBridgeHeadNoRib.TBridgeHeadNoRib.class,
                 "tileEntityTBridgeHeadNoRib");
 
         GameRegistry.registerTileEntity(
-                TileEntityTBridgeBody.TBridgeBody.class,
+                BlockTBridgeBody.TBridgeBody.class,
                 "tileEntityTBridgeBody");
 
         GameRegistry.registerTileEntity(
-                TileEntityTBridgeBodyNoRib.TBridgeBodyNoRib.class,
+                BlockTBridgeBodyNoRib.TBridgeBodyNoRib.class,
                 "tileEntityTBridgeBodyNoRib");
 
         GameRegistry.registerTileEntity(
-                TileEntityTBridgeShoulder.TBridgeShoulder.class,
+                BlockTBridgeShoulder.TBridgeShoulder.class,
                 "tileEntityTBridgeShoulder");
 
         GameRegistry.registerTileEntity(
-                TileEntityHalfBlock.HalfBlock.class,
+                BlockHalfBlock.HalfBlock.class,
                 "tileEntityHalfBlock");
 
         GameRegistry.registerTileEntity(
-                TileEntityHalfHalfBlock.HalfHalfBlock.class,
+                BlockHalfHalfBlock.HalfHalfBlock.class,
                 "tileEntityHalfHalfBlock");
 
         GameRegistry.registerTileEntity(
@@ -91,7 +91,7 @@ public class TileEntityLoader {
                 "tileEntityRailSignHeadT");
 
         GameRegistry.registerTileEntity(
-                TileEntityStationSign.StationSign.class,
+                BlockStationSign.StationSign.class,
                 "tileEntityStationSign");
 
         GameRegistry.registerTileEntity(
@@ -211,11 +211,11 @@ public class TileEntityLoader {
                 "railMonoSwitch");
 
         GameRegistry.registerTileEntity(
-                TileEntityGateBase.GateBase.class,
+                BlockGateBase.GateBase.class,
                 "tileEntityGateBase");
 
         GameRegistry.registerTileEntity(
-                TileEntityGateDoor.GateDoor.class,
+                BlockGateDoor.GateDoor.class,
                 "tileEntityGateDoor");
 
         GameRegistry.registerTileEntity(
@@ -223,19 +223,19 @@ public class TileEntityLoader {
                 "tileEntityGateFront");
 
         GameRegistry.registerTileEntity(
-                TileEntityGateFrontN.GateFrontN.class,
+                BlockGateFrontN.GateFrontN.class,
                 "tileEntityGateFrontN");
 
         GameRegistry.registerTileEntity(
-                TileEntityTicketBlockOnce.TicketBlock.class,
+                BlockTicketBlockOnce.TicketBlock.class,
                 "tileEntityTicketBlockOnce");
 
         GameRegistry.registerTileEntity(
-                TileEntityTicketBlockCard.TicketBlock.class,
+                BlockTicketBlockCard.TicketBlock.class,
                 "tileEntityTicketBlockCard");
 
         GameRegistry.registerTileEntity(
-                TileEntityCoinBlock.CoinBlock.class,
+                BlockCoinBlock.CoinBlock.class,
                 "tileEntityCoinBlock");
 
         GameRegistry.registerTileEntity(
@@ -259,23 +259,23 @@ public class TileEntityLoader {
                 "tileEntityGlassShield3X1D5");
 
         GameRegistry.registerTileEntity(
-                TileEntityGlassShieldAl.GlassShieldAl.class,
+                BlockGlassShieldAl.GlassShieldAl.class,
                 "tileEntityGlassShieldAl");
 
         GameRegistry.registerTileEntity(
-                TileEntityGlassShieldAlHalf.GlassShieldAl.class,
+                BlockGlassShieldAlHalf.GlassShieldAl.class,
                 "tileEntityGlassShieldAlHalf");
 
         GameRegistry.registerTileEntity(
-                TileEntityGlassShieldAlBase.GlassShieldAl.class,
+                BlockGlassShieldAlBase.GlassShieldAl.class,
                 "tileEntityGlassShieldAlBase");
 
         GameRegistry.registerTileEntity(
-                TileEntityGlassShieldCorner.GlassShieldAl.class,
+                BlockGlassShieldCorner.GlassShieldAl.class,
                 "tileEntityGlassShieldCorner");
 
         GameRegistry.registerTileEntity(
-                TileEntityGlassShieldCornerHalf.GlassShieldAl.class,
+                BlockGlassShieldCornerHalf.GlassShieldAl.class,
                 "tileEntityGlassShieldCornerHalf");
 
         GameRegistry.registerTileEntity(
@@ -287,11 +287,11 @@ public class TileEntityLoader {
                 "tileEntityRailTriSwitch");
 
         GameRegistry.registerTileEntity(
-                TileEntityPierTag.PierTag.class,
+                BlockPierTag.PierTag.class,
                 "tileEntityPierTag");
 
         GameRegistry.registerTileEntity(
-                TileEntityPillar.Pillar.class,
+                BlockPillar.Pillar.class,
                 "tileEntityPillar");
 
         GameRegistry.registerTileEntity(
@@ -321,6 +321,22 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 RailMagnetSwitch.MagnetSwitch.class,
                 "tileEntityRailMagnetSwitch");
+
+        GameRegistry.registerTileEntity(
+                BlockSignalPillar.Pillar.class,
+                "tileEntitySignalPillar");
+
+        GameRegistry.registerTileEntity(
+                BlockPillarSignalOne.SignalLight.class,
+                "tileEntityPillarSignalOne");
+
+        GameRegistry.registerTileEntity(
+                BlockPillarSignalBi.BiSignalLight.class,
+                "tileEntityPillarSignalBi");
+
+        GameRegistry.registerTileEntity(
+                BlockPillarSignalTri.TriSignalLight.class,
+                "tileEntityPillarSignalTri");
     }
 
 }

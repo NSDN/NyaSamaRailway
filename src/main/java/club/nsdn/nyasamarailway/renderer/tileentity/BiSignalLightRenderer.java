@@ -16,17 +16,8 @@ import org.lwjgl.opengl.GL11;
  */
 public class BiSignalLightRenderer extends TileEntitySpecialRenderer {
 
-    private final WavefrontObject modelBase = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/blocks/bi_signal_light_base.obj")
-    );
-    private final WavefrontObject modelLight[] = {
-            new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/bi_signal_light_f.obj")
-            ),
-            new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/bi_signal_light_t.obj")
-            )
-    };
+    private final WavefrontObject modelBase;
+    private final WavefrontObject modelLight[];
     private final ResourceLocation textureBase = new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_base.png");
     private final ResourceLocation[] textureLight = {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_none.png"),
@@ -38,7 +29,18 @@ public class BiSignalLightRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_p.png")
     };
 
-    public BiSignalLightRenderer() {
+    public BiSignalLightRenderer(String baseName) {
+        modelBase = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_base.obj")
+        );
+        modelLight = new WavefrontObject[] {
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_light_1.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_light_2.obj")
+                )
+        };
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -82,8 +84,8 @@ public class BiSignalLightRenderer extends TileEntitySpecialRenderer {
         }
 
         RendererHelper.renderWithResourceAndRotation(modelBase, angle, textureBase);
-        RendererHelper.renderWithResourceAndRotation(modelLight[0], angle, textureLight[lightPos == 0 ? lightState : 0]);
-        RendererHelper.renderWithResourceAndRotation(modelLight[1], angle, textureLight[lightPos == 1 ? lightState : 0]);
+        RendererHelper.renderWithResourceAndRotation(modelLight[0], angle, textureLight[lightPos == 1 ? lightState : 0]);
+        RendererHelper.renderWithResourceAndRotation(modelLight[1], angle, textureLight[lightPos == 0 ? lightState : 0]);
 
         RenderHelper.enableStandardItemLighting();
 

@@ -4,8 +4,8 @@ import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.ItemTicketBase;
 import club.nsdn.nyasamarailway.item.ItemTicketOnce;
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityGateBase;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityGateDoor;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockGateBase;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockGateDoor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
@@ -202,7 +202,7 @@ public class BlockGateFront extends TileBlock {
                             playerOK = getGateBase(world, x, y, z + 1).player.equals(player.getDisplayName());
                         }
 
-                        if (getGateBase(world, x, y, z + 1).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                        if (getGateBase(world, x, y, z + 1).getDoorState() == BlockGateDoor.GateDoor.STATE_OPEN) {
                             gateFront.delay += 1;
                             if (gateFront.delay > GateFront.DELAY * 20) {
                                 delayed = true;
@@ -229,7 +229,7 @@ public class BlockGateFront extends TileBlock {
                             playerOK = getGateBase(world, x - 1, y, z).player.equals(player.getDisplayName());
                         }
 
-                        if (getGateBase(world, x - 1, y, z).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                        if (getGateBase(world, x - 1, y, z).getDoorState() == BlockGateDoor.GateDoor.STATE_OPEN) {
                             gateFront.delay += 1;
                             if (gateFront.delay > GateFront.DELAY * 20) {
                                 delayed = true;
@@ -256,7 +256,7 @@ public class BlockGateFront extends TileBlock {
                             playerOK = getGateBase(world, x, y, z - 1).player.equals(player.getDisplayName());
                         }
 
-                        if (getGateBase(world, x, y, z - 1).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                        if (getGateBase(world, x, y, z - 1).getDoorState() == BlockGateDoor.GateDoor.STATE_OPEN) {
                             gateFront.delay += 1;
                             if (gateFront.delay > GateFront.DELAY * 20) {
                                 delayed = true;
@@ -283,7 +283,7 @@ public class BlockGateFront extends TileBlock {
                             playerOK = getGateBase(world, x + 1, y, z).player.equals(player.getDisplayName());
                         }
 
-                        if (getGateBase(world, x + 1, y, z).getDoorState() == TileEntityGateDoor.GateDoor.STATE_OPEN) {
+                        if (getGateBase(world, x + 1, y, z).getDoorState() == BlockGateDoor.GateDoor.STATE_OPEN) {
                             gateFront.delay += 1;
                             if (gateFront.delay > GateFront.DELAY * 20) {
                                 delayed = true;
@@ -328,9 +328,9 @@ public class BlockGateFront extends TileBlock {
         return null;
     }
 
-    public TileEntityGateBase.GateBase getGateBase(World world, int x, int y, int z) {
-        if (world.getTileEntity(x, y ,z) instanceof TileEntityGateBase.GateBase) {
-            return (TileEntityGateBase.GateBase) world.getTileEntity(x, y, z);
+    public BlockGateBase.GateBase getGateBase(World world, int x, int y, int z) {
+        if (world.getTileEntity(x, y ,z) instanceof BlockGateBase.GateBase) {
+            return (BlockGateBase.GateBase) world.getTileEntity(x, y, z);
         }
         return null;
     }

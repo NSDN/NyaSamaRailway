@@ -202,3 +202,7 @@ item.ItemNGT.name=NGT型终端
 tile.SignalLamp.name=信号灯
 tile.SignalStick.name=信号柱
 info.nspc8j.mode=NSPC-8J高速模式设置为 %s
+tile.SignalPillar.name=混凝土信号机柱
+tile.PillarSignalOne.name=单灯高柱信号机
+tile.PillarSignalBi.name=双灯高柱信号机
+tile.PillarSignalTri.name=三灯高柱信号机

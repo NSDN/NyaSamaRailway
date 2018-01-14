@@ -32,43 +32,43 @@ public class TileEntityModelBinder {
         RenderingRegistry.registerBlockHandler(BlockEdge.renderType, new EdgeRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTrackPlate.TrackPlate.class,
-                new BaseRenderer(new TrackPlateModel()));
+                BlockTrackPlate.TrackPlate.class,
+                new TrackPlateRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTrackShelf.TrackShelf.class,
+                BlockTrackShelf.TrackShelf.class,
                 new BaseRenderer(new TrackShelfModel(), "textures/blocks/BrushedAluminum.png"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTrackShelfLow.TrackShelfLow.class,
+                BlockTrackShelfLow.TrackShelfLow.class,
                 new BaseRenderer(new TrackShelfLowModel(), "textures/blocks/BrushedAluminum.png"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTBridgeHead.TBridgeHead.class,
+                BlockTBridgeHead.TBridgeHead.class,
                 new BaseRenderer(new TBridgeHeadModel(true)));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTBridgeHeadNoRib.TBridgeHeadNoRib.class,
+                BlockTBridgeHeadNoRib.TBridgeHeadNoRib.class,
                 new BaseRenderer(new TBridgeHeadModel(false)));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTBridgeBody.TBridgeBody.class,
+                BlockTBridgeBody.TBridgeBody.class,
                 new BaseRenderer(new TBridgeBodyModel(true)));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTBridgeBodyNoRib.TBridgeBodyNoRib.class,
+                BlockTBridgeBodyNoRib.TBridgeBodyNoRib.class,
                 new BaseRenderer(new TBridgeBodyModel(false)));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTBridgeShoulder.TBridgeShoulder.class,
+                BlockTBridgeShoulder.TBridgeShoulder.class,
                 new BaseRenderer(new TBridgeShoulderModel()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityHalfBlock.HalfBlock.class,
+                BlockHalfBlock.HalfBlock.class,
                 new BaseRenderer(new HalfBlockModel()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityHalfHalfBlock.HalfHalfBlock.class,
+                BlockHalfHalfBlock.HalfHalfBlock.class,
                 new BaseRenderer(new HalfHalfBlockModel()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
@@ -100,7 +100,7 @@ public class TileEntityModelBinder {
                 new BaseRenderer(new RailSignHeadModel(), "textures/blocks/rail_sign_t.png"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityStationSign.StationSign.class, new StationSignRenderer());
+                BlockStationSign.StationSign.class, new StationSignRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 RailBase.TileEntityRail.class, new RailRenderer(new RailNoSleeperStraightModel(), "textures/rails/rail_ns_s.png"));
@@ -197,29 +197,29 @@ public class TileEntityModelBinder {
                 RailMonoSwitch.MonoSwitch.class, new RailMonoSwitchRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGateBase.GateBase.class, new GateRenderer(GateRenderer.GATE_BASE));
+                BlockGateBase.GateBase.class, new GateRenderer(GateRenderer.GATE_BASE));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGateDoor.GateDoor.class, new GateRenderer(GateRenderer.GATE_DOOR));
+                BlockGateDoor.GateDoor.class, new GateRenderer(GateRenderer.GATE_DOOR));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockGateFront.GateFront.class, new GateRenderer(GateRenderer.GATE_FRONT));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGateFrontN.GateFrontN.class, new GateRenderer(GateRenderer.GATE_FRONT_N));
+                BlockGateFrontN.GateFrontN.class, new GateRenderer(GateRenderer.GATE_FRONT_N));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTicketBlockOnce.TicketBlock.class,
+                BlockTicketBlockOnce.TicketBlock.class,
                 new TicketBlockRenderer(TicketBlockRenderer.TICKET_ONCE)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityTicketBlockCard.TicketBlock.class,
+                BlockTicketBlockCard.TicketBlock.class,
                 new TicketBlockRenderer(TicketBlockRenderer.TICKET_CARD)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityCoinBlock.CoinBlock.class,
+                BlockCoinBlock.CoinBlock.class,
                 new TicketBlockRenderer(TicketBlockRenderer.COIN)
         );
 
@@ -249,27 +249,27 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGlassShieldAl.GlassShieldAl.class,
+                BlockGlassShieldAl.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGlassShieldAlHalf.GlassShieldAl.class,
+                BlockGlassShieldAlHalf.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_HALF)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGlassShieldAlBase.GlassShieldAl.class,
+                BlockGlassShieldAlBase.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_BASE)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGlassShieldCorner.GlassShieldAl.class,
+                BlockGlassShieldCorner.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER)
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityGlassShieldCornerHalf.GlassShieldAl.class,
+                BlockGlassShieldCornerHalf.GlassShieldAl.class,
                 new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER_HALF)
         );
 
@@ -282,16 +282,16 @@ public class TileEntityModelBinder {
                 RailTriSwitch.TriSwitch.class, new RailTriSwitchRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityPierTag.PierTag.class, new PierTagRenderer());
+                BlockPierTag.PierTag.class, new PierTagRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                TileEntityPillar.Pillar.class, new PillarRenderer());
+                BlockPillar.Pillar.class, new PillarRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                BlockBiSignalLight.BiSignalLight.class, new BiSignalLightRenderer());
+                BlockBiSignalLight.BiSignalLight.class, new BiSignalLightRenderer("bi_signal_light"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
-                BlockTriSignalLight.TriSignalLight.class, new TriSignalLightRenderer());
+                BlockTriSignalLight.TriSignalLight.class, new TriSignalLightRenderer("tri_signal_light"));
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockSignalLamp.SignalLight.class, new SignalLightRenderer("models/blocks/signal_lamp.obj"));
@@ -307,6 +307,18 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 RailMagnetSwitch.MagnetSwitch.class, new RailMonoSwitchRenderer(false));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                BlockSignalPillar.Pillar.class, new SignalPillarRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                BlockPillarSignalOne.SignalLight.class, new SignalLightRenderer("models/blocks/signal_pillar_one.obj"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                BlockPillarSignalBi.BiSignalLight.class, new BiSignalLightRenderer("signal_pillar_bi"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                BlockPillarSignalTri.TriSignalLight.class, new TriSignalLightRenderer("signal_pillar_tri"));
     }
 
 }

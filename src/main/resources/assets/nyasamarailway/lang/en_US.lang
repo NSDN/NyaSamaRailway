@@ -200,3 +200,7 @@ item.ItemNGT.name=NyaGame Tablet
 tile.SignalLamp.name=Signal Lamp
 tile.SignalStick.name=Signal Stick
 info.nspc8j.mode=NSPC-8J's High Speed Mode set to %s
+tile.SignalPillar.name=Signal Pillar
+tile.PillarSignalOne.name=One-Pillar Signal Light
+tile.PillarSignalBi.name=Bi-Pillar Signal Light
+tile.PillarSignalTri.name=Tri-Pillar Signal Light

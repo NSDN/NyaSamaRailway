@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
-import club.nsdn.nyasamarailway.tileblock.decoration.TileEntityPillar;
+import club.nsdn.nyasamarailway.tileblock.decoration.BlockPillar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -41,8 +41,8 @@ public class PillarRenderer extends TileEntitySpecialRenderer {
 
         Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
-        if (te instanceof TileEntityPillar.Pillar) {
-            TileEntityPillar.Pillar pillar = (TileEntityPillar.Pillar) te;
+        if (te instanceof BlockPillar.Pillar) {
+            BlockPillar.Pillar pillar = (BlockPillar.Pillar) te;
             int meta = pillar.meta;
 
             Minecraft.getMinecraft().getTextureManager().bindTexture(textureMain);
@@ -59,17 +59,17 @@ public class PillarRenderer extends TileEntitySpecialRenderer {
 
             modelMain.renderPart("0");
 
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.UP)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.UP)) != 0)
                 modelMain.renderPart("4");
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.DOWN)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.DOWN)) != 0)
                 modelMain.renderPart("3");
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.NORTH)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.NORTH)) != 0)
                 modelMain.renderPart("5");
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.SOUTH)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.SOUTH)) != 0)
                 modelMain.renderPart("6");
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.WEST)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.WEST)) != 0)
                 modelMain.renderPart("1");
-            if ((meta & TileEntityPillar.getValueByForgeDirection(ForgeDirection.EAST)) != 0)
+            if ((meta & BlockPillar.getValueByForgeDirection(ForgeDirection.EAST)) != 0)
                 modelMain.renderPart("2");
 
             GL11.glPopMatrix();

@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.block.*;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityStationSign;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockStationSign;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,7 +38,7 @@ public class ItemStationSign extends ItemToolBase {
         if (tileEntity == null)
             return false;
         if (tileEntity instanceof TileEntitySign) {
-            TileEntityStationSign.StationSign sign = new TileEntityStationSign.StationSign();
+            BlockStationSign.StationSign sign = new BlockStationSign.StationSign();
             sign.StationNameCN = ((TileEntitySign) tileEntity).signText[0];
             sign.StationNameEN = ((TileEntitySign) tileEntity).signText[1];
             sign.LeftStations = ((TileEntitySign) tileEntity).signText[2];
@@ -66,11 +66,11 @@ public class ItemStationSign extends ItemToolBase {
             tileEntity = world.getTileEntity(x, y, z);
             if (tileEntity == null)
                 return false;
-            if (tileEntity instanceof TileEntityStationSign.StationSign) {
-                ((TileEntityStationSign.StationSign) tileEntity).StationNameCN = sign.StationNameCN;
-                ((TileEntityStationSign.StationSign) tileEntity).StationNameEN = sign.StationNameEN;
-                ((TileEntityStationSign.StationSign) tileEntity).LeftStations = sign.LeftStations;
-                ((TileEntityStationSign.StationSign) tileEntity).RightStations = sign.RightStations;
+            if (tileEntity instanceof BlockStationSign.StationSign) {
+                ((BlockStationSign.StationSign) tileEntity).StationNameCN = sign.StationNameCN;
+                ((BlockStationSign.StationSign) tileEntity).StationNameEN = sign.StationNameEN;
+                ((BlockStationSign.StationSign) tileEntity).LeftStations = sign.LeftStations;
+                ((BlockStationSign.StationSign) tileEntity).RightStations = sign.RightStations;
 
                 return !world.isRemote;
             }

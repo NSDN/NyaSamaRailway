@@ -4,8 +4,8 @@ import club.nsdn.nyasamarailway.block.*;
 import club.nsdn.nyasamarailway.block.rail.*;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReception;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReceptionAnti;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityCoinBlock;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityTicketBlockOnce;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockCoinBlock;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockTicketBlockOnce;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
@@ -198,8 +198,8 @@ public class Item1N4148 extends ItemToolBase {
         if (tileEntity == null) return false;
 
         if (player.isSneaking()) {
-            if (tileEntity instanceof TileEntityCoinBlock.CoinBlock) {
-                TileEntityCoinBlock.CoinBlock coinBlock = (TileEntityCoinBlock.CoinBlock) tileEntity;
+            if (tileEntity instanceof BlockCoinBlock.CoinBlock) {
+                BlockCoinBlock.CoinBlock coinBlock = (BlockCoinBlock.CoinBlock) tileEntity;
                 if (coinBlock.value <= 0) coinBlock.value = 1;
 
                 switch (coinBlock.value) {
@@ -222,8 +222,8 @@ public class Item1N4148 extends ItemToolBase {
                 if (player instanceof EntityPlayerMP) player.addChatComponentMessage(
                         new ChatComponentTranslation("info.coin.value", coinBlock.value)
                 );
-            } else if (tileEntity instanceof TileEntityTicketBlockOnce.TicketBlock) {
-                TileEntityTicketBlockOnce.TicketBlock ticketBlock = (TileEntityTicketBlockOnce.TicketBlock) tileEntity;
+            } else if (tileEntity instanceof BlockTicketBlockOnce.TicketBlock) {
+                BlockTicketBlockOnce.TicketBlock ticketBlock = (BlockTicketBlockOnce.TicketBlock) tileEntity;
 
                 switch (ticketBlock.setOver) {
                     case 1:

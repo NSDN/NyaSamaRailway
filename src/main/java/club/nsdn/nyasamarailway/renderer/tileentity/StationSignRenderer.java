@@ -4,7 +4,7 @@ package club.nsdn.nyasamarailway.renderer.tileentity;
  * Created by drzzm32 on 2016.7.5.
  */
 
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityStationSign;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockStationSign;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -27,7 +27,7 @@ public class StationSignRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
-        TileEntityStationSign.StationSign sign = (TileEntityStationSign.StationSign) te;
+        BlockStationSign.StationSign sign = (BlockStationSign.StationSign) te;
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 

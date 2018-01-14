@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityGateDoor;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockGateDoor;
 import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGateFront;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
@@ -141,10 +141,10 @@ public class GateRenderer extends TileEntitySpecialRenderer {
                 RendererHelper.renderWithResourceAndRotation(modelBaseTop, angle, textureBaseTop);
                 break;
             case GATE_DOOR:
-                if (te instanceof TileEntityGateDoor.GateDoor) {
-                    TileEntityGateDoor.GateDoor gateDoor = (TileEntityGateDoor.GateDoor) te;
+                if (te instanceof BlockGateDoor.GateDoor) {
+                    BlockGateDoor.GateDoor gateDoor = (BlockGateDoor.GateDoor) te;
 
-                    float max = (float) TileEntityGateDoor.GateDoor.PROGRESS_MAX;
+                    float max = (float) BlockGateDoor.GateDoor.PROGRESS_MAX;
                     float dist = ((float) gateDoor.progress) / max * 0.5F;
 
                     if (dist != gateDoor.prevDist) {

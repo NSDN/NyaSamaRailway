@@ -1,9 +1,9 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityCoinBlock;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityTicketBlockCard;
-import club.nsdn.nyasamarailway.tileblock.functional.TileEntityTicketBlockOnce;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockCoinBlock;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockTicketBlockCard;
+import club.nsdn.nyasamarailway.tileblock.functional.BlockTicketBlockOnce;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -126,8 +126,8 @@ public class TicketBlockRenderer extends TileEntitySpecialRenderer {
         {
             case TICKET_ONCE:
                 RendererHelper.renderWithResourceAndRotation(modelOnceBase, angle, textureMain);
-                if (te instanceof TileEntityTicketBlockOnce.TicketBlock) {
-                    TileEntityTicketBlockOnce.TicketBlock ticketBlock = (TileEntityTicketBlockOnce.TicketBlock) te;
+                if (te instanceof BlockTicketBlockOnce.TicketBlock) {
+                    BlockTicketBlockOnce.TicketBlock ticketBlock = (BlockTicketBlockOnce.TicketBlock) te;
                     int over = ticketBlock.setOver;
 
                     if ((meta & 0x4) == 0) {
@@ -147,8 +147,8 @@ public class TicketBlockRenderer extends TileEntitySpecialRenderer {
             case TICKET_CARD:
                 RendererHelper.renderWithResourceAndRotation(modelCardBase, angle, textureMain);
                 if ((meta & 0x8) != 0) {
-                    if (te instanceof TileEntityTicketBlockCard.TicketBlock) {
-                        TileEntityTicketBlockCard.TicketBlock ticketBlock = (TileEntityTicketBlockCard.TicketBlock) te;
+                    if (te instanceof BlockTicketBlockCard.TicketBlock) {
+                        BlockTicketBlockCard.TicketBlock ticketBlock = (BlockTicketBlockCard.TicketBlock) te;
                         int over = ticketBlock.over;
                         int s1 = over / 1000, s2 = (over % 1000) / 100, s3 = (over % 100) / 10, s4 = over % 10;
 
@@ -164,8 +164,8 @@ public class TicketBlockRenderer extends TileEntitySpecialRenderer {
                     RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_INSERT], angle, textureMain);
                 break;
             case COIN:
-                if (te instanceof TileEntityCoinBlock.CoinBlock) {
-                    TileEntityCoinBlock.CoinBlock coinBlock = (TileEntityCoinBlock.CoinBlock) te;
+                if (te instanceof BlockCoinBlock.CoinBlock) {
+                    BlockCoinBlock.CoinBlock coinBlock = (BlockCoinBlock.CoinBlock) te;
                     int value = coinBlock.value;
                     int s2 = (value % 100) / 10, s3 = value % 10;
 

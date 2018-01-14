@@ -15,20 +15,8 @@ import org.lwjgl.opengl.GL11;
  */
 public class TriSignalLightRenderer extends TileEntitySpecialRenderer {
 
-    private final WavefrontObject modelBase = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_base.obj")
-    );
-    private final WavefrontObject modelLight[] = {
-            new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_1.obj")
-            ),
-            new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_2.obj")
-            ),
-            new WavefrontObject(
-                    new ResourceLocation("nyasamarailway", "models/blocks/tri_signal_light_3.obj")
-            )
-    };
+    private final WavefrontObject modelBase;
+    private final WavefrontObject modelLight[];
     private final ResourceLocation textureBase = new ResourceLocation("nyasamarailway", "textures/blocks/signal_light_base.png");
     private final ResourceLocation[] textureLight = {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_none.png"),
@@ -37,7 +25,21 @@ public class TriSignalLightRenderer extends TileEntitySpecialRenderer {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_g.png")
     };
 
-    public TriSignalLightRenderer() {
+    public TriSignalLightRenderer(String baseName) {
+        modelBase = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_base.obj")
+        );
+        modelLight = new WavefrontObject[] {
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_light_1.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_light_2.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/" + baseName + "_light_3.obj")
+                )
+        };
     }
 
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
@@ -63,9 +65,9 @@ public class TriSignalLightRenderer extends TileEntitySpecialRenderer {
         int lightState = (meta >> 2) & 0x3;
 
         RendererHelper.renderWithResourceAndRotation(modelBase, angle, textureBase);
-        RendererHelper.renderWithResourceAndRotation(modelLight[0], angle, textureLight[lightState == 2 ? 1 : 0]);
-        RendererHelper.renderWithResourceAndRotation(modelLight[1], angle, textureLight[lightState == 1 ? 2 : 0]);
-        RendererHelper.renderWithResourceAndRotation(modelLight[2], angle, textureLight[lightState == 0 ? 3 : 0]);
+        RendererHelper.renderWithResourceAndRotation(modelLight[0], angle, textureLight[lightState == 0 ? 3 : 0]);
+        RendererHelper.renderWithResourceAndRotation(modelLight[1], angle, textureLight[lightState == 2 ? 1 : 0]);
+        RendererHelper.renderWithResourceAndRotation(modelLight[2], angle, textureLight[lightState == 1 ? 2 : 0]);
 
         RenderHelper.enableStandardItemLighting();
 

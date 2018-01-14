@@ -64,7 +64,6 @@ public class BlockLoader {
     public static Block blockBumperNoSleeper;
 
     public static Block blockPierTag;
-    public static Block blockPillar;
 
     public static Block blockIronBars;
     public static Block blockIronWeb;
@@ -124,11 +123,18 @@ public class BlockLoader {
 
     public static Block blockStationSign;
 
+    public static Block blockPillar;
     public static Block blockSignalLight;
     public static Block blockSignalLamp;
     public static Block blockSignalStick;
     public static Block blockBiSignalLight;
     public static Block blockTriSignalLight;
+
+    public static Block blockSignalPillar;
+    public static Block blockPillarSignalOne;
+    public static Block blockPillarSignalBi;
+    public static Block blockPillarSignalTri;
+
     public static Block blockSignalBox;
     public static Block blockSignalBoxSender;
     public static Block blockTriStateSignalBox;
@@ -170,13 +176,13 @@ public class BlockLoader {
         blockNSRLogo = new BlockNSRLogo();
         register(blockNSRLogo, "nyasamarailway_logo");
 
-        blockTrackPlate = new TileEntityTrackPlate();
+        blockTrackPlate = new BlockTrackPlate();
         register(blockTrackPlate, "block_track_plate");
 
-        blockTrackShelf = new TileEntityTrackShelf();
+        blockTrackShelf = new BlockTrackShelf();
         register(blockTrackShelf, "block_track_shelf");
 
-        blockTrackShelfLow = new TileEntityTrackShelfLow();
+        blockTrackShelfLow = new BlockTrackShelfLow();
         register(blockTrackShelfLow, "block_track_shelf_low");
 
         blockRailStoneSleeper = new BlockRailStoneSleeper();
@@ -262,11 +268,8 @@ public class BlockLoader {
         register(blockBumperNoSleeper, "block_bumper_no_sleeper");
 
 
-        blockPierTag = new TileEntityPierTag();
+        blockPierTag = new BlockPierTag();
         register(blockPierTag, "block_pier_tag");
-
-        blockPillar = new TileEntityPillar();
-        register(blockPillar, "block_pillar");
 
 
         blockIronBars = new BlockIronBars();
@@ -275,25 +278,25 @@ public class BlockLoader {
         blockIronWeb = new BlockIronWeb();
         register(blockIronWeb, "rail_iron_web");
 
-        blockTBridgeHead = new TileEntityTBridgeHead();
+        blockTBridgeHead = new BlockTBridgeHead();
         register(blockTBridgeHead, "block_t_bridge_head");
 
-        blockTBridgeHeadNoRib = new TileEntityTBridgeHeadNoRib();
+        blockTBridgeHeadNoRib = new BlockTBridgeHeadNoRib();
         register(blockTBridgeHeadNoRib, "block_t_bridge_head_no_rib");
 
-        blockTBridgeBody = new TileEntityTBridgeBody();
+        blockTBridgeBody = new BlockTBridgeBody();
         register(blockTBridgeBody, "block_t_bridge_body");
 
-        blockTBridgeBodyNoRib = new TileEntityTBridgeBodyNoRib();
+        blockTBridgeBodyNoRib = new BlockTBridgeBodyNoRib();
         register(blockTBridgeBodyNoRib, "block_t_bridge_body_no_rib");
 
-        blockTBridgeShoulder = new TileEntityTBridgeShoulder();
+        blockTBridgeShoulder = new BlockTBridgeShoulder();
         register(blockTBridgeShoulder, "block_t_bridge_shoulder");
 
-        blockHalfBlock = new TileEntityHalfBlock();
+        blockHalfBlock = new BlockHalfBlock();
         register(blockHalfBlock, "block_half_block");
 
-        blockHalfHalfBlock = new TileEntityHalfHalfBlock();
+        blockHalfHalfBlock = new BlockHalfHalfBlock();
         register(blockHalfHalfBlock, "block_half_half_block");
 
         blockPlatform = new BlockPlatform();
@@ -381,7 +384,7 @@ public class BlockLoader {
         //railNoSleeperStraight = new RailNoSleeperStraight();
         //register(railNoSleeperStraight, "rail_ns_s");
 
-        blockStationSign = new TileEntityStationSign();
+        blockStationSign = new BlockStationSign();
         register(blockStationSign, "block_station_sign");
 
         rail3rd = new Rail3rd();
@@ -451,6 +454,9 @@ public class BlockLoader {
         register(railTriSwitch, "rail_tri_switch");
 
 
+        blockPillar = new BlockPillar();
+        register(blockPillar, "block_pillar");
+
         blockSignalLight = new BlockSignalLight();
         register(blockSignalLight, "block_signal_light");
 
@@ -466,6 +472,20 @@ public class BlockLoader {
         blockTriSignalLight = new BlockTriSignalLight();
         register(blockTriSignalLight, "block_tri_signal_light");
 
+
+        blockSignalPillar = new BlockSignalPillar();
+        register(blockSignalPillar, "block_signal_pillar");
+
+        blockPillarSignalOne = new BlockPillarSignalOne();
+        register(blockPillarSignalOne, "block_pillar_signal_one");
+
+        blockPillarSignalBi = new BlockPillarSignalBi();
+        register(blockPillarSignalBi, "block_pillar_signal_bi");
+
+        blockPillarSignalTri = new BlockPillarSignalTri();
+        register(blockPillarSignalTri, "block_pillar_signal_tri");
+
+
         blockSignalBox = new BlockSignalBox();
         register(blockSignalBox, "block_signal_box");
 
@@ -475,16 +495,16 @@ public class BlockLoader {
         blockTriStateSignalBox = new BlockTriStateSignalBox();
         register(blockTriStateSignalBox, "block_tri_state_signal_box");
 
-        blockGateBase = new TileEntityGateBase();
+        blockGateBase = new BlockGateBase();
         register(blockGateBase, "block_gate_base");
 
-        blockGateDoor = new TileEntityGateDoor();
+        blockGateDoor = new BlockGateDoor();
         register(blockGateDoor, "block_gate_door");
 
         blockGateFront = new BlockGateFront();
         register(blockGateFront, "block_gate_front");
 
-        blockGateFrontN = new TileEntityGateFrontN();
+        blockGateFrontN = new BlockGateFrontN();
         register(blockGateFrontN, "block_gate_front_n");
 
         blockGlassShield = new BlockGlassShield();
@@ -502,28 +522,28 @@ public class BlockLoader {
         blockGlassShieldHalf = new BlockGlassShieldHalf();
         register(blockGlassShieldHalf, "block_glass_shield_half");
 
-        blockGlassShieldAl = new TileEntityGlassShieldAl();
+        blockGlassShieldAl = new BlockGlassShieldAl();
         register(blockGlassShieldAl, "block_glass_shield_al");
 
-        blockGlassShieldAlHalf = new TileEntityGlassShieldAlHalf();
+        blockGlassShieldAlHalf = new BlockGlassShieldAlHalf();
         register(blockGlassShieldAlHalf, "block_glass_shield_al_half");
 
-        blockGlassShieldAlBase = new TileEntityGlassShieldAlBase();
+        blockGlassShieldAlBase = new BlockGlassShieldAlBase();
         register(blockGlassShieldAlBase, "block_glass_shield_albase");
 
-        blockGlassShieldCorner = new TileEntityGlassShieldCorner();
+        blockGlassShieldCorner = new BlockGlassShieldCorner();
         register(blockGlassShieldCorner, "block_glass_shield_corner");
 
-        blockGlassShieldCornerHalf = new TileEntityGlassShieldCornerHalf();
+        blockGlassShieldCornerHalf = new BlockGlassShieldCornerHalf();
         register(blockGlassShieldCornerHalf, "block_glass_shield_corner_half");
 
-        blockTicketOnce = new TileEntityTicketBlockOnce();
+        blockTicketOnce = new BlockTicketBlockOnce();
         register(blockTicketOnce, "block_ticket_once");
 
-        blockTicketCard = new TileEntityTicketBlockCard();
+        blockTicketCard = new BlockTicketBlockCard();
         register(blockTicketCard, "block_ticket_card");
 
-        blockCoin = new TileEntityCoinBlock();
+        blockCoin = new BlockCoinBlock();
         register(blockCoin, "block_coin");
 
         dotBeam = new LightBeam(AbsSignalLight.class, LightBeam.TYPE_DOT);
