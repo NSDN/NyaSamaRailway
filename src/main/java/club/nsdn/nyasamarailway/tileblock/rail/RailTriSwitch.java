@@ -18,6 +18,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -133,6 +134,22 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
         }
     }
 
+    public boolean railHasCart(World world, int x, int y, int z) {
+        float bBoxSize = 0.25F;
+        List bBox = world.getEntitiesWithinAABB(
+                EntityMinecart.class,
+                AxisAlignedBB.getBoundingBox(
+                        (double) ((float) x + bBoxSize),
+                        (double) y,
+                        (double) ((float) z + bBoxSize),
+                        (double) ((float) (x + 1) - bBoxSize),
+                        (double) ((float) (y + 1) - bBoxSize),
+                        (double) ((float) (z + 1) - bBoxSize)
+                )
+        );
+        return !bBox.isEmpty();
+    }
+
     public void doSwitch(World world, int x ,int y, int z) {
         if (world.getTileEntity(x, y, z) instanceof TriSwitch) {
             TriSwitch triSwitch = (TriSwitch) world.getTileEntity(x, y, z);
@@ -141,6 +158,31 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
 
             if (triSwitch.direction == null)
                 triSwitch.direction = ForgeDirection.UNKNOWN;
+
+            int oldState = triSwitch.state; boolean delayedPost = false;
+            switch (triSwitch.direction) {
+                case SOUTH:
+                    if (railHasCart(world, x + 1, y, z)) triSwitch.setStatePos();
+                    if (railHasCart(world, x - 1, y, z)) triSwitch.setStateNeg();
+                    if (railHasCart(world, x, y, z + 1)) triSwitch.state = TriSwitch.STATE_ZERO;
+                    break;
+                case WEST:
+                    if (railHasCart(world, x, y, z + 1)) triSwitch.setStatePos();
+                    if (railHasCart(world, x, y, z - 1)) triSwitch.setStateNeg();
+                    if (railHasCart(world, x - 1, y, z)) triSwitch.state = TriSwitch.STATE_ZERO;
+                    break;
+                case NORTH:
+                    if (railHasCart(world, x - 1, y, z)) triSwitch.setStatePos();
+                    if (railHasCart(world, x + 1, y, z)) triSwitch.setStateNeg();
+                    if (railHasCart(world, x, y, z - 1)) triSwitch.state = TriSwitch.STATE_ZERO;
+                    break;
+                case EAST:
+                    if (railHasCart(world, x, y, z - 1)) triSwitch.setStatePos();
+                    if (railHasCart(world, x, y, z + 1)) triSwitch.setStateNeg();
+                    if (railHasCart(world, x + 1, y, z)) triSwitch.state = TriSwitch.STATE_ZERO;
+                    break;
+            }
+            if (triSwitch.state != oldState) delayedPost = true;
 
             switch (triSwitch.state) {
                 case TriSwitch.STATE_POS: //left
@@ -203,7 +245,7 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
                 world.notifyBlockChange(x, y, z, this);
                 world.markBlockForUpdate(x, y, z);
             }
-            world.scheduleBlockUpdate(x, y, z, this, 1);
+            world.scheduleBlockUpdate(x, y, z, this, delayedPost ? 40 : 1);
         }
     }
 }
