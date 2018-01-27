@@ -28,6 +28,7 @@ public class LightBeam extends Block {
         setLightOpacity(0);
         setHardness(-1.0F);
         setResistance(0xFFFFFF);
+        setBlockTextureName("nyasamaoptics:light_beam");
         int zero = 0;
         setBlockBounds(zero, zero, zero, zero, zero, zero);
     }
@@ -40,6 +41,7 @@ public class LightBeam extends Block {
         setLightOpacity(0);
         setHardness(-1.0F);
         setResistance(0xFFFFFF);
+        setBlockTextureName("nyasamaoptics:light_beam");
         int zero = 0;
         setBlockBounds(zero, zero, zero, zero, zero, zero);
     }

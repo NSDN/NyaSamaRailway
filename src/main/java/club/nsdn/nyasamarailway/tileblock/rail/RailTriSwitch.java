@@ -150,6 +150,8 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
         return !bBox.isEmpty();
     }
 
+    public int getDelayedPostTime() { return 3; }
+
     public void doSwitch(World world, int x ,int y, int z) {
         if (world.getTileEntity(x, y, z) instanceof TriSwitch) {
             TriSwitch triSwitch = (TriSwitch) world.getTileEntity(x, y, z);
@@ -245,7 +247,7 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
                 world.notifyBlockChange(x, y, z, this);
                 world.markBlockForUpdate(x, y, z);
             }
-            world.scheduleBlockUpdate(x, y, z, this, delayedPost ? 40 : 1);
+            world.scheduleBlockUpdate(x, y, z, this, delayedPost ? getDelayedPostTime() * 20 : 1);
         }
     }
 }
