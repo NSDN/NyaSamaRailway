@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.tileblock.signal.block;
 
 import club.nsdn.nyasamarailway.block.BlockLoader;
 import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntityBiSignalLight;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -12,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class BlockPillarSignalBi extends AbsSignalLight {
 
-    public static class BiSignalLight extends club.nsdn.nyasamarailway.tileblock.signal.TileEntitySignalLight {
+    public static class BiSignalLight extends TileEntityBiSignalLight {
     }
 
     public BlockPillarSignalBi() {

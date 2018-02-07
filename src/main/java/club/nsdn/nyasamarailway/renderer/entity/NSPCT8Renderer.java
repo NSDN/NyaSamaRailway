@@ -197,7 +197,8 @@ public class NSPCT8Renderer extends RenderMinecart {
             NSPCT8 loco = (NSPCT8) cart;
 
             float v = (float) loco.getMotorVel();
-            float a = Math.signum(v);
+            float lim = (float) loco.getMaxVelocity();
+            float a = Math.signum(v) / 3;
 
             float angle;
             int d = loco.getMotorDir(), p = loco.getMotorPower(), r = loco.getMotorBrake();
@@ -208,15 +209,15 @@ public class NSPCT8Renderer extends RenderMinecart {
             String pwr = String.format("%2d", p);
             String brk = String.format("%2d", 10 - r);
             String sv = String.format("%1.2f", v);
-            String sa = String.format("%1.2f", a * 100);
+            String sl = String.format("%1.2f", lim);
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (r <= 5 ? " STOP" : (isOff ? " IDLE" : "  RUN")));
+            doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : "  RUN"));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
-            doRenderText(5, "acc:" + sa + "cm/t2");
+            doRenderText(5, "lim:" + sl + "m/t");
 
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
             angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
