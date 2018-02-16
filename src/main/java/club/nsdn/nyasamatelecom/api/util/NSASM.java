@@ -103,12 +103,12 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             } else {
                 if (dst == null) return Result.ERR;
                 if (dst.type == RegType.STR) {
-                    print(((String) dst.data).substring(dst.strPtr) + '\n');
+                    print(((String) dst.data).substring(dst.strPtr));
                 } else if (dst.type == RegType.CODE) {
                     Register register = eval(dst);
                     if (register == null) return Result.ERR;
-                    print(register.data.toString() + '\n');
-                } else print(dst.data.toString() + '\n');
+                    print(register.data.toString());
+                } else print(dst.data.toString());
             }
             return Result.OK;
         });
