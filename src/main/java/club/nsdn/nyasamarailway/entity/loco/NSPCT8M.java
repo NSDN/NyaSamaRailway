@@ -138,7 +138,10 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
             }
         }
         TrainController.doMotionWithAir(tmpPacket, this);
+        this.prevVelocity = this.Velocity;
+        setEnginePrevVel(this.prevVelocity);
         this.Velocity = tmpPacket.Velocity;
+        setEngineVel(tmpPacket.Velocity);
     }
 
     @Override

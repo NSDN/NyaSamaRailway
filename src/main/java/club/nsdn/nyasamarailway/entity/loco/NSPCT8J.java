@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
+import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.ItemLoader;
@@ -20,10 +21,14 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 /**
  * Created by drzzm32 on 2017.10.6.
  */
-public class NSPCT8J extends LocoBase {
+public class NSPCT8J extends LocoBase implements ILimitVelCart {
 
     private final int INDEX_HIGH = 28;
     public boolean isHighSpeedMode = false;
+
+    private final int INDEX_MV = 29;
+    public double maxVelocity = 0;
+    private int tmpEngineBrake = 0;
 
     public NSPCT8J(World world) {
         super(world);
@@ -39,6 +44,7 @@ public class NSPCT8J extends LocoBase {
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.addObject(INDEX_HIGH, Integer.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_MV, Float.valueOf("0"));
     }
 
     public void setHighSpeedMode(boolean highSpeedMode) {
@@ -48,6 +54,17 @@ public class NSPCT8J extends LocoBase {
 
     public boolean getHighSpeedMode() {
         return this.dataWatcher.getWatchableObjectInt(INDEX_HIGH) > 0;
+    }
+
+    @Override
+    public double getMaxVelocity() {
+        return this.dataWatcher.getWatchableObjectFloat(INDEX_MV);
+    }
+
+    @Override
+    public void setMaxVelocity(double value) {
+        this.maxVelocity = (float) value;
+        this.dataWatcher.updateObject(INDEX_MV, (float) value);
     }
 
     @Override
@@ -126,8 +143,18 @@ public class NSPCT8J extends LocoBase {
         tmpPacket.Velocity = this.Velocity;
         if (getHighSpeedMode())
             TrainController.doMotionWithAirHigh(tmpPacket, this);
-        else
+        else {
+            if (this.maxVelocity > 0) {
+                if (this.Velocity > this.maxVelocity && tmpEngineBrake == 0) {
+                    tmpEngineBrake = getEngineBrake();
+                    setEngineBrake(1);
+                } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != 0) {
+                    setEngineBrake(tmpEngineBrake);
+                    tmpEngineBrake = 0;
+                }
+            }
             TrainController.doMotionWithAir(tmpPacket, this);
+        }
         this.prevVelocity = this.Velocity;
         setEnginePrevVel(this.prevVelocity);
         this.Velocity = tmpPacket.Velocity;
