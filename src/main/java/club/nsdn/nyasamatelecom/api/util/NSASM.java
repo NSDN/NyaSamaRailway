@@ -55,8 +55,15 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
     @Override
     protected void loadFuncList() {
         super.loadFuncList();
+        
+        funcList.replace("in", (dst, src) -> {
+            if (dst == null && src == null)
+                return Result.ERR;
+            return Result.OK;
+        });
 
         funcList.replace("prt", (dst, src) -> {
+            if (dst == null) return Result.ERR;
             if (src != null) {
                 if (dst.type == RegType.STR) {
                     if (dst.readOnly) return Result.ERR;
@@ -96,12 +103,12 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             } else {
                 if (dst == null) return Result.ERR;
                 if (dst.type == RegType.STR) {
-                    print(((String) dst.data).substring(dst.strPtr));
+                    print(((String) dst.data).substring(dst.strPtr) + '\n');
                 } else if (dst.type == RegType.CODE) {
                     Register register = eval(dst);
                     if (register == null) return Result.ERR;
-                    print(register.data.toString());
-                } else print(dst.data.toString());
+                    print(register.data.toString() + '\n');
+                } else print(dst.data.toString() + '\n');
             }
             return Result.OK;
         });

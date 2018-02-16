@@ -46,6 +46,10 @@ public class Util {
             var = var.substring(1);
             if (var.isEmpty()) return "";
         }
+        while (var.charAt(var.length() - 1) == '\t' || var.charAt(var.length() - 1) == ' ') {
+            var = var.substring(0, var.length() - 1);
+            if (var.isEmpty()) return "";
+        }
 
         String left, right;
         if (var.contains("\'")) {
@@ -196,7 +200,8 @@ public class Util {
                         else if (tmp.contains("}"))
                             count -= 1;
                         if (tmp.contains("(") && tmp.contains(")")) {
-                            count -= 1;
+                            if (tmp.contains("{") && tmp.contains("}"))
+                                count -= 1;
                         }
                         if (count == 0) {
                             segBuf.put(head, body);
