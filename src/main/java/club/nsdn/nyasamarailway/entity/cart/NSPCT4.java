@@ -29,7 +29,7 @@ public class NSPCT4 extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     private final int INDEX_MV = 28;
     public double maxVelocity = 0;
-    private int tmpMotorBrake = 0;
+    private int tmpMotorBrake = -1;
 
     @Override
     protected void entityInit() {
@@ -146,14 +146,14 @@ public class NSPCT4 extends MinecartBase implements IMotorCart, ILimitVelCart {
         if (this.motorState) {
             TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), getMotorPower(), getMotorBrake(), getMotorDir());
             tmpPacket.isUnits = true; //High speed
-            tmpPacket.Velocity = getMotorVel();
+            tmpPacket.Velocity = this.Velocity;
             if (this.maxVelocity > 0) {
-                if (this.Velocity > this.maxVelocity && tmpMotorBrake == 0) {
+                if (this.Velocity > this.maxVelocity && tmpMotorBrake == -1) {
                     tmpMotorBrake = getMotorBrake();
                     setMotorBrake(1);
-                } else if (this.Velocity <= this.maxVelocity && tmpMotorBrake != 0) {
+                } else if (this.Velocity <= this.maxVelocity && tmpMotorBrake != -1) {
                     setMotorBrake(tmpMotorBrake);
-                    tmpMotorBrake = 0;
+                    tmpMotorBrake = -1;
                 }
             }
             TrainController.doMotionWithAir(tmpPacket, this);

@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.entity.loco.NSPCT8M;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderMinecart;
@@ -32,8 +33,48 @@ public class NSPCT8MRenderer extends RenderMinecart {
             "nyasamarailway", "textures/carts/" + _name + "_print.png"
     );
 
+    private final String _screen = "nspc_8j";
+
+    private final WavefrontObject modelScreen = new WavefrontObject( // base, r0-r5
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_screen.obj")
+    );
+    private final ResourceLocation textureScreen = new ResourceLocation(
+            "nyasamarailway", "textures/carts/" + _screen + "_screen.png"
+    );
+
+    private final WavefrontObject modelMeterV = new WavefrontObject(
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_v.obj")
+    );
+    private final ResourceLocation textureMeterV = new ResourceLocation(
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_v.png"
+    );
+
+    private final WavefrontObject modelMeterA = new WavefrontObject(
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_a.obj")
+    );
+    private final ResourceLocation textureMeterA = new ResourceLocation(
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_a.png"
+    );
+
+    private final WavefrontObject modelMeterPointer = new WavefrontObject(
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_pointer.obj")
+    );
+    private final ResourceLocation textureMeterPointer = new ResourceLocation(
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_pointer.png"
+    );
+
+    private static final float ANGLE_HALF = 143;
+
+    private final ResourceLocation textureText[];
+
     public NSPCT8MRenderer() {
         super();
+
+        textureText = new ResourceLocation[128];
+        for (int i = 0; i < 128; i++)
+            textureText[i] =  new ResourceLocation(
+                    "nyasamarailway", "textures/fonts/" + "font_" + i + ".png"
+            );
     }
 
     @Override
@@ -112,4 +153,76 @@ public class NSPCT8MRenderer extends RenderMinecart {
 
         GL11.glPopMatrix();
     }
+
+    private void doRenderHUD(EntityMinecart cart) {
+        if (cart instanceof NSPCT8M) {
+            NSPCT8M loco = (NSPCT8M) cart;
+
+            float v = (float) loco.getEngineVel();
+            float lim = (float) loco.getMaxVelocity();
+            float a = v - (float) loco.getEnginePrevVel();
+
+            float angle;
+            int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
+
+            RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
+            String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
+            String pwr = String.format("%2d", p);
+            String brk = String.format("%2d", 10 - r);
+            String sv = String.format("%1.2f", v);
+            String sl = String.format("%1.2f", lim);
+
+            // HUD1406
+            doRenderText(0, "-= NSR--NTP =-");
+            doRenderText(1, "dir:  " + dir);
+            doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : "  RUN"));
+            doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
+            doRenderText(4, "vel:" + sv + "m/t");
+            doRenderText(5, "lim:" + sl + "m/t");
+
+            RendererHelper.renderWithResource(modelMeterV, textureMeterV);
+            angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+            if (angle > ANGLE_HALF) angle = ANGLE_HALF;
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
+            GL11.glTranslatef(-0.00625F, 0.0F, 0.00625F);
+            GL11.glPushMatrix();
+            GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glPushMatrix();
+            GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
+            RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+
+            RendererHelper.renderWithResource(modelMeterA, textureMeterA);
+            angle = a / 0.03F * ANGLE_HALF;
+            if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
+            GL11.glTranslatef(-0.00625F, 0.0F, -0.00625F);
+            GL11.glPushMatrix();
+            GL11.glRotatef(-45.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glPushMatrix();
+            GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
+            RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+
+        }
+    }
+
+    private void doRenderText(int r, String text) {
+        if (r < 0) r = 0;
+        if (r > 5) r = 5;
+
+        for (int c = 0; c < (text.length() > 14 ? 14 : text.length()); c++) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 0.0F, 0.0625F * c);
+            RendererHelper.renderPartWithResource(modelScreen, "r" + r, textureText[text.charAt(c)]);
+            GL11.glPopMatrix();
+        }
+    }
+
 }

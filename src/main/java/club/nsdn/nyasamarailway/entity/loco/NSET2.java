@@ -44,7 +44,8 @@ public class NSET2 extends LocoBase {
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotionWithAir(tmpPacket, this);
-        this.Velocity = tmpPacket.Velocity;
+        setEnginePrevVel(this.Velocity);
+        setEngineVel(tmpPacket.Velocity);
     }
 
     @Override

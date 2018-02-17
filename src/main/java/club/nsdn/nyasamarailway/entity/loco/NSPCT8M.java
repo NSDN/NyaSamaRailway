@@ -25,7 +25,7 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
 
     private final int INDEX_MV = 28;
     public double maxVelocity = 0;
-    private int tmpEngineBrake = 0;
+    private int tmpEngineBrake = -1;
 
     public NSPCT8M(World world) {
         super(world);
@@ -129,18 +129,16 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         if (this.maxVelocity > 0) {
-            if (this.Velocity > this.maxVelocity && tmpEngineBrake == 0) {
+            if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {
                 tmpEngineBrake = getEngineBrake();
                 setEngineBrake(1);
-            } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != 0) {
+            } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != -1) {
                 setEngineBrake(tmpEngineBrake);
-                tmpEngineBrake = 0;
+                tmpEngineBrake = -1;
             }
         }
         TrainController.doMotionWithAir(tmpPacket, this);
-        this.prevVelocity = this.Velocity;
-        setEnginePrevVel(this.prevVelocity);
-        this.Velocity = tmpPacket.Velocity;
+        setEnginePrevVel(this.Velocity);
         setEngineVel(tmpPacket.Velocity);
     }
 

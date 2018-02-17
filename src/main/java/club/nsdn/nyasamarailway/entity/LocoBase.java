@@ -402,7 +402,8 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
         tmpPacket.isUnits = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
-        this.Velocity = tmpPacket.Velocity;
+        setEnginePrevVel(this.Velocity);
+        setEngineVel(tmpPacket.Velocity);
     }
 
     @Override
