@@ -54,7 +54,7 @@ public class NSET2 extends LocoBase {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSET2, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
 }

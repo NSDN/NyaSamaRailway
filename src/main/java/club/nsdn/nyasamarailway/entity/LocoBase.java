@@ -6,6 +6,8 @@ import club.nsdn.nyasamarailway.block.rail.special.BlockRailReception;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReceptionAnti;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.network.TrainPacket;
+import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReception;
+import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReceptionAnti;
 import club.nsdn.nyasamarailway.util.TrainController;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -147,6 +149,11 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
         return 2.0F;
     }
 
+    @Override
+    public boolean isRiding() {
+        return this.ridingEntity != null;
+    }
+
     public void setTrainPacket(TrainPacket packet) {
         if (this.getEntityId() == packet.cartID) {
             setEnginePower(packet.P);
@@ -206,6 +213,21 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
         if (block instanceof BlockRailReceptionAnti) {
             if (!((BlockRailReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
                 if (!((BlockRailReceptionAnti) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
+                    return;
+                }
+        }
+
+        if (block instanceof RailMonoMagnetReception) {
+            if (!((RailMonoMagnetReception) block).checkNearbySameRail(worldObj, x, y, z))
+                if (!((RailMonoMagnetReception) block).timeExceed(worldObj, x, y, z)) {
+                    applyDrag();
+                    return;
+                }
+        }
+        if (block instanceof RailMonoMagnetReceptionAnti) {
+            if (!((RailMonoMagnetReceptionAnti) block).checkNearbySameRail(worldObj, x, y, z))
+                if (!((RailMonoMagnetReceptionAnti) block).timeExceed(worldObj, x, y, z)) {
                     applyDrag();
                     return;
                 }

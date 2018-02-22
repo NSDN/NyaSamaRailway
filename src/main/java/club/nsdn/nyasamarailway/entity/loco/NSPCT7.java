@@ -105,7 +105,7 @@ public class NSPCT7 extends LocoBase {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT7, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
 }

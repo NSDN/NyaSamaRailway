@@ -105,6 +105,11 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     }
 
     @Override
+    public boolean isRiding() {
+        return this.ridingEntity != null;
+    }
+
+    @Override
     public float getLinkageDistance(EntityMinecart cart) {
         return 1.5F;
     }

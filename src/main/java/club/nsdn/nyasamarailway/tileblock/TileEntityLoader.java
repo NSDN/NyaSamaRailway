@@ -337,6 +337,10 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 BlockPillarSignalTri.TriSignalLight.class,
                 "tileEntityPillarSignalTri");
+
+        GameRegistry.registerTileEntity(
+                ConvWireMono.Conv.class,
+                "tileEntityConvWireMono");
     }
 
 }

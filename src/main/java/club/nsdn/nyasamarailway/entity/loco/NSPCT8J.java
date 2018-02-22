@@ -164,7 +164,7 @@ public class NSPCT8J extends LocoBase implements ILimitVelCart {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8J, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
 }

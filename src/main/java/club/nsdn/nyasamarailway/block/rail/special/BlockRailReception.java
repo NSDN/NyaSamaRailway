@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
@@ -275,6 +276,20 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 }
             }
             hasPlayer = true;
+        } else if (cart.riddenByEntity instanceof EntityMinecart) {
+            EntityMinecart ncart = (EntityMinecart) cart.riddenByEntity;
+
+            if (ncart.riddenByEntity instanceof EntityPlayer) {
+                player = (EntityPlayer) ncart.riddenByEntity;
+                ItemStack stack = ((EntityPlayer) ncart.riddenByEntity).getCurrentEquippedItem();
+                if (stack != null) {
+                    if (stack.getItem() instanceof ItemTrainController8Bit ||
+                            stack.getItem() instanceof ItemTrainController32Bit) {
+                        return;
+                    }
+                }
+                hasPlayer = true;
+            }
         }
 
         double maxV;
@@ -418,13 +433,11 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                     if (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) {
                         if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                             if (cart.posZ - 0.5 > z) {
-                                cart.setDead();
-                                world.removeEntity(cart);
+                                cart.killMinecart(new DamageSource("nsr"));
                             }
                         } else {
                             if (cart.posX - 0.5 < x) {
-                                cart.setDead();
-                                world.removeEntity(cart);
+                                cart.killMinecart(new DamageSource("nsr"));
                             }
                         }
                     }
@@ -477,8 +490,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                     if (hasCart && (isRailPowered(world, x - 1, y, z) || isRailPowered(world, x, y, z + 1))) {
                         EntityMinecart cart = getMinecart(world, x, y, z);
                         if (cart == null) return;
-                        cart.setDead();
-                        world.removeEntity(cart);
+                        cart.killMinecart(new DamageSource("nsr"));
                     }
                 }
             }

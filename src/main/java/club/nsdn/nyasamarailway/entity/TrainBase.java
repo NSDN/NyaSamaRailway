@@ -52,7 +52,7 @@ public class TrainBase extends EntityMinecartEmpty {
             itemstack.setStackDisplayName(this.getCommandSenderName());
         }
 
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
     @Override

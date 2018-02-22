@@ -319,6 +319,9 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockPillarSignalTri.TriSignalLight.class, new TriSignalLightRenderer("signal_pillar_tri"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                ConvWireMono.Conv.class, new ConvWireMonoRenderer());
     }
 
 }

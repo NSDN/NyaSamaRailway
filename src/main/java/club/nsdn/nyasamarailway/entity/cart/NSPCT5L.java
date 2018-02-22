@@ -67,7 +67,7 @@ public class NSPCT5L extends MinecartBase {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT5L, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
     @Override

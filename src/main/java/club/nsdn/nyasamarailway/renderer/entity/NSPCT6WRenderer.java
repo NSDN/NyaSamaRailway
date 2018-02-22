@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.entity.loco.NSPCT6C;
+import club.nsdn.nyasamarailway.entity.cart.NSPCT6W;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.entity.RenderMinecart;
@@ -13,28 +13,28 @@ import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm32 on 2017.9.5.
+ * Created by drzzm32 on 2018.2.22.
  */
-public class NSPCT6CRenderer extends RenderMinecart {
+public class NSPCT6WRenderer extends RenderMinecart {
 
     private final WavefrontObject modelBase = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/nspc_6c_base.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/nspc_6w_base.obj")
     );
     private final WavefrontObject modelPrint = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/nspc_6c_print.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/nspc_6w_print.obj")
     );
     private final WavefrontObject modelHead = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/nspc_6c_head.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/nspc_6w_head.obj")
     );
 
     private final ResourceLocation textureBase = new ResourceLocation(
-            "nyasamarailway", "textures/carts/nspc_6c_base.png"
+            "nyasamarailway", "textures/carts/nspc_6w_base.png"
     );
     private final ResourceLocation texturePrint = new ResourceLocation(
-            "nyasamarailway", "textures/carts/nspc_6c_print.png"
+            "nyasamarailway", "textures/carts/nspc_6w_print.png"
     );
 
-    public NSPCT6CRenderer() {
+    public NSPCT6WRenderer() {
         super();
     }
 
@@ -109,11 +109,11 @@ public class NSPCT6CRenderer extends RenderMinecart {
             this.bindEntityTexture(minecart);
         }
 
-        if (minecart instanceof NSPCT6C) {
-            NSPCT6C cart = (NSPCT6C) minecart;
+        if (minecart instanceof NSPCT6W) {
+            NSPCT6W cart = (NSPCT6W) minecart;
             GL11.glTranslated(0.0, cart.getShiftYCnt(), 0.0);
             RendererHelper.renderWithResource(modelHead, textureBase);
-        } else if (minecart instanceof NSPCT6C.Container) {
+        } else if (minecart instanceof NSPCT6W.Container) {
             RendererHelper.renderWithResource(modelBase, textureBase);
             RendererHelper.renderWithResource(modelPrint, texturePrint);
         }

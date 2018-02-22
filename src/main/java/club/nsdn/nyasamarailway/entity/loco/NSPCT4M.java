@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
+import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
@@ -21,7 +22,7 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 /**
  * Created by drzzm32 on 2017.12.28.
  */
-public class NSPCT4M extends club.nsdn.nyasamarailway.entity.LocoBase implements ILimitVelCart {
+public class NSPCT4M extends LocoBase implements ILimitVelCart {
 
     public double shiftY = -1.0;
 
@@ -133,7 +134,7 @@ public class NSPCT4M extends club.nsdn.nyasamarailway.entity.LocoBase implements
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT4M, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
     @Override
@@ -142,14 +143,20 @@ public class NSPCT4M extends club.nsdn.nyasamarailway.entity.LocoBase implements
         int y = MathHelper.floor_double(this.posY);
         int z = MathHelper.floor_double(this.posZ);
         if (worldObj.getBlock(x, y, z) instanceof RailMonoMagnetBase) {
-            if (shiftY > -1.0) shiftY -= 0.05;
+            RailMonoMagnetBase rail = (RailMonoMagnetBase) worldObj.getBlock(x, y, z);
+            int meta = worldObj.getBlockMetadata(x, y, z);
+            if (rail.isPowered()) meta &= 0x7;
+            if (meta >= 2 && meta <= 5) {
+                if (shiftY < -0.5) shiftY += 0.05;
+            } else if (shiftY > -1.0) shiftY -= 0.05;
         } else {
-            if (worldObj.getBlock(x + 1, y, z) instanceof RailMonoMagnetBase) return;
-            if (worldObj.getBlock(x - 1, y, z) instanceof RailMonoMagnetBase) return;
-            if (worldObj.getBlock(x, y, z + 1) instanceof RailMonoMagnetBase) return;
-            if (worldObj.getBlock(x, y, z - 1) instanceof RailMonoMagnetBase) return;
+            boolean state;
+            state = worldObj.getBlock(x + 1, y, z) instanceof RailMonoMagnetBase;
+            state |= worldObj.getBlock(x - 1, y, z) instanceof RailMonoMagnetBase;
+            state |= worldObj.getBlock(x, y, z + 1) instanceof RailMonoMagnetBase;
+            state |= worldObj.getBlock(x, y, z - 1) instanceof RailMonoMagnetBase;
 
-            if (shiftY < 0) shiftY += 0.05;
+            if (!state && shiftY < 0) shiftY += 0.05;
         }
 
         super.onUpdate();

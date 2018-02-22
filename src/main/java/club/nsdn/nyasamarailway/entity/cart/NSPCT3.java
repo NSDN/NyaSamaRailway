@@ -48,7 +48,7 @@ public class NSPCT3 extends MinecartBase {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT3, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
 }

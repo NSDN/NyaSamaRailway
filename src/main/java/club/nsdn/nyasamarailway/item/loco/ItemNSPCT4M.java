@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.item.cart;
+package club.nsdn.nyasamarailway.item.loco;
 
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.entity.LocoBase;

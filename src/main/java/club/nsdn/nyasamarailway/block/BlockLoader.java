@@ -97,6 +97,8 @@ public class BlockLoader {
     public static Block blockRailSignVertical11;
 
     public static Block railNoSleeperStraight;
+    public static Block convWireMono;
+
     public static Block rail3rd;
     public static Block rail3rdSwitch;
     public static Block railMagnetSwitch;
@@ -383,6 +385,9 @@ public class BlockLoader {
 
         //railNoSleeperStraight = new RailNoSleeperStraight();
         //register(railNoSleeperStraight, "rail_ns_s");
+
+        convWireMono = new ConvWireMono();
+        register(convWireMono, "conv_wire_mono");
 
         blockStationSign = new BlockStationSign();
         register(blockStationSign, "block_station_sign");

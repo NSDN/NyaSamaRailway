@@ -23,6 +23,11 @@ public class NSTCT1 extends MinecartBase {
     }
 
     @Override
+    public boolean canMakePlayerTurn() {
+        return false;
+    }
+
+    @Override
     public double getMountedYOffset() {
         return 0.5;
     }
@@ -38,7 +43,7 @@ public class NSTCT1 extends MinecartBase {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSTCT1, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
 }

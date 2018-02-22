@@ -148,7 +148,7 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
         this.setDead();
         ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
-        this.entityDropItem(itemstack, 0.0F);
+        if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
 
     @Override

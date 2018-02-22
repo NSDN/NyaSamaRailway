@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT4;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT5;
+import club.nsdn.nyasamarailway.entity.cart.NSPCT6W;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.util.TrainController;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import org.thewdj.physics.Dynamics;
 
@@ -96,6 +98,8 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             } else if (rail.cartType.equals(NSPCT5.class.getName())) {
                 MinecartBase cart = new NSPCT5(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                 world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT6W.class.getName())) {
+                NSPCT6W.doSpawn(world, x, y, z, "");
             }
         }
     }
@@ -262,6 +266,20 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 }
             }
             hasPlayer = true;
+        } else if (cart.riddenByEntity instanceof EntityMinecart) {
+            EntityMinecart ncart = (EntityMinecart) cart.riddenByEntity;
+
+            if (ncart.riddenByEntity instanceof EntityPlayer) {
+                player = (EntityPlayer) ncart.riddenByEntity;
+                ItemStack stack = ((EntityPlayer) ncart.riddenByEntity).getCurrentEquippedItem();
+                if (stack != null) {
+                    if (stack.getItem() instanceof ItemTrainController8Bit ||
+                            stack.getItem() instanceof ItemTrainController32Bit) {
+                        return;
+                    }
+                }
+                hasPlayer = true;
+            }
         }
 
         double maxV;
@@ -405,13 +423,11 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                     if (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) {
                         if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                             if (cart.posZ - 0.5 < z) {
-                                cart.setDead();
-                                world.removeEntity(cart);
+                                cart.killMinecart(new DamageSource("nsr"));
                             }
                         } else {
                             if (cart.posX - 0.5 > x) {
-                                cart.setDead();
-                                world.removeEntity(cart);
+                                cart.killMinecart(new DamageSource("nsr"));
                             }
                         }
                     }
@@ -459,8 +475,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                     if (hasCart && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
                         EntityMinecart cart = getMinecart(world, x, y, z);
                         if (cart == null) return;
-                        cart.setDead();
-                        world.removeEntity(cart);
+                        cart.killMinecart(new DamageSource("nsr"));
                     }
                 }
             }
