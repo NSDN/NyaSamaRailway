@@ -41,7 +41,7 @@ public class NSPCT6C extends LocoBase implements ILimitVelCart {
         if (!name.isEmpty()) head.setMinecartName(name);
         world.spawnEntityInWorld(head);
 
-        MinecartBase container = new NSPCT6C.Container(world, (double) x + 0.5, (double) y + 0.5 - 1.875, (double) z + 0.5);
+        MinecartBase container = new NSPCT6C.Container(world, (double) x + 0.5, (double) y + 0.5 - 2.0, (double) z + 0.5);
         world.spawnEntityInWorld(container);
 
         container.mountEntity(head);
@@ -178,19 +178,18 @@ public class NSPCT6C extends LocoBase implements ILimitVelCart {
 
     @Override
     public double getMountedYOffset() {
-        return -0.875 + getShiftYCnt();
+        return -1.0;
     }
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        return 2.0F;
+        return 1.5F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.6F;
+        return 1.0F;
     }
-
     @Override
     protected void doEngine() {
         tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
@@ -231,8 +230,8 @@ public class NSPCT6C extends LocoBase implements ILimitVelCart {
             Block block = worldObj.getBlock(bx, by, bz);
             int meta = worldObj.getBlockMetadata(bx, by, bz);
 
-            double len = 1.0;
-            Vec3 mod = Vec3.createVectorHelper(0, -len, 0);
+            double len = -1.0 + getShiftYCnt();
+            Vec3 mod = Vec3.createVectorHelper(0, len, 0);
             mod.rotateAroundX(this.rotationPitch);
             mod.rotateAroundY(this.rotationYaw);
             x += mod.xCoord; y += mod.yCoord; z += mod.zCoord;

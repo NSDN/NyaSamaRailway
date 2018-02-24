@@ -6,6 +6,7 @@ import club.nsdn.nyasamarailway.entity.MinecartBase;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT4;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT5;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT6W;
+import club.nsdn.nyasamarailway.entity.cart.NSPCT8W;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.util.TrainController;
@@ -100,6 +101,8 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                 world.spawnEntityInWorld(cart);
             } else if (rail.cartType.equals(NSPCT6W.class.getName())) {
                 NSPCT6W.doSpawn(world, x, y, z, "");
+            } else if (rail.cartType.equals(NSPCT8W.class.getName())) {
+                NSPCT8W.doSpawn(world, x, y, z, "");
             }
         }
     }

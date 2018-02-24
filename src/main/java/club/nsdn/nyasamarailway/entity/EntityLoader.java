@@ -141,6 +141,30 @@ public class EntityLoader {
                 NyaSamaRailway.getInstance(), 256, 3, true);
 
         EntityRegistry.registerModEntity(
+                NSPCT8C.class,
+                "NSPCT8C",
+                21,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSPCT8C.Container.class,
+                "NSPCT8CContainer",
+                22,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSPCT8W.class,
+                "NSPCT8W",
+                23,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSPCT8W.Container.class,
+                "NSPCT8WContainer",
+                24,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
                 TrainBase.class,
                 "TrainBase",
                 234,

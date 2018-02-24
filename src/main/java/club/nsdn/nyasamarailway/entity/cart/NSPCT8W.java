@@ -11,11 +11,9 @@ import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetBase;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -23,16 +21,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by drzzm32 on 2018.2.22.
+ * Created by drzzm32 on 2018.2.24.
  */
-public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
+public class NSPCT8W extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     public static void doSpawn(World world, int x, int y, int z, String name) {
-        MinecartBase head = new NSPCT6W(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+        MinecartBase head = new NSPCT8W(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
         if (!name.isEmpty()) head.setMinecartName(name);
         world.spawnEntityInWorld(head);
 
-        MinecartBase container = new NSPCT6W.Container(world, (double) x + 0.5, (double) y + 0.5 - 2.0, (double) z + 0.5);
+        MinecartBase container = new NSPCT8W.Container(world, (double) x + 0.5, (double) y + 0.5 - 3.0, (double) z + 0.5);
         world.spawnEntityInWorld(container);
 
         container.mountEntity(head);
@@ -56,7 +54,7 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
 
         @Override
         public double getMountedYOffset() {
-            return -0.3;
+            return 0.1;
         }
 
         @Override
@@ -77,8 +75,8 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
         @Override
         public void killMinecart(DamageSource source) {
             this.setDead();
-            if (this.ridingEntity != null && this.ridingEntity instanceof NSPCT6W)
-                ((NSPCT6W) this.ridingEntity).killMinecart(source);
+            if (this.ridingEntity != null && this.ridingEntity instanceof NSPCT8W)
+                ((NSPCT8W) this.ridingEntity).killMinecart(source);
         }
 
     }
@@ -117,12 +115,12 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
         this.dataWatcher.addObject(INDEX_CNT, Float.valueOf("0"));
     }
 
-    public NSPCT6W(World world) {
+    public NSPCT8W(World world) {
         super(world);
         ignoreFrustumCheck = true;
     }
 
-    public NSPCT6W(World world, double x, double y, double z) {
+    public NSPCT8W(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
     }
@@ -139,17 +137,17 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     @Override
     public double getMountedYOffset() {
-        return -1.0;
+        return -2.0;
     }
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        return 1.5F;
+        return 2.0F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 1.6F;
     }
 
     @Override
@@ -241,7 +239,7 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
         this.setDead();
         if (this.riddenByEntity != null && this.riddenByEntity instanceof Container)
             this.riddenByEntity.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT6W, 1);
+        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8W, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
         if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }

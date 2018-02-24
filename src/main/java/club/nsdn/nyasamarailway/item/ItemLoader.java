@@ -40,6 +40,8 @@ public class ItemLoader {
     public static Item itemNSPCT6L;
     public static Item itemNSPCT7;
     public static Item itemNSPCT8;
+    public static Item itemNSPCT8C;
+    public static Item itemNSPCT8W;
     public static Item itemNSPCT8M;
     public static Item itemNSPCT8J;
     public static Item itemNSBT1;
@@ -120,6 +122,12 @@ public class ItemLoader {
 
         itemNSPCT8 = new ItemNSPCT8();
         register(itemNSPCT8, "item_nspc_8");
+
+        itemNSPCT8C = new ItemNSPCT8C();
+        register(itemNSPCT8C, "item_nspc_8c");
+
+        itemNSPCT8W = new ItemNSPCT8W();
+        register(itemNSPCT8W, "item_nspc_8w");
 
         itemNSPCT8M = new ItemNSPCT8M();
         register(itemNSPCT8M, "item_nspc_8m");
