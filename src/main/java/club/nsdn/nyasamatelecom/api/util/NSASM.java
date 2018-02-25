@@ -168,7 +168,7 @@ public abstract class NSASM extends cn.ac.nya.nsasm.NSASM {
             else tZ = 0;
             if (getPlayer() != null)
                 new ParticlePacket(
-                        type, getX(), getY(), getZ(), tX, tY, tZ
+                        type, x, y, z, tX, tY, tZ
                 ).send(
                         getWrapper(), getPlayer().dimension
                 );
