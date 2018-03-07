@@ -17,7 +17,6 @@ import net.minecraftforge.common.DimensionManager;
 /**
  * Created by drzzm32 on 2016.5.16.
  */
-
 public class TrainPacket implements IMessage {
 
     public static class PacketCtSHandler implements IMessageHandler<TrainPacket, IMessage> {

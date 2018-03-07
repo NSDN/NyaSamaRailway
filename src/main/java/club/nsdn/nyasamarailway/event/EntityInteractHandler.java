@@ -10,11 +10,10 @@ import club.nsdn.nyasamarailway.item.cart.ItemNSPCT5L;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
-import club.nsdn.nyasamarailway.network.TrainPacket;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
@@ -32,8 +31,9 @@ public class EntityInteractHandler {
 
     @SubscribeEvent
     public void onEntityInteract(EntityInteractEvent event) {
-        if (event.entityLiving instanceof EntityPlayerMP) {
-            EntityPlayerMP player = (EntityPlayerMP) event.entityLiving;
+        if (event.entityLiving instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.entityLiving;
+            if (player.worldObj.isRemote) return;
             Entity entity = event.target;
 
             ItemStack stack = player.getCurrentEquippedItem();

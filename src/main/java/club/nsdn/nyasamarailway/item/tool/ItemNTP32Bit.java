@@ -79,6 +79,7 @@ public class ItemNTP32Bit extends ItemToolBase {
     public void addCart(ItemStack itemStack, EntityPlayer player, Entity entity) {
         if (entity instanceof LocoBase) {
             player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.error"));
+            return;
         }
 
         int[] array = carts.get(itemStack);

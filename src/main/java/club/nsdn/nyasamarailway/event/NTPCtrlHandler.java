@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -25,6 +26,36 @@ public class NTPCtrlHandler {
         if (instance == null)
             instance = new NTPCtrlHandler();
         return instance;
+    }
+
+    private void toPacket(TrainPacket packet, ItemStack stack) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof ItemNTP8Bit) {
+            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
+            packet.P = ntp8Bit.power.get(stack);
+            packet.R = ntp8Bit.brake.get(stack);
+            packet.Dir = ntp8Bit.dir.get(stack);
+        } else if (stack.getItem() instanceof ItemNTP32Bit) {
+            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
+            packet.P = ntp32Bit.power.get(stack);
+            packet.R = ntp32Bit.brake.get(stack);
+            packet.Dir = ntp32Bit.dir.get(stack);
+        }
+    }
+
+    private void fromPacket(TrainPacket packet, ItemStack stack) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof ItemNTP8Bit) {
+            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
+            ntp8Bit.power.set(stack, packet.P);
+            ntp8Bit.brake.set(stack, packet.R);
+            ntp8Bit.dir.set(stack, packet.Dir);
+        } else if (stack.getItem() instanceof ItemNTP32Bit) {
+            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
+            ntp32Bit.power.set(stack, packet.P);
+            ntp32Bit.brake.set(stack, packet.R);
+            ntp32Bit.dir.set(stack, packet.Dir);
+        }
     }
 
     @SubscribeEvent
@@ -41,10 +72,7 @@ public class NTPCtrlHandler {
             TrainPacket packet = new TrainPacket();
             if (stack.getItem() instanceof ItemNTP8Bit) {
                 ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-
-                packet.P = ntp8Bit.power.get(stack);
-                packet.R = ntp8Bit.brake.get(stack);
-                packet.Dir = ntp8Bit.dir.get(stack);
+                toPacket(packet, stack);
 
                 EntityMinecart cart = packet.getCartInClient(ntp8Bit.cart.get(stack));
                 if (cart != null) {
@@ -52,18 +80,17 @@ public class NTPCtrlHandler {
                         TrainController.doControl(packet, player);
                         //((LocoBase) cart).setTrainPacket(packet);
                         NetworkWrapper.instance.sendToServer(packet);
+                        fromPacket(packet, stack);
                         return;
                     }
                     TrainController.doControl(packet, player);
                     //TrainController.doMotion(packet, cart);
                     NetworkWrapper.instance.sendToServer(packet);
+                    fromPacket(packet, stack);
                 }
             } else if (stack.getItem() instanceof ItemNTP32Bit) {
                 ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-
-                packet.P = ntp32Bit.power.get(stack);
-                packet.R = ntp32Bit.brake.get(stack);
-                packet.Dir = ntp32Bit.dir.get(stack);
+                toPacket(packet, stack);
 
                 int[] carts = ntp32Bit.carts.get(stack);
                 if (carts.length == 1 && carts[0] == -1)
@@ -80,6 +107,7 @@ public class NTPCtrlHandler {
                 }
                 */
                 NetworkWrapper.instance.sendToServer(packet);
+                fromPacket(packet, stack);
             }
         }
     }

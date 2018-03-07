@@ -141,7 +141,7 @@ public class TrainController {
             train.Velocity = 0.005;
         }
 
-        if (train.R > 5) {
+        if (train.R > 1) {
             if (train.highSpeed) {
                 train.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(train.Velocity), 0.1, 1.0, train.P / 10.0, 0.01);
             } else {
