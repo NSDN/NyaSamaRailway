@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+import org.thewdj.physics.Dynamics;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,7 @@ public class ItemNTP32Bit extends ItemToolBase {
                                 Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
                             }
                         }
+                        packet.Velocity = Dynamics.vel(cart.motionX, cart.motionZ);
                         TrainController.doMotion(packet, cart);
                     }
                 }

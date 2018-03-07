@@ -6,7 +6,12 @@ package org.thewdj.physics;
 public class Dynamics {
     public static final double G = 9.8;
 
+    public static double vel(double vx, double vz) {
+        return Math.sqrt(vx * vx + vz * vz);
+    }
+
     public static class LocoMotions {
+
         public static double calcVelocityUp(double vp, double u, double m, double P, double dt) {
             if (vp > 0) {
                     double f = u * m * G;

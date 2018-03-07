@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import org.thewdj.physics.Dynamics;
 
 /**
  * Created by drzzm32 on 2016.5.9.
@@ -59,6 +60,7 @@ public class ItemNTP8Bit extends ItemToolBase {
                             Traincraft.instance.Locomotive_setIsLocoTurnedOn(cart, true);
                         }
                     }
+                    packet.Velocity = Dynamics.vel(cart.motionX, cart.motionZ);
                     TrainController.doMotion(packet, cart);
                 }
             }
