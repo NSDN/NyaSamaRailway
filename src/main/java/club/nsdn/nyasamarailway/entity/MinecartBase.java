@@ -4,15 +4,14 @@ import club.nsdn.nyasamarailway.block.rail.special.BlockRailReception;
 import club.nsdn.nyasamarailway.block.rail.special.BlockRailReceptionAnti;
 import club.nsdn.nyasamarailway.block.rail.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReception;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReceptionAnti;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
@@ -75,8 +74,8 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
                     if (stack.getItem() instanceof Item1N4148 ||
-                            stack.getItem() instanceof ItemTrainController8Bit ||
-                            stack.getItem() instanceof ItemTrainController32Bit) {
+                            stack.getItem() instanceof ItemNTP8Bit ||
+                            stack.getItem() instanceof ItemNTP32Bit) {
                         return true;
                     }
                     if (stack.getItem() instanceof ItemMinecart) return true;

@@ -154,8 +154,8 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
     @Override
     protected void applyDrag() {
         if (this.motorState) {
-            TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), getMotorPower(), getMotorBrake(), getMotorDir());
-            tmpPacket.isUnits = true; //High speed
+            TrainPacket tmpPacket = new TrainPacket(getMotorPower(), getMotorBrake(), getMotorDir());
+            tmpPacket.highSpeed = true; //High speed
             tmpPacket.Velocity = this.Velocity;
             if (this.maxVelocity > 0) {
                 if (this.Velocity > this.maxVelocity && tmpMotorBrake == -1) {

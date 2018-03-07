@@ -4,32 +4,21 @@ import club.nsdn.nyasamaelectricity.tileblock.wire.BlockWire;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
-import club.nsdn.nyasamarailway.entity.cart.NSPCT6;
 import club.nsdn.nyasamarailway.item.ItemLoader;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.tileblock.rail.ConvWireMono;
-import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMono;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetBase;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 /**
  * Created by drzzm32 on 2018.1.11.
@@ -192,8 +181,8 @@ public class NSPCT6C extends LocoBase implements ILimitVelCart {
     }
     @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
-        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         if (this.maxVelocity > 0) {
             if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {

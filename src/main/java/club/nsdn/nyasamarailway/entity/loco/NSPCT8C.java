@@ -182,8 +182,8 @@ public class NSPCT8C extends LocoBase implements ILimitVelCart {
 
     @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
-        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         if (this.maxVelocity > 0) {
             if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {

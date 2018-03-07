@@ -12,8 +12,8 @@ import net.minecraftforge.common.MinecraftForge;
 public class EventRegister {
 
     public static void registerCommon() {
-        MinecraftForge.EVENT_BUS.register(ToolHandler.instance());
-        FMLCommonHandler.instance().bus().register(TrainControlServerHandler.instance());
+        MinecraftForge.EVENT_BUS.register(EntityInteractHandler.instance());
+
         ForgeChunkManager.setForcedChunkLoadingCallback(NyaSamaRailway.getInstance(), ChunkLoaderHandler.instance());
         MinecraftForge.EVENT_BUS.register(ChunkLoaderHandler.instance());
     }
@@ -23,7 +23,7 @@ public class EventRegister {
     }
 
     public static void registerClient() {
-        FMLCommonHandler.instance().bus().register(TrainControlClientHandler.instance());
+        FMLCommonHandler.instance().bus().register(NTPCtrlHandler.instance());
     }
 
 }

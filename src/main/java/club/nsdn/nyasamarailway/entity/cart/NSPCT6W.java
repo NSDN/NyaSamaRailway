@@ -11,11 +11,9 @@ import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetBase;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -249,8 +247,8 @@ public class NSPCT6W extends MinecartBase implements IMotorCart, ILimitVelCart {
     @Override
     protected void applyDrag() {
         if (this.motorState) {
-            TrainPacket tmpPacket = new TrainPacket(this.getEntityId(), getMotorPower(), getMotorBrake(), getMotorDir());
-            tmpPacket.isUnits = true; //High speed
+            TrainPacket tmpPacket = new TrainPacket(getMotorPower(), getMotorBrake(), getMotorDir());
+            tmpPacket.highSpeed = true; //High speed
             tmpPacket.Velocity = this.Velocity;
             if (this.maxVelocity > 0) {
                 if (this.Velocity > this.maxVelocity && tmpMotorBrake == -1) {

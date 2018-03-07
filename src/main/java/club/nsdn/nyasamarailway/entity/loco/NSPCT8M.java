@@ -4,8 +4,8 @@ import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.ItemLoader;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import net.minecraft.entity.item.EntityMinecart;
@@ -109,8 +109,8 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
                 ItemStack stack = player.getCurrentEquippedItem();
                 if (stack != null) {
                     if (stack.getItem() instanceof Item1N4148 ||
-                            stack.getItem() instanceof ItemTrainController8Bit ||
-                            stack.getItem() instanceof ItemTrainController32Bit) {
+                            stack.getItem() instanceof ItemNTP8Bit ||
+                            stack.getItem() instanceof ItemNTP32Bit) {
                         return true;
                     }
                     if (stack.getItem() instanceof ItemMinecart) return true;
@@ -125,8 +125,8 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
 
     @Override
     protected void doEngine() {
-        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
-        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         if (this.maxVelocity > 0) {
             if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {

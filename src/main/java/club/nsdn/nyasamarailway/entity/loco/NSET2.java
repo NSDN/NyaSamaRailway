@@ -40,8 +40,8 @@ public class NSET2 extends LocoBase {
     @Override
     protected void doEngine() {
         //Do engine code
-        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
-        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotionWithAir(tmpPacket, this);
         setEnginePrevVel(this.Velocity);

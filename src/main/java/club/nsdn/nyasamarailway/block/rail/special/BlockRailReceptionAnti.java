@@ -4,8 +4,8 @@ import club.nsdn.nyasamarailway.block.rail.BlockRailPoweredBase;
 import club.nsdn.nyasamarailway.block.rail.IRailDirectional;
 import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamarailway.entity.cart.*;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemTrainController8Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.ITileEntityProvider;
@@ -269,8 +269,8 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             player = (EntityPlayer) cart.riddenByEntity;
             ItemStack stack = ((EntityPlayer) cart.riddenByEntity).getCurrentEquippedItem();
             if (stack != null) {
-                if (stack.getItem() instanceof ItemTrainController8Bit ||
-                        stack.getItem() instanceof ItemTrainController32Bit) {
+                if (stack.getItem() instanceof ItemNTP8Bit ||
+                        stack.getItem() instanceof ItemNTP32Bit) {
                     return;
                 }
             }
@@ -282,8 +282,8 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 player = (EntityPlayer) ncart.riddenByEntity;
                 ItemStack stack = ((EntityPlayer) ncart.riddenByEntity).getCurrentEquippedItem();
                 if (stack != null) {
-                    if (stack.getItem() instanceof ItemTrainController8Bit ||
-                            stack.getItem() instanceof ItemTrainController32Bit) {
+                    if (stack.getItem() instanceof ItemNTP8Bit ||
+                            stack.getItem() instanceof ItemNTP32Bit) {
                         return;
                     }
                 }

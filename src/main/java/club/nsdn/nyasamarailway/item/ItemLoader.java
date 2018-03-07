@@ -57,10 +57,10 @@ public class ItemLoader {
     }
 
     public ItemLoader(FMLPreInitializationEvent event) {
-        trainController8Bit = new ItemTrainController8Bit();
+        trainController8Bit = new ItemNTP8Bit();
         register(trainController8Bit, "train_controller_8bit");
 
-        trainController32Bit = new ItemTrainController32Bit();
+        trainController32Bit = new ItemNTP32Bit();
         register(trainController32Bit, "train_controller_32bit");
 
         item74HC04 = new Item74HC04();

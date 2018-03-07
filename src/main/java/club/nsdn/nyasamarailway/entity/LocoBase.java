@@ -13,7 +13,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
-import net.minecraft.block.BlockRailPowered;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
@@ -155,11 +154,9 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
     }
 
     public void setTrainPacket(TrainPacket packet) {
-        if (this.getEntityId() == packet.cartID) {
-            setEnginePower(packet.P);
-            setEngineBrake(packet.R);
-            setEngineDir(packet.Dir);
-        }
+        setEnginePower(packet.P);
+        setEngineBrake(packet.R);
+        setEngineDir(packet.Dir);
     }
 
     @Override
@@ -420,8 +417,8 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
 
     protected void doEngine() {
         //Do engine code
-        tmpPacket = new TrainPacket(this.getEntityId(), getEnginePower(), getEngineBrake(), getEngineDir());
-        tmpPacket.isUnits = isHighSpeed();
+        tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
+        tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
         TrainController.doMotion(tmpPacket, this);
         setEnginePrevVel(this.Velocity);

@@ -29,6 +29,11 @@ public class NSPCT5L extends MinecartBase {
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
     }
 
+    public void modifyLength() {
+        int len = dataWatcher.getWatchableObjectInt(DATA_LENGTH);
+        dataWatcher.updateObject(DATA_LENGTH, len < 5 ? len + 1 : 1);
+    }
+
     @Override
     public AxisAlignedBB getCollisionBox(Entity entity) {
         double size = 4;

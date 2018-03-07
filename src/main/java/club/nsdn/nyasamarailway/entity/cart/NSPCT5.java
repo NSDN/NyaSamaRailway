@@ -27,6 +27,11 @@ public class NSPCT5 extends MinecartBase {
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
     }
 
+    public void modifyLength() {
+        int len = dataWatcher.getWatchableObjectInt(DATA_LENGTH);
+        dataWatcher.updateObject(DATA_LENGTH, len < 5 ? len + 1 : 1);
+    }
+
     @Override
     public float getMaxCartSpeedOnRail() {
         return 2.0F;
