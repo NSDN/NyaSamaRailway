@@ -2,17 +2,17 @@ package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.extmod.Traincraft;
+import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.ItemNBTHelper;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import org.thewdj.physics.Dynamics;
 
 /**
@@ -71,17 +71,33 @@ public class ItemNTP8Bit extends ItemToolBase {
     public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
         power.set(itemStack, 0); brake.set(itemStack, 5);
         dir.set(itemStack, 0); cart.set(itemStack, -1);
+        if (player instanceof EntityPlayerMP) {
+            TrainPacket packet = new TrainPacket();
+            packet.fromStack(itemStack);
+            NetworkWrapper.instance.sendTo(packet, (EntityPlayerMP) player);
+        }
     }
 
     public void addCart(ItemStack itemStack, EntityPlayer player, Entity entity) {
         int id = entity.getEntityId();
-        cart.set(itemStack, id);
+        power.set(itemStack, 0); brake.set(itemStack, 5);
+        dir.set(itemStack, 0); cart.set(itemStack, id);
+        if (player instanceof EntityPlayerMP) {
+            TrainPacket packet = new TrainPacket();
+            packet.fromStack(itemStack);
+            NetworkWrapper.instance.sendTo(packet, (EntityPlayerMP) player);
+        }
         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.controlled"));
     }
 
     public void clearCart(ItemStack itemStack, EntityPlayer player) {
         power.set(itemStack, 0); brake.set(itemStack, 5);
         dir.set(itemStack, 0); cart.set(itemStack, -1);
+        if (player instanceof EntityPlayerMP) {
+            TrainPacket packet = new TrainPacket();
+            packet.fromStack(itemStack);
+            NetworkWrapper.instance.sendTo(packet, (EntityPlayerMP) player);
+        }
         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.cleared"));
     }
 

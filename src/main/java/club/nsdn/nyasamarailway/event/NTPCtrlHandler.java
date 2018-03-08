@@ -28,36 +28,6 @@ public class NTPCtrlHandler {
         return instance;
     }
 
-    private void toPacket(TrainPacket packet, ItemStack stack) {
-        if (stack == null) return;
-        if (stack.getItem() instanceof ItemNTP8Bit) {
-            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-            packet.P = ntp8Bit.power.get(stack);
-            packet.R = ntp8Bit.brake.get(stack);
-            packet.Dir = ntp8Bit.dir.get(stack);
-        } else if (stack.getItem() instanceof ItemNTP32Bit) {
-            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-            packet.P = ntp32Bit.power.get(stack);
-            packet.R = ntp32Bit.brake.get(stack);
-            packet.Dir = ntp32Bit.dir.get(stack);
-        }
-    }
-
-    private void fromPacket(TrainPacket packet, ItemStack stack) {
-        if (stack == null) return;
-        if (stack.getItem() instanceof ItemNTP8Bit) {
-            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-            ntp8Bit.power.set(stack, packet.P);
-            ntp8Bit.brake.set(stack, packet.R);
-            ntp8Bit.dir.set(stack, packet.Dir);
-        } else if (stack.getItem() instanceof ItemNTP32Bit) {
-            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-            ntp32Bit.power.set(stack, packet.P);
-            ntp32Bit.brake.set(stack, packet.R);
-            ntp32Bit.dir.set(stack, packet.Dir);
-        }
-    }
-
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -72,42 +42,30 @@ public class NTPCtrlHandler {
             TrainPacket packet = new TrainPacket();
             if (stack.getItem() instanceof ItemNTP8Bit) {
                 ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-                toPacket(packet, stack);
+                packet.fromStack(stack);
 
                 EntityMinecart cart = packet.getCartInClient(ntp8Bit.cart.get(stack));
                 if (cart != null) {
                     if (cart instanceof LocoBase) {
                         TrainController.doControl(packet, player);
-                        //((LocoBase) cart).setTrainPacket(packet);
                         NetworkWrapper.instance.sendToServer(packet);
-                        fromPacket(packet, stack);
+                        packet.toStack(stack);
                         return;
                     }
                     TrainController.doControl(packet, player);
-                    //TrainController.doMotion(packet, cart);
                     NetworkWrapper.instance.sendToServer(packet);
-                    fromPacket(packet, stack);
+                    packet.toStack(stack);
                 }
             } else if (stack.getItem() instanceof ItemNTP32Bit) {
                 ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-                toPacket(packet, stack);
+                packet.fromStack(stack);
 
                 int[] carts = ntp32Bit.carts.get(stack);
                 if (carts.length == 1 && carts[0] == -1)
                     return;
                 TrainController.doControl(packet, player);
-                /*
-                EntityMinecart cart;
-                for (int i : carts) {
-                    cart = packet.getCartInClient(i);
-                    if (cart != null) {
-                        if (cart instanceof LocoBase) continue;
-                        TrainController.doMotion(packet, cart);
-                    }
-                }
-                */
                 NetworkWrapper.instance.sendToServer(packet);
-                fromPacket(packet, stack);
+                packet.toStack(stack);
             }
         }
     }

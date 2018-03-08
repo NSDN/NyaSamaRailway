@@ -2,12 +2,14 @@ package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.extmod.Traincraft;
+import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.ItemNBTHelper;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -76,6 +78,11 @@ public class ItemNTP32Bit extends ItemToolBase {
         int[] array = new int[] { -1 };
         power.set(itemStack, 0); brake.set(itemStack, 5);
         dir.set(itemStack, 0); carts.set(itemStack, array);
+        if (player instanceof EntityPlayerMP) {
+            TrainPacket packet = new TrainPacket();
+            packet.fromStack(itemStack);
+            NetworkWrapper.instance.sendTo(packet, (EntityPlayerMP) player);
+        }
     }
 
     public void addCart(ItemStack itemStack, EntityPlayer player, Entity entity) {
@@ -104,6 +111,11 @@ public class ItemNTP32Bit extends ItemToolBase {
         int[] array = new int[] { -1 };
         power.set(itemStack, 0); brake.set(itemStack, 5);
         dir.set(itemStack, 0); carts.set(itemStack, array);
+        if (player instanceof EntityPlayerMP) {
+            TrainPacket packet = new TrainPacket();
+            packet.fromStack(itemStack);
+            NetworkWrapper.instance.sendTo(packet, (EntityPlayerMP) player);
+        }
         player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.cleared"));
     }
 

@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
@@ -46,6 +47,23 @@ public class TrainPacket implements IMessage {
     public static class PacketStCHandler implements IMessageHandler<TrainPacket, IMessage> {
         @Override
         public IMessage onMessage(TrainPacket packet, MessageContext context) {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                if (stack.getItem() instanceof ItemNTP8Bit) {
+                    ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
+                    ntp8Bit.power.set(stack, packet.P);
+                    ntp8Bit.brake.set(stack, packet.R);
+                    ntp8Bit.dir.set(stack, packet.Dir);
+                } else if (stack.getItem() instanceof ItemNTP32Bit) {
+                    ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
+                    ntp32Bit.power.set(stack, packet.P);
+                    ntp32Bit.brake.set(stack, packet.R);
+                    ntp32Bit.dir.set(stack, packet.Dir);
+                }
+            }
+
             return null;
         }
     }
@@ -77,6 +95,36 @@ public class TrainPacket implements IMessage {
         this.P = P;
         this.R = R;
         this.Dir = Dir;
+    }
+
+    public void fromStack(ItemStack stack) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof ItemNTP8Bit) {
+            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
+            this.P = ntp8Bit.power.get(stack);
+            this.R = ntp8Bit.brake.get(stack);
+            this.Dir = ntp8Bit.dir.get(stack);
+        } else if (stack.getItem() instanceof ItemNTP32Bit) {
+            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
+            this.P = ntp32Bit.power.get(stack);
+            this.R = ntp32Bit.brake.get(stack);
+            this.Dir = ntp32Bit.dir.get(stack);
+        }
+    }
+
+    public void toStack(ItemStack stack) {
+        if (stack == null) return;
+        if (stack.getItem() instanceof ItemNTP8Bit) {
+            ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
+            ntp8Bit.power.set(stack, this.P);
+            ntp8Bit.brake.set(stack, this.R);
+            ntp8Bit.dir.set(stack, this.Dir);
+        } else if (stack.getItem() instanceof ItemNTP32Bit) {
+            ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
+            ntp32Bit.power.set(stack, this.P);
+            ntp32Bit.brake.set(stack, this.R);
+            ntp32Bit.dir.set(stack, this.Dir);
+        }
     }
 
     @Override
