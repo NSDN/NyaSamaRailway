@@ -42,6 +42,16 @@ public class Item1N4148 extends ItemToolBase {
         player.setItemInUse(itemStack, this.getMaxItemUseDuration(itemStack));
         return itemStack;
     }
+    
+    private void say(EntityPlayer player, String id) {
+        if (player instanceof EntityPlayerMP)
+            player.addChatComponentMessage(new ChatComponentTranslation(id));
+    }
+
+    private void say(EntityPlayer player, String id, Object... args) {
+        if (player instanceof EntityPlayerMP)
+            player.addChatComponentMessage(new ChatComponentTranslation(id, args));
+    }
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
@@ -58,56 +68,56 @@ public class Item1N4148 extends ItemToolBase {
                 if (rail instanceof BlockRailReception.TileEntityRailReception) {
                     if (((BlockRailReception.TileEntityRailReception) rail).cartType.isEmpty()) {
                         ((BlockRailReception.TileEntityRailReception) rail).cartType = "loco";
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                        say(player, "info.reception.loco");
                     } else {
                         if (((BlockRailReception.TileEntityRailReception) rail).cartType.equals("loco")) {
                             ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                            say(player, "info.reception.reset");
                         } else {
                             ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
                 } else if (rail instanceof BlockRailReceptionAnti.TileEntityRailReceptionAnti) {
                     if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.isEmpty()) {
                         ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "loco";
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                        say(player, "info.reception.loco");
                     } else {
                         if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.equals("loco")) {
                             ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                            say(player, "info.reception.reset");
                         } else {
                             ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
                 } else if (rail instanceof RailMonoMagnetReception.TileEntityRail) {
                     if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.isEmpty()) {
                         ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "loco";
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                        say(player, "info.reception.loco");
                     } else {
                         if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.equals("loco")) {
                             ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                            say(player, "info.reception.reset");
                         } else {
                             ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
                 } else if (rail instanceof RailMonoMagnetReceptionAnti.TileEntityRail) {
                     if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.isEmpty()) {
                         ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "loco";
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.loco"));
+                        say(player, "info.reception.loco");
                     } else {
                         if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.equals("loco")) {
                             ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.reset"));
+                            say(player, "info.reception.reset");
                         } else {
                             ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.reception.cleared"));
+                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
@@ -170,7 +180,7 @@ public class Item1N4148 extends ItemToolBase {
                 }
             }
             nowDelay = ((BlockRailDetectorBase) world.getBlock(x, y, z)).getDelaySecond();
-            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.1N4148.delay", nowDelay));
+            say(player, "info.1N4148.delay", nowDelay);
             return !world.isRemote;
         } else if (block instanceof RailMonoMagnetDetector && !(block instanceof IRailNoDelay)) {
             int nowDelay = ((RailMonoMagnetDetector) block).getDelaySecond();
@@ -189,7 +199,7 @@ public class Item1N4148 extends ItemToolBase {
                     break;
             }
             nowDelay = ((RailMonoMagnetDetector) world.getBlock(x, y, z)).getDelaySecond();
-            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.1N4148.delay", nowDelay));
+            say(player, "info.1N4148.delay", nowDelay);
             return !world.isRemote;
         }
 
@@ -279,22 +289,22 @@ public class Item1N4148 extends ItemToolBase {
                 if (tmpRails.containsKey(uuid)) {
                     if (tmpRails.get(uuid) == thisRail) {
                         thisRail.setTransceiver(null);
-                        if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.abort"));
+                        say(player, "info.blocking.abort");
                     } else {
                         if (thisRail.getTransceiver() == tmpRails.get(uuid)) {
                             thisRail.getTransceiver().setTransceiver(null);
                             thisRail.setTransceiver(null);
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.disconnected"));
+                            say(player, "info.blocking.disconnected");
                         } else {
                             thisRail.setTransceiver(tmpRails.get(uuid));
                             thisRail.getTransceiver().setTransceiver(thisRail);
-                            if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.connected"));
+                            say(player, "info.blocking.connected");
                         }
                     }
                     tmpRails.remove(uuid);
                 } else {
                     tmpRails.put(uuid, thisRail);
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.blocking.begin"));
+                    say(player, "info.blocking.begin");
                 }
                 return true;
             }
@@ -305,19 +315,19 @@ public class Item1N4148 extends ItemToolBase {
                 signalBox.prevInverterEnabled = signalBox.inverterEnabled;
                 if (signalBox.inverterEnabled) {
                     signalBox.inverterEnabled = false;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
+                    say(player, "info.signal.box.inverter.off");
                 } else {
                     signalBox.inverterEnabled = true;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.on"));
+                    say(player, "info.signal.box.inverter.on");
                 }
             } else {
                 signalBox.prevTriStateIsNeg = signalBox.triStateIsNeg;
                 if (signalBox.triStateIsNeg) {
                     signalBox.triStateIsNeg = false;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.triState.pos"));
+                    say(player, "info.signal.box.triState.pos");
                 } else {
                     signalBox.triStateIsNeg = true;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.triState.neg"));
+                    say(player, "info.signal.box.triState.neg");
                 }
             }
             return !world.isRemote;
@@ -327,10 +337,10 @@ public class Item1N4148 extends ItemToolBase {
             if (player.isSneaking()) {
                 if (signalBox.inverterEnabled) {
                     signalBox.inverterEnabled = false;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.off"));
+                    say(player, "info.signal.box.inverter.off");
                 } else {
                     signalBox.inverterEnabled = true;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.box.inverter.on"));
+                    say(player, "info.signal.box.inverter.on");
                 }
             }
             return !world.isRemote;
@@ -340,41 +350,65 @@ public class Item1N4148 extends ItemToolBase {
 
             if (player.isSneaking()) {
                 signalLight.prevLightType = signalLight.lightType;
-                if (signalLight.lightType.equals("none")) {
-                    signalLight.lightType = "red&off";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_off"));
-                } else if (signalLight.lightType.equals("red&off")) {
-                    signalLight.lightType = "yellow&off";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_off"));
-                } else if (signalLight.lightType.equals("yellow&off")) {
-                    signalLight.lightType = "green&off";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.green_off"));
-                } else if (signalLight.lightType.equals("green&off")) {
-                    signalLight.lightType = "red&yellow";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_yellow"));
-                } else if (signalLight.lightType.equals("red&yellow")) {
-                    signalLight.lightType = "red&green";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.red_green"));
-                } else if (signalLight.lightType.equals("red&green")) {
-                    signalLight.lightType = "yellow&green";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_green"));
-                } else if (signalLight.lightType.equals("yellow&green")) {
-                    signalLight.lightType = "white&blue";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.white_blue"));
-                } else if (signalLight.lightType.equals("white&blue")) {
-                    signalLight.lightType = "yellow&purple";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.yellow_purple"));
-                } else if (signalLight.lightType.equals("yellow&purple")) {
-                    signalLight.lightType = "none";
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.mode.none"));
+                switch (signalLight.lightType) {
+                    case "none":
+                        signalLight.lightType = "red&off";
+                        say(player, "info.signal.light.mode.red_off");
+                        break;
+                    case "red&off":
+                        signalLight.lightType = "yellow&off";
+                        say(player, "info.signal.light.mode.yellow_off");
+                        break;
+                    case "yellow&off":
+                        signalLight.lightType = "green&off";
+                        say(player, "info.signal.light.mode.green_off");
+                        break;
+                    case "green&off":
+                        signalLight.lightType = "white&off";
+                        say(player, "info.signal.light.mode.white_off");
+                        break;
+                    case "white&off":
+                        signalLight.lightType = "blue&off";
+                        say(player, "info.signal.light.mode.blue_off");
+                        break;
+                    case "blue&off":
+                        signalLight.lightType = "purple&off";
+                        say(player, "info.signal.light.mode.purple_off");
+                        break;
+                    case "purple&off":
+                        signalLight.lightType = "red&yellow";
+                        say(player, "info.signal.light.mode.red_yellow");
+                        break;
+                    case "red&yellow":
+                        signalLight.lightType = "red&green";
+                        say(player, "info.signal.light.mode.red_green");
+                        break;
+                    case "red&green":
+                        signalLight.lightType = "yellow&green";
+                        say(player, "info.signal.light.mode.yellow_green");
+                        break;
+                    case "yellow&green":
+                        signalLight.lightType = "white&blue";
+                        say(player, "info.signal.light.mode.white_blue");
+                        break;
+                    case "white&blue":
+                        signalLight.lightType = "yellow&purple";
+                        say(player, "info.signal.light.mode.yellow_purple");
+                        break;
+                    case "yellow&purple":
+                        signalLight.lightType = "none";
+                        say(player, "info.signal.light.mode.none");
+                        break;
+                    default:
+                        break;
                 }
-            }  else {
+            } else {
                 if (signalLight.isBlinking) {
                     signalLight.isBlinking = false;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.off"));
+                    say(player, "info.signal.light.blink.off");
                 } else {
                     signalLight.isBlinking = true;
-                    if (player instanceof EntityPlayerMP) player.addChatComponentMessage(new ChatComponentTranslation("info.signal.light.blink.on"));
+                    say(player, "info.signal.light.blink.on");
                 }
             }
             return !world.isRemote;

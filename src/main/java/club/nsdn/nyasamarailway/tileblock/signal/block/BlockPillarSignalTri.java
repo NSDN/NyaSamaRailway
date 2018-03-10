@@ -23,7 +23,7 @@ public class BlockPillarSignalTri extends AbsSignalLight {
         {
             return AxisAlignedBB
                     .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
-                    .expand(4, 4, 4);
+                    .expand(2, 2, 2);
         }
 
         @Override
@@ -45,8 +45,7 @@ public class BlockPillarSignalTri extends AbsSignalLight {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x = 1.0F, y = 1.0F, z = 1.0F;
-        setBoundsByXYZ(meta & 0x3, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
+        setBoundsByXYZ(meta & 0x3, 0.25F, 0.1F, 0.5F, 0.75F, 0.9F, 1.0F);
     }
 
     public void updateLight(World world, int x , int y, int z) {

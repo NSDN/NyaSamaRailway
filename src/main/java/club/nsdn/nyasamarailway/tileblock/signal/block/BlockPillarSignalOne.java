@@ -2,7 +2,10 @@ package club.nsdn.nyasamarailway.tileblock.signal.block;
 
 import club.nsdn.nyasamarailway.block.BlockLoader;
 import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 /**
@@ -11,6 +14,21 @@ import net.minecraft.world.World;
 public class BlockPillarSignalOne extends AbsSignalLight {
 
     public static class SignalLight extends club.nsdn.nyasamarailway.tileblock.signal.TileEntitySignalLight {
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public AxisAlignedBB getRenderBoundingBox()
+        {
+            return AxisAlignedBB
+                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
+                    .expand(2, 2, 2);
+        }
+
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 16384.0D;
+        }
+
     }
 
     public BlockPillarSignalOne() {
@@ -25,8 +43,7 @@ public class BlockPillarSignalOne extends AbsSignalLight {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x = 1.0F, y = 1.0F, z = 1.0F;
-        setBoundsByXYZ(meta & 0x3, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
+        setBoundsByXYZ(meta & 0x3, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F, 1.0F);
     }
 
     public void updateLight(World world, int x ,int y, int z) {

@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
+import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
@@ -62,14 +63,29 @@ public class SignalLightRenderer extends TileEntitySpecialRenderer {
         int lightState = (meta >> 2) & 0x3;
 
         if (te instanceof TileEntitySignalLight) {
-            if (((TileEntitySignalLight) te).lightType.equals("white&blue")) {
-                if (lightState == 2) lightState = 4;
-                else if (lightState == 3) lightState = 5;
-                else lightState = 0;
-            } else if (((TileEntitySignalLight) te).lightType.equals("yellow&purple")) {
-                if (lightState == 2) lightState = 2;
-                else if (lightState == 3) lightState = 6;
-                else lightState = 0;
+            TileEntitySignalLight signalLight = (TileEntitySignalLight) te;
+            switch (signalLight.lightType) {
+                case "white&blue":
+                    if (lightState == AbsSignalLight.LIGHT_POWERED) lightState = AbsSignalLight.LIGHT_W;
+                    else if (lightState == AbsSignalLight.LIGHT_NORMAL) lightState = AbsSignalLight.LIGHT_B;
+                    else lightState = 0;
+                    break;
+                case "yellow&purple":
+                    if (lightState == AbsSignalLight.LIGHT_POWERED) lightState = AbsSignalLight.LIGHT_Y;
+                    else if (lightState == AbsSignalLight.LIGHT_NORMAL) lightState = AbsSignalLight.LIGHT_P;
+                    else lightState = 0;
+                    break;
+                case "white&off":
+                    lightState = lightState == AbsSignalLight.LIGHT_POWERED ? AbsSignalLight.LIGHT_W : 0;
+                    break;
+                case "blue&off":
+                    lightState = lightState == AbsSignalLight.LIGHT_POWERED ? AbsSignalLight.LIGHT_B : 0;
+                    break;
+                case "purple&off":
+                    lightState = lightState == AbsSignalLight.LIGHT_POWERED ? AbsSignalLight.LIGHT_P : 0;
+                    break;
+                default:
+                    break;
             }
         }
 

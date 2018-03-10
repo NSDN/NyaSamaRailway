@@ -18,14 +18,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class BlockSignalPillar extends TileBlock {
 
     public static class Pillar extends TileEntity {
+
         @Override
-        @SideOnly(Side.CLIENT)
-        public AxisAlignedBB getRenderBoundingBox()
-        {
-            return AxisAlignedBB
-                    .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
-                    .expand(4, 4, 4);
+        public double getMaxRenderDistanceSquared() {
+            return 16384.0D;
         }
+
     }
 
     public BlockSignalPillar() {

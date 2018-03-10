@@ -18,10 +18,16 @@ import java.util.Random;
  */
 public abstract class AbsSignalLight extends TileBlock {
 
-    private static final int LIGHT_OFF = 0;
-    private static final int LIGHT_R = 1;
-    private static final int LIGHT_Y = 2;
-    private static final int LIGHT_G = 3;
+    public static final int LIGHT_N = 0;
+    public static final int LIGHT_R = 1;
+    public static final int LIGHT_Y = 2;
+    public static final int LIGHT_G = 3;
+    public static final int LIGHT_W = 4;
+    public static final int LIGHT_B = 5;
+    public static final int LIGHT_P = 6;
+
+    public static final int LIGHT_POWERED = 2;
+    public static final int LIGHT_NORMAL = 3;
 
     @Override
     public abstract TileEntity createNewTileEntity(World world, int meta);
@@ -129,6 +135,12 @@ public abstract class AbsSignalLight extends TileBlock {
             return isEnable ? meta | (LIGHT_Y << 2) : meta;
         else if (lightType.equals("green&off"))
             return isEnable ? meta | (LIGHT_G << 2) : meta;
+        else if (lightType.equals("white&off"))
+            return isEnable ? meta | (LIGHT_POWERED << 2) : meta;
+        else if (lightType.equals("blue&off"))
+            return isEnable ? meta | (LIGHT_POWERED << 2) : meta;
+        else if (lightType.equals("purple&off"))
+            return isEnable ? meta | (LIGHT_POWERED << 2) : meta;
         else if (lightType.equals("red&yellow"))
             return isEnable ? meta | (LIGHT_R << 2) : meta | (LIGHT_Y << 2);
         else if (lightType.equals("red&green"))
@@ -136,9 +148,9 @@ public abstract class AbsSignalLight extends TileBlock {
         else if (lightType.equals("yellow&green"))
             return isEnable ? meta | (LIGHT_Y << 2) : meta | (LIGHT_G << 2);
         else if (lightType.equals("white&blue"))
-            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
+            return isEnable ? meta | (LIGHT_POWERED << 2) : meta | (LIGHT_NORMAL << 2);
         else if (lightType.equals("yellow&purple"))
-            return isEnable ? meta | (2 << 2) : meta | (3 << 2);
+            return isEnable ? meta | (LIGHT_POWERED << 2) : meta | (LIGHT_NORMAL << 2);
         else
             return meta;
     }
