@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
+import club.nsdn.nyasamarailway.network.PacketStCHandler;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -32,8 +33,9 @@ public class NTPCtrlHandler {
     public void tick(TickEvent.ClientTickEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-        if (player == null)
-        return;
+        if (player == null) return;
+        if (PacketStCHandler.player == null) PacketStCHandler.player = player;
+
         if (Minecraft.getMinecraft().currentScreen instanceof GuiChat)
             return;
 

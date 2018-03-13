@@ -14,8 +14,8 @@ public class NetworkWrapper {
 
     public NetworkWrapper(FMLPreInitializationEvent event) {
         instance = NetworkRegistry.INSTANCE.newSimpleChannel(NyaSamaRailway.MODID);
-        instance.registerMessage(TrainPacket.PacketStCHandler.class, TrainPacket.class, 0, Side.CLIENT);
-        instance.registerMessage(TrainPacket.PacketCtSHandler.class, TrainPacket.class, 1, Side.SERVER);
+        instance.registerMessage(PacketStCHandler.class, TrainPacket.class, 0, Side.CLIENT);
+        instance.registerMessage(PacketCtSHandler.class, TrainPacket.class, 1, Side.SERVER);
         club.nsdn.nyasamatelecom.api.network.NetworkRegister.register(NyaSamaRailway.log, instance, 2);
     }
 }

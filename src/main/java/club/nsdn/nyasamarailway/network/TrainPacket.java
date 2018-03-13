@@ -3,15 +3,11 @@ package club.nsdn.nyasamarailway.network;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 
@@ -19,54 +15,6 @@ import net.minecraftforge.common.DimensionManager;
  * Created by drzzm32 on 2016.5.16.
  */
 public class TrainPacket implements IMessage {
-
-    public static class PacketCtSHandler implements IMessageHandler<TrainPacket, IMessage> {
-        @Override
-        public IMessage onMessage(TrainPacket packet, MessageContext context) {
-            EntityPlayerMP serverPlayer = context.getServerHandler().playerEntity;
-
-            ItemStack stack = serverPlayer.getCurrentEquippedItem();
-            if (stack != null) {
-                if (stack.getItem() instanceof ItemNTP8Bit) {
-                    ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-                    ntp8Bit.power.set(stack, packet.P);
-                    ntp8Bit.brake.set(stack, packet.R);
-                    ntp8Bit.dir.set(stack, packet.Dir);
-                } else if (stack.getItem() instanceof ItemNTP32Bit) {
-                    ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-                    ntp32Bit.power.set(stack, packet.P);
-                    ntp32Bit.brake.set(stack, packet.R);
-                    ntp32Bit.dir.set(stack, packet.Dir);
-                }
-            }
-
-            return null;
-        }
-    }
-
-    public static class PacketStCHandler implements IMessageHandler<TrainPacket, IMessage> {
-        @Override
-        public IMessage onMessage(TrainPacket packet, MessageContext context) {
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
-                if (stack.getItem() instanceof ItemNTP8Bit) {
-                    ItemNTP8Bit ntp8Bit = (ItemNTP8Bit) stack.getItem();
-                    ntp8Bit.power.set(stack, packet.P);
-                    ntp8Bit.brake.set(stack, packet.R);
-                    ntp8Bit.dir.set(stack, packet.Dir);
-                } else if (stack.getItem() instanceof ItemNTP32Bit) {
-                    ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
-                    ntp32Bit.power.set(stack, packet.P);
-                    ntp32Bit.brake.set(stack, packet.R);
-                    ntp32Bit.dir.set(stack, packet.Dir);
-                }
-            }
-
-            return null;
-        }
-    }
 
     public int P; public int R; public int Dir;
 
