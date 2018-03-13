@@ -188,6 +188,8 @@ public class NSPCT6C extends LocoBase implements ILimitVelCart {
             if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {
                 tmpEngineBrake = getEngineBrake();
                 setEngineBrake(1);
+            } else if (this.Velocity > this.maxVelocity && tmpEngineBrake != -1) {
+                setEngineBrake(1);
             } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != -1) {
                 setEngineBrake(tmpEngineBrake);
                 tmpEngineBrake = -1;

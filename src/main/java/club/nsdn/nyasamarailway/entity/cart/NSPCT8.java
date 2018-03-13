@@ -161,6 +161,8 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
                 if (this.Velocity > this.maxVelocity && tmpMotorBrake == -1) {
                     tmpMotorBrake = getMotorBrake();
                     setMotorBrake(1);
+                } else if (this.Velocity > this.maxVelocity && tmpMotorBrake != -1) {
+                    setMotorBrake(1);
                 } else if (this.Velocity <= this.maxVelocity && tmpMotorBrake != -1) {
                     setMotorBrake(tmpMotorBrake);
                     tmpMotorBrake = -1;
