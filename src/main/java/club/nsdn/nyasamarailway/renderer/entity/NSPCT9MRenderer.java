@@ -166,12 +166,12 @@ public class NSPCT9MRenderer extends RenderMinecart {
             String info = cart.getExtendedInfo("side");
             if (!info.isEmpty())
                 print = new ResourceLocation(
-                        "nyasamarailway", "textures/carts/" + info + ".png"
+                        "nsr", "pics/" + info + ".png"
                 );
             info = cart.getExtendedInfo("jet");
             if (!info.isEmpty())
                 jet = new ResourceLocation(
-                        "nyasamarailway", "textures/carts/" + info + ".png"
+                        "nsr", "pics/" + info + ".png"
                 );
             str = cart.getExtendedInfo("str");
         }
@@ -182,7 +182,7 @@ public class NSPCT9MRenderer extends RenderMinecart {
         if (minecart.riddenByEntity != null) {
             if (minecart.riddenByEntity instanceof EntityPlayer) {
 
-                if (jet != null) RendererHelper.renderWithResourceAndRotation(modelJet, 90.0F, jet);
+                if (jet != null) RendererHelper.renderWithResourceAndRotation(modelJet, -90.0F, jet);
 
                 boolean shouldRenderHUD = false;
                 EntityPlayer player = (EntityPlayer) minecart.riddenByEntity;
