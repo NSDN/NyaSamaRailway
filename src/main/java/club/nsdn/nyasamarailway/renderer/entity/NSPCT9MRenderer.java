@@ -204,11 +204,13 @@ public class NSPCT9MRenderer extends RenderMinecart {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, -0.25F, 0.0F);
         if (!str.isEmpty()) {
+            RenderHelper.disableStandardItemLighting();
             doRenderStr(Minecraft.getMinecraft().fontRenderer, str);
             GL11.glPushMatrix();
             GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
             doRenderStr(Minecraft.getMinecraft().fontRenderer, str);
             GL11.glPopMatrix();
+            RenderHelper.enableStandardItemLighting();
         }
         GL11.glPopMatrix();
     }
@@ -256,7 +258,7 @@ public class NSPCT9MRenderer extends RenderMinecart {
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         int i = 0;
         for (String s : str.split("\n")) {
-            renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0xFFC400);
+            renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0xFFD740);
             i += renderer.FONT_HEIGHT;
         }
         GL11.glPopMatrix();

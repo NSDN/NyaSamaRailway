@@ -3,10 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.rail.mono;
 import club.nsdn.nyasamarailway.block.rail.IRailDirectional;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
-import club.nsdn.nyasamarailway.entity.cart.NSPCT4;
-import club.nsdn.nyasamarailway.entity.cart.NSPCT5;
-import club.nsdn.nyasamarailway.entity.cart.NSPCT6W;
-import club.nsdn.nyasamarailway.entity.cart.NSPCT8W;
+import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.util.TrainController;
@@ -39,17 +36,21 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
         public int count = 0;
         public boolean enable = false;
         public boolean prev = false;
+
         public String cartType = "";
+        public String extInfo = "";
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             cartType = tagCompound.getString("cartType");
+            extInfo = tagCompound.getString("extInfo");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("cartType", cartType);
+            tagCompound.setString("extInfo", extInfo);
             return super.toNBT(tagCompound);
         }
 
@@ -84,6 +85,11 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 world.getBlock(x, y, z + 1) == this || world.getBlock(x, y, z - 1) == this;
     }
 
+    public void registerCart(TileEntityRail rail, EntityMinecart cart) {
+        rail.cartType = cart.getClass().getName();
+        if (cart instanceof NSPCT9) rail.extInfo = ((NSPCT9) cart).getExtendedInfo();
+    }
+
     public void spawnCart(World world, int x, int y, int z) {
         TileEntityRail rail = null;
         if (world.getTileEntity(x, y, z) instanceof TileEntityRail) {
@@ -103,6 +109,10 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 NSPCT6W.doSpawn(world, x, y, z, "");
             } else if (rail.cartType.equals(NSPCT8W.class.getName())) {
                 NSPCT8W.doSpawn(world, x, y, z, "");
+            } else if (rail.cartType.equals(NSPCT9.class.getName())) {
+                NSPCT9 cart = new NSPCT9(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                cart.setExtendedInfo(rail.extInfo);
+                world.spawnEntityInWorld(cart);
             }
         }
     }
@@ -330,7 +340,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 }
 
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
-                    rail.cartType = cart.getClass().getName();
+                    registerCart(rail, cart);
 
                 if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
                     if (hasPlayer) {

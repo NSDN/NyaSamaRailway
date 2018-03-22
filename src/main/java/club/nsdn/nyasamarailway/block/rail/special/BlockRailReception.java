@@ -41,16 +41,19 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         public boolean prev = false;
 
         public String cartType = "";
+        public String extInfo = "";
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             cartType = tagCompound.getString("cartType");
+            extInfo = tagCompound.getString("extInfo");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setString("cartType", cartType);
+            tagCompound.setString("extInfo", extInfo);
             return super.toNBT(tagCompound);
         }
 
@@ -72,6 +75,11 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
     public boolean checkNearbySameRail(World world, int x, int y, int z) {
         return world.getBlock(x + 1, y, z) == this || world.getBlock(x - 1, y, z) == this ||
                 world.getBlock(x, y, z + 1) == this || world.getBlock(x, y, z - 1) == this;
+    }
+
+    public void registerCart(TileEntityRailReception rail, EntityMinecart cart) {
+        rail.cartType = cart.getClass().getName();
+        if (cart instanceof NSPCT9) rail.extInfo = ((NSPCT9) cart).getExtendedInfo();
     }
 
     public void spawnCart(World world, int x, int y, int z) {
@@ -106,6 +114,10 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 world.spawnEntityInWorld(cart);
             } else if (rail.cartType.equals(NSPCT8.class.getName())) {
                 MinecartBase cart = new NSPCT8(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                world.spawnEntityInWorld(cart);
+            } else if (rail.cartType.equals(NSPCT9.class.getName())) {
+                NSPCT9 cart = new NSPCT9(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                cart.setExtendedInfo(rail.extInfo);
                 world.spawnEntityInWorld(cart);
             } else {
                 EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
@@ -337,7 +349,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                 }
 
                 if (rail.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
-                    rail.cartType = cart.getClass().getName();
+                    registerCart(rail, cart);
 
                 if (!world.isBlockIndirectlyGettingPowered(x, y, z)) {
                     if (hasPlayer) {

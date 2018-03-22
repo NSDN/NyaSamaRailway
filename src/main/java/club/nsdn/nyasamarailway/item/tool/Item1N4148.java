@@ -75,7 +75,8 @@ public class Item1N4148 extends ItemToolBase {
                             say(player, "info.reception.reset");
                         } else {
                             ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
-                            say(player, "info.reception.cleared");
+                            ((BlockRailReception.TileEntityRailReception) rail).extInfo = "";
+;                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
@@ -89,6 +90,7 @@ public class Item1N4148 extends ItemToolBase {
                             say(player, "info.reception.reset");
                         } else {
                             ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
+                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).extInfo = "";
                             say(player, "info.reception.cleared");
                         }
                     }
@@ -103,6 +105,7 @@ public class Item1N4148 extends ItemToolBase {
                             say(player, "info.reception.reset");
                         } else {
                             ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
+                            ((RailMonoMagnetReception.TileEntityRail) rail).extInfo = "";
                             say(player, "info.reception.cleared");
                         }
                     }
@@ -117,6 +120,7 @@ public class Item1N4148 extends ItemToolBase {
                             say(player, "info.reception.reset");
                         } else {
                             ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
+                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).extInfo = "";
                             say(player, "info.reception.cleared");
                         }
                     }

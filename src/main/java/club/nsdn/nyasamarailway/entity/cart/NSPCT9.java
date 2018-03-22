@@ -149,11 +149,11 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
         this.dataWatcher.updateObject(INDEX_MV, (float) value);
     }
 
-    private String getExtendedInfo() {
+    public String getExtendedInfo() {
         return this.dataWatcher.getWatchableObjectString(INDEX_EXT);
     }
 
-    private void setExtendedInfo(String info) {
+    public void setExtendedInfo(String info) {
         this.extenedInfo = info;
         this.dataWatcher.updateObject(INDEX_EXT, info);
     }
