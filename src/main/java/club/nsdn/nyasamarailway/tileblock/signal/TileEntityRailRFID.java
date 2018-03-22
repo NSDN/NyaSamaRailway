@@ -13,12 +13,18 @@ public class TileEntityRailRFID extends TileEntityReceiver {
     public double vel = 0;
     public boolean state = false;
 
+    public String cartSide = "null", cartStr = "null", cartJet = "null";
+
     @Override
     public void fromNBT(NBTTagCompound tagCompound) {
         P = tagCompound.getInteger("P");
         R = tagCompound.getInteger("R");
         vel = tagCompound.getDouble("vel");
         state = tagCompound.getBoolean("state");
+
+        cartSide = tagCompound.getString("cartSide");
+        cartStr = tagCompound.getString("cartStr");
+        cartJet = tagCompound.getString("cartJet");
         super.fromNBT(tagCompound);
     }
 
@@ -28,6 +34,10 @@ public class TileEntityRailRFID extends TileEntityReceiver {
         tagCompound.setInteger("R", R);
         tagCompound.setDouble("vel", vel);
         tagCompound.setBoolean("state", state);
+
+        tagCompound.setString("cartSide", cartSide);
+        tagCompound.setString("cartStr", cartStr);
+        tagCompound.setString("cartJet", cartJet);
         return super.toNBT(tagCompound);
     }
 

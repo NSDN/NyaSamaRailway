@@ -23,33 +23,34 @@ public abstract class RailRFIDCore extends NSASM {
         return NetworkWrapper.instance;
     }
 
+    private void prt(String format, Object... args) {
+        if (getPlayer() != null)
+            getPlayer().addChatComponentMessage(new ChatComponentTranslation(format, args));
+    }
+
     public void setPower(TileEntityRailRFID rfid, EntityPlayer player, int value) {
         if (rfid == null) return;
         rfid.P = value > 20 ? 20 : (value < 0 ? 0 : value);
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.pwr", rfid.P));
+        prt("info.rfid.pwr", rfid.P);
     }
 
     public void setBrake(TileEntityRailRFID rfid, EntityPlayer player, int value) {
         if (rfid == null) return;
         value = 10 - value;
         rfid.R = value > 10 ? 10 : (value < 1 ? 1 : value);
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.brk", 10 - rfid.R));
+        prt("info.rfid.brk", 10 - rfid.R);
     }
 
     public void setState(TileEntityRailRFID rfid, EntityPlayer player, int value) {
         if (rfid == null) return;
         rfid.state = value > 0;
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.ste", rfid.state ? 1 : 0));
+        prt("info.rfid.ste", rfid.state ? 1 : 0);
     }
 
     public void setVelocity(TileEntityRailRFID rfid, EntityPlayer player, double value) {
         if (rfid == null) return;
         rfid.vel = value;
-        player.addChatComponentMessage(
-                new ChatComponentTranslation("info.rfid.vel", rfid.vel));
+        prt("info.rfid.vel", rfid.vel);
     }
 
     @Override
@@ -90,6 +91,46 @@ public abstract class RailRFIDCore extends NSASM {
 
             if (dst.type == RegType.FLOAT || dst.type == RegType.INT) {
                 setVelocity(getRFID(), getPlayer(), Double.valueOf(dst.data.toString()));
+                return Result.OK;
+            }
+            return Result.ERR;
+        }));
+
+        funcList.put("side", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+
+            if (dst.type == RegType.STR) {
+                if (getRFID() != null) {
+                    getRFID().cartSide = dst.data.toString();
+                    prt("info.rfid.side", dst.data.toString());
+                }
+                return Result.OK;
+            }
+            return Result.ERR;
+        }));
+        funcList.put("jets", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+
+            if (dst.type == RegType.STR) {
+                if (getRFID() != null) {
+                    getRFID().cartStr = dst.data.toString();
+                    prt("info.rfid.str", dst.data.toString());
+                }
+                return Result.OK;
+            }
+            return Result.ERR;
+        }));
+        funcList.put("jet", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+
+            if (dst.type == RegType.STR) {
+                if (getRFID() != null) {
+                    getRFID().cartJet = dst.data.toString();
+                    prt("info.rfid.jet", dst.data.toString());
+                }
                 return Result.OK;
             }
             return Result.ERR;

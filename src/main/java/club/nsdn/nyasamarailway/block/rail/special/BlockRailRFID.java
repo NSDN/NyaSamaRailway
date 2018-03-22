@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.block.rail.special;
 
 import club.nsdn.nyasamarailway.block.rail.BlockRailPoweredBase;
+import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.IMotorCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
@@ -104,6 +105,19 @@ public class BlockRailRFID extends BlockRailPoweredBase implements ITileEntityPr
 
                 if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
                     limitVelCart.setMaxVelocity(rfid.vel);
+                }
+            }
+
+            if (cart instanceof IExtendedInfoCart) {
+                IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
+
+                if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                    if (!rfid.cartSide.equals("null"))
+                        infoCart.setExtendedInfo("side", rfid.cartSide);
+                    if (!rfid.cartStr.equals("null"))
+                        infoCart.setExtendedInfo("str", rfid.cartStr);
+                    if (!rfid.cartJet.equals("null"))
+                        infoCart.setExtendedInfo("jet", rfid.cartJet);
                 }
             }
 
