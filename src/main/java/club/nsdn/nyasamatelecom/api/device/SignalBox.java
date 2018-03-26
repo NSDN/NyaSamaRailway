@@ -1,7 +1,6 @@
 package club.nsdn.nyasamatelecom.api.device;
 
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.thewdj.telecom.IPassive;
 
 import java.util.Random;
 
@@ -196,7 +196,7 @@ public class SignalBox extends DeviceBase {
                             if (signalBox.getTarget() != null) {
                                 TileEntity tileEntity = signalBox.getTarget();
                                 if (tileEntity instanceof TileEntityReceiver) {
-                                    if (tileEntity instanceof TileEntityPassiveReceiver) {
+                                    if (tileEntity instanceof IPassive) {
                                         signalBox.controlTarget(isEnabled);
                                     }
                                 } else {

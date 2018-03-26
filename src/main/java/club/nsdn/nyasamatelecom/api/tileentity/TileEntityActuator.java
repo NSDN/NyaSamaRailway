@@ -2,12 +2,13 @@ package club.nsdn.nyasamatelecom.api.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import org.thewdj.telecom.IPassive;
 import org.thewdj.telecom.IRelay;
 
 /**
  * Created by drzzm32 on 2017.12.28.
  */
-public class TileEntityActuator extends TileEntityReceiver implements IRelay<TileEntity, TileEntityTransceiver> {
+public class TileEntityActuator extends TileEntityReceiver implements IRelay<TileEntity, TileEntityTransceiver>, IPassive {
 
     public String targetX, targetY, targetZ;
 
