@@ -2,12 +2,14 @@ package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityGlassShieldBase;
+import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGlassShield1X1;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
@@ -128,12 +130,12 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
         int meta = te.getWorldObj().getBlockMetadata(te.xCoord, te.yCoord, te.zCoord);
         int angle = (meta & 0x3) * 90;
 
-        switch (renderType) {
-            case SHIELD:
-                MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldBase) {
-                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
+        if (te instanceof TileEntityGlassShieldBase) {
+            TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
 
+            switch (renderType) {
+                case SHIELD:
+                    MOVE_DIST = 1.0F - (1.0F / 16.0F);
                     doInterpolation(te);
 
                     GL11.glPushMatrix();
@@ -145,13 +147,9 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
-                }
-                break;
-            case SHIELD_HALF:
-                MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldBase) {
-                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
-
+                    break;
+                case SHIELD_HALF:
+                    MOVE_DIST = 1.0F - (1.0F / 16.0F);
                     doInterpolation(te);
 
                     GL11.glPushMatrix();
@@ -163,31 +161,31 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
-                }
-                break;
-            case SHIELD_1X1:
-                MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldBase) {
-                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
+                    break;
+                case SHIELD_1X1:
+                    MOVE_DIST = 1.0F - (1.0F / 16.0F);
 
-                    doInterpolation(te);
+                    if (te.getBlockType() instanceof BlockGlassShield1X1) {
+                        BlockGlassShield1X1 shield1X1 = (BlockGlassShield1X1) te.getBlockType();
+                        World W = te.getWorldObj(); int X = te.xCoord, Y = te.yCoord, Z = te.zCoord;
 
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                        if (!shield1X1.checkShield(W, X, Y - 1, Z) && !shield1X1.checkShield(W, X, Y - 2, Z)) {
+                            doInterpolation(te);
 
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_1X1], textureMain);
-                    GL11.glPopMatrix();
+                            GL11.glPushMatrix();
+                            GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
 
-                    GL11.glPopMatrix();
-                }
-                break;
-            case SHIELD_3X1:
-                MOVE_DIST = 1.0F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldBase) {
-                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
+                            GL11.glPushMatrix();
+                            GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
+                            RendererHelper.renderWithResource(modelMain[MODEL_1X1], textureMain);
+                            GL11.glPopMatrix();
 
+                            GL11.glPopMatrix();
+                        }
+                    }
+                    break;
+                case SHIELD_3X1:
+                    MOVE_DIST = 1.0F - (1.0F / 16.0F);
                     doInterpolation(te);
 
                     GL11.glPushMatrix();
@@ -202,13 +200,9 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
 
                     GL11.glPopMatrix();
                     GL11.glPopMatrix();
-                }
-                break;
-            case SHIELD_3X1D5:
-                MOVE_DIST = 1.5F - (1.0F / 16.0F);
-                if (te instanceof TileEntityGlassShieldBase) {
-                    TileEntityGlassShieldBase glassShield = (TileEntityGlassShieldBase) te;
-
+                    break;
+                case SHIELD_3X1D5:
+                    MOVE_DIST = 1.5F - (1.0F / 16.0F);
                     doInterpolation(te);
 
                     GL11.glPushMatrix();
@@ -223,43 +217,48 @@ public class GlassShieldRenderer extends TileEntitySpecialRenderer {
 
                     GL11.glPopMatrix();
                     GL11.glPopMatrix();
-                }
-                break;
-            case SHIELD_AL:
-                GL11.glPushMatrix();
-                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                GL11.glPushMatrix();
-                GL11.glScalef(1.0F, 1.0F, 1.5F);
-                RendererHelper.renderWithResource(modelMainAl[MODEL_NORMAL], textureMainAl);
-                GL11.glPopMatrix();
-                GL11.glPopMatrix();
-                break;
-            case SHIELD_AL_HALF:
-                GL11.glPushMatrix();
-                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                GL11.glPushMatrix();
-                GL11.glScalef(1.0F, 1.0F, 1.5F);
-                RendererHelper.renderWithResource(modelMainAl[MODEL_HALF], textureMainAl);
-                GL11.glPopMatrix();
-                GL11.glPopMatrix();
-                break;
-            case SHIELD_AL_BASE:
-                GL11.glPushMatrix();
-                GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                GL11.glPushMatrix();
-                GL11.glScalef(1.0F, 1.0F, 1.5F);
-                RendererHelper.renderWithResource(modelMainAl[MODEL_ALBASE], textureMainAl);
-                GL11.glPopMatrix();
-                GL11.glPopMatrix();
-                break;
-            case SHIELD_CORNER:
-                RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_NORMAL], angle, textureCorner);
-                break;
-            case SHIELD_CORNER_HALF:
-                RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_HALF], angle, textureCorner);
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (renderType) {
+                case SHIELD_AL:
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    GL11.glPushMatrix();
+                    GL11.glScalef(1.0F, 1.0F, 1.5F);
+                    RendererHelper.renderWithResource(modelMainAl[MODEL_NORMAL], textureMainAl);
+                    GL11.glPopMatrix();
+                    GL11.glPopMatrix();
+                    break;
+                case SHIELD_AL_HALF:
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    GL11.glPushMatrix();
+                    GL11.glScalef(1.0F, 1.0F, 1.5F);
+                    RendererHelper.renderWithResource(modelMainAl[MODEL_HALF], textureMainAl);
+                    GL11.glPopMatrix();
+                    GL11.glPopMatrix();
+                    break;
+                case SHIELD_AL_BASE:
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    GL11.glPushMatrix();
+                    GL11.glScalef(1.0F, 1.0F, 1.5F);
+                    RendererHelper.renderWithResource(modelMainAl[MODEL_ALBASE], textureMainAl);
+                    GL11.glPopMatrix();
+                    GL11.glPopMatrix();
+                    break;
+                case SHIELD_CORNER:
+                    RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_NORMAL], angle, textureCorner);
+                    break;
+                case SHIELD_CORNER_HALF:
+                    RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_HALF], angle, textureCorner);
+                    break;
+                default:
+                    break;
+            }
         }
 
         RenderHelper.enableStandardItemLighting();

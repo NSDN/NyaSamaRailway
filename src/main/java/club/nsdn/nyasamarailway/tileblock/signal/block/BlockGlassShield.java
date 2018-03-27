@@ -29,6 +29,13 @@ public class BlockGlassShield extends TileBlock {
         setLightLevel(0);
     }
 
+    public BlockGlassShield(String name, String icon) {
+        super(name);
+        setIconLocation(icon);
+        setLightOpacity(1);
+        setLightLevel(0);
+    }
+
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new GlassShield();
@@ -38,6 +45,11 @@ public class BlockGlassShield extends TileBlock {
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
     {
         return true;
+    }
+
+    @Override
+    public boolean func_149730_j() {
+        return true; // Can connect to Pane
     }
 
     @Override
