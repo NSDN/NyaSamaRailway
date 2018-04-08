@@ -6,8 +6,11 @@ import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
+import club.nsdn.nyasamarailway.util.RailReceptionCore;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamarailway.util.TrainController;
+import club.nsdn.nyasamatelecom.api.util.NSASM;
+import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -15,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
@@ -31,32 +35,7 @@ import java.util.Random;
 
 public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRailDirectional, ITileEntityProvider {
 
-    public final int DELAY_TIME = 10;
-
-    public static class TileEntityRailReceptionAnti extends TileEntityReceiver {
-
-        public int delay = 0;
-        public int count = 0;
-        public boolean enable = false;
-        public boolean prev = false;
-
-        public String cartType = "";
-        public String extInfo = "";
-
-        @Override
-        public void fromNBT(NBTTagCompound tagCompound) {
-            cartType = tagCompound.getString("cartType");
-            extInfo = tagCompound.getString("extInfo");
-            super.fromNBT(tagCompound);
-        }
-
-        @Override
-        public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-            tagCompound.setString("cartType", cartType);
-            tagCompound.setString("extInfo", extInfo);
-            return super.toNBT(tagCompound);
-        }
-
+    public static class TileEntityRailReceptionAnti extends club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception {
     }
 
     public TileEntity createNewTileEntity(World world, int i) {
@@ -133,6 +112,11 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
     }
 
     @Override
+    public int tickRate(World world) {
+        return 20;
+    }
+
+    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if (!world.isRemote) {
             float bBoxSize = 0.125F;
@@ -189,7 +173,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                         }
                     } else {
                         rail.count += 1;
-                        if (rail.count >= DELAY_TIME * 20) {
+                        if (rail.count >= rail.setDelay * 20) {
                             rail.count = 0;
                             spawnCart(world, x, y, z);
                             rail.delay = 0;
@@ -207,7 +191,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
     public boolean timeExceed(World world, int x, int y, int z) {
         if (world.getTileEntity(x, y, z) instanceof TileEntityRailReceptionAnti) {
             TileEntityRailReceptionAnti rail = (TileEntityRailReceptionAnti) world.getTileEntity(x, y, z);
-            return rail.delay >= this.DELAY_TIME * 20;
+            return rail.delay >= rail.setDelay * 20;
         }
         return false;
     }
@@ -227,10 +211,10 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
 
                 rail.enable = true;
                 loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
-                world.playSoundAtEntity(loco, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
+                if (rail.setDelay == 10) world.playSoundAtEntity(loco, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
             }
         } else {
-            if (rail.delay < DELAY_TIME * 20 && rail.enable) {
+            if (rail.delay < rail.setDelay * 20 && rail.enable) {
                 boolean isEnabled = false;
 
                 if (rail.getSender() != null)
@@ -240,14 +224,14 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 else {
                     rail.count += 1;
 
-                    if (rail.delay + rail.count == DELAY_TIME * 15) {
-                        rail.delay = DELAY_TIME * 15 - 1;
+                    if (rail.delay + rail.count == rail.setDelay * 15) {
+                        rail.delay = rail.setDelay * 15 - 1;
                         rail.count += 1;
                         world.playSoundAtEntity(loco, "nyasamarailway:info.reception.delay", 0.5F, 1.0F);
                     }
                 }
 
-                if (rail.delay == DELAY_TIME * 15) {
+                if (rail.delay == rail.setDelay * 15) {
                     rail.count = 0;
                     world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                 }
@@ -365,15 +349,15 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                                     cart.motionX = 0.0D;
                                 }
                                 cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
-                                if (player instanceof EntityPlayerMP) {
+                                if (player instanceof EntityPlayerMP && rail.setDelay == 10) {
                                     player.addChatComponentMessage(
-                                            new ChatComponentTranslation("info.reception.pause", DELAY_TIME)
+                                            new ChatComponentTranslation("info.reception.pause", rail.setDelay)
                                     );
                                     world.playSoundAtEntity(cart, "nyasamarailway:info.reception.pause", 0.5F, 1.0F);
                                 }
                             }
                         } else {
-                            if (rail.delay < DELAY_TIME * 20 && rail.enable) {
+                            if (rail.delay < rail.setDelay * 20 && rail.enable) {
                                 boolean isEnabled = false;
 
                                 if (world.getTileEntity(x, y, z) instanceof TileEntityReceiver) {
@@ -385,8 +369,8 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                                 else {
                                     rail.count += 1;
 
-                                    if (rail.delay + rail.count == DELAY_TIME * 15) {
-                                        rail.delay = DELAY_TIME * 15 - 1;
+                                    if (rail.delay + rail.count == rail.setDelay * 15) {
+                                        rail.delay = rail.setDelay * 15 - 1;
                                         rail.count += 1;
                                         if (player instanceof EntityPlayerMP) {
                                             player.addChatComponentMessage(
@@ -397,7 +381,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                                     }
                                 }
 
-                                if (rail.delay == DELAY_TIME * 15) {
+                                if (rail.delay == rail.setDelay * 15) {
                                     rail.count = 0;
                                     if (player instanceof EntityPlayerMP) {
                                         player.addChatComponentMessage(
@@ -507,5 +491,57 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
             }
         }
 
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (world.getTileEntity(x, y, z) == null) return false;
+        if (world.getTileEntity(x, y, z) instanceof club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) {
+            club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception rail = (club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) world.getTileEntity(x, y, z);
+            if (!world.isRemote) {
+                ItemStack stack = player.getCurrentEquippedItem();
+                if (stack != null) {
+
+                    NBTTagList list = Util.getTagListFromNGT(stack);
+                    if (list == null) return true;
+                    String[][] code = NSASM.getCode(list);
+                    new RailReceptionCore(code) {
+                        @Override
+                        public World getWorld() {
+                            return world;
+                        }
+
+                        @Override
+                        public double getX() {
+                            return x;
+                        }
+
+                        @Override
+                        public double getY() {
+                            return y;
+                        }
+
+                        @Override
+                        public double getZ() {
+                            return z;
+                        }
+
+                        @Override
+                        public EntityPlayer getPlayer() {
+                            return player;
+                        }
+
+                        @Override
+                        public club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception getRail() {
+                            return rail;
+                        }
+                    }.run();
+
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 }

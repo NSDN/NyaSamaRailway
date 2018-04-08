@@ -138,6 +138,7 @@ info.reception.ready=[NSR] 列车即将发车,上车的旅客请站稳扶好
 info.reception.delay=[NSR] 抱歉,列车将推迟发车
 info.reception.reset=[NSR] 接发轨寄存器已复位
 info.reception.loco=[NSR] 接发轨设置为机车模式
+info.reception.set=[NSR] 接发轨延时: %d 秒
 info.blocking.begin=[NSR] 闭塞轨连接开始
 info.blocking.abort=[NSR] 闭塞轨连接中止
 info.blocking.error=[NSR] 闭塞轨连接错误

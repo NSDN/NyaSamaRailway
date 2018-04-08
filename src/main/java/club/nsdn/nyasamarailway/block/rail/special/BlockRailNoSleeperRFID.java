@@ -54,6 +54,11 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
     }
 
     @Override
+    public int tickRate(World world) {
+        return 20;
+    }
+
+    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if (!world.isRemote) {
             if (world.getTileEntity(x, y, z) instanceof TileEntityRailRFID) {
