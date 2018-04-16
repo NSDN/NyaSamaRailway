@@ -1,11 +1,16 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.entity.loco.NSPCT8M;
+import club.nsdn.nyasamarailway.item.tool.ItemToolBase;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
@@ -151,6 +156,39 @@ public class NSPCT8MRenderer extends RenderMinecart {
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
+        if (minecart.riddenByEntity != null) {
+            if (minecart.riddenByEntity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) minecart.riddenByEntity;
+                if (player.getCurrentEquippedItem() != null) {
+                    if (player.getCurrentEquippedItem().getItem() instanceof ItemToolBase) {
+                        RenderHelper.disableStandardItemLighting();
+                        GL11.glDepthMask(false);
+
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
+
+                        if (Minecraft.isAmbientOcclusionEnabled()) {
+                            GL11.glShadeModel(GL11.GL_SMOOTH);
+                        } else {
+                            GL11.glShadeModel(GL11.GL_FLAT);
+                        }
+
+                        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+
+                        doRenderHUD(minecart);
+                        GL11.glPushMatrix();
+                        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                        doRenderHUD(minecart);
+                        GL11.glPopMatrix();
+
+                        GL11.glDepthMask(true);
+                        RenderHelper.enableStandardItemLighting();
+                    }
+                }
+            }
+        }
+
         GL11.glPopMatrix();
     }
 
@@ -217,12 +255,14 @@ public class NSPCT8MRenderer extends RenderMinecart {
         if (r < 0) r = 0;
         if (r > 5) r = 5;
 
+        GL11.glColor3f(1.0F, 0.435F, 0.0F); // 0xff6f00
         for (int c = 0; c < (text.length() > 14 ? 14 : text.length()); c++) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.0625F * c);
             RendererHelper.renderPartWithResource(modelScreen, "r" + r, textureText[text.charAt(c)]);
             GL11.glPopMatrix();
         }
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }
 
 }

@@ -331,12 +331,14 @@ public class NSPCT9Renderer extends RenderMinecart {
         if (r < 0) r = 0;
         if (r > 5) r = 5;
 
+        GL11.glColor3f(1.0F, 0.435F, 0.0F); // 0xff6f00
         for (int c = 0; c < (text.length() > 14 ? 14 : text.length()); c++) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.0625F * c);
             RendererHelper.renderPartWithResource(modelScreen, "r" + r, textureText[text.charAt(c)]);
             GL11.glPopMatrix();
         }
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
     }
 
 }

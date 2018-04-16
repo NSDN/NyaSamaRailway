@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
@@ -22,7 +23,7 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 /**
  * Created by drzzm32 on 2017.10.6.
  */
-public class NSPCT8J extends LocoBase implements ILimitVelCart {
+public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart {
 
     private final int INDEX_HIGH = 28;
     public boolean isHighSpeedMode = false;
