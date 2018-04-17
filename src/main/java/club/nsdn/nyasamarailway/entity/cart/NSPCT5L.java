@@ -21,23 +21,24 @@ public class NSPCT5L extends MinecartBase {
     public NSPCT5L(World world) {
         super(world); ignoreFrustumCheck = true;
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
+        setSize(3.0F, 3.0F);
     }
 
     public NSPCT5L(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
+        setSize(3.0F, 3.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     public void modifyLength() {
         int len = dataWatcher.getWatchableObjectInt(DATA_LENGTH);
         dataWatcher.updateObject(DATA_LENGTH, len < 5 ? len + 1 : 1);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBox(Entity entity) {
-        double size = 4;
-        return AxisAlignedBB.getBoundingBox(1 - size, 1 - size, 1 - size, size, size, size);
     }
 
     @Override

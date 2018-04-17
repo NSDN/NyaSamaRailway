@@ -69,7 +69,7 @@ public class NSPCT4M extends LocoBase implements ILimitVelCart {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override

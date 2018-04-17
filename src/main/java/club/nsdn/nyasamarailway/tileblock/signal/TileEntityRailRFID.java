@@ -11,6 +11,7 @@ public class TileEntityRailRFID extends TileEntityReceiver {
     public int P = 0;
     public int R = 10;
     public double vel = 0;
+    public boolean high = false;
     public boolean state = false;
 
     public String cartSide = "null", cartStr = "null", cartJet = "null";
@@ -20,6 +21,7 @@ public class TileEntityRailRFID extends TileEntityReceiver {
         P = tagCompound.getInteger("P");
         R = tagCompound.getInteger("R");
         vel = tagCompound.getDouble("vel");
+        high = tagCompound.getBoolean("high");
         state = tagCompound.getBoolean("state");
 
         cartSide = tagCompound.getString("cartSide");
@@ -33,6 +35,7 @@ public class TileEntityRailRFID extends TileEntityReceiver {
         tagCompound.setInteger("P", P);
         tagCompound.setInteger("R", R);
         tagCompound.setDouble("vel", vel);
+        tagCompound.setBoolean("high", high);
         tagCompound.setBoolean("state", state);
 
         tagCompound.setString("cartSide", cartSide);

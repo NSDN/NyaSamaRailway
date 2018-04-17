@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
 import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
+import club.nsdn.nyasamarailway.entity.IInspectionCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -23,7 +25,7 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 /**
  * Created by drzzm32 on 2017.10.6.
  */
-public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart {
+public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart, IInspectionCart {
 
     private final int INDEX_HIGH = 28;
     public boolean isHighSpeedMode = false;
@@ -35,11 +37,18 @@ public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart {
     public NSPCT8J(World world) {
         super(world);
         ignoreFrustumCheck = true;
+        setSize(1.5F, 1.0F);
     }
 
     public NSPCT8J(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+        setSize(1.5F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     @Override
@@ -94,7 +103,7 @@ public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 5.0F;
+        return 6.0F;
     }
 
     @Override
@@ -149,20 +158,20 @@ public class NSPCT8J extends LocoBase implements ILimitVelCart, IHighSpeedCart {
         tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
         tmpPacket.highSpeed = isHighSpeed();
         tmpPacket.Velocity = this.Velocity;
+        if (this.maxVelocity > 0) {
+            if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {
+                tmpEngineBrake = getEngineBrake();
+                setEngineBrake(1);
+            } else if (this.Velocity > this.maxVelocity && tmpEngineBrake != -1) {
+                setEngineBrake(1);
+            } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != -1) {
+                setEngineBrake(tmpEngineBrake);
+                tmpEngineBrake = -1;
+            }
+        }
         if (getHighSpeedMode())
             TrainController.doMotionWithAirHigh(tmpPacket, this);
         else {
-            if (this.maxVelocity > 0) {
-                if (this.Velocity > this.maxVelocity && tmpEngineBrake == -1) {
-                    tmpEngineBrake = getEngineBrake();
-                    setEngineBrake(1);
-                } else if (this.Velocity > this.maxVelocity && tmpEngineBrake != -1) {
-                    setEngineBrake(1);
-                } else if (this.Velocity <= this.maxVelocity && tmpEngineBrake != -1) {
-                    setEngineBrake(tmpEngineBrake);
-                    tmpEngineBrake = -1;
-                }
-            }
             TrainController.doMotionWithAir(tmpPacket, this);
         }
         setEnginePrevVel(this.Velocity);

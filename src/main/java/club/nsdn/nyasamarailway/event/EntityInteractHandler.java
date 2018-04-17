@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.event;
 
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT5;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT5L;
 import club.nsdn.nyasamarailway.entity.loco.NSPCT8J;
@@ -71,9 +72,9 @@ public class EntityInteractHandler {
                 }
 
                 else if (stack.getItem() instanceof Item1N4148) {
-                    if (entity instanceof NSPCT8J) {
-                        NSPCT8J loco = (NSPCT8J) entity;
-                        loco.modifyHighSpeedMode(player);
+                    if (entity instanceof IHighSpeedCart) {
+                        IHighSpeedCart highSpeedCart = (IHighSpeedCart) entity;
+                        highSpeedCart.modifyHighSpeedMode(player);
                     }
                 }
 

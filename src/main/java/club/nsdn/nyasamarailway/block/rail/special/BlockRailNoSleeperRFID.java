@@ -1,10 +1,7 @@
 package club.nsdn.nyasamarailway.block.rail.special;
 
 import club.nsdn.nyasamarailway.block.rail.BlockRailPoweredBase;
-import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
-import club.nsdn.nyasamarailway.entity.ILimitVelCart;
-import club.nsdn.nyasamarailway.entity.IMotorCart;
-import club.nsdn.nyasamarailway.entity.LocoBase;
+import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamarailway.util.RailRFIDCore;
@@ -113,6 +110,14 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                 }
             }
 
+            if (cart instanceof IHighSpeedCart) {
+                IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
+
+                if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                    highSpeedCart.setHighSpeedMode(rfid.high);
+                }
+            }
+
             if (cart instanceof IExtendedInfoCart) {
                 IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
 
@@ -172,10 +177,10 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                             return rfid;
                         }
                     }.run();
+                    return true;
 
                 }
             }
-            return true;
         }
 
         return false;

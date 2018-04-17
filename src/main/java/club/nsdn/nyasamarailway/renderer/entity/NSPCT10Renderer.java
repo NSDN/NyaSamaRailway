@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.entity.loco.NSPCT8J;
+import club.nsdn.nyasamarailway.entity.cart.NSPCT10;
+import club.nsdn.nyasamarailway.item.tool.ItemToolBase;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
@@ -16,11 +18,11 @@ import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm32 on 2017.10.6.
+ * Created by drzzm32 on 2018.4.17.
  */
-public class NSPCT8JRenderer extends RenderMinecart {
+public class NSPCT10Renderer extends RenderMinecart {
 
-    private final String _name = "nspc_8j";
+    private final String _name = "nspc_10";
 
     private final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_base.obj")
@@ -36,45 +38,47 @@ public class NSPCT8JRenderer extends RenderMinecart {
             "nyasamarailway", "textures/carts/" + _name + "_print.png"
     );
 
+    private final String _screen = "nspc_10j";
+
     private final WavefrontObject modelScreen = new WavefrontObject( // base, r0-r5
-            new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_screen.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_screen.obj")
     );
     private final ResourceLocation textureScreen = new ResourceLocation(
-            "nyasamarailway", "textures/carts/" + _name + "_screen.png"
+            "nyasamarailway", "textures/carts/" + _screen + "_screen.png"
     );
 
     private final WavefrontObject modelMeterV = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_meter_v.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_v.obj")
     );
     private final ResourceLocation textureMeterV = new ResourceLocation(
-            "nyasamarailway", "textures/carts/" + _name + "_meter_v.png"
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_v.png"
     );
 
     private final WavefrontObject modelMeterA = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_meter_a.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_a.obj")
     );
     private final ResourceLocation textureMeterA = new ResourceLocation(
-            "nyasamarailway", "textures/carts/" + _name + "_meter_a.png"
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_a.png"
     );
 
     private final WavefrontObject modelMeterPointer = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_meter_pointer.obj")
+            new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_meter_pointer.obj")
     );
     private final ResourceLocation textureMeterPointer = new ResourceLocation(
-            "nyasamarailway", "textures/carts/" + _name + "_meter_pointer.png"
+            "nyasamarailway", "textures/carts/" + _screen + "_meter_pointer.png"
     );
 
     private static final float ANGLE_HALF = 143;
 
     private final ResourceLocation textureText[];
 
-    public NSPCT8JRenderer() {
+    public NSPCT10Renderer() {
         super();
 
         textureText = new ResourceLocation[128];
         for (int i = 0; i < 128; i++)
             textureText[i] =  new ResourceLocation(
-                "nyasamarailway", "textures/fonts/" + "font_" + i + ".png"
+                    "nyasamarailway", "textures/fonts/" + "font_" + i + ".png"
             );
     }
 
@@ -152,43 +156,53 @@ public class NSPCT8JRenderer extends RenderMinecart {
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDepthMask(false);
+        if (minecart.riddenByEntity != null) {
+            if (minecart.riddenByEntity instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) minecart.riddenByEntity;
+                if (player.getCurrentEquippedItem() != null) {
+                    if (player.getCurrentEquippedItem().getItem() instanceof ItemToolBase) {
+                        RenderHelper.disableStandardItemLighting();
+                        GL11.glDepthMask(false);
 
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        GL11.glDisable(GL11.GL_CULL_FACE);
 
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
+                        if (Minecraft.isAmbientOcclusionEnabled()) {
+                            GL11.glShadeModel(GL11.GL_SMOOTH);
+                        } else {
+                            GL11.glShadeModel(GL11.GL_FLAT);
+                        }
+
+                        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+
+                        doRenderHUD(minecart);
+                        GL11.glPushMatrix();
+                        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                        doRenderHUD(minecart);
+                        GL11.glPopMatrix();
+
+                        GL11.glDepthMask(true);
+                        RenderHelper.enableStandardItemLighting();
+                    }
+                }
+            }
         }
-
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-
-        doRenderHUD(minecart);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        doRenderHUD(minecart);
-        GL11.glPopMatrix();
-
-        GL11.glDepthMask(true);
-        RenderHelper.enableStandardItemLighting();
 
         GL11.glPopMatrix();
     }
 
     private void doRenderHUD(EntityMinecart cart) {
-        if (cart instanceof NSPCT8J) {
-            NSPCT8J loco = (NSPCT8J) cart;
+        if (cart instanceof NSPCT10) {
+            NSPCT10 loco = (NSPCT10) cart;
 
-            float v = (float) loco.getEngineVel();
+            float v = (float) loco.getMotorVel();
             float lim = (float) loco.getMaxVelocity();
-            float a = v - (float) loco.getEnginePrevVel();
+            float a = Math.signum(v) / 3;
 
             float angle;
-            int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
+            int d = loco.getMotorDir(), p = loco.getMotorPower(), r = loco.getMotorBrake();
+            boolean isOff = !loco.getMotorState();
             boolean high = loco.getHighSpeedMode();
 
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
@@ -201,13 +215,13 @@ public class NSPCT8JRenderer extends RenderMinecart {
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : (high ? " HIGH" : "  RUN")));
+            doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
 
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
-            angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+            angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
@@ -222,7 +236,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
             GL11.glPopMatrix();
 
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
-            angle = a / 0.03F * ANGLE_HALF;
+            angle = a / 0.06F * ANGLE_HALF;
             if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
@@ -243,7 +257,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
         if (r < 0) r = 0;
         if (r > 5) r = 5;
 
-        GL11.glColor3f(1.0F, 0.435F, 0.0F); // 0xff6f00
+        GL11.glColor3f(0.0F, 0.435F, 1.0F); // 0x006fff
         for (int c = 0; c < (text.length() > 14 ? 14 : text.length()); c++) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.0625F * c);

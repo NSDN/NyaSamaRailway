@@ -206,9 +206,10 @@ public class RailMonoMagnetSniffer extends RailMonoMagnetDetector implements IRa
                     sniffer.nsasmCode = code;
 
                     player.addChatComponentMessage(new ChatComponentTranslation("info.sniffer.set"));
+
+                    return true;
                 }
             }
-            return true;
         }
 
         return false;

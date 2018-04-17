@@ -195,9 +195,10 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
                     sniffer.nsasmCode = code;
 
                     player.addChatComponentMessage(new ChatComponentTranslation("info.sniffer.set"));
+
+                    return true;
                 }
             }
-            return true;
         }
 
         return false;

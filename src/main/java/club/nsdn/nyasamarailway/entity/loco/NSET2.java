@@ -29,7 +29,7 @@ public class NSET2 extends LocoBase {
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override

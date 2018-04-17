@@ -1,23 +1,32 @@
 package club.nsdn.nyasamarailway.entity.cart;
 
-import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.IMotorCart;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
 import club.nsdn.nyasamarailway.item.ItemLoader;
+import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
+import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
-import club.nsdn.nyasamarailway.util.HashMap;
 import club.nsdn.nyasamarailway.util.TrainController;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 
 /**
- * Created by drzzm32 on 2018.3.21.
+ * Created by drzzm32 on 2018.4.17.
  */
-public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, IExtendedInfoCart {
+public class NSPCT10 extends MinecartBase implements IMotorCart, ILimitVelCart, IHighSpeedCart {
 
     public int P;
     public int R;
@@ -31,8 +40,8 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
     public double maxVelocity = 0;
     private int tmpMotorBrake = -1;
 
-    private final int INDEX_EXT = 29;
-    public String extenedInfo = "";
+    private final int INDEX_HIGH = 29;
+    public boolean isHighSpeedMode = false;
 
     @Override
     protected void entityInit() {
@@ -44,18 +53,67 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
         this.dataWatcher.addObject(INDEX_STE, Integer.valueOf("0"));
 
         this.dataWatcher.addObject(INDEX_MV, Float.valueOf("0"));
-
-        this.dataWatcher.addObject(INDEX_EXT, String.valueOf(""));
+        this.dataWatcher.addObject(INDEX_HIGH, Integer.valueOf("0"));
     }
 
-    public NSPCT9(World world) {
+    public NSPCT10(World world) {
         super(world);
         ignoreFrustumCheck = true;
+        setSize(1.75F, 1.0F);
     }
 
-    public NSPCT9(World world, double x, double y, double z) {
+    public NSPCT10(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+        setSize(1.75F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void modifyHighSpeedMode(EntityPlayer player) {
+        setHighSpeedMode(!getHighSpeedMode());
+        player.addChatComponentMessage(new ChatComponentTranslation(
+                "info.nspc10.mode", String.valueOf(getHighSpeedMode()).toUpperCase()));
+    }
+
+    public void setHighSpeedMode(boolean highSpeedMode) {
+        this.isHighSpeedMode = highSpeedMode;
+        this.dataWatcher.updateObject(INDEX_HIGH, highSpeedMode ? 1 : 0);
+    }
+
+    public boolean getHighSpeedMode() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_HIGH) > 0;
+    }
+
+    @Override
+    public boolean interactFirst(EntityPlayer player) {
+        if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player))) {
+            return true;
+        } else if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != player) {
+            return true;
+        } else if (this.riddenByEntity != null && this.riddenByEntity != player) {
+            return false;
+        } else {
+            if (player != null) {
+                ItemStack stack = player.getCurrentEquippedItem();
+                if (stack != null) {
+                    if (stack.getItem() instanceof Item1N4148 ||
+                            stack.getItem() instanceof ItemNTP8Bit ||
+                            stack.getItem() instanceof ItemNTP32Bit) {
+                        return true;
+                    }
+                    if (stack.getItem() instanceof ItemMinecart) return true;
+                }
+                if (!this.worldObj.isRemote) {
+                    player.mountEntity(this);
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.nsr.x"));
+                }
+            }
+            return true;
+        }
     }
 
     @Override
@@ -65,22 +123,27 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 3.0F;
+        return 6.0F;
     }
 
     @Override
     public double getMountedYOffset() {
-        return -0.3;
+        return getHighSpeedMode() ? 0.1 : 0.5;
+    }
+
+    @Override
+    public boolean shouldRiderSit() {
+        return getHighSpeedMode();
     }
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        return 1.0F;
+        return 5.0F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 0.7F;
+        return 3.0F;
     }
 
     @Override
@@ -149,38 +212,11 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
         this.dataWatcher.updateObject(INDEX_MV, (float) value);
     }
 
-    public String getExtendedInfo() {
-        return this.dataWatcher.getWatchableObjectString(INDEX_EXT);
-    }
-
-    public void setExtendedInfo(String info) {
-        this.extenedInfo = info;
-        this.dataWatcher.updateObject(INDEX_EXT, info);
-    }
-
-    @Override
-    public String getExtendedInfo(String key) {
-        HashMap info = new HashMap();
-        info.fromString(getExtendedInfo());
-        if (info.containsKey(key))
-            return info.get(key);
-        return "";
-    }
-
-    @Override
-    public void setExtendedInfo(String key, String data) {
-        HashMap info = new HashMap();
-        info.fromString(getExtendedInfo());
-        if (info.containsKey(key)) info.remove(key);
-        info.put(key, data);
-        setExtendedInfo(info.toString());
-    }
-
     @Override
     public void killMinecart(DamageSource source)
     {
         this.setDead();
-        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT9, 1);
+        ItemStack itemstack = new ItemStack(ItemLoader.itemNSPCT8, 1);
         itemstack.setStackDisplayName(itemstack.getDisplayName());
         if (!source.damageType.equals("nsr")) this.entityDropItem(itemstack, 0.0F);
     }
@@ -202,7 +238,11 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
                     tmpMotorBrake = -1;
                 }
             }
-            TrainController.doMotionWithAir(tmpPacket, this);
+            if (getHighSpeedMode())
+                TrainController.doMotionWithAirHigh(tmpPacket, this);
+            else {
+                TrainController.doMotionWithAir(tmpPacket, this);
+            }
             setMotorVel((float) tmpPacket.Velocity);
         } else {
             if (this.motionX != 0) setMotorDir((int) Math.signum(this.motionX / Math.cos(TrainController.calcYaw(this) * Math.PI / 180.0)));
@@ -224,8 +264,7 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
         setMotorState(tagCompound.getBoolean("MotorState"));
 
         setMaxVelocity(tagCompound.getDouble("MotorMaxV"));
-
-        setExtendedInfo(tagCompound.getString("ExtendedInfo"));
+        setHighSpeedMode(tagCompound.getBoolean("HighSpeed"));
     }
 
     @Override
@@ -238,8 +277,7 @@ public class NSPCT9 extends MinecartBase implements IMotorCart, ILimitVelCart, I
         tagCompound.setBoolean("MotorState", getMotorState());
 
         tagCompound.setDouble("MotorMaxV", getMaxVelocity());
-
-        tagCompound.setString("ExtendedInfo", getExtendedInfo());
+        tagCompound.setBoolean("HighSpeed", getHighSpeedMode());
     }
 
 

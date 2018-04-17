@@ -525,10 +525,10 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                             return rail;
                         }
                     }.run();
+                    return true;
 
                 }
             }
-            return true;
         }
 
         return false;

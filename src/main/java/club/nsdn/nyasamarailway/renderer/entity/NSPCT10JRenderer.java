@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.entity.loco.NSPCT8J;
+import club.nsdn.nyasamarailway.entity.loco.NSPCT10J;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -16,11 +16,11 @@ import net.minecraftforge.client.model.obj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm32 on 2017.10.6.
+ * Created by drzzm32 on 2018.4.17.
  */
-public class NSPCT8JRenderer extends RenderMinecart {
+public class NSPCT10JRenderer extends RenderMinecart {
 
-    private final String _name = "nspc_8j";
+    private final String _name = "nspc_10j";
 
     private final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_base.obj")
@@ -68,7 +68,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
 
     private final ResourceLocation textureText[];
 
-    public NSPCT8JRenderer() {
+    public NSPCT10JRenderer() {
         super();
 
         textureText = new ResourceLocation[128];
@@ -180,8 +180,8 @@ public class NSPCT8JRenderer extends RenderMinecart {
     }
 
     private void doRenderHUD(EntityMinecart cart) {
-        if (cart instanceof NSPCT8J) {
-            NSPCT8J loco = (NSPCT8J) cart;
+        if (cart instanceof NSPCT10J) {
+            NSPCT10J loco = (NSPCT10J) cart;
 
             float v = (float) loco.getEngineVel();
             float lim = (float) loco.getMaxVelocity();
@@ -207,7 +207,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
             doRenderText(5, "lim:" + sl + "m/t");
 
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
-            angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+            angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
@@ -222,7 +222,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
             GL11.glPopMatrix();
 
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
-            angle = a / 0.03F * ANGLE_HALF;
+            angle = a / 0.06F * ANGLE_HALF;
             if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
@@ -243,7 +243,7 @@ public class NSPCT8JRenderer extends RenderMinecart {
         if (r < 0) r = 0;
         if (r > 5) r = 5;
 
-        GL11.glColor3f(1.0F, 0.435F, 0.0F); // 0xff6f00
+        GL11.glColor3f(0.0F, 0.435F, 1.0F); // 0x006fff
         for (int c = 0; c < (text.length() > 14 ? 14 : text.length()); c++) {
             GL11.glPushMatrix();
             GL11.glTranslatef(0.0F, 0.0F, 0.0625F * c);

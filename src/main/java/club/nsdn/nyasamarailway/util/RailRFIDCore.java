@@ -47,6 +47,12 @@ public abstract class RailRFIDCore extends NSASM {
         prt("info.rfid.ste", rfid.state ? 1 : 0);
     }
 
+    public void setHighSpeed(TileEntityRailRFID rfid, EntityPlayer player, int value) {
+        if (rfid == null) return;
+        rfid.high = value > 0;
+        prt("info.rfid.high", rfid.high ? 1 : 0);
+    }
+
     public void setVelocity(TileEntityRailRFID rfid, EntityPlayer player, double value) {
         if (rfid == null) return;
         rfid.vel = value;
@@ -91,6 +97,17 @@ public abstract class RailRFIDCore extends NSASM {
 
             if (dst.type == RegType.FLOAT || dst.type == RegType.INT) {
                 setVelocity(getRFID(), getPlayer(), Double.valueOf(dst.data.toString()));
+                return Result.OK;
+            }
+            return Result.ERR;
+        }));
+
+        funcList.put("high", ((dst, src) -> {
+            if (src != null) return Result.ERR;
+            if (dst == null) return Result.ERR;
+
+            if (dst.type == RegType.INT) {
+                setHighSpeed(getRFID(), getPlayer(), (int) dst.data);
                 return Result.OK;
             }
             return Result.ERR;

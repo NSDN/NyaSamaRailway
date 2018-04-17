@@ -58,7 +58,7 @@ public class NSPCT4 extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -41,11 +42,18 @@ public class NSPCT8W extends MinecartBase implements IMotorCart, ILimitVelCart {
         public Container(World world) {
             super(world);
             ignoreFrustumCheck = true;
+            setSize(1.5F, 1.0F);
         }
 
         public Container(World world, double x, double y, double z) {
             super(world, x, y, z);
             ignoreFrustumCheck = true;
+            setSize(1.5F, 1.0F);
+        }
+
+        @Override
+        public AxisAlignedBB getBoundingBox() {
+            return boundingBox;
         }
 
         public boolean canMakePlayerTurn() {

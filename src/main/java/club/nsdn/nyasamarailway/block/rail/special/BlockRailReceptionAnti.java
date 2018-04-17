@@ -99,6 +99,7 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 cart.setExtendedInfo(rail.extInfo);
                 world.spawnEntityInWorld(cart);
             } else {
+                rail.cartType = "stock";
                 EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5, -1);
                 world.spawnEntityInWorld(cart);
             }
@@ -429,11 +430,13 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     if (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) {
                         if (getRailDirection(world, x, y, z) == RailDirection.NS) {
                             if (cart.posZ - 0.5 < z) {
-                                cart.killMinecart(new DamageSource("nsr"));
+                                if (rail.cartType.equals("stock")) cart.setDead();
+                                else cart.killMinecart(new DamageSource("nsr"));
                             }
                         } else {
                             if (cart.posX - 0.5 > x) {
-                                cart.killMinecart(new DamageSource("nsr"));
+                                if (rail.cartType.equals("stock")) cart.setDead();
+                                else cart.killMinecart(new DamageSource("nsr"));
                             }
                         }
                     }
@@ -485,7 +488,8 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                     if (hasCart && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
                         EntityMinecart cart = getMinecart(world, x, y, z);
                         if (cart == null) return;
-                        cart.killMinecart(new DamageSource("nsr"));
+                        if (rail.cartType.equals("stock")) cart.setDead();
+                        else cart.killMinecart(new DamageSource("nsr"));
                     }
                 }
             }
@@ -536,10 +540,10 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                             return rail;
                         }
                     }.run();
+                    return true;
 
                 }
             }
-            return true;
         }
 
         return false;

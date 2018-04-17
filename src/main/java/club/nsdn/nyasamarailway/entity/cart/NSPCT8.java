@@ -9,6 +9,7 @@ import club.nsdn.nyasamarailway.network.TrainPacket;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -44,11 +45,18 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
     public NSPCT8(World world) {
         super(world);
         ignoreFrustumCheck = true;
+        setSize(1.5F, 1.0F);
     }
 
     public NSPCT8(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+        setSize(1.5F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     @Override
@@ -58,7 +66,7 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override

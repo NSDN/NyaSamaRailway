@@ -524,10 +524,10 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                             return rail;
                         }
                     }.run();
+                    return true;
 
                 }
             }
-            return true;
         }
 
         return false;

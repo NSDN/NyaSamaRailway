@@ -1,9 +1,6 @@
 package club.nsdn.nyasamarailway.tileblock.rail.mono;
 
-import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
-import club.nsdn.nyasamarailway.entity.ILimitVelCart;
-import club.nsdn.nyasamarailway.entity.IMotorCart;
-import club.nsdn.nyasamarailway.entity.LocoBase;
+import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailRFID;
 import club.nsdn.nyasamarailway.util.RailRFIDCore;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
@@ -125,6 +122,14 @@ public class RailMonoMagnetRFID extends RailMonoMagnetPowered {
                 }
             }
 
+            if (cart instanceof IHighSpeedCart) {
+                IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
+
+                if (isRailPowered(world, x, y, z) || rfid.senderIsPowered()) {
+                    highSpeedCart.setHighSpeedMode(rfid.high);
+                }
+            }
+
             if (cart instanceof IExtendedInfoCart) {
                 IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
 
@@ -184,10 +189,10 @@ public class RailMonoMagnetRFID extends RailMonoMagnetPowered {
                             return rfid;
                         }
                     }.run();
+                    return true;
 
                 }
             }
-            return true;
         }
 
         return false;

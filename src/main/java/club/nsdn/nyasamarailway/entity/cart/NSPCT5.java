@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.item.*;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -19,12 +20,19 @@ public class NSPCT5 extends MinecartBase {
     public NSPCT5(World world) {
         super(world); ignoreFrustumCheck = true;
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
+        setSize(1.75F, 1.0F);
     }
 
     public NSPCT5(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         this.getDataWatcher().addObject(DATA_LENGTH, 3);
+        setSize(1.75F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     public void modifyLength() {

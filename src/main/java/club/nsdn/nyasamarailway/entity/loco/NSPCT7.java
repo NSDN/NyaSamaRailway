@@ -11,6 +11,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,11 +25,18 @@ public class NSPCT7 extends LocoBase {
     public NSPCT7(World world) {
         super(world);
         ignoreFrustumCheck = true;
+        setSize(1.75F, 1.0F);
     }
 
     public NSPCT7(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
+        setSize(1.75F, 1.0F);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox() {
+        return boundingBox;
     }
 
     @Override

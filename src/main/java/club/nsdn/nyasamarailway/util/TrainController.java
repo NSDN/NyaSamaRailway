@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.util;
 
-import club.nsdn.nyasamarailway.entity.loco.NSPCT8J;
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
+import club.nsdn.nyasamarailway.entity.IInspectionCart;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,6 +28,7 @@ public class TrainController {
         public final static KeyBinding keyDirDown = new KeyBinding("ntp.control.dir.down", Keyboard.KEY_DOWN, "ntp.control.title");
         public final static KeyBinding keyBrakeUp = new KeyBinding("ntp.control.brake.up", Keyboard.KEY_PERIOD, "ntp.control.title");
         public final static KeyBinding keyBrakeDown = new KeyBinding("ntp.control.brake.down", Keyboard.KEY_COMMA, "ntp.control.title");
+        public final static KeyBinding keyModeSwitch = new KeyBinding("ntp.control.mode.switch", Keyboard.KEY_M, "ntp.control.title");
 
         public static int DirUP = 0;
         public static int DirDOWN = 0;
@@ -34,6 +36,7 @@ public class TrainController {
         public static int PowerUp = 0;
         public static int BrakeDown = 0;
         public static int BrakeUp = 0;
+        public static int ModeSwitch = 0;
 
         public static void registerKeyBindings() {
             ClientRegistry.registerKeyBinding(keyPowerUp);
@@ -42,6 +45,7 @@ public class TrainController {
             ClientRegistry.registerKeyBinding(keyDirDown);
             ClientRegistry.registerKeyBinding(keyBrakeUp);
             ClientRegistry.registerKeyBinding(keyBrakeDown);
+            ClientRegistry.registerKeyBinding(keyModeSwitch);
         }
     }
 
@@ -62,23 +66,30 @@ public class TrainController {
         } else if (KeyInput.keyBrakeUp.isPressed() && KeyInput.BrakeUp == 0) {
             KeyInput.BrakeUp = 1;
         }
+        if (KeyInput.keyModeSwitch.isPressed() && KeyInput.ModeSwitch == 0) {
+            KeyInput.ModeSwitch = 1;
+        }
 
         if (KeyInput.DirUP == 1) {
             if (train.P > 0) {
-                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                if (!(player.ridingEntity instanceof IInspectionCart))
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == -1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = 1;
-                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                if (!(player.ridingEntity instanceof IInspectionCart))
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirUP = 2;
         } else if (KeyInput.DirDOWN == 1) {
             if (train.P > 0) {
-                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
+                if (!(player.ridingEntity instanceof IInspectionCart))
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.notZeroPower"));
             } else {
                 if (train.Dir == 1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = -1;
-                if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
+                if (!(player.ridingEntity instanceof IInspectionCart))
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.dir", train.Dir));
             }
             KeyInput.DirDOWN = 2;
         }
@@ -86,25 +97,38 @@ public class TrainController {
         if (KeyInput.PowerDown == 1) {
             if (train.P > 0) train.P -= 1;
             if (train.P < 0) train.P = 0;
-            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            if (!(player.ridingEntity instanceof IInspectionCart))
+                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerDown = 2;
         } else if (KeyInput.PowerUp == 1) {
             if (train.P < MaxP) train.P += 1;
             if (train.P > MaxP) train.P = MaxP;
-            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
+            if (!(player.ridingEntity instanceof IInspectionCart))
+                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.power", train.P));
             KeyInput.PowerUp = 2;
         }
 
         if (KeyInput.BrakeDown == 1) {
             if (train.R < 10) train.R += 1;
             if (train.R > 10) train.R = 10;
-            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            if (!(player.ridingEntity instanceof IInspectionCart))
+                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeDown = 2;
         } else if (KeyInput.BrakeUp == 1) {
             if (train.R > 1) train.R -= 1;
             if (train.R < 1) train.R = 1;
-            if (!(player.ridingEntity instanceof NSPCT8J)) player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
+            if (!(player.ridingEntity instanceof IInspectionCart))
+                player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.brake", 10 - train.R));
             KeyInput.BrakeUp = 2;
+        }
+
+        if (KeyInput.ModeSwitch == 1) {
+            if (player.ridingEntity instanceof IHighSpeedCart) {
+                train.Mode = !train.Mode;
+                if (!(player.ridingEntity instanceof IInspectionCart))
+                    player.addChatComponentMessage(new ChatComponentTranslation("info.ntp.mode", String.valueOf(train.Mode).toUpperCase()));
+            }
+            KeyInput.ModeSwitch = 2;
         }
 
         if (!KeyInput.keyDirUp.isPressed() && KeyInput.DirUP == 2) {
@@ -121,6 +145,9 @@ public class TrainController {
             KeyInput.BrakeDown = 0;
         } else if (!KeyInput.keyBrakeUp.isPressed() && KeyInput.BrakeUp == 2) {
             KeyInput.BrakeUp = 0;
+        }
+        if (!KeyInput.keyModeSwitch.isPressed() && KeyInput.ModeSwitch == 2) {
+            KeyInput.ModeSwitch = 0;
         }
 
     }
@@ -169,6 +196,9 @@ public class TrainController {
 
     }
 
+    public static final double DT = 0.001;
+    public static final double MinV = 0.2;
+
     public static void doMotionWithAir(TrainPacket packet, Entity cart) {
         calcYaw(packet, cart);
 
@@ -179,7 +209,7 @@ public class TrainController {
         if (packet.R > 1) {
             double MaxP = 4.0;
             double OutP = MaxP / Math.pow(20.0, Math.E / 2.0) * Math.pow((double) packet.P, Math.E / 2.0);
-            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, 0.001);
+            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
                 packet.Velocity = packet.nextVelocity;
@@ -187,7 +217,8 @@ public class TrainController {
         }
 
         if (packet.R < 10) {
-            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, 1.0, 1.0, packet.R / 10.0, 0.001);
+            double B = Math.abs(packet.Velocity) < MinV ? 2.0 : 1.0;
+            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, B, 1.0, packet.R / 10.0, DT);
             if (packet.Velocity < 0.005) packet.Velocity = 0;
         }
 
@@ -212,7 +243,7 @@ public class TrainController {
         if (packet.R > 1) {
             double MaxP = 40.0;
             double OutP = MaxP / Math.pow(20.0, 2.0) * Math.pow((double) packet.P, 2.0);
-            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, 0.001);
+            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
                 packet.Velocity = packet.nextVelocity;
@@ -220,7 +251,8 @@ public class TrainController {
         }
 
         if (packet.R < 10) {
-            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, 1.0, 1.0, packet.R / 10.0, 0.001);
+            double B = Math.abs(packet.Velocity) < MinV ? 2.0 : 1.0;
+            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, B, 1.0, packet.R / 10.0, DT);
             if (packet.Velocity < 0.005) packet.Velocity = 0;
         }
 
@@ -247,7 +279,7 @@ public class TrainController {
         if (packet.R > 1) {
             double MaxP = 80.0;
             double OutP = MaxP / Math.pow(20.0, 2.0) * Math.pow((double) packet.P, 2.0);
-            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, 0.001);
+            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
                 packet.Velocity = packet.nextVelocity;
@@ -255,7 +287,8 @@ public class TrainController {
         }
 
         if (packet.R < 10) {
-            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, 1.0, 1.0, packet.R / 10.0, 0.001);
+            double B = Math.abs(packet.Velocity) < MinV ? 2.0 : 1.0;
+            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, B, 1.0, packet.R / 10.0, DT);
             if (packet.Velocity < 0.005) packet.Velocity = 0;
         }
 

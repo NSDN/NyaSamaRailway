@@ -108,7 +108,7 @@ public class NSPCT9M extends LocoBase implements ILimitVelCart, IExtendedInfoCar
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override
