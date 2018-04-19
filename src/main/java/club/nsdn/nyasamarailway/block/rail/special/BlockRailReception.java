@@ -6,7 +6,6 @@ import club.nsdn.nyasamarailway.entity.*;
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
-import club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception;
 import club.nsdn.nyasamarailway.util.RailReceptionCore;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamarailway.util.TrainController;
@@ -18,7 +17,6 @@ import net.minecraft.entity.item.EntityMinecartEmpty;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -175,7 +173,7 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                         }
                     } else {
                         rail.count += 1;
-                        if (rail.count >= rail.setDelay * 20) {
+                        if (rail.count >= TileEntityRailReception.SPAWN_DELAY * 20) {
                             rail.count = 0;
                             spawnCart(world, x, y, z);
                             rail.delay = 0;
@@ -504,12 +502,13 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) {
             club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception rail = (club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) world.getTileEntity(x, y, z);
-            if (!world.isRemote) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return false;
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                NBTTagList list = Util.getTagListFromNGT(stack);
+                if (list == null) return false;
+
+                if (!world.isRemote) {
                     String[][] code = NSASM.getCode(list);
                     new RailReceptionCore(code) {
                         @Override
@@ -542,9 +541,9 @@ public class BlockRailReception extends BlockRailPoweredBase implements IRailDir
                             return rail;
                         }
                     }.run();
-                    return true;
-
                 }
+
+                return true;
             }
         }
 

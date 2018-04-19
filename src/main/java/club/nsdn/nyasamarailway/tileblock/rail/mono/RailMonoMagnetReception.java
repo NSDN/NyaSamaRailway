@@ -165,7 +165,7 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                         }
                     } else {
                         rail.count += 1;
-                        if (rail.count >= rail.setDelay * 20) {
+                        if (rail.count >= TileEntityRail.SPAWN_DELAY * 20) {
                             rail.count = 0;
                             spawnCart(world, x, y, z);
                             rail.delay = 0;
@@ -487,12 +487,13 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) {
             club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception rail = (club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception) world.getTileEntity(x, y, z);
-            if (!world.isRemote) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return false;
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                NBTTagList list = Util.getTagListFromNGT(stack);
+                if (list == null) return false;
+
+                if (!world.isRemote) {
                     String[][] code = NSASM.getCode(list);
                     new RailReceptionCore(code) {
                         @Override
@@ -525,9 +526,9 @@ public class RailMonoMagnetReception extends RailMonoMagnetPowered implements IR
                             return rail;
                         }
                     }.run();
-                    return true;
-
                 }
+
+                return true;
             }
         }
 

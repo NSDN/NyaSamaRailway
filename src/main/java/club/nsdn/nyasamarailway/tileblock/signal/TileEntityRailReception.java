@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class TileEntityRailReception extends TileEntityReceiver {
 
+    public static final int SPAWN_DELAY = 10;
+
     public int delay = 0;
     public int count = 0;
     public boolean enable = false;
@@ -22,6 +24,7 @@ public class TileEntityRailReception extends TileEntityReceiver {
         cartType = tagCompound.getString("cartType");
         extInfo = tagCompound.getString("extInfo");
         setDelay = tagCompound.getInteger("setDelay");
+        if (setDelay == 0) setDelay = 10; // for old devices
         super.fromNBT(tagCompound);
     }
 

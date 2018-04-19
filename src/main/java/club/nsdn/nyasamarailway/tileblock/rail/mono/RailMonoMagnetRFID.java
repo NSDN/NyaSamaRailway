@@ -151,12 +151,13 @@ public class RailMonoMagnetRFID extends RailMonoMagnetPowered {
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof RailRFID) {
             RailRFID rfid = (RailRFID) world.getTileEntity(x, y, z);
-            if (!world.isRemote) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return false;
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                NBTTagList list = Util.getTagListFromNGT(stack);
+                if (list == null) return false;
+
+                if (!world.isRemote) {
                     String[][] code = NSASM.getCode(list);
                     new RailRFIDCore(code) {
                         @Override
@@ -185,13 +186,13 @@ public class RailMonoMagnetRFID extends RailMonoMagnetPowered {
                         }
 
                         @Override
-                        public RailRFID getRFID() {
+                        public TileEntityRailRFID getRFID() {
                             return rfid;
                         }
                     }.run();
-                    return true;
-
                 }
+
+                return true;
             }
         }
 

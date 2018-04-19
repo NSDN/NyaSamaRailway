@@ -139,12 +139,13 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof TileEntityRailRFID) {
             TileEntityRailRFID rfid = (TileEntityRailRFID) world.getTileEntity(x, y, z);
-            if (!world.isRemote) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return false;
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                NBTTagList list = Util.getTagListFromNGT(stack);
+                if (list == null) return false;
+
+                if (!world.isRemote) {
                     String[][] code = NSASM.getCode(list);
                     new RailRFIDCore(code) {
                         @Override
@@ -177,9 +178,9 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
                             return rfid;
                         }
                     }.run();
-                    return true;
-
                 }
+
+                return true;
             }
         }
 

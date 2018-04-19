@@ -194,21 +194,22 @@ public class RailMonoMagnetSniffer extends RailMonoMagnetDetector implements IRa
         if (world.getTileEntity(x, y, z) == null) return false;
         if (world.getTileEntity(x, y, z) instanceof RailSniffer) {
             RailSniffer sniffer = (RailSniffer) world.getTileEntity(x, y, z);
-            if (!world.isRemote) {
-                ItemStack stack = player.getCurrentEquippedItem();
-                if (stack != null) {
 
-                    NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return false;
+            ItemStack stack = player.getCurrentEquippedItem();
+            if (stack != null) {
+                NBTTagList list = Util.getTagListFromNGT(stack);
+                if (list == null) return false;
+
+                if (!world.isRemote) {
                     String code = NSASM.getCodeString(list);
 
                     sniffer.nsasmState = RailSniffer.NSASM_IDLE;
                     sniffer.nsasmCode = code;
 
                     player.addChatComponentMessage(new ChatComponentTranslation("info.sniffer.set"));
-
-                    return true;
                 }
+
+                return true;
             }
         }
 

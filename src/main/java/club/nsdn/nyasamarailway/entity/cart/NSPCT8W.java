@@ -42,13 +42,13 @@ public class NSPCT8W extends MinecartBase implements IMotorCart, ILimitVelCart {
         public Container(World world) {
             super(world);
             ignoreFrustumCheck = true;
-            setSize(1.5F, 1.0F);
+            setSize(1.0F, 1.0F);
         }
 
         public Container(World world, double x, double y, double z) {
             super(world, x, y, z);
             ignoreFrustumCheck = true;
-            setSize(1.5F, 1.0F);
+            setSize(1.0F, 1.0F);
         }
 
         @Override
