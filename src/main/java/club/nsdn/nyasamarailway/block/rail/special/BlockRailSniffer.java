@@ -188,7 +188,7 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
                 if (stack != null) {
 
                     NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return true;
+                    if (list == null) return false;
                     String code = NSASM.getCodeString(list);
 
                     sniffer.nsasmState = RailSniffer.NSASM_IDLE;

@@ -491,7 +491,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 if (stack != null) {
 
                     NBTTagList list = Util.getTagListFromNGT(stack);
-                    if (list == null) return true;
+                    if (list == null) return false;
                     String[][] code = NSASM.getCode(list);
                     new RailReceptionCore(code) {
                         @Override
