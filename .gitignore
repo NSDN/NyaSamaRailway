@@ -12,3 +12,6 @@ gradle-app.setting
 
 # IDEA config
 .idea/
+
+# Libs
+libs/

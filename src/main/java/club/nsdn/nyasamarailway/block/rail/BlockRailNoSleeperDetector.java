@@ -30,7 +30,7 @@ public class BlockRailNoSleeperDetector extends BlockRailDetectorBase {
 
     @Override
     public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
-        return 5.0F;
+        return 8.0F;
     }
 
 }

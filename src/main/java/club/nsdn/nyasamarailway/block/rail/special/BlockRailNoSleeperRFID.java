@@ -34,6 +34,11 @@ public class BlockRailNoSleeperRFID extends BlockRailPoweredBase implements ITil
     }
 
     @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
+        return 8.0F;
+    }
+
+    @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, this, 1);

@@ -36,6 +36,11 @@ public class BlockRailSniffer extends BlockRailDetectorBase implements IRailNoDe
         setTextureName("rail_sniffer");
     }
 
+    @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
+        return 8.0F;
+    }
+
     public void setOutputSignal(World world, int x, int y, int z, boolean state) {
         Block block = world.getBlock(x, y, z);
         if (block != this) return;

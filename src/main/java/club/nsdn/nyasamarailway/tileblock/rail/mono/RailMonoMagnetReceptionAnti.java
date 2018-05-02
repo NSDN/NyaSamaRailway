@@ -130,10 +130,12 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             if (rail != null && !checkNearbySameRail(world, x, y, z)) {
                 if (rail.cartType.equals("loco")) {
                     if (!hasCart) {
-                        rail.count = 0;
-                        rail.delay = 0;
-                        rail.enable = false;
+                        rail.reset();
                     } else {
+                        if (rail.getTarget() != null) {
+                            rail.controlTarget(rail.doorCtrl);
+                        }
+
                         for (Object obj : bBox) {
                             if (obj instanceof LocoBase) {
                                 onLocoPass((LocoBase) obj, rail);
@@ -151,9 +153,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                                     cart.motionZ = 0.0D;
                                     cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
 
-                                    rail.delay = 0;
-                                    rail.count = 0;
-                                    rail.enable = false;
+                                    rail.reset();
 
                                     rail.prev = true;
                                 } else if (rail.prev) {
@@ -166,10 +166,8 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                     } else {
                         rail.count += 1;
                         if (rail.count >= TileEntityRail.SPAWN_DELAY * 20) {
-                            rail.count = 0;
+                            rail.reset();
                             spawnCart(world, x, y, z);
-                            rail.delay = 0;
-                            rail.enable = false;
                         }
                     }
                 }
@@ -200,6 +198,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
             } else {
                 // stop
                 loco.setEnginePower(0); loco.setEngineBrake(1);
+                rail.doorCtrl = true;
 
                 rail.enable = true;
                 loco.setPosition(x + 0.5, y + 0.5, z + 0.5);
@@ -225,6 +224,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
 
                 if (rail.delay == rail.setDelay * 15) {
                     rail.count = 0;
+                    rail.doorCtrl = false;
                     world.playSoundAtEntity(loco, "nyasamarailway:info.reception.ready", 0.5F, 1.0F);
                 }
 
@@ -413,9 +413,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                         cart.motionZ = 0.0D;
                         cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
 
-                        rail.delay = 0;
-                        rail.count = 0;
-                        rail.enable = false;
+                        rail.reset();
                     }
                 } else {
                     if (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) {
@@ -466,8 +464,7 @@ public class RailMonoMagnetReceptionAnti extends RailMonoMagnetPowered implement
                 if (!rail.cartType.isEmpty() && !world.isRemote) {
                     if (!hasCart && (isRailPowered(world, x - 1, y, z) || isRailPowered(world, x, y, z + 1))) {
                         spawnCart(world, x, y, z);
-                        rail.delay = 0;
-                        rail.enable = false;
+                        rail.reset();
                     }
 
                     if (hasCart && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {

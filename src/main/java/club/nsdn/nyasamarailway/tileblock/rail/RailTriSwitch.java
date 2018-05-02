@@ -77,7 +77,7 @@ public class RailTriSwitch extends BlockRailBase implements ITileEntityProvider 
 
     @Override
     public float getRailMaxSpeed(World world, EntityMinecart cart, int x, int y, int z) {
-        return 2.0F;
+        return 8.0F;
     }
 
     @Override
