@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
@@ -22,11 +23,14 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 /**
  * Created by drzzm32 on 2017.10.5.
  */
-public class NSPCT8M extends LocoBase implements ILimitVelCart {
+public class NSPCT8M extends LocoBase implements ILimitVelCart, IHighSpeedCart {
 
     private final int INDEX_MV = 28;
     public double maxVelocity = 0;
     private int tmpEngineBrake = -1;
+
+    private final int INDEX_HIGH = 29;
+    public boolean isHighSpeedMode = false;
 
     public NSPCT8M(World world) {
         super(world);
@@ -49,6 +53,19 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.addObject(INDEX_MV, Float.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_HIGH, Integer.valueOf("0"));
+    }
+
+    public void modifyHighSpeedMode(EntityPlayer player) {
+    }
+
+    public void setHighSpeedMode(boolean highSpeedMode) {
+        this.isHighSpeedMode = highSpeedMode;
+        this.dataWatcher.updateObject(INDEX_HIGH, highSpeedMode ? 1 : 0);
+    }
+
+    public boolean getHighSpeedMode() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_HIGH) > 0;
     }
 
     @Override
@@ -147,7 +164,11 @@ public class NSPCT8M extends LocoBase implements ILimitVelCart {
                 tmpEngineBrake = -1;
             }
         }
-        TrainController.doMotionWithAir(tmpPacket, this);
+        if (getHighSpeedMode())
+            TrainController.doMotionWithAirEx(tmpPacket, this);
+        else {
+            TrainController.doMotionWithAir(tmpPacket, this);
+        }
         setEnginePrevVel(this.Velocity);
         setEngineVel(tmpPacket.Velocity);
     }

@@ -233,6 +233,40 @@ public class TrainController {
 
     }
 
+    public static void doMotionWithAirEx(TrainPacket packet, Entity cart) {
+        calcYaw(packet, cart);
+
+        if (packet.P > 0 && packet.Velocity < 0.005) {
+            packet.Velocity = 0.005;
+        }
+
+        if (packet.R > 1) {
+            double MaxP = 10.0;
+            double OutP = MaxP / Math.pow(20.0, Math.E / 2.0) * Math.pow((double) packet.P, Math.E / 2.0);
+            packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
+
+            if (packet.Velocity < packet.nextVelocity) {
+                packet.Velocity = packet.nextVelocity;
+            }
+        }
+
+        if (packet.R < 10) {
+            double B = Math.abs(packet.Velocity) < MinV ? 2.0 : 1.0;
+            packet.Velocity = Dynamics.LocoMotions.calcVelocityDownWithAir(Math.abs(packet.Velocity), 0.1, 1.0, B, 1.0, packet.R / 10.0, DT);
+            if (packet.Velocity < 0.005) packet.Velocity = 0;
+        }
+
+        if (packet.Dir != 0) {
+            cart.motionX = Math.cos(packet.Yaw * Math.PI / 180.0) * packet.Dir * packet.Velocity;
+            cart.motionZ = -Math.sin(packet.Yaw * Math.PI / 180.0) * packet.Dir * packet.Velocity;
+        } else {
+            packet.Velocity = Math.abs(cart.motionX / Math.cos(packet.Yaw * Math.PI / 180.0));
+            if (Math.abs(cart.motionZ / Math.sin(packet.Yaw * Math.PI / 180.0)) > packet.Velocity)
+                packet.Velocity = Math.abs(cart.motionZ / Math.sin(packet.Yaw * Math.PI / 180.0));
+        }
+
+    }
+
     public static void doMotionWithAirHigh(TrainPacket packet, Entity cart) {
         calcYaw(packet, cart);
 

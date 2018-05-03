@@ -203,6 +203,7 @@ public class NSPCT8Renderer extends RenderMinecart {
             float angle;
             int d = loco.getMotorDir(), p = loco.getMotorPower(), r = loco.getMotorBrake();
             boolean isOff = !loco.getMotorState();
+            boolean high = loco.getHighSpeedMode();
 
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
@@ -214,7 +215,7 @@ public class NSPCT8Renderer extends RenderMinecart {
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : "  RUN"));
+            doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");

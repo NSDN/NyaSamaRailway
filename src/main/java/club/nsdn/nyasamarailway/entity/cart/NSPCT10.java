@@ -74,9 +74,6 @@ public class NSPCT10 extends MinecartBase implements IMotorCart, ILimitVelCart, 
     }
 
     public void modifyHighSpeedMode(EntityPlayer player) {
-        setHighSpeedMode(!getHighSpeedMode());
-        player.addChatComponentMessage(new ChatComponentTranslation(
-                "info.nspc10.mode", String.valueOf(getHighSpeedMode()).toUpperCase()));
     }
 
     public void setHighSpeedMode(boolean highSpeedMode) {

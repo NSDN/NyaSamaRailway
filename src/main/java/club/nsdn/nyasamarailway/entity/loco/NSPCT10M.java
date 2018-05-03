@@ -59,9 +59,6 @@ public class NSPCT10M extends LocoBase implements ILimitVelCart, IHighSpeedCart 
     }
 
     public void modifyHighSpeedMode(EntityPlayer player) {
-        setHighSpeedMode(!getHighSpeedMode());
-        player.addChatComponentMessage(new ChatComponentTranslation(
-                "info.nspc10m.mode", String.valueOf(getHighSpeedMode()).toUpperCase()));
     }
 
     public void setHighSpeedMode(boolean highSpeedMode) {

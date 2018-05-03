@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.entity.cart;
 
+import club.nsdn.nyasamarailway.entity.IHighSpeedCart;
 import club.nsdn.nyasamarailway.entity.ILimitVelCart;
 import club.nsdn.nyasamarailway.entity.IMotorCart;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
@@ -7,16 +8,18 @@ import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 /**
  * Created by drzzm32 on 2017.10.1.
  */
-public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
+public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart, IHighSpeedCart {
 
     public int P;
     public int R;
@@ -30,6 +33,9 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
     public double maxVelocity = 0;
     private int tmpMotorBrake = -1;
 
+    private final int INDEX_HIGH = 29;
+    public boolean isHighSpeedMode = false;
+
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -40,6 +46,7 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
         this.dataWatcher.addObject(INDEX_STE, Integer.valueOf("0"));
 
         this.dataWatcher.addObject(INDEX_MV, Float.valueOf("0"));
+        this.dataWatcher.addObject(INDEX_HIGH, Integer.valueOf("0"));
     }
 
     public NSPCT8(World world) {
@@ -57,6 +64,18 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
     @Override
     public AxisAlignedBB getBoundingBox() {
         return boundingBox;
+    }
+
+    public void modifyHighSpeedMode(EntityPlayer player) {
+    }
+
+    public void setHighSpeedMode(boolean highSpeedMode) {
+        this.isHighSpeedMode = highSpeedMode;
+        this.dataWatcher.updateObject(INDEX_HIGH, highSpeedMode ? 1 : 0);
+    }
+
+    public boolean getHighSpeedMode() {
+        return this.dataWatcher.getWatchableObjectInt(INDEX_HIGH) > 0;
     }
 
     @Override
@@ -176,7 +195,11 @@ public class NSPCT8 extends MinecartBase implements IMotorCart, ILimitVelCart {
                     tmpMotorBrake = -1;
                 }
             }
-            TrainController.doMotionWithAir(tmpPacket, this);
+            if (getHighSpeedMode())
+                TrainController.doMotionWithAirEx(tmpPacket, this);
+            else {
+                TrainController.doMotionWithAir(tmpPacket, this);
+            }
             setMotorVel((float) tmpPacket.Velocity);
         } else {
             if (this.motionX != 0) setMotorDir((int) Math.signum(this.motionX / Math.cos(TrainController.calcYaw(this) * Math.PI / 180.0)));

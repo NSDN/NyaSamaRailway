@@ -202,6 +202,7 @@ public class NSPCT8MRenderer extends RenderMinecart {
 
             float angle;
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
+            boolean high = loco.getHighSpeedMode();
 
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
@@ -213,7 +214,7 @@ public class NSPCT8MRenderer extends RenderMinecart {
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir);
-            doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : "  RUN"));
+            doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
