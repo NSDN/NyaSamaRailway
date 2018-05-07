@@ -115,6 +115,10 @@ public class TileEntityLoader {
                 "tileEntityRailSniffer");
 
         GameRegistry.registerTileEntity(
+                BlockRailRedStone.RailRedStone.class,
+                "tileEntityRailRedStone");
+
+        GameRegistry.registerTileEntity(
                 RailBase.TileEntityRail.class,
                 "railNoSleeperStraight");
 
@@ -173,6 +177,10 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 RailMonoMagnetSniffer.RailSniffer.class,
                 "railMonoMagnetSniffer");
+
+        GameRegistry.registerTileEntity(
+                RailMonoMagnetRedStone.RailRedStone.class,
+                "railMonoMagnetRedStone");
 
         GameRegistry.registerTileEntity(
                 BlockRailBlocking.RailBlocking.class,

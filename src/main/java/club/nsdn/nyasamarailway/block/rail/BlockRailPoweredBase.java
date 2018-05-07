@@ -61,6 +61,24 @@ public class BlockRailPoweredBase extends BlockRailPowered {
         return false;
     }
 
+    public EntityMinecart getMinecart(World world, int x, int y, int z) {
+        float bBoxSize = 0.125F;
+        List bBox = world.getEntitiesWithinAABB(
+                EntityMinecart.class,
+                AxisAlignedBB.getBoundingBox((double) ((float) x + bBoxSize),
+                        (double) y,
+                        (double) ((float) z + bBoxSize),
+                        (double) ((float) (x + 1) - bBoxSize),
+                        (double) ((float) (y + 1) - bBoxSize),
+                        (double) ((float) (z + 1) - bBoxSize))
+        );
+        for (Object i : bBox.toArray()) {
+            if (i instanceof EntityMinecart)
+                return (EntityMinecart) i;
+        }
+        return null;
+    }
+
     @Override
     public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
         float maxV = getRailMaxSpeed(world, cart, x, y, z);

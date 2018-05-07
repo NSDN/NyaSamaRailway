@@ -6,4 +6,6 @@ package club.nsdn.nyasamarailway.entity;
 public interface IExtendedInfoCart {
     void setExtendedInfo(String key, String data);
     String getExtendedInfo(String key);
+    void setExtendedInfo(String info);
+    String getExtendedInfo();
 }

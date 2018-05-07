@@ -176,6 +176,11 @@ public class TileEntityModelBinder {
         );
 
         ClientRegistry.bindTileEntitySpecialRenderer(
+                RailMonoMagnetRedStone.RailRedStone.class,
+                new RailMonoRenderer(new String[] { "textures/rails/RailMonoMagnetStraightRedStone.png", "textures/rails/RailMonoMagnetSlopeRedStone.png", "textures/rails/RailMonoMagnetTurnedRedStone.png" })
+        );
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
                 BlockSignalLight.SignalLight.class, new SignalLightRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(

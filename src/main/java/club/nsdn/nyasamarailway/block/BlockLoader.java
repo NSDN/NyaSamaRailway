@@ -59,6 +59,7 @@ public class BlockLoader {
     public static Block blockRailBlocking;
     public static Block blockRailNoSleeperBlocking;
     public static Block blockRailSniffer;
+    public static Block blockRailRedStone;
 
     public static Block blockBumperStoneSleeper;
     public static Block blockBumperNoSleeper;
@@ -120,6 +121,7 @@ public class BlockLoader {
     public static Block railMonoMagnetBlocking;
     public static Block railMonoMagnetRFID;
     public static Block railMonoMagnetSniffer;
+    public static Block railMonoMagnetRedStone;
 
     public static Block railTriSwitch;
 
@@ -261,6 +263,9 @@ public class BlockLoader {
 
         blockRailSniffer = new BlockRailSniffer();
         register(blockRailSniffer, "block_rail_sniffer");
+
+        blockRailRedStone = new BlockRailRedStone();
+        register(blockRailRedStone, "block_rail_redstone");
 
 
         blockBumperStoneSleeper = new BumperStoneSleeper();
@@ -454,6 +459,9 @@ public class BlockLoader {
 
         railMonoMagnetSniffer = new RailMonoMagnetSniffer();
         register(railMonoMagnetSniffer, "rail_mono_magnet_sniffer");
+
+        railMonoMagnetRedStone = new RailMonoMagnetRedStone();
+        register(railMonoMagnetRedStone, "rail_mono_magnet_redstone");
 
         railTriSwitch = new RailTriSwitch();
         register(railTriSwitch, "rail_tri_switch");
