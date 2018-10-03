@@ -102,11 +102,14 @@ public class ItemPierBuilder extends ItemToolBase {
         return 0;
     }
 
+    /**
+     * NOTE: X, Y and Z are Base Block's Pos
+     * */
     public void TraversalRails(World world, Block rail, Block base, Block edge, int edgeMeta, int x, int y, int z) {
         if (traversalCounter > TRAVERSAL_MAX) return;
         traversalCounter += 1;
 
-        if (world.getBlock(x, y + 1, z) == rail)
+        if ((world.getBlock(x, y + 1, z) == rail) && traversalCounter > 1)
             return;
 
         world.setBlock(x, y + 1, z, rail);
@@ -268,7 +271,7 @@ public class ItemPierBuilder extends ItemToolBase {
                         );
 
                     traversalCounter = 0;
-                    TraversalRails(world, rail, base, edge, edgeMeta, x, y, z);
+                    TraversalRails(world, rail, base, edge, edgeMeta, x, y - 1, z);
                     if (traversalCounter > TRAVERSAL_MAX) {
                         if (player instanceof EntityPlayerMP)
                             player.addChatComponentMessage(
