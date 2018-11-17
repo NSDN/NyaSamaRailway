@@ -62,6 +62,9 @@ public class BlockRailReceptionAnti extends BlockRailPoweredBase implements IRai
                 } else if (rail.cartType.equals(NSPCT8.class.getName())) {
                     MinecartBase cart = new NSPCT8(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                     world.spawnEntityInWorld(cart);
+                } else if (rail.cartType.equals(NSPCT10.class.getName())) {
+                    MinecartBase cart = new NSPCT10(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
+                    world.spawnEntityInWorld(cart);
                 } else if (rail.cartType.equals(NSPCT9.class.getName())) {
                     NSPCT9 cart = new NSPCT9(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
                     cart.setExtendedInfo(rail.extInfo);
