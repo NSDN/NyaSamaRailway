@@ -11,6 +11,7 @@ import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -121,7 +122,12 @@ public abstract class TileEntityRailReception extends TileEntityActuator {
     }
 
     private static boolean isRailPowered(World world, int x, int y, int z) {
-        return (world.getBlockMetadata(x, y, z) & 8) > 0;
+        if (world.getBlock(x, y, z) instanceof BlockRailBase) {
+            if (((BlockRailBase) world.getBlock(x, y, z)).isPowered()) {
+                return (world.getBlockMetadata(x, y, z) & 8) > 0;
+            }
+        }
+        return false;
     }
 
     private static void registerCart(TileEntityRailReception rail, EntityMinecart cart) {
@@ -552,7 +558,7 @@ public abstract class TileEntityRailReception extends TileEntityActuator {
                     cart.killMinecart(new DamageSource("nsr"));
                 }
             } else {
-                if(cart == null && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
+                if (cart == null && (isRailPowered(world, x + 1, y, z) || isRailPowered(world, x, y, z - 1))) {
                     rail.spawn(world, x, y, z);
                     rail.reset();
                 }
@@ -560,7 +566,6 @@ public abstract class TileEntityRailReception extends TileEntityActuator {
                     cart.killMinecart(new DamageSource("nsr"));
                 }
             }
-
         }
     }
 
