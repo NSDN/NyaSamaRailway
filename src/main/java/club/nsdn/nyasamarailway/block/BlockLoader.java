@@ -166,6 +166,8 @@ public class BlockLoader {
     public static LightBeam dotBeam;
     public static LightBeam lineBeam;
 
+    public static Block blockNSTest;
+
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
     }
@@ -564,6 +566,9 @@ public class BlockLoader {
 
         lineBeam = new LightBeam(AbsSignalLight.class, LightBeam.TYPE_LINE, 0.75F);
         register(lineBeam, "signal_line_beam");
+
+        blockNSTest = new BlockNSTest();
+        register(blockNSTest, "nst_test");
 
     }
 

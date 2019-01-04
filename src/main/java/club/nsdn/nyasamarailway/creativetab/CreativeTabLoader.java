@@ -12,12 +12,19 @@ import club.nsdn.nyasamarailway.block.BlockLoader;
 public class CreativeTabLoader {
 
     public static CreativeTabs tabNyaSamaRailway;
+    public static CreativeTabs tabNSTest;
 
     public CreativeTabLoader(FMLPreInitializationEvent event) {
         tabNyaSamaRailway = new CreativeTabs("tabNyaSamaRailway") {
             @Override
             public Item getTabIconItem() {
                 return Item.getItemFromBlock(BlockLoader.blockNSRLogo);
+            }
+        };
+        tabNSTest = new CreativeTabs("tabNSTest") {
+            @Override
+            public Item getTabIconItem() {
+                return Item.getItemFromBlock(BlockLoader.blockNSTest);
             }
         };
     }
