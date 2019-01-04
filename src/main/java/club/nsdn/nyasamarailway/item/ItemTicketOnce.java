@@ -6,7 +6,7 @@ package club.nsdn.nyasamarailway.item;
 public class ItemTicketOnce extends ItemTicketBase {
 
     public ItemTicketOnce() {
-        super("ItemTicketOnce", "item_ticket_once");
+        super("ItemTicketOnce", "item_onecard");
     }
 
 }

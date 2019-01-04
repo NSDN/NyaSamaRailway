@@ -231,3 +231,12 @@ tile.PillarSignalBi.name=双灯高柱信号机
 tile.PillarSignalTri.name=三灯高柱信号机
 tile.ConvWireMono.name=缆轨转换器
 info.nsr.x=[NSR] 欢迎乘坐NSR-X型高速浴缸组
+
+itemGroup.tabNSTest=喵玉测试
+item.NyaGift1.name=冥界地铁纪念卡
+item.NyaGift2.name=铁科院纪念卡
+item.NyaGift3.name=旧都地铁纪念卡
+item.NyaGift4.name=喵玉单轨纪念卡
+item.NyaGift5.name=喵玉南站纪念卡
+item.NyaGift6.name=I型单轨纪念卡
+item.NyaGift7.name=NSDN大厦纪念卡

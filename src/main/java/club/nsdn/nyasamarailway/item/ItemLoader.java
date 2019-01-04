@@ -15,6 +15,8 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
+import java.util.LinkedList;
+
 public class ItemLoader {
 
     public static Item trainController8Bit;
@@ -56,6 +58,7 @@ public class ItemLoader {
     public static Item itemTicketOnce;
     public static Item itemNyaCard;
     public static Item itemNyaCoin;
+    public static LinkedList<ItemTicketStore> itemsNyaGift;
 
     private static void register(Item item, String name) {
         GameRegistry.registerItem(item, name);
@@ -167,11 +170,21 @@ public class ItemLoader {
         itemTicketOnce = new ItemTicketOnce();
         register(itemTicketOnce, "item_ticket_once");
 
-        itemNyaCard = new ItemNyaCard();
+        itemNyaCard = new ItemTicketStore("ItemNyaCard", "item_nyacard");
         register(itemNyaCard, "item_nyacard");
 
         itemNyaCoin = new ItemNyaCoin();
         register(itemNyaCoin, "item_nyacoin");
+
+        itemsNyaGift = new LinkedList<>();
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift1", "item_nyagift_1","cards/item_giftcard_1"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift2", "item_nyagift_2","cards/item_giftcard_2"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift3", "item_nyagift_3","cards/item_giftcard_3"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift4", "item_nyagift_4","cards/item_giftcard_4"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift5", "item_nyagift_5","cards/item_giftcard_5"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift6", "item_nyagift_6","cards/item_giftcard_6"));
+        itemsNyaGift.add(new ItemTicketStore("ItemNyaGift7", "item_nyagift_7","cards/item_giftcard_7"));
+        for (ItemTicketStore i : itemsNyaGift) register(i, i.id);
 
         itemTrainBase = new ItemTrainBase();
         if (NyaSamaRailway.isDebug) register(itemTrainBase, "item_train_base");

@@ -229,3 +229,12 @@ tile.PillarSignalBi.name=Bi-Pillar Signal Light
 tile.PillarSignalTri.name=Tri-Pillar Signal Light
 tile.ConvWireMono.name=Wire-Mono Converter
 info.nsr.x=[NSR] Welcome to NSR-X High-speed Bathtub Unit
+
+itemGroup.tabNSTest=NyaSama Test
+item.NyaGift1.name=NyaGift #1
+item.NyaGift2.name=NyaGift #2
+item.NyaGift3.name=NyaGift #3
+item.NyaGift4.name=NyaGift #4
+item.NyaGift5.name=NyaGift #5
+item.NyaGift6.name=NyaGift #6
+item.NyaGift7.name=NyaGift #7

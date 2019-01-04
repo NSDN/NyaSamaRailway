@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.functional;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.ItemNyaCoin;
 import club.nsdn.nyasamarailway.item.ItemTicketBase;
+import club.nsdn.nyasamarailway.item.ItemTicketStore;
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -154,7 +155,7 @@ public class BlockTicketBlockCard extends TileBlock {
                         world.markBlockForUpdate(x, y, z);
 
                         return true;
-                    } else if (stack.getItem() instanceof ItemTicketBase) {
+                    } else if (stack.getItem() instanceof ItemTicketStore) {
                         if ((meta & 0x4) != 0) {
                             int over = ItemTicketBase.getOver(stack);
                             if (over > MAX_OVER) {
