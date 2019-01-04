@@ -17,8 +17,24 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class TileEntityTrackSideRFID extends TileEntityRailRFID implements ITrackSide {
 
+    @Override
+    public boolean getSGNState() {
+        return ITrackSide.hasPowered(this);
+    }
+
+    @Override
+    public boolean getTXDState() {
+        return false;
+    }
+
+    @Override
+    public boolean getRXDState() {
+        return getSender() != null;
+    }
+
     public ForgeDirection direction;
 
+    @Override
     public void fromNBT(NBTTagCompound tagCompound) {
         direction = ForgeDirection.getOrientation(
                 tagCompound.getInteger("direction")
@@ -26,6 +42,7 @@ public class TileEntityTrackSideRFID extends TileEntityRailRFID implements ITrac
         super.fromNBT(tagCompound);
     }
 
+    @Override
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (direction == null) direction = ForgeDirection.UNKNOWN;
         tagCompound.setInteger("direction", direction.ordinal());
@@ -94,13 +111,9 @@ public class TileEntityTrackSideRFID extends TileEntityRailRFID implements ITrac
 
             if (rfid.getSender() != null) {
                 if (!hasPowered && rfid.senderIsPowered()) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta | 0x8, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, rfid.blockType);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                    ITrackSide.setPowered(rfid, true);
                 } else if (hasPowered && !rfid.senderIsPowered()) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta & 0x7, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, rfid.blockType);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+                    ITrackSide.setPowered(rfid, false);
                 }
             }
 

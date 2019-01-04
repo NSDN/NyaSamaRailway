@@ -14,6 +14,10 @@ import java.util.List;
  */
 public interface ITrackSide {
 
+    boolean getSGNState();
+    boolean getTXDState();
+    boolean getRXDState();
+
     static EntityMinecart getMinecart(World world, int x, int y, int z) {
         float bBoxSize = 0.125F;
         List bBox = world.getEntitiesWithinAABB(
@@ -104,14 +108,12 @@ public interface ITrackSide {
             if ((meta & 8) == 0) {
                 world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
                 world.notifyBlocksOfNeighborChange(x, y, z, block);
-                world.notifyBlocksOfNeighborChange(x, y - 1, z, block);
                 world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
             }
         } else {
             if ((meta & 8) != 0) {
                 world.setBlockMetadataWithNotify(x, y, z, meta & 7, 3);
                 world.notifyBlocksOfNeighborChange(x, y, z, block);
-                world.notifyBlocksOfNeighborChange(x, y - 1, z, block);
                 world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
             }
         }

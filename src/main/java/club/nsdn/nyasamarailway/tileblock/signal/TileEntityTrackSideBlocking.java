@@ -11,8 +11,24 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class TileEntityTrackSideBlocking extends TileEntityTransceiver implements ITrackSide {
 
+    @Override
+    public boolean getSGNState() {
+        return ITrackSide.hasPowered(this);
+    }
+
+    @Override
+    public boolean getTXDState() {
+        return getTransceiver() != null;
+    }
+
+    @Override
+    public boolean getRXDState() {
+        return false;
+    }
+
     public ForgeDirection direction;
 
+    @Override
     public void fromNBT(NBTTagCompound tagCompound) {
         direction = ForgeDirection.getOrientation(
                 tagCompound.getInteger("direction")
@@ -20,6 +36,7 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
         super.fromNBT(tagCompound);
     }
 
+    @Override
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (direction == null) direction = ForgeDirection.UNKNOWN;
         tagCompound.setInteger("direction", direction.ordinal());
