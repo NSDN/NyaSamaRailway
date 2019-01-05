@@ -13,10 +13,15 @@ import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
 import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
-import club.nsdn.nyasamarailway.tileblock.signal.block.*;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.*;
+import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -327,6 +332,18 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 ConvWireMono.Conv.class, new ConvWireMonoRenderer());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideBlocking.Blocking.class, new TrackSideRenderer("track_side_blocking_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideReception.Reception.class, new TrackSideRenderer("track_side_reception_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideRFID.RFID.class, new TrackSideRenderer("track_side_rfid_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideSniffer.Sniffer.class, new TrackSideRenderer("track_side_sniffer_sign"));
     }
 
 }

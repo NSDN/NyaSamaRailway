@@ -7,9 +7,11 @@ import club.nsdn.nyasamarailway.block.rail.special.BlockRailReceptionAnti;
 import club.nsdn.nyasamarailway.tileblock.functional.BlockCoinBlock;
 import club.nsdn.nyasamarailway.tileblock.functional.BlockTicketBlockOnce;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntityRailReception;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntityTrackSideReception;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
-import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGateFront;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.BlockGateFront;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTransceiver;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,62 +67,32 @@ public class Item1N4148 extends ItemToolBase {
                 TileEntity rail = world.getTileEntity(x, y, z);
                 if (rail == null) return false;
 
-                if (rail instanceof BlockRailReception.TileEntityRailReception) {
-                    if (((BlockRailReception.TileEntityRailReception) rail).cartType.isEmpty()) {
-                        ((BlockRailReception.TileEntityRailReception) rail).cartType = "loco";
+                if (rail instanceof TileEntityRailReception) {
+                    if (((TileEntityRailReception) rail).cartType.isEmpty()) {
+                        ((TileEntityRailReception) rail).cartType = "loco";
                         say(player, "info.reception.loco");
                     } else {
-                        if (((BlockRailReception.TileEntityRailReception) rail).cartType.equals("loco")) {
-                            ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
+                        if (((TileEntityRailReception) rail).cartType.equals("loco")) {
+                            ((TileEntityRailReception) rail).cartType = "";
                             say(player, "info.reception.reset");
                         } else {
-                            ((BlockRailReception.TileEntityRailReception) rail).cartType = "";
-                            ((BlockRailReception.TileEntityRailReception) rail).extInfo = "";
+                            ((TileEntityRailReception) rail).cartType = "";
+                            ((TileEntityRailReception) rail).extInfo = "";
 ;                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;
-                } else if (rail instanceof BlockRailReceptionAnti.TileEntityRailReceptionAnti) {
-                    if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.isEmpty()) {
-                        ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "loco";
+                } else if (rail instanceof TileEntityTrackSideReception) {
+                    if (((TileEntityTrackSideReception) rail).cartType.isEmpty()) {
+                        ((TileEntityTrackSideReception) rail).cartType = "loco";
                         say(player, "info.reception.loco");
                     } else {
-                        if (((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType.equals("loco")) {
-                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
+                        if (((TileEntityTrackSideReception) rail).cartType.equals("loco")) {
+                            ((TileEntityTrackSideReception) rail).cartType = "";
                             say(player, "info.reception.reset");
                         } else {
-                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).cartType = "";
-                            ((BlockRailReceptionAnti.TileEntityRailReceptionAnti) rail).extInfo = "";
-                            say(player, "info.reception.cleared");
-                        }
-                    }
-                    return !world.isRemote;
-                } else if (rail instanceof RailMonoMagnetReception.TileEntityRail) {
-                    if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.isEmpty()) {
-                        ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "loco";
-                        say(player, "info.reception.loco");
-                    } else {
-                        if (((RailMonoMagnetReception.TileEntityRail) rail).cartType.equals("loco")) {
-                            ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
-                            say(player, "info.reception.reset");
-                        } else {
-                            ((RailMonoMagnetReception.TileEntityRail) rail).cartType = "";
-                            ((RailMonoMagnetReception.TileEntityRail) rail).extInfo = "";
-                            say(player, "info.reception.cleared");
-                        }
-                    }
-                    return !world.isRemote;
-                } else if (rail instanceof RailMonoMagnetReceptionAnti.TileEntityRail) {
-                    if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.isEmpty()) {
-                        ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "loco";
-                        say(player, "info.reception.loco");
-                    } else {
-                        if (((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType.equals("loco")) {
-                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
-                            say(player, "info.reception.reset");
-                        } else {
-                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).cartType = "";
-                            ((RailMonoMagnetReceptionAnti.TileEntityRail) rail).extInfo = "";
+                            ((TileEntityTrackSideReception) rail).cartType = "";
+                            ((TileEntityTrackSideReception) rail).extInfo = "";
                             say(player, "info.reception.cleared");
                         }
                     }
@@ -299,6 +271,7 @@ public class Item1N4148 extends ItemToolBase {
                             thisRail.getTransceiver().setTransceiver(null);
                             thisRail.setTransceiver(null);
                             say(player, "info.blocking.disconnected");
+
                         } else {
                             thisRail.setTransceiver(tmpRails.get(uuid));
                             thisRail.getTransceiver().setTransceiver(thisRail);

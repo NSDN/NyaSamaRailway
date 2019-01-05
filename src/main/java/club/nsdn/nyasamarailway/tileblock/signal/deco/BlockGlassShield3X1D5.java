@@ -1,20 +1,17 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.deco;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 /**
  * Created by drzzm32 on 2017.9.12.
  */
-public class BlockGlassShield1X1 extends BlockGlassShield {
+public class BlockGlassShield3X1D5 extends BlockGlassShield {
 
     public static class GlassShield extends BlockGlassShield.GlassShield { }
 
-    public BlockGlassShield1X1() {
-        super("GlassShield1X1", "glass_shield_1x1");
+    public BlockGlassShield3X1D5() {
+        super("GlassShield3X1D5", "glass_shield_3x1d5");
     }
 
     @Override
@@ -24,7 +21,7 @@ public class BlockGlassShield1X1 extends BlockGlassShield {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 1.0F, z2 = 0.5625F;
+        float x1 = -0.5F, y1 = 0.0F, z1 = 0.4375F, x2 = 1.0F, y2 = 3.0F, z2 = 0.5625F;
 
         if ((meta & 0x8) != 0) x1 = 0.875F;
         switch (meta & 3) {
@@ -40,30 +37,6 @@ public class BlockGlassShield1X1 extends BlockGlassShield {
             case 3:
                 setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
                 break;
-        }
-    }
-
-    public boolean checkShield(World world, int x, int y, int z) {
-        Block block = world.getBlock(x, y, z);
-        return (block instanceof BlockGlassShield) && (block != this);
-    }
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        if (!world.isRemote) {
-            if (checkShield(world, x, y - 1, z) || checkShield(world, x, y - 2, z) ) {
-                if (checkShield(world, x, y - 1, z)) {
-                    world.setBlockMetadataWithNotify(x, y, z,
-                            world.getBlockMetadata(x, y - 1, z), 3
-                    );
-                    world.markBlockForUpdate(x, y, z);
-                } else if (checkShield(world, x, y - 2, z)) {
-                    world.setBlockMetadataWithNotify(x, y, z,
-                            world.getBlockMetadata(x, y - 2, z), 3
-                    );
-                }
-                world.scheduleBlockUpdate(x, y, z, this, 1);
-            } else super.updateTick(world, x, y, z, random);
         }
     }
 

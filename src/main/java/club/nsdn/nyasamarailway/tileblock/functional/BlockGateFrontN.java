@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.tileblock.functional;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
-import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGateFront;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.BlockGateFront;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;

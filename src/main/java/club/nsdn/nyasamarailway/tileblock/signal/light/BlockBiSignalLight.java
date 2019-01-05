@@ -1,7 +1,6 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.light;
 
 import club.nsdn.nyasamarailway.block.BlockLoader;
-import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityBiSignalLight;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;

@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.deco;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityGlassShieldBase;

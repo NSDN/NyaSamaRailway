@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.deco;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

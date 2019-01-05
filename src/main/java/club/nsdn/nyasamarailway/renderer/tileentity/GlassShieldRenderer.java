@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityGlassShieldBase;
-import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGlassShield1X1;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.BlockGlassShield1X1;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;

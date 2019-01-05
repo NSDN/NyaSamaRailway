@@ -12,11 +12,16 @@ import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
 import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
-import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
-import club.nsdn.nyasamarailway.tileblock.signal.block.*;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.*;
+import club.nsdn.nyasamarailway.tileblock.signal.light.AbsSignalLight;
+import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -167,6 +172,10 @@ public class BlockLoader {
     public static LightBeam lineBeam;
 
     public static Block blockNSTest;
+    public static Block blockTrackSideBlocking;
+    public static Block blockTrackSideReception;
+    public static Block blockTrackSideRFID;
+    public static Block blockTrackSideSniffer;
 
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
@@ -569,6 +578,18 @@ public class BlockLoader {
 
         blockNSTest = new BlockNSTest();
         register(blockNSTest, "nst_test");
+
+        blockTrackSideBlocking = new TrackSideBlocking();
+        register(blockTrackSideBlocking, "track_side_blocking");
+
+        blockTrackSideReception = new TrackSideReception();
+        register(blockTrackSideReception, "track_side_reception");
+
+        blockTrackSideRFID = new TrackSideRFID();
+        register(blockTrackSideRFID, "track_side_rfid");
+
+        blockTrackSideSniffer = new TrackSideSniffer();
+        register(blockTrackSideSniffer, "track_side_sniffer");
 
     }
 

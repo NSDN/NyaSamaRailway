@@ -11,10 +11,15 @@ import club.nsdn.nyasamarailway.tileblock.decoration.sign.*;
 import club.nsdn.nyasamarailway.tileblock.functional.*;
 import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.*;
-import club.nsdn.nyasamarailway.tileblock.signal.block.*;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.*;
+import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -349,6 +354,23 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 ConvWireMono.Conv.class,
                 "tileEntityConvWireMono");
+
+        GameRegistry.registerTileEntity(
+                TrackSideBlocking.Blocking.class,
+                "tileEntityTrackSideBlocking");
+
+        GameRegistry.registerTileEntity(
+                TrackSideReception.Reception.class,
+                "tileEntityTrackSideReception");
+
+        GameRegistry.registerTileEntity(
+                TrackSideRFID.RFID.class,
+                "tileEntityTrackSideRFID");
+
+        GameRegistry.registerTileEntity(
+                TrackSideSniffer.Sniffer.class,
+                "tileEntityTrackSideSniffer");
+
     }
 
 }

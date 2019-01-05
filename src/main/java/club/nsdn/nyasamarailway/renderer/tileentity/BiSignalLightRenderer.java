@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
-import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
+import club.nsdn.nyasamarailway.tileblock.signal.light.AbsSignalLight;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityBiSignalLight;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;

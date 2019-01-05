@@ -1,4 +1,4 @@
-package club.nsdn.nyasamarailway.tileblock.signal;
+package club.nsdn.nyasamarailway.tileblock.signal.light;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;

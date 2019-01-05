@@ -1,21 +1,21 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.light;
 
 import club.nsdn.nyasamarailway.block.BlockLoader;
-import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by drzzm32 on 2017.12.10.
+ * Created by drzzm32 on 2017.7.4.
  */
-public class BlockSignalStick extends AbsSignalLight {
+public class BlockSignalLight extends AbsSignalLight {
 
     public static class SignalLight extends club.nsdn.nyasamarailway.tileblock.signal.TileEntitySignalLight {
     }
 
-    public BlockSignalStick() {
-        super("SignalStick");
-        setIconLocation("signal_stick");
+    public BlockSignalLight() {
+        super("SignalLight");
+        setIconLocation("signal_light");
     }
 
     @Override
@@ -25,8 +25,7 @@ public class BlockSignalStick extends AbsSignalLight {
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x = 0.25F, y = 1.0F, z = 0.25F;
-        setBoundsByXYZ(meta & 0x3, 0.5F - x / 2, 0.0F, 0.5F - z / 2, 0.5F + x / 2, y, 0.5F + z / 2);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public void updateLight(World world, int x ,int y, int z) {
@@ -58,8 +57,9 @@ public class BlockSignalStick extends AbsSignalLight {
                 meta = setLightState(isEnable, meta, signalLight.lightType);
             }
 
+            ForgeDirection lightDir = getLightDir(world, x, y, z);
             boolean isLightOn = isLightOn(world, x, y, z);
-            BlockLoader.dotBeam.lightCtl(world, x, y, z, isLightOn);
+            BlockLoader.lineBeam.lightCtl(world, x, y, z, lightDir, 16, isLightOn);
 
             if (old != meta || !signalLight.prevLightType.equals(signalLight.lightType)) {
                 signalLight.prevLightType = signalLight.lightType;

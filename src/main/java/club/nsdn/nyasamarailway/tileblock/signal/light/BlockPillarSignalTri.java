@@ -1,7 +1,6 @@
-package club.nsdn.nyasamarailway.tileblock.signal.block;
+package club.nsdn.nyasamarailway.tileblock.signal.light;
 
 import club.nsdn.nyasamarailway.block.BlockLoader;
-import club.nsdn.nyasamarailway.tileblock.signal.AbsSignalLight;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,9 +10,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Created by drzzm32 on 2017.10.5.
+ * Created by drzzm32 on 2018.1.14.
  */
-public class BlockTriSignalLight extends AbsSignalLight {
+public class BlockPillarSignalTri extends AbsSignalLight {
 
     public static class TriSignalLight extends TileEntityTriStateReceiver {
 
@@ -23,7 +22,7 @@ public class BlockTriSignalLight extends AbsSignalLight {
         {
             return AxisAlignedBB
                     .getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1)
-                    .expand(4, 4, 4);
+                    .expand(2, 2, 2);
         }
 
         @Override
@@ -38,29 +37,14 @@ public class BlockTriSignalLight extends AbsSignalLight {
         return new TriSignalLight();
     }
 
-    public BlockTriSignalLight() {
-        super("TriSignalLight");
-        setIconLocation("tri_signal_light");
+    public BlockPillarSignalTri() {
+        super("PillarSignalTri");
+        setIconLocation("pillar_signal_tri");
     }
 
     @Override
     protected void setBoundsByMeta(int meta) {
-        float x1 = 0.34375F, y1 = 0.0F, z1 = 0.375F, x2 = 0.65625F, y2 = 1.0F, z2 = 0.625F;
-
-        switch (meta & 3) {
-            case 0:
-                setBlockBounds(x1, y1, z1, x2, y2, z2);
-                break;
-            case 1:
-                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
-                break;
-            case 2:
-                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
-                break;
-            case 3:
-                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
-                break;
-        }
+        setBoundsByXYZ(meta & 0x3, 0.25F, 0.1F, 0.5F, 0.75F, 0.9F, 1.0F);
     }
 
     public void updateLight(World world, int x , int y, int z) {

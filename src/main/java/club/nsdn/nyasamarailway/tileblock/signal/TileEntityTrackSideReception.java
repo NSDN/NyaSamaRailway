@@ -2,29 +2,76 @@ package club.nsdn.nyasamarailway.tileblock.signal;
 
 import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
-import club.nsdn.nyasamarailway.util.RailReceptionCore;
-import club.nsdn.nyasamarailway.util.TrainController;
+import club.nsdn.nyasamarailway.network.NetworkWrapper;
+import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
+import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
 import club.nsdn.nyasamatelecom.api.tileentity.ITriStateReceiver;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.thewdj.physics.Dynamics;
+import org.thewdj.telecom.IPassive;
 
-import java.util.List;
+import java.util.LinkedHashMap;
 
 /**
  * Created by drzzm32 on 2019.1.4.
  */
-public abstract class TileEntityTrackSideReception extends TileEntityRailReception implements ITriStateReceiver, ITrackSide {
+public abstract class TileEntityTrackSideReception extends TileEntityActuator implements ITriStateReceiver, ITrackSide {
+
+    public static abstract class ReceptionCore extends NSASM {
+
+        public ReceptionCore(String[][] code) {
+            super(code);
+        }
+
+        @Override
+        public SimpleNetworkWrapper getWrapper() {
+            return NetworkWrapper.instance;
+        }
+
+        private void prt(String format, Object... args) {
+            if (getPlayer() != null)
+                getPlayer().addChatComponentMessage(new ChatComponentTranslation(format, args));
+        }
+
+        public void setDelay(TileEntityTrackSideReception rail, int value) {
+            if (rail == null) return;
+            rail.setDelay = value <= 0 ? 1 : value;
+            prt("info.reception.set", rail.setDelay);
+        }
+
+        @Override
+        public void loadFunc(LinkedHashMap<String, Operator> funcList) {
+            funcList.put("set", ((dst, src) -> {
+                if (src != null) return Result.ERR;
+                if (dst == null) return Result.ERR;
+
+                if (dst.type == RegType.INT) {
+                    setDelay(getReception(), (int) dst.data);
+                    return Result.OK;
+                }
+                return Result.ERR;
+            }));
+
+        }
+
+        public abstract TileEntityTrackSideReception getReception();
+
+    }
 
     @Override
     public boolean getSGNState() {
@@ -39,6 +86,19 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
     @Override
     public boolean getRXDState() {
         return getSender() != null;
+    }
+
+    protected boolean prevSGN, prevTXD, prevRXD;
+    protected boolean hasChanged() {
+        return prevSGN != getSGNState() || prevTXD != getTXDState() || prevRXD != getRXDState();
+    }
+    protected void updateChanged() {
+        prevSGN = getSGNState(); prevTXD = getTXDState(); prevRXD = getRXDState();
+    }
+
+    @Override
+    public void setDir(ForgeDirection dir) {
+        direction = dir;
     }
 
     public ForgeDirection direction;
@@ -60,13 +120,31 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
         state = state == STATE_POS ? STATE_ZERO : STATE_NEG;
     }
 
+    public static final int SPAWN_DELAY = 10;
+
+    public int delay = 0;
+    public int count = 0;
+    public boolean enable = false;
+    public boolean prev = false;
+    public boolean doorCtrl = false;
+
+    public String cartType = "";
+    public String extInfo = "";
+    public int setDelay = 10;
+
     @Override
     public void fromNBT(NBTTagCompound tagCompound) {
         direction = ForgeDirection.getOrientation(
                 tagCompound.getInteger("direction")
         );
+
         state = tagCompound.getInteger("state");
         prevState = tagCompound.getInteger("prevState");
+
+        cartType = tagCompound.getString("cartType");
+        extInfo = tagCompound.getString("extInfo");
+        setDelay = tagCompound.getInteger("setDelay");
+        doorCtrl = tagCompound.getBoolean("doorCtrl");
         super.fromNBT(tagCompound);
     }
 
@@ -74,12 +152,58 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (direction == null) direction = ForgeDirection.UNKNOWN;
         tagCompound.setInteger("direction", direction.ordinal());
+
         tagCompound.setInteger("state", state);
         tagCompound.setInteger("prevState", prevState);
+
+        tagCompound.setString("cartType", cartType);
+        tagCompound.setString("extInfo", extInfo);
+        tagCompound.setInteger("setDelay", setDelay);
+        tagCompound.setBoolean("doorCtrl", doorCtrl);
         return super.toNBT(tagCompound);
     }
 
-    private static void registerCart(TileEntityRailReception rail, EntityMinecart cart) {
+    @Override
+    public void controlTarget(boolean state) {
+        if (!setTargetSender(state)) {
+            if (!setTargetGetter(state)) {
+                if (getTarget() != null) {
+                    TileEntity tileEntity = getTarget();
+                    if (tileEntity instanceof TileEntityReceiver) {
+                        if (tileEntity instanceof IPassive) {
+                            super.controlTarget(state);
+                        }
+                    } else {
+                        super.controlTarget(state);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean setTargetSender(boolean state) {
+        TileEntity target = getTarget();
+        if (target == null) return false;
+
+        if (target instanceof SignalBoxSender.TileEntitySignalBoxSender) {
+            ((SignalBoxSender.TileEntitySignalBoxSender) target).isEnabled = state;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean setTargetGetter(boolean state) {
+        TileEntity target = getTarget();
+        if (target == null) return false;
+
+        if (target instanceof SignalBoxGetter.TileEntitySignalBoxGetter) {
+            ((SignalBoxGetter.TileEntitySignalBoxGetter) target).isEnabled = state;
+            return true;
+        }
+        return false;
+    }
+
+    private static void registerCart(TileEntityTrackSideReception rail, EntityMinecart cart) {
         rail.cartType = cart.getClass().getName();
         if (cart instanceof IExtendedInfoCart) rail.extInfo = ((IExtendedInfoCart) cart).getExtendedInfo();
     }
@@ -93,8 +217,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
 
     public static boolean configure(World world, int x, int y, int z, EntityPlayer player) {
         if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRailReception) {
-            TileEntityRailReception rail = (TileEntityRailReception) world.getTileEntity(x, y, z);
+        if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
+            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) world.getTileEntity(x, y, z);
 
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null) {
@@ -103,7 +227,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
 
                 if (!world.isRemote) {
                     String[][] code = NSASM.getCode(list);
-                    new RailReceptionCore(code) {
+                    new ReceptionCore(code) {
                         @Override
                         public World getWorld() {
                             return world;
@@ -130,8 +254,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
                         }
 
                         @Override
-                        public TileEntityRailReception getRail() {
-                            return rail;
+                        public TileEntityTrackSideReception getReception() {
+                            return reception;
                         }
                     }.run();
                 }
@@ -153,12 +277,26 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
 
             core(cart, reception);
 
-            world.scheduleBlockUpdate(x, y, z, reception.blockType, 1);
+            if (reception.hasChanged()) {
+                reception.updateChanged();
+                world.markBlockForUpdate(x, y, z);
+            }
+
+            world.scheduleBlockUpdate(x, y, z, reception.getBlockType(), 1);
         }
 
     }
 
     public abstract void spawn(World world, int x, int y, int z);
+
+    protected void spawn() {
+        ForgeDirection railPos = direction.getRotation(ITrackSide.defaultAxis());
+        int x = xCoord + railPos.offsetX, y = yCoord, z = zCoord + railPos.offsetZ;
+        if (getWorldObj().getBlock(x, y + 1, z) instanceof BlockRailBase)
+            spawn(getWorldObj(), x, y + 1, z);
+        else
+            spawn(getWorldObj(), x, y, z);
+    }
 
     protected static void core(EntityMinecart cart, TileEntityTrackSideReception reception) {
         if (reception == null) return;
@@ -178,13 +316,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
                     loco((LocoBase) cart, reception);
             }
         } else {
+            System.out.println("is cart");
             if (!hasCart) {
                 reception.count += 1;
                 if (reception.count >= TileEntityRailReception.SPAWN_DELAY * 20) {
                     reception.reset();
-                    reception.spawn(reception.worldObj, x, y, z);
+                    reception.spawn();
                 }
             } else {
+                System.out.println("has cart");
                 if (reception.getTarget() != null) {
                     reception.controlTarget(reception.doorCtrl);
                 }
@@ -289,6 +429,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
             registerCart(reception, cart);
 
         if (player != null) {
+            System.out.println("has player");
             if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && !reception.enable) {
                 if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                     cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
@@ -363,14 +504,11 @@ public abstract class TileEntityTrackSideReception extends TileEntityRailRecepti
     protected static void tri(EntityMinecart cart, TileEntityTrackSideReception reception) {
         if (reception == null) return;
 
-        World world = reception.worldObj;
-        int x = reception.xCoord, y = reception.yCoord, z = reception.zCoord;
-
-        if (!reception.cartType.isEmpty()) {
+        if (!reception.cartType.isEmpty() && !reception.cartType.equals("loco")) {
             switch (reception.state) {
                 case STATE_POS:
                     if (cart == null) {
-                        reception.spawn(world, x, y, z); reception.reset();
+                        reception.spawn(); reception.reset();
                     }
                     break;
                 case STATE_NEG:

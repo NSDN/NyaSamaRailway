@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.tileblock.decoration;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
-import club.nsdn.nyasamarailway.tileblock.signal.block.*;
+import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;

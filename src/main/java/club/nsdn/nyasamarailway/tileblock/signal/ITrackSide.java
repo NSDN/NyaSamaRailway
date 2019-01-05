@@ -18,6 +18,12 @@ public interface ITrackSide {
     boolean getTXDState();
     boolean getRXDState();
 
+    void setDir(ForgeDirection dir);
+
+    static ForgeDirection defaultAxis() {
+        return ForgeDirection.DOWN; // runs on the left
+    }
+
     static EntityMinecart getMinecart(World world, int x, int y, int z) {
         float bBoxSize = 0.125F;
         List bBox = world.getEntitiesWithinAABB(
@@ -36,37 +42,29 @@ public interface ITrackSide {
         return null;
     }
 
-    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir, ForgeDirection offset) {
+    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir) {
         if (tile instanceof ITrackSide) {
-            ForgeDirection railPos = dir.getRotation(ForgeDirection.DOWN); // runs on the left
+            ForgeDirection railPos = dir.getRotation(defaultAxis());
             EntityMinecart cart = getMinecart(
                     tile.getWorldObj(),
-                    tile.xCoord + railPos.offsetX + offset.offsetX,
+                    tile.xCoord + railPos.offsetX,
                     tile.yCoord + 1,
-                    tile.zCoord + railPos.offsetZ + offset.offsetZ
+                    tile.zCoord + railPos.offsetZ
             );
             if (cart != null) return cart;
             cart = getMinecart(
                     tile.getWorldObj(),
-                    tile.xCoord + railPos.offsetX + offset.offsetX,
+                    tile.xCoord + railPos.offsetX,
                     tile.yCoord + railPos.offsetY,
-                    tile.zCoord + railPos.offsetZ + offset.offsetZ
+                    tile.zCoord + railPos.offsetZ
             );
             return cart;
         }
         return null;
     }
 
-    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir) {
-        return getMinecart(tile, dir, ForgeDirection.UNKNOWN);
-    }
-
     static boolean hasMinecart(TileEntity tile, ForgeDirection dir) {
         return getMinecart(tile, dir) != null;
-    }
-
-    static boolean nearbyHasMinecart(TileEntity tile, ForgeDirection dir) {
-        return getMinecart(tile, dir, dir) != null || getMinecart(tile, dir, dir.getOpposite()) != null;
     }
 
     static boolean hasPowered(World world, int x, int y, int z) {
@@ -84,21 +82,6 @@ public interface ITrackSide {
 
     static boolean nearbyHasPowered(TileEntity tile) {
         return nearbyHasPowered(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
-    }
-
-    static TileEntity[] getNearby(TileEntity tile, ForgeDirection dir) {
-        return new TileEntity[] {
-            tile.getWorldObj().getTileEntity(
-                tile.xCoord + dir.offsetX,
-                tile.yCoord,
-                tile.zCoord + dir.offsetZ
-            ),
-            tile.getWorldObj().getTileEntity(
-                tile.xCoord + dir.getOpposite().offsetX,
-                tile.yCoord,
-                tile.zCoord + dir.getOpposite().offsetZ
-            )
-        };
     }
 
     static void setPowered(World world, int x, int y, int z, boolean state) {

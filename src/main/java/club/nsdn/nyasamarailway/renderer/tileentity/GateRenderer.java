@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.renderer.tileentity;
 
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import club.nsdn.nyasamarailway.tileblock.functional.BlockGateDoor;
-import club.nsdn.nyasamarailway.tileblock.signal.block.BlockGateFront;
+import club.nsdn.nyasamarailway.tileblock.signal.deco.BlockGateFront;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;

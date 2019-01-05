@@ -26,6 +26,19 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
         return false;
     }
 
+    protected boolean prevSGN, prevTXD, prevRXD;
+    protected boolean hasChanged() {
+        return prevSGN != getSGNState() || prevTXD != getTXDState() || prevRXD != getRXDState();
+    }
+    protected void updateChanged() {
+        prevSGN = getSGNState(); prevTXD = getTXDState(); prevRXD = getRXDState();
+    }
+
+    @Override
+    public void setDir(ForgeDirection dir) {
+        direction = dir;
+    }
+
     public ForgeDirection direction;
 
     @Override
@@ -43,15 +56,35 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
         return super.toNBT(tagCompound);
     }
 
+    protected TileEntityTrackSideBlocking getNearby(ForgeDirection dir) {
+        TileEntity tileEntity = getWorldObj().getTileEntity(
+            xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ
+        );
+        if (tileEntity instanceof TileEntityTrackSideBlocking)
+            return (TileEntityTrackSideBlocking) tileEntity;
+        return null;
+    }
+
+    public boolean nearbyHasMinecart() {
+        return (getNearby(direction) != null && ITrackSide.getMinecart(getNearby(direction), direction) != null) ||
+               (getNearby(direction.getOpposite()) != null && ITrackSide.getMinecart(getNearby(direction.getOpposite()), direction) != null);
+    }
+
+    public TileEntity[] getNearby() {
+        return new TileEntity[] {
+                getNearby(direction),
+                getNearby(direction.getOpposite())
+        };
+    }
+
     public static void tick(World world, int x, int y, int z) {
         if (world.isRemote) return;
         if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideSniffer) {
+        if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideBlocking) {
             TileEntityTrackSideBlocking blocking = (TileEntityTrackSideBlocking) world.getTileEntity(x, y, z);
 
             boolean hasCart = ITrackSide.hasMinecart(blocking, blocking.direction);
             boolean hasPowered = ITrackSide.hasPowered(blocking);
-            int meta = blocking.getBlockMetadata();
             if (blocking.getTransceiver() != null) {
                 if (hasCart && !hasPowered) {
                     if (ITrackSide.nearbyHasPowered(blocking)) {
@@ -60,40 +93,33 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
                     }
                 }
             } else {
+                if (hasCart && !hasPowered) {
+                    ITrackSide.setPowered(blocking, true);
+                }
+
                 if (!hasCart && hasPowered) {
-                    if (!ITrackSide.nearbyHasMinecart(blocking, blocking.direction)) {
-                        TileEntity[] tiles = ITrackSide.getNearby(blocking, blocking.direction);
+                    ITrackSide.setPowered(blocking, false);
+
+                    if (!blocking.nearbyHasMinecart()) {
+                        TileEntity[] tiles = blocking.getNearby();
                         for (TileEntity tile : tiles) {
-                            if (tile != null) {
-                                ITrackSide.setPowered(tile, false);
-                                if (tile instanceof TileEntityTransceiver) {
-                                    TileEntityTransceiver rail = (TileEntityTransceiver) tile;
-                                    if (rail.getTransceiver() != null)
-                                        ITrackSide.setPowered(rail.getTransceiver(), false);
-                                }
+                            if (tile instanceof TileEntityTrackSideBlocking) {
+                                TileEntityTrackSideBlocking tileBlocking = (TileEntityTrackSideBlocking) tile;
+                                ITrackSide.setPowered(tileBlocking, false);
+                                if (tileBlocking.getTransceiver() != null)
+                                    ITrackSide.setPowered(tileBlocking.getTransceiver(), false);
                             }
                         }
                     }
                 }
             }
 
-            if (blocking.getTransceiver() == null) {
-                if (hasCart && !hasPowered) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta | 8, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, blocking.blockType);
-                    world.notifyBlocksOfNeighborChange(x, y - 1, z, blocking.blockType);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-                }
-
-                if (!hasCart && hasPowered) {
-                    world.setBlockMetadataWithNotify(x, y, z, meta & 7, 3);
-                    world.notifyBlocksOfNeighborChange(x, y, z, blocking.blockType);
-                    world.notifyBlocksOfNeighborChange(x, y - 1, z, blocking.blockType);
-                    world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-                }
-
-                world.scheduleBlockUpdate(x, y, z, blocking.blockType, 1);
+            if (blocking.hasChanged()) {
+                blocking.updateChanged();
+                world.markBlockForUpdate(x, y, z);
             }
+
+            world.scheduleBlockUpdate(x, y, z, blocking.getBlockType(), 1);
         }
     }
 
