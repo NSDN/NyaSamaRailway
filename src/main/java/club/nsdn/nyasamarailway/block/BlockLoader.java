@@ -18,10 +18,7 @@ import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.*;
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -176,6 +173,9 @@ public class BlockLoader {
     public static Block blockTrackSideReception;
     public static Block blockTrackSideRFID;
     public static Block blockTrackSideSniffer;
+    public static Block blockTrackSideBlockingHs;
+    public static Block blockTrackSideRFIDHs;
+    public static Block blockTrackSideSnifferHs;
 
     private static void register(Block block, String name) {
         GameRegistry.registerBlock(block, name);
@@ -590,6 +590,15 @@ public class BlockLoader {
 
         blockTrackSideSniffer = new TrackSideSniffer();
         register(blockTrackSideSniffer, "track_side_sniffer");
+
+        blockTrackSideBlockingHs = new TrackSideBlockingHs();
+        register(blockTrackSideBlockingHs, "track_side_blocking_hs");
+
+        blockTrackSideRFIDHs = new TrackSideRFIDHs();
+        register(blockTrackSideRFIDHs, "track_side_rfid_hs");
+
+        blockTrackSideSnifferHs = new TrackSideSnifferHs();
+        register(blockTrackSideSnifferHs, "track_side_sniffer_hs");
 
     }
 

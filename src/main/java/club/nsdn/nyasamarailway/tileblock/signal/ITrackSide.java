@@ -44,25 +44,41 @@ public interface ITrackSide {
         return null;
     }
 
-    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir) {
+    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir, ForgeDirection offset, int mul) {
         if (tile instanceof ITrackSide) {
             ForgeDirection railPos = dir.getRotation(getAxis());
             EntityMinecart cart = getMinecart(
                     tile.getWorldObj(),
-                    tile.xCoord + railPos.offsetX,
+                    tile.xCoord + railPos.offsetX + offset.offsetX * mul,
                     tile.yCoord + 1,
-                    tile.zCoord + railPos.offsetZ
+                    tile.zCoord + railPos.offsetZ + offset.offsetZ * mul
             );
             if (cart != null) return cart;
             cart = getMinecart(
                     tile.getWorldObj(),
-                    tile.xCoord + railPos.offsetX,
+                    tile.xCoord + railPos.offsetX + offset.offsetX * mul,
                     tile.yCoord,
-                    tile.zCoord + railPos.offsetZ
+                    tile.zCoord + railPos.offsetZ + offset.offsetZ * mul
             );
             return cart;
         }
         return null;
+    }
+
+    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir, ForgeDirection offset) {
+        for (int i = 0; i <= 8; i++) { //Total: 9 blocks
+            if (getMinecart(tile, dir, offset, i) != null)
+                return getMinecart(tile, dir, offset, i);
+        }
+        return null;
+    }
+
+    static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir) {
+        return getMinecart(tile, dir, ForgeDirection.UNKNOWN, 0);
+    }
+
+    static boolean hasMinecart(TileEntity tile, ForgeDirection dir, ForgeDirection offset) {
+        return getMinecart(tile, dir, offset) != null;
     }
 
     static boolean hasMinecart(TileEntity tile, ForgeDirection dir) {

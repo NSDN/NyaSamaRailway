@@ -76,8 +76,18 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
     }
 
     public boolean nearbyHasMinecart() {
-        return (getNearby(direction) != null && ITrackSide.getMinecart(getNearby(direction), direction) != null) ||
-               (getNearby(direction.getOpposite()) != null && ITrackSide.getMinecart(getNearby(direction.getOpposite()), direction) != null);
+        boolean result = false;
+
+        TileEntityTrackSideBlocking blocking = getNearby(direction);
+        if (blocking != null) {
+            result = ITrackSide.hasMinecart(blocking, blocking.direction);
+        }
+        blocking = getNearby(direction.getOpposite());
+        if (blocking != null) {
+            result |= ITrackSide.hasMinecart(blocking, blocking.direction);
+        }
+
+        return result;
     }
 
     public TileEntity[] getNearby() {

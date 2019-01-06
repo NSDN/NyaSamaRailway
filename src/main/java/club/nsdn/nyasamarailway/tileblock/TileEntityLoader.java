@@ -16,10 +16,7 @@ import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
@@ -370,6 +367,18 @@ public class TileEntityLoader {
         GameRegistry.registerTileEntity(
                 TrackSideSniffer.Sniffer.class,
                 "tileEntityTrackSideSniffer");
+
+        GameRegistry.registerTileEntity(
+                TrackSideBlockingHs.Blocking.class,
+                "tileEntityTrackSideBlockingHs");
+
+        GameRegistry.registerTileEntity(
+                TrackSideRFIDHs.RFID.class,
+                "tileEntityTrackSideRFIDHs");
+
+        GameRegistry.registerTileEntity(
+                TrackSideSnifferHs.Sniffer.class,
+                "tileEntityTrackSideSnifferHs");
 
     }
 

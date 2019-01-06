@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
  */
 public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements ITrackSide {
 
-    public static abstract class SnifferCore extends NSASM {
+    public static abstract class SnifferCore<T extends TileEntityTrackSideSniffer> extends NSASM {
 
         public SnifferCore(String code) {
             super(code);
@@ -172,7 +172,7 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
 
         }
 
-        public abstract TileEntityTrackSideSniffer getSniffer();
+        public abstract T getSniffer();
         public abstract EntityMinecart getCart();
 
     }
@@ -289,9 +289,11 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
 
                 EntityMinecart cart = ITrackSide.getMinecart(sniffer, sniffer.direction);
                 EntityPlayer player;
-                if (!(cart.riddenByEntity instanceof EntityPlayer))
-                    player = null;
-                else player = (EntityPlayer) cart.riddenByEntity;
+                if (cart != null) {
+                    if (!(cart.riddenByEntity instanceof EntityPlayer))
+                        player = null;
+                    else player = (EntityPlayer) cart.riddenByEntity;
+                } else player = null;
 
                 new SnifferCore(sniffer.nsasmCode) {
                     @Override

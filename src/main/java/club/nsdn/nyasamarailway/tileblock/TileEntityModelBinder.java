@@ -18,10 +18,7 @@ import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
 import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideBlocking;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideRFID;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideReception;
-import club.nsdn.nyasamarailway.tileblock.signal.trackside.TrackSideSniffer;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -344,6 +341,15 @@ public class TileEntityModelBinder {
 
         ClientRegistry.bindTileEntitySpecialRenderer(
                 TrackSideSniffer.Sniffer.class, new TrackSideRenderer("track_side_sniffer_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideBlockingHs.Blocking.class, new TrackSideRenderer("track_side_blocking_hs_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideRFIDHs.RFID.class, new TrackSideRenderer("track_side_rfid_hs_sign"));
+
+        ClientRegistry.bindTileEntitySpecialRenderer(
+                TrackSideSnifferHs.Sniffer.class, new TrackSideRenderer("track_side_sniffer_hs_sign"));
     }
 
 }

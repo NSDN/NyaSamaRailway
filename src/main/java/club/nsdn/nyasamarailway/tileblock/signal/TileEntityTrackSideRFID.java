@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
  */
 public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrackSide {
 
-    public static abstract class RFIDCore extends NSASM {
+    public static abstract class RFIDCore<T extends TileEntityTrackSideRFID> extends NSASM {
 
         public RFIDCore(String[][] code) {
             super(code);
@@ -165,7 +165,7 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
 
         }
 
-        public abstract TileEntityTrackSideRFID getRFID();
+        public abstract T getRFID();
 
     }
 
