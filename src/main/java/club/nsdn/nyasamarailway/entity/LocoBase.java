@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.block.rail.IRailReception;
 import club.nsdn.nyasamarailway.block.rail.IRailSpeedKeep;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.network.TrainPacket;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntityTrackSideReception;
 import club.nsdn.nyasamarailway.util.TrainController;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -197,6 +198,14 @@ public class LocoBase extends EntityMinecart implements ILocomotive, mods.railcr
     @Override
     protected void func_145821_a(int x, int y, int z, double maxVel, double slopeAdj, Block block, int meta) {
         //applyPush
+        if (worldObj.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
+            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) worldObj.getTileEntity(x, y, z);
+            if (reception.delay < reception.setDelay * 20) {
+                applyDrag();
+                return;
+            }
+        }
+
         if (block instanceof IRailReception) {
             if (!((IRailReception) block).checkNearbySameRail(worldObj, x, y, z))
                 if (!((IRailReception) block).timeExceed(worldObj, x, y, z)) {

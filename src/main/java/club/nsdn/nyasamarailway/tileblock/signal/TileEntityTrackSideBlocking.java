@@ -39,6 +39,16 @@ public class TileEntityTrackSideBlocking extends TileEntityTransceiver implement
         direction = dir;
     }
 
+    @Override
+    public boolean hasInvert() {
+        return false;
+    }
+
+    @Override
+    public boolean isInvert() {
+        return false;
+    }
+
     public ForgeDirection direction;
 
     @Override

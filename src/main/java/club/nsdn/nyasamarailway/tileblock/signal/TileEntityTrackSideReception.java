@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.tileblock.signal;
 
 import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
+import club.nsdn.nyasamarailway.extmod.Railcraft;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
@@ -67,6 +68,14 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 return Result.ERR;
             }));
 
+            funcList.put("inv", ((dst, src) -> {
+                if (src != null) return Result.ERR;
+                if (dst != null) return Result.ERR;
+
+                getReception().invert = !getReception().invert;
+
+                return Result.OK;
+            }));
         }
 
         public abstract TileEntityTrackSideReception getReception();
@@ -88,12 +97,12 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         return getSender() != null;
     }
 
-    protected boolean prevSGN, prevTXD, prevRXD;
+    protected boolean prevSGN, prevTXD, prevRXD, prevInv;
     protected boolean hasChanged() {
-        return prevSGN != getSGNState() || prevTXD != getTXDState() || prevRXD != getRXDState();
+        return prevSGN != getSGNState() || prevTXD != getTXDState() || prevRXD != getRXDState() || prevInv != isInvert();
     }
     protected void updateChanged() {
-        prevSGN = getSGNState(); prevTXD = getTXDState(); prevRXD = getRXDState();
+        prevSGN = getSGNState(); prevTXD = getTXDState(); prevRXD = getRXDState(); prevInv = isInvert();
     }
 
     @Override
@@ -101,7 +110,18 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         direction = dir;
     }
 
+    @Override
+    public boolean hasInvert() {
+        return true;
+    }
+
+    @Override
+    public boolean isInvert() {
+        return invert;
+    }
+
     public ForgeDirection direction;
+    public boolean invert = false;
 
     public static final int STATE_POS = 1;
     public static final int STATE_ZERO = 0;
@@ -137,6 +157,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         direction = ForgeDirection.getOrientation(
                 tagCompound.getInteger("direction")
         );
+        invert = tagCompound.getBoolean("invert");
 
         state = tagCompound.getInteger("state");
         prevState = tagCompound.getInteger("prevState");
@@ -152,6 +173,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         if (direction == null) direction = ForgeDirection.UNKNOWN;
         tagCompound.setInteger("direction", direction.ordinal());
+        tagCompound.setBoolean("invert", invert);
 
         tagCompound.setInteger("state", state);
         tagCompound.setInteger("prevState", prevState);
@@ -165,20 +187,44 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     @Override
     public void controlTarget(boolean state) {
-        if (!setTargetSender(state)) {
-            if (!setTargetGetter(state)) {
-                if (getTarget() != null) {
-                    TileEntity tileEntity = getTarget();
-                    if (tileEntity instanceof TileEntityReceiver) {
-                        if (tileEntity instanceof IPassive) {
-                            super.controlTarget(state);
+        if (!tryControlFirst(state))
+            if (!tryControlSecond(state))
+                if (!setTargetSender(state)) {
+                    if (!setTargetGetter(state)) {
+                        if (getTarget() != null) {
+                            TileEntity tileEntity = getTarget();
+                            if (tileEntity instanceof TileEntityReceiver) {
+                                if (tileEntity instanceof IPassive) {
+                                    super.controlTarget(state);
+                                }
+                            } else {
+                                super.controlTarget(state);
+                            }
                         }
-                    } else {
-                        super.controlTarget(state);
                     }
                 }
-            }
+    }
+
+    private boolean tryControlFirst(boolean state) {
+        TileEntity railTarget = getTarget();
+
+        if (railTarget == null) return false;
+        if (Railcraft.getInstance() == null) return false;
+        if (!Railcraft.getInstance().verifySwitch(railTarget)) return false;
+
+        Railcraft.getInstance().setSwitch(railTarget, state);
+        return true;
+    }
+
+    private boolean tryControlSecond(boolean state) {
+        TileEntity railTarget = getTarget();
+        if (railTarget == null) return false;
+
+        if (railTarget instanceof TileEntitySignalLight) {
+            ((TileEntitySignalLight) railTarget).isPowered = state;
+            return true;
         }
+        return false;
     }
 
     private boolean setTargetSender(boolean state) {
@@ -208,7 +254,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         if (cart instanceof IExtendedInfoCart) rail.extInfo = ((IExtendedInfoCart) cart).getExtendedInfo();
     }
 
-    public void reset() {
+    protected void reset() {
         count = 0;
         delay = 0;
         doorCtrl = false;
@@ -290,7 +336,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     public abstract void spawn(World world, int x, int y, int z);
 
     protected void spawn() {
-        ForgeDirection railPos = direction.getRotation(ITrackSide.defaultAxis());
+        ForgeDirection railPos = direction.getRotation(ITrackSide.getAxis());
         int x = xCoord + railPos.offsetX, y = yCoord, z = zCoord + railPos.offsetZ;
         if (getWorldObj().getBlock(x, y + 1, z) instanceof BlockRailBase)
             spawn(getWorldObj(), x, y + 1, z);
@@ -301,8 +347,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     protected static void core(EntityMinecart cart, TileEntityTrackSideReception reception) {
         if (reception == null) return;
 
-        boolean hasCart = cart != null;
-        int x = reception.xCoord, y = reception.yCoord, z = reception.zCoord;
+        boolean hasCart = (cart != null);
+        ForgeDirection railPos = reception.direction.getRotation(ITrackSide.getAxis());
+        int x = reception.xCoord + railPos.offsetX, y = reception.yCoord, z = reception.zCoord + railPos.offsetZ;
 
         if (reception.cartType.equals("loco")) {
             if (!hasCart) {
@@ -316,15 +363,13 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     loco((LocoBase) cart, reception);
             }
         } else {
-            System.out.println("is cart");
             if (!hasCart) {
                 reception.count += 1;
-                if (reception.count >= TileEntityRailReception.SPAWN_DELAY * 20) {
+                if (reception.count >= SPAWN_DELAY * 20) {
                     reception.reset();
                     reception.spawn();
                 }
             } else {
-                System.out.println("has cart");
                 if (reception.getTarget() != null) {
                     reception.controlTarget(reception.doorCtrl);
                 }
@@ -345,9 +390,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 if (cart.riddenByEntity instanceof EntityPlayer)
                     player = (EntityPlayer) cart.riddenByEntity;
                 cart(cart, reception, player);
-
-                tri(cart, reception);
             }
+
+            tri(cart, reception);
         }
     }
 
@@ -355,7 +400,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         if (reception == null) return; if (loco == null) return;
 
         double maxV = 0.2;
-        int x = reception.xCoord, y = reception.yCoord, z = reception.zCoord;
+        ForgeDirection railPos = reception.direction.getRotation(ITrackSide.getAxis());
+        int x = reception.xCoord + railPos.offsetX, y = reception.yCoord, z = reception.zCoord + railPos.offsetZ;
         World world = loco.worldObj;
 
         if (loco.Velocity > 0 && !reception.enable) {
@@ -406,9 +452,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             } else {
                 // start, dir = neg, -x | +z
                 if (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.EAST)
-                    loco.setEngineDir(1);
+                    loco.setEngineDir(reception.isInvert() ? -1 : 1);
                 else if (reception.direction == ForgeDirection.SOUTH || reception.direction == ForgeDirection.WEST)
-                    loco.setEngineDir(-1);
+                    loco.setEngineDir(reception.isInvert() ? 1 : -1);
                 loco.setEnginePower(1); loco.setEngineBrake(10);
             }
         }
@@ -418,7 +464,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         if (reception == null) return; if (cart == null) return;
 
         World world = reception.worldObj;
-        int x = reception.xCoord, y = reception.yCoord, z = reception.zCoord;
+        ForgeDirection railPos = reception.direction.getRotation(ITrackSide.getAxis());
+        int x = reception.xCoord + railPos.offsetX, y = reception.yCoord, z = reception.zCoord + railPos.offsetZ;
 
         double maxV = 0.2;
         if (reception.cartType.equals("loco")) {
@@ -429,7 +476,6 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             registerCart(reception, cart);
 
         if (player != null) {
-            System.out.println("has player");
             if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && !reception.enable) {
                 if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
                     cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
@@ -482,6 +528,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
                 } else {
                     double dir = (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.EAST) ? 1 : -1;
+                    if (reception.isInvert()) dir = -dir;
                     if (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.SOUTH) {
                         if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
                         if (Math.abs(cart.motionZ) < maxV)
@@ -510,11 +557,14 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (cart == null) {
                         reception.spawn(); reception.reset();
                     }
+                    reception.state = STATE_ZERO;
                     break;
                 case STATE_NEG:
                     if (cart != null) {
                         cart.killMinecart(new DamageSource("nsr"));
                     }
+                    reception.state = STATE_ZERO;
+                    break;
                 case STATE_ZERO:
                     break;
             }

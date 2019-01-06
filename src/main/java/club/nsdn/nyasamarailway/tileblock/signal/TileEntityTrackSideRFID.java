@@ -197,6 +197,16 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
         direction = dir;
     }
 
+    @Override
+    public boolean hasInvert() {
+        return false;
+    }
+
+    @Override
+    public boolean isInvert() {
+        return false;
+    }
+
     public ForgeDirection direction;
 
     public int P = 0;

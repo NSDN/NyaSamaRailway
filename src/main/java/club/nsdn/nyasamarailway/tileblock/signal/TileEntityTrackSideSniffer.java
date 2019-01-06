@@ -205,6 +205,16 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
         direction = dir;
     }
 
+    @Override
+    public boolean hasInvert() {
+        return false;
+    }
+
+    @Override
+    public boolean isInvert() {
+        return false;
+    }
+
     public ForgeDirection direction;
 
     public static final boolean NSASM_IDLE = false;

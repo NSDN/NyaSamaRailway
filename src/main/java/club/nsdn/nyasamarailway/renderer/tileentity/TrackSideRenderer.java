@@ -31,22 +31,28 @@ public class TrackSideRenderer extends TileEntitySpecialRenderer {
     private final WavefrontObject ledMdl[] = {
             new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_1.obj")),
             new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_2.obj")),
-            new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_3.obj"))
+            new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_3.obj")),
+            new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_f.obj")),
+            new WavefrontObject(new ResourceLocation("nyasamarailway", "models/blocks/track_side_led_b.obj"))
     };
     private final ResourceLocation ledTex[] = {
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_r.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_y.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_g.png"),
+            new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_w.png"),
             new ResourceLocation("nyasamarailway", "textures/blocks/signal_box_none.png")
     };
     private static final int SIGN_R = 0;
     private static final int SIGN_Y = 1;
     private static final int SIGN_G = 2;
-    private static final int SIGN_NONE = 3;
+    private static final int SIGN_W = 3;
+    private static final int SIGN_NONE = 4;
 
     private static final int LED_SGN = 0;
     private static final int LED_TXD = 1;
     private static final int LED_RXD = 2;
+    private static final int LED_FRT = 3;
+    private static final int LED_BCK = 4;
 
     public TrackSideRenderer(String texture) {
         textureSign = new ResourceLocation("nyasamarailway", "textures/blocks/" + texture + ".png");
@@ -89,6 +95,9 @@ public class TrackSideRenderer extends TileEntitySpecialRenderer {
             RendererHelper.renderWithResource(ledMdl[LED_SGN], ledTex[trackSide.getSGNState() ? SIGN_R : SIGN_NONE]);
             RendererHelper.renderWithResource(ledMdl[LED_TXD], ledTex[trackSide.getTXDState() ? SIGN_Y : SIGN_NONE]);
             RendererHelper.renderWithResource(ledMdl[LED_RXD], ledTex[trackSide.getRXDState() ? SIGN_G : SIGN_NONE]);
+
+            RendererHelper.renderWithResource(ledMdl[LED_FRT], ledTex[trackSide.hasInvert() ? (trackSide.isInvert() ? SIGN_NONE : SIGN_W) : SIGN_NONE]);
+            RendererHelper.renderWithResource(ledMdl[LED_BCK], ledTex[trackSide.hasInvert() ? (trackSide.isInvert() ? SIGN_W : SIGN_NONE) : SIGN_NONE]);
 
             GL11.glPopMatrix();
         }

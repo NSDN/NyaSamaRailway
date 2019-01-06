@@ -19,9 +19,11 @@ public interface ITrackSide {
     boolean getRXDState();
 
     void setDir(ForgeDirection dir);
+    boolean hasInvert();
+    boolean isInvert();
 
-    static ForgeDirection defaultAxis() {
-        return ForgeDirection.DOWN; // runs on the left
+    static ForgeDirection getAxis() {
+        return ForgeDirection.DOWN; // check the left
     }
 
     static EntityMinecart getMinecart(World world, int x, int y, int z) {
@@ -44,7 +46,7 @@ public interface ITrackSide {
 
     static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir) {
         if (tile instanceof ITrackSide) {
-            ForgeDirection railPos = dir.getRotation(defaultAxis());
+            ForgeDirection railPos = dir.getRotation(getAxis());
             EntityMinecart cart = getMinecart(
                     tile.getWorldObj(),
                     tile.xCoord + railPos.offsetX,
@@ -55,7 +57,7 @@ public interface ITrackSide {
             cart = getMinecart(
                     tile.getWorldObj(),
                     tile.xCoord + railPos.offsetX,
-                    tile.yCoord + railPos.offsetY,
+                    tile.yCoord,
                     tile.zCoord + railPos.offsetZ
             );
             return cart;

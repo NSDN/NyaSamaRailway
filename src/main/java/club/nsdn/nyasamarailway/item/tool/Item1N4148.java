@@ -62,6 +62,26 @@ public class Item1N4148 extends ItemToolBase {
         if (block == null)
             return false;
 
+        if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
+            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) world.getTileEntity(x, y, z);
+
+            if (reception.cartType.isEmpty()) {
+                reception.cartType = "loco";
+                say(player, "info.reception.loco");
+            } else {
+                if (reception.cartType.equals("loco")) {
+                    reception.cartType = "";
+                    say(player, "info.reception.reset");
+                } else {
+                    reception.cartType = "";
+                    reception.extInfo = "";
+                    say(player, "info.reception.cleared");
+                }
+            }
+
+            return !world.isRemote;
+        }
+
         if (block instanceof IRailDirectional) {
             if (player.isSneaking()) {
                 TileEntity rail = world.getTileEntity(x, y, z);
@@ -79,21 +99,6 @@ public class Item1N4148 extends ItemToolBase {
                             ((TileEntityRailReception) rail).cartType = "";
                             ((TileEntityRailReception) rail).extInfo = "";
 ;                            say(player, "info.reception.cleared");
-                        }
-                    }
-                    return !world.isRemote;
-                } else if (rail instanceof TileEntityTrackSideReception) {
-                    if (((TileEntityTrackSideReception) rail).cartType.isEmpty()) {
-                        ((TileEntityTrackSideReception) rail).cartType = "loco";
-                        say(player, "info.reception.loco");
-                    } else {
-                        if (((TileEntityTrackSideReception) rail).cartType.equals("loco")) {
-                            ((TileEntityTrackSideReception) rail).cartType = "";
-                            say(player, "info.reception.reset");
-                        } else {
-                            ((TileEntityTrackSideReception) rail).cartType = "";
-                            ((TileEntityTrackSideReception) rail).extInfo = "";
-                            say(player, "info.reception.cleared");
                         }
                     }
                     return !world.isRemote;

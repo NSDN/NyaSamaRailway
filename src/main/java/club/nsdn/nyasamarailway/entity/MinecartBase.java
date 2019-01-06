@@ -8,6 +8,7 @@ import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReception;
 import club.nsdn.nyasamarailway.tileblock.rail.mono.RailMonoMagnetReceptionAnti;
+import club.nsdn.nyasamarailway.tileblock.signal.TileEntityTrackSideReception;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -149,6 +150,14 @@ public class MinecartBase extends EntityMinecartEmpty implements mods.railcraft.
     @Override  //applyPush()
     protected void func_145821_a(int x, int y, int z, double maxVel, double slopeAdj, Block block, int meta) {
         //applyPush
+        if (worldObj.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
+            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) worldObj.getTileEntity(x, y, z);
+            if (riddenByEntity == null && !reception.cartType.isEmpty()) {
+                if (!reception.cartType.equals("loco"))
+                    return;
+            }
+        }
+
         if (block instanceof BlockRailReception) {
             BlockRailReception.TileEntityRailReception tile = (BlockRailReception.TileEntityRailReception) worldObj.getTileEntity(x, y, z);
             if (!((BlockRailReception) block).checkNearbySameRail(worldObj, x, y, z))
