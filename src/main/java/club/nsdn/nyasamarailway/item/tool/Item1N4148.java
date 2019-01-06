@@ -62,25 +62,26 @@ public class Item1N4148 extends ItemToolBase {
         if (block == null)
             return false;
 
-        if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
-            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) world.getTileEntity(x, y, z);
+        if (player.isSneaking())
+            if (world.getTileEntity(x, y, z) instanceof TileEntityTrackSideReception) {
+                TileEntityTrackSideReception reception = (TileEntityTrackSideReception) world.getTileEntity(x, y, z);
 
-            if (reception.cartType.isEmpty()) {
-                reception.cartType = "loco";
-                say(player, "info.reception.loco");
-            } else {
-                if (reception.cartType.equals("loco")) {
-                    reception.cartType = "";
-                    say(player, "info.reception.reset");
+                if (reception.cartType.isEmpty()) {
+                    reception.cartType = "loco";
+                    say(player, "info.reception.loco");
                 } else {
-                    reception.cartType = "";
-                    reception.extInfo = "";
-                    say(player, "info.reception.cleared");
+                    if (reception.cartType.equals("loco")) {
+                        reception.cartType = "";
+                        say(player, "info.reception.reset");
+                    } else {
+                        reception.cartType = "";
+                        reception.extInfo = "";
+                        say(player, "info.reception.cleared");
+                    }
                 }
-            }
 
-            return !world.isRemote;
-        }
+                return !world.isRemote;
+            }
 
         if (block instanceof IRailDirectional) {
             if (player.isSneaking()) {

@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.entity.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.entity.LocoBase;
 import club.nsdn.nyasamarailway.extmod.Railcraft;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
+import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
 import club.nsdn.nyasamatelecom.api.tileentity.ITriStateReceiver;
@@ -333,15 +334,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     }
 
-    public abstract void spawn(World world, int x, int y, int z);
+    public abstract void spawn(World world, double x, double y, double z);
 
     protected void spawn() {
         ForgeDirection railPos = direction.getRotation(ITrackSide.getAxis());
         int x = xCoord + railPos.offsetX, y = yCoord, z = zCoord + railPos.offsetZ;
         if (getWorldObj().getBlock(x, y + 1, z) instanceof BlockRailBase)
-            spawn(getWorldObj(), x, y + 1, z);
-        else
-            spawn(getWorldObj(), x, y, z);
+            spawn(getWorldObj(), x + 0.5, y + 0.5 + 1, z + 0.5);
+        else if (getWorldObj().getBlock(x, y, z) instanceof BlockRailBase)
+            spawn(getWorldObj(), x + 0.5, y + 0.5, z + 0.5);
     }
 
     protected static void core(EntityMinecart cart, TileEntityTrackSideReception reception) {
@@ -451,10 +452,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 }
             } else {
                 // start, dir = neg, -x | +z
-                if (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.EAST)
-                    loco.setEngineDir(reception.isInvert() ? -1 : 1);
-                else if (reception.direction == ForgeDirection.SOUTH || reception.direction == ForgeDirection.WEST)
-                    loco.setEngineDir(reception.isInvert() ? 1 : -1);
+                int dir = 0;
+                if (reception.direction.offsetZ != 0)
+                    dir = (int) Math.signum(Math.sin(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                else if (reception.direction.offsetX != 0)
+                    dir = (int) Math.signum(Math.cos(TrainController.calcYaw(loco) * Math.PI / 180.0));
+                if ((reception.direction == ForgeDirection.SOUTH || reception.direction == ForgeDirection.WEST))
+                    dir = -dir;
+                if (reception.isInvert()) dir = -dir;
+                loco.setEngineDir(dir);
                 loco.setEnginePower(1); loco.setEngineBrake(10);
             }
         }
@@ -529,11 +535,11 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 } else {
                     double dir = (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.EAST) ? 1 : -1;
                     if (reception.isInvert()) dir = -dir;
-                    if (reception.direction == ForgeDirection.NORTH || reception.direction == ForgeDirection.SOUTH) {
+                    if (reception.direction.offsetZ != 0) {
                         if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
                         if (Math.abs(cart.motionZ) < maxV)
                             cart.motionZ = -dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1D, 1.0D, 0.1D, 0.02D);
-                    } else if (reception.direction == ForgeDirection.WEST || reception.direction == ForgeDirection.EAST) {
+                    } else if (reception.direction.offsetX != 0) {
                         if (cart.motionX * dir <= 0.0D) cart.motionX = dir * 0.005D;
                         if (Math.abs(cart.motionX) < maxV)
                             cart.motionX = dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1D, 1.0D, 0.1D, 0.02D);
@@ -557,17 +563,16 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (cart == null) {
                         reception.spawn(); reception.reset();
                     }
-                    reception.state = STATE_ZERO;
                     break;
                 case STATE_NEG:
                     if (cart != null) {
                         cart.killMinecart(new DamageSource("nsr"));
                     }
-                    reception.state = STATE_ZERO;
                     break;
                 case STATE_ZERO:
                     break;
             }
+            reception.state = STATE_ZERO;
         }
     }
 
