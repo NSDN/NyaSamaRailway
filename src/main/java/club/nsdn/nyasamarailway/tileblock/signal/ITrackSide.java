@@ -26,6 +26,26 @@ public interface ITrackSide {
         return ForgeDirection.DOWN; // check the left
     }
 
+    static ForgeDirection getDirByMeta(TileEntity tile) {
+        if (tile instanceof ITrackSide) {
+            int rot = tile.getBlockMetadata() & 0x3;
+            ForgeDirection dir = ForgeDirection.UNKNOWN;
+            switch (rot) {
+                case 0:
+                    dir = ForgeDirection.SOUTH; break;
+                case 1:
+                    dir = ForgeDirection.WEST;  break;
+                case 2:
+                    dir = ForgeDirection.NORTH; break;
+                case 3:
+                    dir = ForgeDirection.EAST;  break;
+            }
+            ((ITrackSide) tile).setDir(dir);
+            return dir;
+        }
+        return ForgeDirection.UNKNOWN;
+    }
+
     static EntityMinecart getMinecart(World world, int x, int y, int z) {
         float bBoxSize = 0.125F;
         List bBox = world.getEntitiesWithinAABB(
@@ -46,6 +66,7 @@ public interface ITrackSide {
 
     static EntityMinecart getMinecart(TileEntity tile, ForgeDirection dir, ForgeDirection offset, int mul) {
         if (tile instanceof ITrackSide) {
+            if (dir == null) dir = getDirByMeta(tile);
             ForgeDirection railPos = dir.getRotation(getAxis());
             EntityMinecart cart = getMinecart(
                     tile.getWorldObj(),

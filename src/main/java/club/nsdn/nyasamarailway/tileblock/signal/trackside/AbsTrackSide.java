@@ -35,20 +35,7 @@ public abstract class AbsTrackSide extends SignalBox {
             world.setBlockMetadataWithNotify(x, y, z, rot | 0x4, 2);
         }
 
-        ForgeDirection dir = ForgeDirection.UNKNOWN;
-        if (world.getTileEntity(x, y, z) instanceof ITrackSide) {
-            switch (rot) {
-                case 0:
-                    dir = ForgeDirection.SOUTH; break;
-                case 1:
-                    dir = ForgeDirection.WEST;  break;
-                case 2:
-                    dir = ForgeDirection.NORTH; break;
-                case 3:
-                    dir = ForgeDirection.EAST;  break;
-            }
-            ((ITrackSide) world.getTileEntity(x, y, z)).setDir(dir);
-        }
+        ITrackSide.getDirByMeta(world.getTileEntity(x, y, z));
     }
 
     @Override
