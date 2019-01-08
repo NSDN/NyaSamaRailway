@@ -1,10 +1,9 @@
 package club.nsdn.nyasamarailway.tileblock.decoration;
 
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
-import club.nsdn.nyasamarailway.tileblock.signal.light.*;
-import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBox;
-import club.nsdn.nyasamarailway.tileblock.signal.core.BlockSignalBoxSender;
-import club.nsdn.nyasamarailway.tileblock.signal.core.BlockTriStateSignalBox;
+import club.nsdn.nyasamarailway.tileblock.signal.light.AbsSignalLight;
+import club.nsdn.nyasamarailway.tileblock.signal.trackside.AbsTrackSide;
+import club.nsdn.nyasamatelecom.api.device.DeviceBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.*;
@@ -138,19 +137,25 @@ public class BlockPillar extends TileBlock {
     public boolean checkBlock(IBlockAccess world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
         if (block instanceof BlockAir) return false;
-        if (block instanceof BlockSlab) return false;
         if (block instanceof BlockPane) return false;
-        if (block instanceof BlockWall) return false;
+        if (block instanceof BlockStairs) return false;
+
+        if (block instanceof BlockSlab) {
+            if ((world.getBlockMetadata(x, y, z) & 0x8) != 0)
+                return world.getBlock(x, y + 1, z) == this;
+            else
+                return world.getBlock(x, y - 1, z) == this;
+        }
+
+        if (block instanceof BlockFence || block instanceof BlockWall) {
+            if (world.getBlock(x, y - 1, z) == this) return true;
+            if (world.getBlock(x, y + 1, z) == this) return true;
+        }
 
         if (
-            block instanceof BlockSignalBox ||
-            block instanceof BlockSignalBoxSender ||
-            block instanceof BlockTriStateSignalBox ||
-            block instanceof BlockSignalLight ||
-            block instanceof BlockSignalLamp ||
-            block instanceof BlockSignalStick ||
-            block instanceof BlockBiSignalLight ||
-            block instanceof BlockTriSignalLight
+            block instanceof DeviceBase ||
+            block instanceof AbsSignalLight ||
+            block instanceof AbsTrackSide
         ) {
             if (world.getBlock(x, y - 1, z) == this) return true;
         }

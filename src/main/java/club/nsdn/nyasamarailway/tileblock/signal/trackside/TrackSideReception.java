@@ -51,6 +51,16 @@ public class TrackSideReception extends AbsTrackSide {
             } else if (cartType.equals(NSPCT10.class.getName())) {
                 MinecartBase cart = new NSPCT10(world, x, y, z);
                 world.spawnEntityInWorld(cart);
+            } else if (cartType.equals(NSPCT4.class.getName())) {
+                MinecartBase cart = new NSPCT4(world, x, y, z);
+                world.spawnEntityInWorld(cart);
+            } else if (cartType.equals(NSPCT5.class.getName())) {
+                MinecartBase cart = new NSPCT5(world, x, y, z);
+                world.spawnEntityInWorld(cart);
+            } else if (cartType.equals(NSPCT6W.class.getName())) {
+                NSPCT6W.doSpawn(world, x, y, z);
+            } else if (cartType.equals(NSPCT8W.class.getName())) {
+                NSPCT8W.doSpawn(world, x, y, z);
             } else if (cartType.equals(NSPCT9.class.getName())) {
                 NSPCT9 cart = new NSPCT9(world, x, y, z);
                 cart.setExtendedInfo(extInfo);

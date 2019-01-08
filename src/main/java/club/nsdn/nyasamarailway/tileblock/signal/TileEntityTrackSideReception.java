@@ -401,9 +401,11 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         if (reception == null) return; if (loco == null) return;
 
         double maxV = 0.2;
+        World world = loco.worldObj;
         ForgeDirection railPos = reception.direction.getRotation(ITrackSide.getAxis());
         int x = reception.xCoord + railPos.offsetX, y = reception.yCoord, z = reception.zCoord + railPos.offsetZ;
-        World world = loco.worldObj;
+        if (world.getBlock(x, y + 1, z) instanceof BlockRailBase)
+            y += 1;
 
         if (loco.Velocity > 0 && !reception.enable) {
             if (loco.Velocity > maxV) {
@@ -472,6 +474,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         World world = reception.worldObj;
         ForgeDirection railPos = reception.direction.getRotation(ITrackSide.getAxis());
         int x = reception.xCoord + railPos.offsetX, y = reception.yCoord, z = reception.zCoord + railPos.offsetZ;
+        if (world.getBlock(x, y + 1, z) instanceof BlockRailBase)
+            y += 1;
 
         double maxV = 0.2;
         if (reception.cartType.equals("loco")) {

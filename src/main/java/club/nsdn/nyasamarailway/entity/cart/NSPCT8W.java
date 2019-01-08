@@ -26,6 +26,16 @@ import net.minecraftforge.common.util.ForgeDirection;
  */
 public class NSPCT8W extends MinecartBase implements IMotorCart, ILimitVelCart {
 
+    public static void doSpawn(World world, double x, double y, double z) {
+        MinecartBase head = new NSPCT8W(world, x, y, z);
+        world.spawnEntityInWorld(head);
+
+        MinecartBase container = new NSPCT8W.Container(world,  x, y - 3.0, z);
+        world.spawnEntityInWorld(container);
+
+        container.mountEntity(head);
+    }
+
     public static void doSpawn(World world, int x, int y, int z, String name) {
         MinecartBase head = new NSPCT8W(world, (double) x + 0.5, (double) y + 0.5, (double) z + 0.5);
         if (!name.isEmpty()) head.setMinecartName(name);
