@@ -1,0 +1,20 @@
+tile.NSDNLogo.name=NSDN Logo
+itemGroup.tabNyaSamaTelecom=NyaSama Telecom
+tile.NSTSign.name=NyaSama Telecom
+tile.NSTLogo.name=NyaSama Telecom Logo
+
+info.signal.begin=[NST] Connecting Signal
+info.signal.abort=[NST] Signal Connection Aborted
+info.signal.error=[NST] Signal Connection Error
+info.signal.connected=[NST] Signal Connected
+info.signal.disconnected=[NST] Signal Disconnected
+info.editor.clear=[NST] Device Editor Register Cleared
+info.editor.error=[NST] Device Editor Caused Error
+info.editor.copy.target=[NST] Target Copied
+info.editor.paste.target=[NST] Target Pasted
+info.editor.copy.sender=[NST] Sender Copied
+info.editor.paste.sender=[NST] Sender Pasted
+
+item.ItemConnector.name=Connector
+item.ItemDevEditor.name=Device Editor
+item.ItemNGTablet.name=NGTablet

@@ -1,0 +1,20 @@
+tile.NSDNLogo.name=NSDN标志
+itemGroup.tabNyaSamaTelecom=喵玉通信
+tile.NSTSign.name=喵玉通信
+tile.NSTLogo.name=喵玉通信标志
+
+info.signal.begin=[NST] 信号连接开始
+info.signal.abort=[NST] 信号连接中止
+info.signal.error=[NST] 信号连接错误
+info.signal.connected=[NST] 信号连接成功
+info.signal.disconnected=[NST] 信号连接断开
+info.editor.clear=[NST] 设备编辑器已清空
+info.editor.error=[NST] 设备编辑器出错
+info.editor.copy.target=[NST] 控制目标已复制
+info.editor.paste.target=[NST] 控制目标已粘贴
+info.editor.copy.sender=[NST] 发射源已复制
+info.editor.paste.sender=[NST] 发射源已粘贴
+
+item.ItemConnector.name=连接器
+item.ItemDevEditor.name=设备编辑器
+item.ItemNGTablet.name=NGT型终端
