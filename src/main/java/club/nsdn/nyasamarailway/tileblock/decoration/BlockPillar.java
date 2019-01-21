@@ -153,15 +153,15 @@ public class BlockPillar extends TileBlock {
         }
 
         if (
-            block instanceof DeviceBase ||
-            block instanceof AbsSignalLight ||
-            block instanceof AbsTrackSide
+            block instanceof DeviceBase || block instanceof AbsSignalLight
         ) {
             if (world.getBlock(x, y - 1, z) == this) return true;
         }
 
         if (world.getTileEntity(x, y, z) != null) {
-            if (!(world.getTileEntity(x, y, z) instanceof Pillar)) return false;
+            if (!(world.getTileEntity(x, y, z) instanceof Pillar)) {
+                return world.getBlock(x, y - 1, z) == this;
+            }
         }
 
         Material material = block.getMaterial();
