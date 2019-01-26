@@ -7,6 +7,7 @@ package club.nsdn.nyasamarailway.entity;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.loco.*;
+import club.nsdn.nyasamarailway.entity.nsc.*;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
@@ -192,6 +193,78 @@ public class EntityLoader {
                 NSPCT10J.class,
                 "NSPCT10J",
                 29,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC1A.class,
+                "NSC1A",
+                30,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC1AM.class,
+                "NSC1AM",
+                31,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC1B.class,
+                "NSC1B",
+                32,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC1BM.class,
+                "NSC1BM",
+                33,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC2A.class,
+                "NSC2A",
+                34,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC2AM.class,
+                "NSC2AM",
+                35,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC2B.class,
+                "NSC2B",
+                36,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC2BM.class,
+                "NSC2BM",
+                37,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC3A.class,
+                "NSC3A",
+                38,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC3AM.class,
+                "NSC3AM",
+                39,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC3B.class,
+                "NSC3B",
+                40,
+                NyaSamaRailway.getInstance(), 256, 3, true);
+
+        EntityRegistry.registerModEntity(
+                NSC3BM.class,
+                "NSC3BM",
+                41,
                 NyaSamaRailway.getInstance(), 256, 3, true);
 
         EntityRegistry.registerModEntity(

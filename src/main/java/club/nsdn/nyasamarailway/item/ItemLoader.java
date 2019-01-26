@@ -7,9 +7,8 @@ package club.nsdn.nyasamarailway.item;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.item.cart.*;
 import club.nsdn.nyasamarailway.item.loco.*;
-import club.nsdn.nyasamarailway.item.telecom.Item74HC04;
-import club.nsdn.nyasamarailway.item.telecom.ItemDevEditor;
-import club.nsdn.nyasamarailway.item.telecom.ItemNGT;
+import club.nsdn.nyasamarailway.item.nsc.*;
+import club.nsdn.nyasamarailway.item.telecom.*;
 import club.nsdn.nyasamarailway.item.tool.*;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -54,6 +53,19 @@ public class ItemLoader {
     public static Item itemNSBT1;
     public static Item itemNSET1;
     public static Item itemNSET2;
+
+    public static Item itemNSC1A;
+    public static Item itemNSC1AM;
+    public static Item itemNSC1B;
+    public static Item itemNSC1BM;
+    public static Item itemNSC2A;
+    public static Item itemNSC2AM;
+    public static Item itemNSC2B;
+    public static Item itemNSC2BM;
+    public static Item itemNSC3A;
+    public static Item itemNSC3AM;
+    public static Item itemNSC3B;
+    public static Item itemNSC3BM;
 
     public static Item itemTicketOnce;
     public static Item itemNyaCard;
@@ -166,6 +178,42 @@ public class ItemLoader {
 
         itemNSET2 = new ItemNSET2();
         register(itemNSET2, "item_nse_2");
+
+        itemNSC1A = new ItemNSC1A();
+        register(itemNSC1A, "item_nsc_1a");
+
+        itemNSC1AM = new ItemNSC1AM();
+        register(itemNSC1AM, "item_nsc_1am");
+
+        itemNSC1B = new ItemNSC1B();
+        register(itemNSC1B, "item_nsc_1b");
+
+        itemNSC1BM = new ItemNSC1BM();
+        register(itemNSC1BM, "item_nsc_1bm");
+
+        itemNSC2A = new ItemNSC2A();
+        register(itemNSC2A, "item_nsc_2a");
+
+        itemNSC2AM = new ItemNSC2AM();
+        register(itemNSC2AM, "item_nsc_2am");
+
+        itemNSC2B = new ItemNSC2B();
+        register(itemNSC2B, "item_nsc_2b");
+
+        itemNSC2BM = new ItemNSC2BM();
+        register(itemNSC2BM, "item_nsc_2bm");
+
+        itemNSC3A = new ItemNSC3A();
+        register(itemNSC3A, "item_nsc_3a");
+
+        itemNSC3AM = new ItemNSC3AM();
+        register(itemNSC3AM, "item_nsc_3am");
+
+        itemNSC3B = new ItemNSC3B();
+        register(itemNSC3B, "item_nsc_3b");
+
+        itemNSC3BM = new ItemNSC3BM();
+        register(itemNSC3BM, "item_nsc_3bm");
 
         itemTicketOnce = new ItemTicketOnce();
         register(itemTicketOnce, "item_ticket_once");

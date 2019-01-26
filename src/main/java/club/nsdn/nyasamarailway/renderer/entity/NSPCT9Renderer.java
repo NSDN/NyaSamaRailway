@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityMinecart;
@@ -220,20 +219,7 @@ public class NSPCT9Renderer extends RenderMinecart {
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glTranslatef(0.0F, -0.5F, 0.0F);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDepthMask(false);
-
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
-
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        RendererHelper.beginSpecialLightingNoDepth();
 
         doRenderHUD(minecart);
         GL11.glPushMatrix();
@@ -241,8 +227,7 @@ public class NSPCT9Renderer extends RenderMinecart {
         doRenderHUD(minecart);
         GL11.glPopMatrix();
 
-        GL11.glDepthMask(true);
-        RenderHelper.enableStandardItemLighting();
+        RendererHelper.endSpecialLightingNoDepth();
 
         GL11.glPopMatrix();
     }

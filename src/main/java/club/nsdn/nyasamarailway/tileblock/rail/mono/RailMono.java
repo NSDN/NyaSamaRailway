@@ -40,7 +40,7 @@ public class RailMono extends RailBase {
 
         @Override
         public double getMaxRenderDistanceSquared() {
-            return 16384.0D;
+            return 32768.0D;
         }
 
     }

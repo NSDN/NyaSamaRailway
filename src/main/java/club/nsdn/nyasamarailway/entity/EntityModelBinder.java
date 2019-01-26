@@ -6,6 +6,7 @@ package club.nsdn.nyasamarailway.entity;
 
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.loco.*;
+import club.nsdn.nyasamarailway.entity.nsc.*;
 import club.nsdn.nyasamarailway.renderer.entity.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -109,6 +110,42 @@ public class EntityModelBinder {
 
         RenderingRegistry.registerEntityRenderingHandler(
                 NSET2.class, new NSET2Renderer());
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC1A.class, new NSCxRenderer("nsc_1a", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC1AM.class, new NSCxMRenderer("nsc_1am", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC1B.class, new NSCxRenderer("nsc_1b", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC1BM.class, new NSCxMRenderer("nsc_1bm", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC2A.class, new NSCxRenderer("nsc_2a", true));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC2AM.class, new NSCxMRenderer("nsc_2am", true));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC2B.class, new NSCxRenderer("nsc_2b", true));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC2BM.class, new NSCxMRenderer("nsc_2bm", true));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC3A.class, new NSCxRenderer("nsc_3a", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC3AM.class, new NSCxMRenderer("nsc_3am", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC3B.class, new NSCxRenderer("nsc_3b", false));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+                NSC3BM.class, new NSCxMRenderer("nsc_3bm", false));
 
     }
 

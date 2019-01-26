@@ -28,6 +28,7 @@ import org.thewdj.physics.Dynamics;
 import org.thewdj.telecom.IPassive;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Created by drzzm32 on 2019.1.4.
@@ -380,6 +381,12 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     cart.setPosition(x + 0.5, y + 0.5, z + 0.5);
 
                     reception.reset();
+
+                    if (ITrackSide.hasMultiMinecart(reception, reception.direction)) {
+                        LinkedList<EntityMinecart> carts = ITrackSide.getMinecarts(reception, reception.direction);
+                        for (int i = 1; i < carts.size(); i++)
+                            carts.get(i).killMinecart(new DamageSource("nsr"));
+                    }
 
                     reception.prev = true;
                 } else if (reception.prev) {

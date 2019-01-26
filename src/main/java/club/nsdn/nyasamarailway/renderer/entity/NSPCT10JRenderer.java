@@ -3,9 +3,6 @@ package club.nsdn.nyasamarailway.renderer.entity;
 import club.nsdn.nyasamarailway.entity.loco.NSPCT10J;
 import club.nsdn.nyasamarailway.renderer.RendererHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityMinecart;
@@ -152,20 +149,7 @@ public class NSPCT10JRenderer extends RenderMinecart {
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDepthMask(false);
-
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
-
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+        RendererHelper.beginSpecialLightingNoDepth();
 
         doRenderHUD(minecart);
         GL11.glPushMatrix();
@@ -173,8 +157,7 @@ public class NSPCT10JRenderer extends RenderMinecart {
         doRenderHUD(minecart);
         GL11.glPopMatrix();
 
-        GL11.glDepthMask(true);
-        RenderHelper.enableStandardItemLighting();
+        RendererHelper.endSpecialLightingNoDepth();
 
         GL11.glPopMatrix();
     }

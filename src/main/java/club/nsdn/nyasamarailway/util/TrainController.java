@@ -339,4 +339,28 @@ public class TrainController {
 
     }
 
+    public static void doMotionWithEuler(TrainPacket packet, Entity cart, double maxV) {
+        double minV = 0.02;
+        if (packet.P > 0 && packet.Velocity < minV)
+            packet.Velocity = minV;
+
+        double p = packet.P / 20.0, r = 1.0 - (packet.R - 1.0) / 9.0;
+        packet.nextVelocity = Dynamics.LocoMotions.calcVelocityWithEuler(Math.abs(packet.Velocity), p, r, maxV, 0.05);
+
+        if ((packet.R > 1 && packet.Velocity < packet.nextVelocity) || packet.R < 10)
+            packet.Velocity = packet.nextVelocity;
+
+        if (packet.Velocity < minV) packet.Velocity = 0;
+        if (packet.Velocity > maxV) packet.Velocity = maxV;
+
+        if (packet.Dir != 0) {
+            cart.motionX = Math.cos(packet.Yaw * Math.PI / 180.0) * packet.Dir * packet.Velocity;
+            cart.motionZ = -Math.sin(packet.Yaw * Math.PI / 180.0) * packet.Dir * packet.Velocity;
+        } else {
+            packet.Velocity = Math.abs(cart.motionX / Math.cos(packet.Yaw * Math.PI / 180.0));
+            if (Math.abs(cart.motionZ / Math.sin(packet.Yaw * Math.PI / 180.0)) > packet.Velocity)
+                packet.Velocity = Math.abs(cart.motionZ / Math.sin(packet.Yaw * Math.PI / 180.0));
+        }
+    }
+
 }
