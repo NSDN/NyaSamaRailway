@@ -196,6 +196,7 @@ public class NSCxRenderer extends RenderMinecart {
             IRotaCart rotaCart = (IRotaCart) minecart;
             float angle = rotaCart.getAngle() + 1;
             rotaCart.setAngle(angle);
+            if (minecart.riddenByEntity != null) angle = 90.0F;
             RendererHelper.renderPartWithResourceAndRotation(modelBase, "Top", angle, textureBase);
             RendererHelper.renderOtherPartWithResourceAndRotation(modelBase, "Top", 90.0F, textureBase);
         } else
@@ -255,7 +256,6 @@ public class NSCxRenderer extends RenderMinecart {
 
         RendererHelper.beginSpecialLightingNoDepth();
 
-        doRenderHUD(minecart);
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         doRenderHUD(minecart);

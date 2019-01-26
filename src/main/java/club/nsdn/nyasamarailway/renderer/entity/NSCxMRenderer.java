@@ -196,6 +196,7 @@ public class NSCxMRenderer extends RenderMinecart {
             IRotaCart rotaCart = (IRotaCart) minecart;
             float angle = rotaCart.getAngle() + 2;
             rotaCart.setAngle(angle);
+            if (minecart.riddenByEntity != null) angle = 90.0F;
             RendererHelper.renderPartWithResourceAndRotation(modelBase, "Top", angle, textureBase);
             RendererHelper.renderOtherPartWithResourceAndRotation(modelBase, "Top", 90.0F, textureBase);
         } else
@@ -255,7 +256,6 @@ public class NSCxMRenderer extends RenderMinecart {
 
         RendererHelper.beginSpecialLightingNoDepth();
 
-        doRenderHUD(minecart);
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         doRenderHUD(minecart);
@@ -299,13 +299,15 @@ public class NSCxMRenderer extends RenderMinecart {
                 float angle;
                 int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
 
-                RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
                 String pwr = String.format("%2d", p);
                 String brk = String.format("%2d", 10 - r);
                 String sv = String.format("%1.2f", v);
                 String sl = String.format("%1.2f", lim);
 
+                GL11.glPushMatrix();
+                GL11.glRotated(45, 0, 1, 0);
+                RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 // HUD1406
                 doRenderText(0, "-= NSR--NTP =-");
                 doRenderText(1, "dir:  " + dir);
@@ -313,7 +315,23 @@ public class NSCxMRenderer extends RenderMinecart {
                 doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
                 doRenderText(4, "vel:" + sv + "m/t");
                 doRenderText(5, "lim:" + sl + "m/t");
+                GL11.glPopMatrix();
 
+                GL11.glPushMatrix();
+                GL11.glRotated(-45, 0, 1, 0);
+                RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
+                // HUD1406
+                doRenderText(0, "-= NTP--EXT =-");
+                doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
+                doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
+                doRenderText(3, "id: " + String.format("%x", cart.getEntityId()));
+                doRenderText(4, "dim:" + String.format("%x", cart.dimension));
+                doRenderText(5, "yaw:" + String.format("%1.2f", cart.rotationYaw));
+                GL11.glPopMatrix();
+
+                GL11.glPushMatrix();
+                GL11.glRotated(30, 0, 0, 1);
+                GL11.glTranslated(0.5, 0, 0);
                 RendererHelper.renderWithResource(modelMeterV, textureMeterV);
                 angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
                 if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -340,6 +358,7 @@ public class NSCxMRenderer extends RenderMinecart {
                 GL11.glPushMatrix();
                 GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
                 RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+                GL11.glPopMatrix();
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();

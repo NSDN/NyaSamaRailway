@@ -142,7 +142,7 @@ public class NSC1BM extends LocoBase implements ILimitVelCart, IMonoRailCart, IR
                 tmpEngineBrake = -1;
             }
         }
-        TrainController.doMotionWithEuler(tmpPacket, this, getMaxCartSpeedOnRail());
+        TrainController.doMotionWithSlip(tmpPacket, this, getMaxCartSpeedOnRail());
         setEnginePrevVel(this.Velocity);
         setEngineVel(tmpPacket.Velocity);
     }

@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.signal.trackside;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.entity.MinecartBase;
 import club.nsdn.nyasamarailway.entity.cart.*;
+import club.nsdn.nyasamarailway.entity.nsc.*;
 import club.nsdn.nyasamarailway.tileblock.signal.TileEntityTrackSideReception;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -18,6 +19,27 @@ import java.util.Random;
 public class TrackSideReception extends AbsTrackSide {
 
     public static class Reception extends TileEntityTrackSideReception {
+        
+        private void spawnNSC(World world, double x, double y, double z) {
+            EntityMinecart cart;
+            if (cartType.equals(NSC1A.class.getName()))
+                cart = new NSC1A(world, x, y, z);
+            else if (cartType.equals(NSC1B.class.getName()))
+                cart = new NSC1B(world, x, y, z);
+            else if (cartType.equals(NSC2A.class.getName()))
+                cart = new NSC2A(world, x, y, z);
+            else if (cartType.equals(NSC2B.class.getName()))
+                cart = new NSC2B(world, x, y, z);
+            else if (cartType.equals(NSC3A.class.getName()))
+                cart = new NSC3A(world, x, y, z);
+            else if (cartType.equals(NSC3B.class.getName()))
+                cart = new NSC3B(world, x, y, z);
+            else {
+                cartType = "stock";
+                cart = EntityMinecartEmpty.createMinecart(world, x, y, z, -1);
+            }
+            world.spawnEntityInWorld(cart);
+        }
 
         @Override
         public void spawn(World world, double x, double y, double z) {
@@ -65,6 +87,8 @@ public class TrackSideReception extends AbsTrackSide {
                 NSPCT9 cart = new NSPCT9(world, x, y, z);
                 cart.setExtendedInfo(extInfo);
                 world.spawnEntityInWorld(cart);
+            } else if (cartType.contains("nsc")) {
+                spawnNSC(world, x, y, z);
             } else {
                 cartType = "stock";
                 EntityMinecart cart = EntityMinecartEmpty.createMinecart(world, x, y, z, -1);

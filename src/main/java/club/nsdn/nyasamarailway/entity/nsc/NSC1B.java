@@ -176,7 +176,7 @@ public class NSC1B extends MinecartBase implements IMotorCart, ILimitVelCart, IM
                     tmpMotorBrake = -1;
                 }
             }
-            TrainController.doMotionWithEuler(tmpPacket, this, getMaxCartSpeedOnRail());
+            TrainController.doMotionWithSlip(tmpPacket, this, getMaxCartSpeedOnRail());
             setMotorVel((float) tmpPacket.Velocity);
         } else {
             if (this.motionX != 0) setMotorDir((int) Math.signum(this.motionX / Math.cos(TrainController.calcYaw(this) * Math.PI / 180.0)));
