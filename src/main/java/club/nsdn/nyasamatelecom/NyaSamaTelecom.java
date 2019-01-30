@@ -19,7 +19,7 @@ public class NyaSamaTelecom {
     public static NyaSamaTelecom instance;
     public static final String MODID = "nyasamatelecom";
     public static final String NAME = "NyaSama Telecom";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "2.0";
     public static Logger logger;
 
     @SidedProxy(

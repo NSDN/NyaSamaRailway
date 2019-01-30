@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2017.12.29.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockSignalBoxSender extends SignalBoxSender {
 
@@ -20,7 +20,7 @@ public class BlockSignalBoxSender extends SignalBoxSender {
     }
 
     public BlockSignalBoxSender() {
-        super(NyaSamaTelecom.modid, "BlockSignalBoxSender", "signal_box_sender");
+        super(NyaSamaTelecom.MODID, "BlockSignalBoxSender", "signal_box_sender");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 

@@ -7,6 +7,10 @@ import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
 import club.nsdn.nyasamatelecom.util.Utility;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +21,7 @@ import net.minecraft.world.World;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2017.12.29.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockTriStateSignalBox extends TriStateSignalBox {
 
@@ -30,18 +34,18 @@ public class BlockTriStateSignalBox extends TriStateSignalBox {
     }
 
     public BlockTriStateSignalBox() {
-        super(NyaSamaTelecom.modid, "BlockTriStateSignalBox", "tri_state_signal_box");
+        super(NyaSamaTelecom.MODID, "BlockTriStateSignalBox", "tri_state_signal_box");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityTriStateSignalBox) {
-            TileEntityTriStateSignalBox box = (TileEntityTriStateSignalBox) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityTriStateSignalBox) {
+            TileEntityTriStateSignalBox box = (TileEntityTriStateSignalBox) tileEntity;
 
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -61,17 +65,17 @@ public class BlockTriStateSignalBox extends TriStateSignalBox {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override
@@ -87,9 +91,9 @@ public class BlockTriStateSignalBox extends TriStateSignalBox {
 
                                 box.inverterEnabled = !box.inverterEnabled;
                                 if (box.inverterEnabled)
-                                    Utility.say(getPlayer(), "info.signal.box.inverter.on");
+                                    Util.say(getPlayer(), "info.signal.box.inverter.on");
                                 else
-                                    Utility.say(getPlayer(), "info.signal.box.inverter.off");
+                                    Util.say(getPlayer(), "info.signal.box.inverter.off");
 
                                 return Result.OK;
                             });
@@ -100,9 +104,9 @@ public class BlockTriStateSignalBox extends TriStateSignalBox {
 
                                 box.triStateIsNeg = !box.triStateIsNeg;
                                 if (box.triStateIsNeg)
-                                    Utility.say(getPlayer(), "info.signal.box.triState.neg");
+                                    Util.say(getPlayer(), "info.signal.box.triState.neg");
                                 else
-                                    Utility.say(getPlayer(), "info.signal.box.triState.pos");
+                                    Util.say(getPlayer(), "info.signal.box.triState.pos");
 
                                 return Result.OK;
                             });

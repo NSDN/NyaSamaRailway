@@ -40,11 +40,11 @@ public class NGTablet extends ItemWritableBook {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
         if (!world.isRemote) {
-            runNGT(player.getHeldItemMainhand(), world, player);
+            runNGT(player.getHeldItem(hand), world, player);
         } else {
-            showGUI(player.getHeldItemMainhand(), world, player);
+            showGUI(player.getHeldItem(hand), world, player);
         }
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     public SimpleNetworkWrapper getNetworkWrapper() {

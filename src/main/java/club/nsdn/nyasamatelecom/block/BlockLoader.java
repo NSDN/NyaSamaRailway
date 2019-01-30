@@ -1,6 +1,9 @@
 package club.nsdn.nyasamatelecom.block;
 
 import club.nsdn.nyasamatelecom.NyaSamaTelecom;
+import club.nsdn.nyasamatelecom.tileblock.core.*;
+import club.nsdn.nyasamatelecom.tileblock.redstone.*;
+import club.nsdn.nyasamatelecom.tileblock.wireless.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.block.Block;
@@ -11,6 +14,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import cn.ac.nya.nspga.*;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -32,15 +37,17 @@ public class BlockLoader {
 
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event) {
+        NyaSamaTelecom.logger.info("registering Blocks");
         event.getRegistry().registerAll(blocks.toArray(new Block[0]));
     }
 
     @SubscribeEvent
     public void registerItemBlocks(RegistryEvent.Register<Item> event) {
+        NyaSamaTelecom.logger.info("registering ItemBlocks");
         for (Block b : blocks) {
             String regName = b.getUnlocalizedName().toLowerCase();
-            if (b instanceof IRegisterable)
-                regName = ((IRegisterable) b).getID();
+            if (b.getRegistryName() != null)
+                regName = b.getRegistryName().toString().split(":")[1];
             itemBlocks.put(b, new ItemBlock(b).setRegistryName(NyaSamaTelecom.MODID, regName));
         }
         event.getRegistry().registerAll(itemBlocks.values().toArray(new Item[0]));
@@ -49,9 +56,11 @@ public class BlockLoader {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void registerItemBlockModels(ModelRegistryEvent event) {
+        NyaSamaTelecom.logger.info("registering ItemBlock Models (Block's Icon)");
         for (Item i : itemBlocks.values()) {
             String regName = i.getUnlocalizedName().toLowerCase();
-            if (i.getRegistryName() != null) regName = i.getRegistryName().toString();
+            if (i.getRegistryName() != null)
+                regName = i.getRegistryName().toString();
             ModelLoader.setCustomModelResourceLocation(i, 0,
                     new ModelResourceLocation(regName, "inventory")
             );
@@ -68,24 +77,24 @@ public class BlockLoader {
         blocks.add(new BlockSign());
         blocks.add(new BlockNSDNLogo());
 
-        //blocks.put("nspga_t0c0", new BlockNSPGA(NSPGAT0C0.class, "BlockNSPGAT0C0", "nspga_t0c0i8o8r0"));
-        //blocks.put("nspga_t4c4", new BlockNSPGA(NSPGAT4C4.class, "BlockNSPGAT4C4", "nspga_t4c4i8o8r0"));
+        blocks.add(new BlockNSPGA(NSPGAT0C0.class, "BlockNSPGAT0C0", "nspga_t0c0i8o8r0"));
+        blocks.add(new BlockNSPGA(NSPGAT4C4.class, "BlockNSPGAT4C4", "nspga_t4c4i8o8r0"));
 
-        //blocks.put("nsasm_box", new BlockNSASMBox());
-        //blocks.put("signal_box", new BlockSignalBox());
-        //blocks.put("signal_box_sender", new BlockSignalBoxSender());
-        //blocks.put("signal_box_getter", new BlockSignalBoxGetter());
-        //blocks.put("tri_state_signal_box", new BlockTriStateSignalBox());
+        blocks.add(new BlockNSASMBox());
+        blocks.add(new BlockSignalBox());
+        blocks.add(new BlockSignalBoxSender());
+        blocks.add(new BlockSignalBoxGetter());
+        blocks.add(new BlockTriStateSignalBox());
 
-        //blocks.put("signal_box_input", new BlockRedInput());
-        //blocks.put("signal_box_output", new BlockRedOutput());
+        blocks.add(new BlockRedInput());
+        blocks.add(new BlockRedOutput());
 
-        //blocks.put("signal_box_rx", new BlockWirelessRx());
-        //blocks.put("signal_box_tx", new BlockWirelessTx());
+        blocks.add(new BlockWirelessRx());
+        blocks.add(new BlockWirelessTx());
 
-        //blocks.put("rs_latch_box", new BlockRSLatch());
-        //blocks.put("timer_box", new BlockTimer());
-        //blocks.put("delayer_box", new BlockDelayer());
+        blocks.add(new BlockRSLatch());
+        blocks.add(new BlockTimer());
+        blocks.add(new BlockDelayer());
     }
 
 }

@@ -1,5 +1,6 @@
 package club.nsdn.nyasamatelecom.item;
 
+import club.nsdn.nyasamatelecom.NyaSamaTelecom;
 import club.nsdn.nyasamatelecom.item.tool.*;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -27,12 +28,14 @@ public class ItemLoader {
 
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
+        NyaSamaTelecom.logger.info("registering Items");
         event.getRegistry().registerAll(items.toArray(new Item[0]));
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void registerItemModels(ModelRegistryEvent event) {
+        NyaSamaTelecom.logger.info("registering ItemModels (Item's Icon)");
         for (Item i : items) {
             String regName = i.getUnlocalizedName().toLowerCase();
             if (i.getRegistryName() != null) regName = i.getRegistryName().toString();

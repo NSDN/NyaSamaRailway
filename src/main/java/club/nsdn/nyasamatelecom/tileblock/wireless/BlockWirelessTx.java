@@ -9,6 +9,10 @@ import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.util.TelecomProcessor;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
 import club.nsdn.nyasamatelecom.util.Utility;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -66,6 +70,17 @@ public class BlockWirelessTx extends SignalBoxGetter {
             return super.toNBT(tagCompound);
         }
 
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityWirelessTx) {
+                TileEntityWirelessTx dev = (TileEntityWirelessTx) tileEntity;
+                if (TelecomProcessor.instance().device(dev.id) == null)
+                    TelecomProcessor.instance().register(dev);
+            }
+        }
+
     }
 
     @Override
@@ -74,43 +89,28 @@ public class BlockWirelessTx extends SignalBoxGetter {
     }
 
     public BlockWirelessTx() {
-        super(NyaSamaTelecom.modid, "BlockWirelessTx", "signal_box_tx");
+        super(NyaSamaTelecom.MODID, "BlockWirelessTx", "signal_box_tx");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x, y, z);
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(world, pos, state);
 
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityWirelessTx) {
             TelecomProcessor.instance().register((TileEntityWirelessTx) tileEntity);
         }
     }
 
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        super.updateTick(world, x, y, z, random);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityWirelessTx) {
+            TileEntityWirelessTx box = (TileEntityWirelessTx) tileEntity;
 
-        if (!world.isRemote) {
-            TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if (tileEntity == null) return;
-            if (tileEntity instanceof TileEntityWirelessTx) {
-                TileEntityWirelessTx dev = (TileEntityWirelessTx) tileEntity;
-                if (TelecomProcessor.instance().device(dev.id) == null)
-                    TelecomProcessor.instance().register(dev);
-            }
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityWirelessTx) {
-            TileEntityWirelessTx box = (TileEntityWirelessTx) world.getTileEntity(x, y, z);
-
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -130,17 +130,17 @@ public class BlockWirelessTx extends SignalBoxGetter {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override
@@ -154,11 +154,11 @@ public class BlockWirelessTx extends SignalBoxGetter {
                                 if (src != null) return Result.ERR;
 
                                 if (dst == null) {
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.id", box.id);
+                                    Util.say(getPlayer(), "info.signal.box.wireless.id", box.id);
                                 } else {
                                     if (dst.type != RegType.STR) return Result.ERR;
                                     box.id = dst.data.toString();
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.set");
+                                    Util.say(getPlayer(), "info.signal.box.wireless.set");
                                 }
 
                                 return Result.OK;
@@ -168,11 +168,11 @@ public class BlockWirelessTx extends SignalBoxGetter {
                                 if (src != null) return Result.ERR;
 
                                 if (dst == null) {
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.key", box.key);
+                                    Util.say(getPlayer(), "info.signal.box.wireless.key", box.key);
                                 } else {
                                     if (dst.type != RegType.STR) return Result.ERR;
                                     box.key = dst.data.toString();
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.set");
+                                    Util.say(getPlayer(), "info.signal.box.wireless.set");
                                 }
 
                                 return Result.OK;

@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamatelecom:block/tile_icon",
+  "textures": {
+    "icon": "nyasamatelecom:block/delayer"
+  }
+}

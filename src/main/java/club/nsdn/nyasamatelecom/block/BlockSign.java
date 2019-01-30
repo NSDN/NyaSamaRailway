@@ -9,17 +9,12 @@ import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 /**
  * Created by drzzm32 on 2018.12.12.
  */
-public class BlockSign extends BlockGlass implements IRegisterable {
-
-    @Override
-    public String getID() {
-        return "nst_sign";
-    }
+public class BlockSign extends BlockGlass {
 
     public BlockSign() {
         super(Material.GLASS, false);
         setUnlocalizedName("NSTSign");
-        setRegistryName(NyaSamaTelecom.MODID, getID());
+        setRegistryName(NyaSamaTelecom.MODID, "nst_sign");
         setHardness(2.0F);
         setLightLevel(1);
         setSoundType(SoundType.GLASS);

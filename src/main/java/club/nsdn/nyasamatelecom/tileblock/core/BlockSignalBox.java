@@ -2,12 +2,14 @@ package club.nsdn.nyasamatelecom.tileblock.core;
 
 import club.nsdn.nyasamatelecom.NyaSamaTelecom;
 import club.nsdn.nyasamatelecom.api.device.SignalBox;
-import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
-import club.nsdn.nyasamatelecom.util.Utility;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,7 +20,7 @@ import net.minecraft.world.World;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2017.12.29.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockSignalBox extends SignalBox {
 
@@ -42,18 +44,18 @@ public class BlockSignalBox extends SignalBox {
     }
 
     public BlockSignalBox() {
-        super(NyaSamaTelecom.modid, "BlockSignalBox", "signal_box");
+        super(NyaSamaTelecom.MODID, "BlockSignalBox", "signal_box");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntitySignalBox) {
-            TileEntitySignalBox box = (TileEntitySignalBox) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntitySignalBox) {
+            TileEntitySignalBox box = (TileEntitySignalBox) tileEntity;
 
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -72,17 +74,17 @@ public class BlockSignalBox extends SignalBox {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override
@@ -98,9 +100,9 @@ public class BlockSignalBox extends SignalBox {
 
                                 box.inverterEnabled = !box.inverterEnabled;
                                 if (box.inverterEnabled)
-                                    Utility.say(getPlayer(), "info.signal.box.inverter.on");
+                                    Util.say(getPlayer(), "info.signal.box.inverter.on");
                                 else
-                                    Utility.say(getPlayer(), "info.signal.box.inverter.off");
+                                    Util.say(getPlayer(), "info.signal.box.inverter.off");
 
                                 return Result.OK;
                             });

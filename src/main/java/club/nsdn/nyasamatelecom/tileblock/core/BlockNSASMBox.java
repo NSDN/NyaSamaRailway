@@ -8,22 +8,27 @@ import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.util.TelecomProcessor;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * Created by drzzm32 on 2018.1.1.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockNSASMBox extends SignalBox {
 
@@ -60,6 +65,73 @@ public class BlockNSASMBox extends SignalBox {
             return false;
         }
 
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityNSASMBox) {
+                TileEntityNSASMBox box = (TileEntityNSASMBox) tileEntity;
+
+                int meta = box.META;
+                int old = meta;
+                boolean isEnabled;
+
+                if (box.getSender() == null) {
+                    isEnabled = (meta & 0x8) != 0;
+                    meta &= 0x7;
+                } else {
+                    isEnabled = box.senderIsPowered();
+
+                    if (isEnabled) meta |= 0x8;
+                    else meta &= 0x7;
+                }
+
+                box.isEnabled = isEnabled;
+
+                switch (box.nsasmState) {
+                    case TileEntityNSASMBox.NSASM_NULL:
+                        if (box.nsasmCode.isEmpty()) break;
+                        box.core = new NSASMBoxCore(box.nsasmCode) {
+                            @Override
+                            public World getWorld() {
+                                return world;
+                            }
+
+                            @Override
+                            public double getX() {
+                                return pos.getX();
+                            }
+
+                            @Override
+                            public double getY() {
+                                return pos.getY();
+                            }
+
+                            @Override
+                            public double getZ() {
+                                return pos.getZ();
+                            }
+                        };
+                        box.nsasmState = TileEntityNSASMBox.NSASM_SETUP;
+                        break;
+                    case TileEntityNSASMBox.NSASM_SETUP:
+                        if (box.core == null) break;
+                        box.core.call("<setup>");
+                        box.nsasmState = TileEntityNSASMBox.NSASM_LOOP;
+                        break;
+                    case TileEntityNSASMBox.NSASM_LOOP:
+                        if (box.core == null) break;
+                        box.core.call("<loop>");
+                        break;
+                }
+
+                if (old != meta) {
+                    box.META = meta;
+                    box.refresh();
+                }
+            }
+        }
+
     }
 
     public abstract static class NSASMBoxCore extends NSASM {
@@ -75,10 +147,10 @@ public class BlockNSASMBox extends SignalBox {
 
         private TileEntityNSASMBox getBox() {
             if (getWorld() == null) return null;
-            int x = MathHelper.floor_double(getX());
-            int y = MathHelper.floor_double(getY());
-            int z = MathHelper.floor_double(getZ());
-            TileEntity tileEntity = getWorld().getTileEntity(x, y, z);
+            int x = MathHelper.floor(getX());
+            int y = MathHelper.floor(getY());
+            int z = MathHelper.floor(getZ());
+            TileEntity tileEntity = getWorld().getTileEntity(new BlockPos(x, y, z));
             if (tileEntity == null) return null;
             if (!(tileEntity instanceof TileEntityNSASMBox)) return null;
             return (TileEntityNSASMBox) tileEntity;
@@ -112,7 +184,7 @@ public class BlockNSASMBox extends SignalBox {
             double size = 2.0;
             List list = getWorld().getEntitiesWithinAABB(
                     EntityPlayer.class,
-                    AxisAlignedBB.getBoundingBox(
+                    new AxisAlignedBB(
                             getX() - size + 1,
                             getY() - size + 1,
                             getZ() - size + 1,
@@ -126,8 +198,8 @@ public class BlockNSASMBox extends SignalBox {
             for (Object obj : list) {
                 if (obj instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) obj;
-                    ItemStack stack = player.getCurrentEquippedItem();
-                    if (stack != null) {
+                    ItemStack stack = player.getHeldItemMainhand();
+                    if (!stack.isEmpty()) {
                         if (stack.getItem() instanceof NGTablet) {
                             return player;
                         }
@@ -257,105 +329,32 @@ public class BlockNSASMBox extends SignalBox {
     }
 
     public BlockNSASMBox() {
-        super(NyaSamaTelecom.modid, "BlockNSASMBox", "nsasm_box");
+        super(NyaSamaTelecom.MODID, "BlockNSASMBox", "nsasm_box");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public int tickRate(World world) {
-        return 20;
-    }
-
-    @Override
-    public void updateSignal(World world, int x , int y, int z) {
-        if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityNSASMBox) {
-            TileEntityNSASMBox box = (TileEntityNSASMBox) world.getTileEntity(x, y, z);
-
-            int meta = world.getBlockMetadata(x, y, z);
-            int old = meta;
-            boolean isEnabled;
-
-            if (box.getSender() == null) {
-                isEnabled = (meta & 0x8) != 0;
-                meta &= 0x7;
-            } else {
-                isEnabled = box.senderIsPowered();
-
-                if (isEnabled) meta |= 0x8;
-                else meta &= 0x7;
-            }
-
-            box.isEnabled = isEnabled;
-
-            switch (box.nsasmState) {
-                case TileEntityNSASMBox.NSASM_NULL:
-                    if (box.nsasmCode.isEmpty()) break;
-                    box.core = new NSASMBoxCore(box.nsasmCode) {
-                        @Override
-                        public World getWorld() {
-                            return world;
-                        }
-
-                        @Override
-                        public double getX() {
-                            return x;
-                        }
-
-                        @Override
-                        public double getY() {
-                            return y;
-                        }
-
-                        @Override
-                        public double getZ() {
-                            return z;
-                        }
-                    };
-                    box.nsasmState = TileEntityNSASMBox.NSASM_SETUP;
-                    break;
-                case TileEntityNSASMBox.NSASM_SETUP:
-                    if (box.core == null) break;
-                    box.core.call("<setup>");
-                    box.nsasmState = TileEntityNSASMBox.NSASM_LOOP;
-                    break;
-                case TileEntityNSASMBox.NSASM_LOOP:
-                    if (box.core == null) break;
-                    box.core.call("<loop>");
-                    break;
-            }
-
-            if (old != meta) {
-                world.markBlockForUpdate(x, y, z);
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            }
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityNSASMBox) {
-            TileEntityNSASMBox box = (TileEntityNSASMBox) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityNSASMBox) {
+            TileEntityNSASMBox box = (TileEntityNSASMBox) tileEntity;
 
             ItemStack stack;
             if (!world.isRemote && player.isSneaking()) {
                 for (int i = 0; i < 9; i++) {
-                    stack = player.inventory.mainInventory[i];
-                    if (stack == null) continue;
-                    if (stack.getItem() == null) continue;
+                    stack = player.inventory.mainInventory.get(i);
+                    if (stack.isEmpty()) continue;
+                    if (stack.getItem() == Items.AIR) continue;
                     if (stack.getItem() instanceof NGTablet) {
                         box.nsasmState = TileEntityNSASMBox.NSASM_NULL;
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.nsasm.reset"));
+                        Util.say(player, "info.nsasm.reset");
                         return true;
                     }
                 }
             }
 
-            stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -365,7 +364,7 @@ public class BlockNSASMBox extends SignalBox {
                     box.nsasmState = TileEntityNSASMBox.NSASM_NULL;
                     box.nsasmCode = code;
 
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.nsasm.set"));
+                    Util.say(player, "info.nsasm.set");
                 }
 
                 return true;

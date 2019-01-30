@@ -9,17 +9,12 @@ import net.minecraft.block.material.Material;
 /**
  * Created by drzzm32 on 2018.12.12.
  */
-public class BlockNSDNLogo extends BlockGlass implements IRegisterable {
-
-    @Override
-    public String getID() {
-        return "nst_nsdn";
-    }
+public class BlockNSDNLogo extends BlockGlass {
 
     public BlockNSDNLogo() {
         super(Material.GLASS, false);
         setUnlocalizedName("NSDNLogo");
-        setRegistryName(NyaSamaTelecom.MODID, getID());
+        setRegistryName(NyaSamaTelecom.MODID, "nst_nsdn");
         setHardness(2.0F);
         setLightLevel(1);
         setSoundType(SoundType.GLASS);

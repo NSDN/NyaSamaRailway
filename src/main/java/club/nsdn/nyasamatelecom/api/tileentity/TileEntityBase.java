@@ -1,13 +1,19 @@
 package club.nsdn.nyasamatelecom.api.tileentity;
 
+import club.nsdn.nyasamatelecom.NyaSamaTelecom;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by drzzm32 on 2018.12.13.
@@ -71,11 +77,12 @@ public class TileEntityBase extends TileEntity implements ITickable {
             0.5 - SIZE.x / 2, 0.0, 0.5 - SIZE.z / 2,
             0.5 + SIZE.x / 2, SIZE.y, 0.5 + SIZE.z / 2
         );
-        refresh();
     }
 
     public void refresh() {
-        getWorld().notifyBlockUpdate(getPos(), getBlockType().getDefaultState(), getBlockType().getDefaultState(), 2);
+        IBlockState state = getBlockType().getDefaultState();
+        getWorld().notifyBlockUpdate(pos, state, state, 2);
+        getWorld().markBlockRangeForRenderUpdate(getPos(), getPos());
     }
 
     public TileEntityBase() {  }
@@ -93,7 +100,6 @@ public class TileEntityBase extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-
     }
 
     public void fromNBT(NBTTagCompound tagCompound) {
@@ -117,27 +123,48 @@ public class TileEntityBase extends TileEntity implements ITickable {
     }
 
     @Override
+    @Nonnull
+    public AxisAlignedBB getRenderBoundingBox() {
+        return super.getRenderBoundingBox();
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return super.getMaxRenderDistanceSquared();
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tagCompound) {
+        super.readFromNBT(tagCompound);
         fromNBT(tagCompound);
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         toNBT(tagCompound);
+        return super.writeToNBT(tagCompound);
+    }
+
+    @Override
+    @Nonnull
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        tagCompound = writeToNBT(tagCompound);
         return tagCompound;
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
-        toNBT(tagCompound);
+        tagCompound = writeToNBT(tagCompound);
         return new SPacketUpdateTileEntity(getPos(), 1, tagCompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet) {
         NBTTagCompound tagCompound = packet.getNbtCompound();
-        fromNBT(tagCompound);
+        readFromNBT(tagCompound);
     }
 
     public void onDestroy() {

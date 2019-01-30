@@ -88,7 +88,7 @@ public class ToolBase extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItemMainhand());
+        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
     @Override

@@ -43,7 +43,7 @@ public class Connector extends ToolBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItemMainhand());
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     public boolean onConnectorUseLast(EntityPlayer player, UUID uuid, TileEntity tileEntity) {

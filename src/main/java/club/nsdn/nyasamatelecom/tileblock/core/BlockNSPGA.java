@@ -9,6 +9,11 @@ import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
 import club.nsdn.nyasamatelecom.util.TelecomProcessor;
 import cn.ac.nya.nspga.INSPGA;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,14 +22,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2018.3.12.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockNSPGA extends SignalBox {
 
@@ -41,6 +45,10 @@ public class BlockNSPGA extends SignalBox {
         public String[] outputs = new String[0];
         public int flashLen = 0;
         public int[] flash = new int[0];
+
+        public TileEntityNSPGA() {
+            setInfo(8, 0.875, 0.125, 0.875);
+        }
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
@@ -148,6 +156,49 @@ public class BlockNSPGA extends SignalBox {
             } else {
                 for (int i = 0; i < outputsLen; i++) {
                     output(outputs[i], ((data >> i) & 0x1) != 0);
+                }
+            }
+        }
+
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityNSPGA) {
+                TileEntityNSPGA dev = (TileEntityNSPGA) tileEntity;
+
+                int meta = dev.META;
+                int old = meta;
+                boolean isEnabled;
+
+                if (dev.getSender() == null) {
+                    isEnabled = (meta & 0x8) != 0;
+                    meta &= 0x7;
+                } else {
+                    isEnabled = dev.senderIsPowered();
+
+                    if (isEnabled) meta |= 0x8;
+                    else meta &= 0x7;
+                }
+
+                dev.isEnabled = isEnabled;
+
+                if (dev.device == null && dev.getBlockType() instanceof BlockNSPGA)
+                    dev.device = ((BlockNSPGA) dev.getBlockType()).createDevice();
+
+                if (!dev.configured) {
+                    if (dev.flashLen > 0) {
+                        dev.device.configure(dev.flash);
+                    }
+                }
+
+                byte input = dev.input();
+                byte output = dev.device.output(input);
+                dev.output(output);
+
+                if (old != meta) {
+                    dev.META = meta;
+                    dev.refresh();
                 }
             }
         }
@@ -280,14 +331,6 @@ public class BlockNSPGA extends SignalBox {
 
     }
 
-    public INSPGA createDevice() {
-        try {
-            return dev.newInstance();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     public ResourceLocation texturePrint;
 
@@ -298,105 +341,33 @@ public class BlockNSPGA extends SignalBox {
         return new TileEntityNSPGA();
     }
 
-    public BlockNSPGA(Class<? extends INSPGA> dev, String name, String icon) {
-        super(NyaSamaTelecom.modid, name, icon);
+    public BlockNSPGA(Class<? extends INSPGA> dev, String name, String id) {
+        super(NyaSamaTelecom.MODID, name, id);
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
 
-        this.dev = dev; this.name = icon;
+        this.dev = dev; this.name = id;
     }
 
-    @Override
-    protected void setBoundsByMeta(int meta) {
-        float x1 = 0.0625F, y1 = 0.0F, z1 = 0.0625F, x2 = 0.9375F, y2 = 0.125F, z2 = 0.9375F;
-        switch (meta & 7) {
-            case 2:
-                setBlockBounds(x1, y1, z1, x2, y2, z2);
-                break;
-            case 3:
-                setBlockBounds(1.0F - z2, y1, x1, 1.0F - z1, y2, x2);
-                break;
-            case 0:
-                setBlockBounds(1.0F - x2, y1, 1.0F - z2, 1.0F - x1, y2, 1.0F - z1);
-                break;
-            case 1:
-                setBlockBounds(z1, y1, 1.0F - x2, z2, y2, 1.0F - x1);
-                break;
-            case 6:
-                setBlockBounds(x1, z1, y1, x2, z2, y2);
-                break;
-            case 7:
-                setBlockBounds(1.0F - y2, z1, x1, 1.0F - y1, z2, x2);
-                break;
-            case 4:
-                setBlockBounds(1.0F - x2, z1, 1.0F - y2, 1.0F - x1, z2, 1.0F - y1);
-                break;
-            case 5:
-                setBlockBounds(y1, z1, 1.0F - x2, y2, z2, 1.0F - x1);
-                break;
+    public INSPGA createDevice() {
+        try {
+            return dev.newInstance();
+        } catch (Exception e) {
+            return null;
         }
     }
 
     @Override
-    public int tickRate(World world) {
-        return 20;
-    }
-
-    @Override
-    public void updateSignal(World world, int x , int y, int z) {
-        if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityNSPGA) {
-            TileEntityNSPGA dev = (TileEntityNSPGA) world.getTileEntity(x, y, z);
-
-            int meta = world.getBlockMetadata(x, y, z);
-            int old = meta;
-            boolean isEnabled;
-
-            if (dev.getSender() == null) {
-                isEnabled = (meta & 0x8) != 0;
-                meta &= 0x7;
-            } else {
-                isEnabled = dev.senderIsPowered();
-
-                if (isEnabled) meta |= 0x8;
-                else meta &= 0x7;
-            }
-
-            dev.isEnabled = isEnabled;
-
-            if (dev.device == null)
-                dev.device = createDevice();
-
-            if (!dev.configured) {
-                if (dev.flashLen > 0) {
-                    dev.device.configure(dev.flash);
-                }
-            }
-
-            byte input = dev.input();
-            byte output = dev.device.output(input);
-            dev.output(output);
-
-            if (old != meta) {
-                world.markBlockForUpdate(x, y, z);
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            }
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityNSPGA) {
-            TileEntityNSPGA dev = (TileEntityNSPGA) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityNSPGA) {
+            TileEntityNSPGA dev = (TileEntityNSPGA) tileEntity;
 
             ItemStack stack;
             if (!world.isRemote && player.isSneaking()) {
                 for (int i = 0; i < 9; i++) {
-                    stack = player.inventory.mainInventory[i];
-                    if (stack == null) continue;
-                    if (stack.getItem() == null) continue;
+                    stack = player.inventory.mainInventory.get(i);
+                    if (stack.isEmpty()) continue;
+                    if (stack.getItem() == Items.AIR) continue;
                     if (stack.getItem() instanceof NGTablet) {
 
                         dev.inputsLen = 0; dev.inputs = new String[0];
@@ -404,14 +375,14 @@ public class BlockNSPGA extends SignalBox {
                         dev.flashLen = 0; dev.flash = new int[0];
                         dev.device = null; dev.configured = false;
 
-                        player.addChatComponentMessage(new ChatComponentTranslation("info.nspga.reset"));
+                        Util.say(player, "info.nspga.reset");
                         return true;
                     }
                 }
             }
 
-            stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -423,16 +394,16 @@ public class BlockNSPGA extends SignalBox {
                         @Override
                         public EntityPlayer getPlayer() { return player; }
                         @Override
-                        public double getX() { return x; }
+                        public double getX() { return pos.getX(); }
                         @Override
-                        public double getY() { return y; }
+                        public double getY() { return pos.getY(); }
                         @Override
-                        public double getZ() { return z; }
+                        public double getZ() { return pos.getZ(); }
                         @Override
                         public TileEntityNSPGA getNSPGA() { return dev; }
                     }.run();
 
-                    player.addChatComponentMessage(new ChatComponentTranslation("info.nspga.set"));
+                    Util.say(player, "info.nspga.set");
                 }
 
                 return true;

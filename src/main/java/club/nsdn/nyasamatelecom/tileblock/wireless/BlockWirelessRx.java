@@ -8,7 +8,10 @@ import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.util.TelecomProcessor;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
-import club.nsdn.nyasamatelecom.util.Utility;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,10 +22,9 @@ import net.minecraft.world.World;
 import org.thewdj.telecom.IWirelessRx;
 
 import java.util.LinkedHashMap;
-import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.12.29.
+ * Created by drzzm32 on 2018.1.29.
  */
 public class BlockWirelessRx extends SignalBoxSender {
 
@@ -66,6 +68,17 @@ public class BlockWirelessRx extends SignalBoxSender {
             return super.toNBT(tagCompound);
         }
 
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityWirelessRx) {
+                TileEntityWirelessRx dev = (TileEntityWirelessRx) tileEntity;
+                if (TelecomProcessor.instance().device(dev.id) == null)
+                    TelecomProcessor.instance().register(dev);
+            }
+        }
+
     }
 
     @Override
@@ -74,43 +87,28 @@ public class BlockWirelessRx extends SignalBoxSender {
     }
 
     public BlockWirelessRx() {
-        super(NyaSamaTelecom.modid, "BlockWirelessRx", "signal_box_rx");
+        super(NyaSamaTelecom.MODID, "BlockWirelessRx", "signal_box_rx");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        super.onBlockAdded(world, x, y, z);
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+        super.onBlockAdded(world, pos, state);
 
-        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityWirelessRx) {
             TelecomProcessor.instance().register((TileEntityWirelessRx) tileEntity);
         }
     }
 
     @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-        super.updateTick(world, x, y, z, random);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityWirelessRx) {
+            TileEntityWirelessRx box = (TileEntityWirelessRx) tileEntity;
 
-        if (!world.isRemote) {
-            TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if (tileEntity == null) return;
-            if (tileEntity instanceof TileEntityWirelessRx) {
-                TileEntityWirelessRx dev = (TileEntityWirelessRx) tileEntity;
-                if (TelecomProcessor.instance().device(dev.id) == null)
-                    TelecomProcessor.instance().register(dev);
-            }
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityWirelessRx) {
-            TileEntityWirelessRx box = (TileEntityWirelessRx) world.getTileEntity(x, y, z);
-
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -130,17 +128,17 @@ public class BlockWirelessRx extends SignalBoxSender {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override
@@ -154,11 +152,11 @@ public class BlockWirelessRx extends SignalBoxSender {
                                 if (src != null) return Result.ERR;
 
                                 if (dst == null) {
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.id", box.id);
+                                    Util.say(getPlayer(), "info.signal.box.wireless.id", box.id);
                                 } else {
                                     if (dst.type != RegType.STR) return Result.ERR;
                                     box.id = dst.data.toString();
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.set");
+                                    Util.say(getPlayer(), "info.signal.box.wireless.set");
                                 }
 
                                 return Result.OK;
@@ -168,11 +166,11 @@ public class BlockWirelessRx extends SignalBoxSender {
                                 if (src != null) return Result.ERR;
 
                                 if (dst == null) {
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.key", box.key);
+                                    Util.say(getPlayer(), "info.signal.box.wireless.key", box.key);
                                 } else {
                                     if (dst.type != RegType.STR) return Result.ERR;
                                     box.key = dst.data.toString();
-                                    Utility.say(getPlayer(), "info.signal.box.wireless.set");
+                                    Util.say(getPlayer(), "info.signal.box.wireless.set");
                                 }
 
                                 return Result.OK;

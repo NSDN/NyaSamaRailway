@@ -7,6 +7,10 @@ import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,7 +22,7 @@ import net.minecraft.world.World;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2018.5.1.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockTimer extends SignalBoxSender {
 
@@ -76,6 +80,58 @@ public class BlockTimer extends SignalBoxSender {
             tagCompound.setBoolean("autoReload", autoReload);
             tagCompound.setInteger("state", state);
             return super.toNBT(tagCompound);
+        }
+
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityTimer) {
+                TileEntityTimer timer = (TileEntityTimer) tileEntity;
+
+                int meta = timer.META;
+                int old = meta;
+
+                switch (timer.state) {
+                    case TileEntityTimer.STATE_POS:
+                        if (timer.tmpTime < timer.setTime)
+                            timer.tmpTime += 1;
+                        break;
+                    case TileEntityTimer.STATE_NEG:
+                        timer.tmpTime = 0;
+                        break;
+                    case TileEntityTimer.STATE_ZERO:
+                        break;
+                    default:
+                        break;
+                }
+
+                if (timer.tmpTime >= timer.setTime) {
+                    timer.isEnabled = true;
+                    if (timer.autoReload) timer.tmpTime = 0;
+                } else {
+                    timer.isEnabled = false;
+                }
+
+                boolean isEnabled = timer.isEnabled;
+
+                if (timer.getTransceiver() != null) {
+                    isEnabled = isEnabled && timer.transceiverIsPowered();
+                }
+
+                if (isEnabled) meta |= 0x8;
+                else meta &= 0x7;
+
+                if (old != meta) {
+                    timer.META = meta;
+                }
+                if (timer.hasChanged()) {
+                    timer.updateChanged();
+                    timer.refresh();
+                }
+
+                timer.state = TileEntityTimer.STATE_ZERO;
+            }
         }
 
     }
@@ -145,71 +201,18 @@ public class BlockTimer extends SignalBoxSender {
     }
 
     public BlockTimer() {
-        super(NyaSamaTelecom.modid, "BlockTimer", "timer");
+        super(NyaSamaTelecom.MODID, "BlockTimer", "timer");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public void updateSignal(World world, int x , int y, int z) {
-        if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityTimer) {
-            TileEntityTimer timer = (TileEntityTimer) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityTimer) {
+            TileEntityTimer timer = (TileEntityTimer) tileEntity;
 
-            int meta = world.getBlockMetadata(x, y, z);
-            int old = meta;
-
-            switch (timer.state) {
-                case TileEntityTimer.STATE_POS:
-                    if (timer.tmpTime < timer.setTime)
-                        timer.tmpTime += 1;
-                    break;
-                case TileEntityTimer.STATE_NEG:
-                    timer.tmpTime = 0;
-                    break;
-                case TileEntityTimer.STATE_ZERO:
-                    break;
-                default:
-                    break;
-            }
-
-            if (timer.tmpTime >= timer.setTime) {
-                timer.isEnabled = true;
-                if (timer.autoReload) timer.tmpTime = 0;
-            } else {
-                timer.isEnabled = false;
-            }
-
-            boolean isEnabled = timer.isEnabled;
-
-            if (timer.getTransceiver() != null) {
-                isEnabled = isEnabled && timer.transceiverIsPowered();
-            }
-
-            if (isEnabled) meta |= 0x8;
-            else meta &= 0x7;
-
-            if (old != meta) {
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            }
-            if (timer.hasChanged()) {
-                timer.updateChanged();
-                world.markBlockForUpdate(x, y, z);
-            }
-
-            timer.state = TileEntityTimer.STATE_ZERO;
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityTimer) {
-            TileEntityTimer timer = (TileEntityTimer) world.getTileEntity(x, y, z);
-
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -223,17 +226,17 @@ public class BlockTimer extends SignalBoxSender {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override

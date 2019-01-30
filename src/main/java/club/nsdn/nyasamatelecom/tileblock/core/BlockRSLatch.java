@@ -6,10 +6,11 @@ import club.nsdn.nyasamatelecom.api.tileentity.ITriStateReceiver;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2018.5.1.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockRSLatch extends SignalBoxSender {
 
@@ -49,6 +50,50 @@ public class BlockRSLatch extends SignalBoxSender {
             return super.toNBT(tagCompound);
         }
 
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityRSLatch) {
+                TileEntityRSLatch latch = (TileEntityRSLatch) tileEntity;
+
+                int meta = latch.META;
+                int old = meta;
+
+                switch (latch.state) {
+                    case TileEntityRSLatch.STATE_POS:
+                        latch.isEnabled = true;
+                        break;
+                    case TileEntityRSLatch.STATE_NEG:
+                        latch.isEnabled = false;
+                        break;
+                    case TileEntityRSLatch.STATE_ZERO:
+                        break;
+                    default:
+                        break;
+                }
+
+                boolean isEnabled = latch.isEnabled;
+
+                if (latch.getTransceiver() != null) {
+                    isEnabled = isEnabled && latch.transceiverIsPowered();
+                }
+
+                if (isEnabled) meta |= 0x8;
+                else meta &= 0x7;
+
+                if (old != meta) {
+                    latch.META = meta;
+                }
+                if (latch.hasChanged()) {
+                    latch.updateChanged();
+                    latch.refresh();
+                }
+
+                latch.state = TileEntityRSLatch.STATE_ZERO;
+            }
+        }
+
     }
 
     @Override
@@ -57,53 +102,8 @@ public class BlockRSLatch extends SignalBoxSender {
     }
 
     public BlockRSLatch() {
-        super(NyaSamaTelecom.modid, "BlockRSLatch", "rs_latch");
+        super(NyaSamaTelecom.MODID, "BlockRSLatch", "rs_latch");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
-    }
-
-    @Override
-    public void updateSignal(World world, int x , int y, int z) {
-        if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityRSLatch) {
-            TileEntityRSLatch latch = (TileEntityRSLatch) world.getTileEntity(x, y, z);
-
-            int meta = world.getBlockMetadata(x, y, z);
-            int old = meta;
-
-            switch (latch.state) {
-                case TileEntityRSLatch.STATE_POS:
-                    latch.isEnabled = true;
-                    break;
-                case TileEntityRSLatch.STATE_NEG:
-                    latch.isEnabled = false;
-                    break;
-                case TileEntityRSLatch.STATE_ZERO:
-                    break;
-                default:
-                    break;
-            }
-
-            boolean isEnabled = latch.isEnabled;
-
-            if (latch.getTransceiver() != null) {
-                isEnabled = isEnabled && latch.transceiverIsPowered();
-            }
-
-            if (isEnabled) meta |= 0x8;
-            else meta &= 0x7;
-
-            if (old != meta) {
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            }
-            if (latch.hasChanged()) {
-                latch.updateChanged();
-                world.markBlockForUpdate(x, y, z);
-            }
-
-            latch.state = TileEntityRSLatch.STATE_ZERO;
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-        }
     }
 
 }

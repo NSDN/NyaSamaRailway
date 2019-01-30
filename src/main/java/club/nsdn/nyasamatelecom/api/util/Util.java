@@ -15,7 +15,7 @@ public class Util {
     public static NBTTagList getTagListFromNGT(ItemStack itemStack) {
         if (itemStack == null) return null;
         if (itemStack.getItem() instanceof NGTablet) {
-            if (!itemStack.hasTagCompound()) return null;
+            if (itemStack.getTagCompound() == null) return null;
             return itemStack.getTagCompound().getTagList("pages", 8);
         }
         return null;

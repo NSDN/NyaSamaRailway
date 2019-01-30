@@ -7,6 +7,10 @@ import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import club.nsdn.nyasamatelecom.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.network.NetworkWrapper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,7 +23,7 @@ import org.thewdj.telecom.IPassive;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2018.5.2.
+ * Created by drzzm32 on 2019.1.29.
  */
 public class BlockDelayer extends SignalBox {
 
@@ -30,8 +34,8 @@ public class BlockDelayer extends SignalBox {
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
-            setTime = tagCompound.getInteger("setTime");
             super.fromNBT(tagCompound);
+            setTime = tagCompound.getInteger("setTime");
         }
 
         @Override
@@ -48,6 +52,65 @@ public class BlockDelayer extends SignalBox {
         @Override
         public boolean tryControlSecond(boolean state) {
             return false;
+        }
+
+        @Override
+        public void updateSignal(World world, BlockPos pos) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity == null) return;
+            if (tileEntity instanceof TileEntityDelayer) {
+                TileEntityDelayer delayer = (TileEntityDelayer) tileEntity;
+
+                int meta = delayer.META;
+                int old = meta;
+                boolean isEnabled;
+
+                if (delayer.getSender() == null) {
+                    isEnabled = (meta & 0x8) != 0;
+                    meta &= 0x7;
+                } else {
+                    isEnabled = delayer.senderIsPowered();
+
+                    if (isEnabled) meta |= 0x8;
+                    else meta &= 0x7;
+                }
+
+                delayer.isEnabled = isEnabled;
+
+                if (!isEnabled) delayer.tmpTime = 0;
+                else {
+                    delayer.tmpTime += 1;
+                    if (delayer.tmpTime >= delayer.setTime) {
+                        delayer.tmpTime = 0;
+
+                        isEnabled = !delayer.inverterEnabled;
+                        if (!delayer.tryControlFirst(isEnabled)) {
+                            if (!delayer.tryControlSecond(isEnabled)) {
+                                if (!delayer.setTargetSender(isEnabled)) {
+                                    if (!delayer.setTargetGetter(isEnabled)) {
+                                        if (delayer.getTarget() != null) {
+                                            TileEntity target = delayer.getTarget();
+                                            if (target instanceof TileEntityReceiver) {
+                                                if (target instanceof IPassive) {
+                                                    delayer.controlTarget(isEnabled);
+                                                }
+                                            } else {
+                                                delayer.controlTarget(isEnabled);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (old != meta || delayer.prevInverterEnabled != delayer.inverterEnabled) {
+                    delayer.prevInverterEnabled = delayer.inverterEnabled;
+                    delayer.META = meta;
+                    delayer.refresh();
+                }
+            }
         }
 
     }
@@ -103,83 +166,18 @@ public class BlockDelayer extends SignalBox {
     }
 
     public BlockDelayer() {
-        super(NyaSamaTelecom.modid, "BlockDelayer", "delayer");
+        super(NyaSamaTelecom.MODID, "BlockDelayer", "delayer");
         setCreativeTab(CreativeTabLoader.tabNyaSamaTelecom);
     }
 
     @Override
-    public int tickRate(World world) {
-        return 20;
-    }
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)  {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityDelayer) {
+            TileEntityDelayer delayer = (TileEntityDelayer) tileEntity;
 
-    @Override
-    public void updateSignal(World world, int x , int y, int z) {
-        if (world.getTileEntity(x, y, z) == null) return;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityDelayer) {
-            TileEntityDelayer delayer = (TileEntityDelayer) world.getTileEntity(x, y, z);
-
-            int meta = world.getBlockMetadata(x, y, z);
-            int old = meta;
-            boolean isEnabled;
-
-            if (delayer.getSender() == null) {
-                isEnabled = (meta & 0x8) != 0;
-                meta &= 0x7;
-            } else {
-                isEnabled = delayer.senderIsPowered();
-
-                if (isEnabled) meta |= 0x8;
-                else meta &= 0x7;
-            }
-
-            delayer.isEnabled = isEnabled;
-
-            if (!isEnabled) delayer.tmpTime = 0;
-            else {
-                delayer.tmpTime += 1;
-                if (delayer.tmpTime >= delayer.setTime) {
-                    delayer.tmpTime = 0;
-
-                    isEnabled = !delayer.inverterEnabled;
-                    if (!delayer.tryControlFirst(isEnabled)) {
-                        if (!delayer.tryControlSecond(isEnabled)) {
-                            if (!delayer.setTargetSender(isEnabled)) {
-                                if (!delayer.setTargetGetter(isEnabled)) {
-                                    if (delayer.getTarget() != null) {
-                                        TileEntity tileEntity = delayer.getTarget();
-                                        if (tileEntity instanceof TileEntityReceiver) {
-                                            if (tileEntity instanceof IPassive) {
-                                                delayer.controlTarget(isEnabled);
-                                            }
-                                        } else {
-                                            delayer.controlTarget(isEnabled);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (old != meta || delayer.prevInverterEnabled != delayer.inverterEnabled) {
-                delayer.prevInverterEnabled = delayer.inverterEnabled;
-                world.markBlockForUpdate(x, y, z);
-                world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-            }
-
-            world.scheduleBlockUpdate(x, y, z, this, 1);
-        }
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        if (world.getTileEntity(x, y, z) == null) return false;
-        if (world.getTileEntity(x, y, z) instanceof TileEntityDelayer) {
-            TileEntityDelayer delayer = (TileEntityDelayer) world.getTileEntity(x, y, z);
-
-            ItemStack stack = player.getCurrentEquippedItem();
-            if (stack != null) {
+            ItemStack stack = player.getHeldItem(hand);
+            if (!stack.isEmpty()) {
                 NBTTagList list = Util.getTagListFromNGT(stack);
                 if (list == null) return false;
 
@@ -193,17 +191,17 @@ public class BlockDelayer extends SignalBox {
 
                         @Override
                         public double getX() {
-                            return x;
+                            return pos.getX();
                         }
 
                         @Override
                         public double getY() {
-                            return y;
+                            return pos.getY();
                         }
 
                         @Override
                         public double getZ() {
-                            return z;
+                            return pos.getZ();
                         }
 
                         @Override

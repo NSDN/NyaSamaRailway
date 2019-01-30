@@ -101,8 +101,17 @@ public class SignalBoxSender extends DeviceBase {
         }
     }
 
-    protected void playClickSound(@Nullable EntityPlayer player, World world, BlockPos pos) {
-        world.playSound(player, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    protected void playClickSound(World world, BlockPos pos, boolean state) {
+        if (state)
+            world.playSound(
+                    null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON,
+                    SoundCategory.BLOCKS, 0.3F, 0.6F
+            );
+        else
+            world.playSound(
+                    null, pos, SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF,
+                    SoundCategory.BLOCKS, 0.3F, 0.5F
+            );
     }
 
     @Override
@@ -114,7 +123,7 @@ public class SignalBoxSender extends DeviceBase {
             if (!world.isRemote) {
                 sender.prevIsEnabled = sender.isEnabled;
                 sender.isEnabled = !sender.isEnabled;
-                playClickSound(player, world, pos);
+                playClickSound(world, pos, sender.isEnabled);
             }
             return true;
         }

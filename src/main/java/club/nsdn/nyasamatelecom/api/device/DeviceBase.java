@@ -4,17 +4,17 @@ import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.*;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -55,12 +55,23 @@ public class DeviceBase extends BlockContainer {
     }
 
     @Override
+    @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity != null)
             if (tileEntity instanceof TileEntityBase)
                 return ((TileEntityBase) tileEntity).AABB();
         return Block.FULL_BLOCK_AABB;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState p_isFullCube_1_) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
     @Override

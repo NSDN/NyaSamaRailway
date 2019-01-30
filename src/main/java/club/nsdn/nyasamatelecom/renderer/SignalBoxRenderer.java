@@ -4,21 +4,21 @@ import club.nsdn.nyasamatelecom.api.device.SignalBox;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityMultiSender;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.obj.WavefrontObject;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
+
 /**
- * Created by drzzm32 on 2017.12.28.
+ * Created by drzzm32 on 2019.1.29.
  */
-public class SignalBoxRenderer extends TileEntitySpecialRenderer {
+public class SignalBoxRenderer extends AbsTileEntitySpecialRenderer {
 
     private final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_base.obj")
@@ -77,8 +77,9 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
         }
     }
 
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
-        int meta = te.getBlockMetadata();
+    @Override
+    public void render(@Nonnull TileEntityBase te, double x, double y, double z, float partialTicks, int destroyStage, float partial) {
+        int meta = te.META;
 
         boolean txState;
         boolean rxState;
@@ -124,8 +125,6 @@ public class SignalBoxRenderer extends TileEntitySpecialRenderer {
         } else {
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         GL11.glPushMatrix();
 

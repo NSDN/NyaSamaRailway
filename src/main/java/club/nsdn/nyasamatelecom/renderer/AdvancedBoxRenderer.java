@@ -3,14 +3,10 @@ package club.nsdn.nyasamatelecom.renderer;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import club.nsdn.nyasamatelecom.tileblock.core.BlockRSLatch;
 import club.nsdn.nyasamatelecom.tileblock.core.BlockTimer;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.obj.*;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -18,14 +14,14 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2018.12.14.
  */
-public class AdvancedBoxRenderer extends TileEntitySpecialRenderer<TileEntityBase> {
+public class AdvancedBoxRenderer extends AbsTileEntitySpecialRenderer {
 
-    private final OBJModel modelBase = OBJLoader.INSTANCE.loadModel(
-            new ResourceLocation("nyasamatelecom", "models/block/signal_box_base.obj")
+    private final WavefrontObject modelBase = new WavefrontObject(
+            new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_base.obj")
     );
 
     private final WavefrontObject modelLcd = new WavefrontObject(
-            new ResourceLocation("nyasamatelecom", "models/block/signal_box_lcd.obj")
+            new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_lcd.obj")
     );
 
     private final ResourceLocation textureText[];
@@ -35,16 +31,16 @@ public class AdvancedBoxRenderer extends TileEntitySpecialRenderer<TileEntityBas
     private final ResourceLocation textureBase;
 
     private final WavefrontObject models[] = {
-            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/block/signal_box_sign1.obj")),
-            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/block/signal_box_sign2.obj")),
-            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/block/signal_box_sign3.obj"))
+            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_sign1.obj")),
+            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_sign2.obj")),
+            new WavefrontObject(new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_sign3.obj"))
     };
     private final ResourceLocation textures[] = {
-            new ResourceLocation("nyasamatelecom", "textures/block/signal_box_r.png"),
-            new ResourceLocation("nyasamatelecom", "textures/block/signal_box_y.png"),
-            new ResourceLocation("nyasamatelecom", "textures/block/signal_box_g.png"),
-            new ResourceLocation("nyasamatelecom", "textures/block/signal_box_none.png"),
-            new ResourceLocation("nyasamatelecom", "textures/block/signal_box_w.png")
+            new ResourceLocation("nyasamatelecom", "textures/blocks/signal_box_r.png"),
+            new ResourceLocation("nyasamatelecom", "textures/blocks/signal_box_y.png"),
+            new ResourceLocation("nyasamatelecom", "textures/blocks/signal_box_g.png"),
+            new ResourceLocation("nyasamatelecom", "textures/blocks/signal_box_none.png"),
+            new ResourceLocation("nyasamatelecom", "textures/blocks/signal_box_w.png")
     };
     private static final int SIGN_R = 0;
     private static final int SIGN_Y = 1;
@@ -59,14 +55,14 @@ public class AdvancedBoxRenderer extends TileEntitySpecialRenderer<TileEntityBas
                     "nyasamatelecom", "textures/fonts/" + "font_" + i + ".png"
             );
 
-        textureBase = new ResourceLocation("nyasamatelecom", "textures/block/" + texture + ".png");
+        textureBase = new ResourceLocation("nyasamatelecom", "textures/blocks/" + texture + ".png");
 
         if (hasButton) {
             modelBtn = new WavefrontObject(
-                    new ResourceLocation("nyasamatelecom", "models/block/signal_box_btn.obj")
+                    new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_btn.obj")
             );
             modelBtnLight = new WavefrontObject(
-                    new ResourceLocation("nyasamatelecom", "models/block/signal_box_btn_light.obj")
+                    new ResourceLocation("nyasamatelecom", "models/blocks/signal_box_btn_light.obj")
             );
         } else {
             modelBtn = null;
@@ -113,8 +109,6 @@ public class AdvancedBoxRenderer extends TileEntitySpecialRenderer<TileEntityBas
         } else {
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-
-        Tessellator.getInstance().setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         GL11.glPushMatrix();
 

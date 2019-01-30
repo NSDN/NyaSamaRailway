@@ -1,7 +1,11 @@
 {
+  "forge_marker": 1,
   "variants": {
     "normal": {
-      "model": "nyasamatelecom:nst_nsdn"
+      "model": "nyasamatelecom:cube_block",
+      "textures": {
+        "texture": "nyasamatelecom:block/nsdn_logo"
+      }
     }
   }
 }

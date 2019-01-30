@@ -1,38 +1,40 @@
 package club.nsdn.nyasamatelecom.renderer;
 
+import club.nsdn.nyasamatelecom.NyaSamaTelecom;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import club.nsdn.nyasamatelecom.tileblock.core.BlockNSPGA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.obj.WavefrontObject;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
+
 /**
- * Created by drzzm32 on 2018.3.13.
+ * Created by drzzm32 on 2019.1.29.
  */
-public class NSPGARenderer extends TileEntitySpecialRenderer {
+public class NSPGARenderer extends AbsTileEntitySpecialRenderer {
 
     private final WavefrontObject modelBase = new WavefrontObject(
-            new ResourceLocation("nyasamatelecom", "models/blocks/nspga_base.obj")
+            new ResourceLocation(NyaSamaTelecom.MODID, "models/blocks/nspga_base.obj")
     );
-    private final ResourceLocation textureBase = new ResourceLocation("nyasamatelecom", "textures/blocks/nspga_base.png");
+    private final ResourceLocation textureBase = new ResourceLocation(NyaSamaTelecom.MODID, "textures/blocks/nspga_base.png");
 
     private final WavefrontObject modelPrint = new WavefrontObject(
-            new ResourceLocation("nyasamatelecom", "models/blocks/nspga_print.obj")
+            new ResourceLocation(NyaSamaTelecom.MODID, "models/blocks/nspga_print.obj")
     );
 
     public NSPGARenderer() {
     }
 
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
-        int meta = te.getBlockMetadata();
+    @Override
+    public void render(@Nonnull TileEntityBase te, double x, double y, double z, float partialTicks, int destroyStage, float partial) {
+        int meta = te.META;
         if (!(te.getBlockType() instanceof BlockNSPGA)) return;
         BlockNSPGA block = (BlockNSPGA) te.getBlockType();
         if (block.texturePrint == null)
-            block.texturePrint = new ResourceLocation("nyasamatelecom", "textures/blocks/" + block.name + "_print" + ".png");
+            block.texturePrint = new ResourceLocation(NyaSamaTelecom.MODID, "textures/blocks/" + block.name + "_print" + ".png");
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
@@ -47,8 +49,6 @@ public class NSPGARenderer extends TileEntitySpecialRenderer {
         } else {
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-
-        Tessellator.instance.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
         GL11.glPushMatrix();
 
