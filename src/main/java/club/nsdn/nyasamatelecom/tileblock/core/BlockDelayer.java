@@ -54,6 +54,27 @@ public class BlockDelayer extends SignalBox {
             return false;
         }
 
+        public void doControl(TileEntityDelayer delayer, boolean isEnabled) {
+            if (!delayer.tryControlFirst(isEnabled)) {
+                if (!delayer.tryControlSecond(isEnabled)) {
+                    if (!delayer.setTargetSender(isEnabled)) {
+                        if (!delayer.setTargetGetter(isEnabled)) {
+                            if (delayer.getTarget() != null) {
+                                TileEntity target = delayer.getTarget();
+                                if (target instanceof TileEntityReceiver) {
+                                    if (target instanceof IPassive) {
+                                        delayer.controlTarget(isEnabled);
+                                    }
+                                } else {
+                                    delayer.controlTarget(isEnabled);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         @Override
         public void updateSignal(World world, BlockPos pos) {
             TileEntity tileEntity = world.getTileEntity(pos);
@@ -77,31 +98,15 @@ public class BlockDelayer extends SignalBox {
 
                 delayer.isEnabled = isEnabled;
 
-                if (!isEnabled) delayer.tmpTime = 0;
+                if (!isEnabled) {
+                    delayer.tmpTime = 0;
+                    doControl(delayer, delayer.inverterEnabled);
+                }
                 else {
                     delayer.tmpTime += 1;
                     if (delayer.tmpTime >= delayer.setTime) {
                         delayer.tmpTime = 0;
-
-                        isEnabled = !delayer.inverterEnabled;
-                        if (!delayer.tryControlFirst(isEnabled)) {
-                            if (!delayer.tryControlSecond(isEnabled)) {
-                                if (!delayer.setTargetSender(isEnabled)) {
-                                    if (!delayer.setTargetGetter(isEnabled)) {
-                                        if (delayer.getTarget() != null) {
-                                            TileEntity target = delayer.getTarget();
-                                            if (target instanceof TileEntityReceiver) {
-                                                if (target instanceof IPassive) {
-                                                    delayer.controlTarget(isEnabled);
-                                                }
-                                            } else {
-                                                delayer.controlTarget(isEnabled);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        doControl(delayer, !delayer.inverterEnabled);
                     }
                 }
 
@@ -138,6 +143,18 @@ public class BlockDelayer extends SignalBox {
 
         @Override
         public void loadFunc(LinkedHashMap<String, Operator> funcList) {
+            funcList.put("inv", (dst, src) -> {
+                if (dst != null) return Result.ERR;
+                if (src != null) return Result.ERR;
+
+                getDelayer().inverterEnabled = !getDelayer().inverterEnabled;
+                if (getDelayer().inverterEnabled)
+                    Util.say(getPlayer(), "info.signal.box.inverter.on");
+                else
+                    Util.say(getPlayer(), "info.signal.box.inverter.off");
+
+                return Result.OK;
+            });
             funcList.put("set", (dst, src) -> {
                 if (src != null) return Result.ERR;
                 if (dst == null) {
