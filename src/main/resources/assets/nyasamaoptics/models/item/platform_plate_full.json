@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamaoptics:block/tile_icon",
+  "textures": {
+    "icon": "nyasamaoptics:block/platform_plate_full"
+  }
+}

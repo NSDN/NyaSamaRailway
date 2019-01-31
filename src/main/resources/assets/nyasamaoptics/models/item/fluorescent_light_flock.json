@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamaoptics:block/tile_icon",
+  "textures": {
+    "icon": "nyasamaoptics:block/fluorescent_light_flock"
+  }
+}

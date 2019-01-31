@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamaoptics:block/tile_icon",
+  "textures": {
+    "icon": "nyasamaoptics:block/holo_jet_rev"
+  }
+}

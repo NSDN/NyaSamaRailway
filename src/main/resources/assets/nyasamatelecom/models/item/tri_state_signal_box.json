@@ -1,6 +1,0 @@
-{
-  "parent": "nyasamatelecom:block/tile_icon",
-  "textures": {
-    "icon": "nyasamatelecom:block/tri_state_signal_box"
-  }
-}
