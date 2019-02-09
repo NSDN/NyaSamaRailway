@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "nyasamarailway:item/item_nspc_8c"
+  }
+}

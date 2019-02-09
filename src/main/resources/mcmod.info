@@ -1,8 +1,8 @@
 [
 {
-  "modid": "nyasamaoptics",
-  "name": "NyaSama Optics",
-  "description": "NyaSama optics mod.",
+  "modid": "nyasamarailway",
+  "name": "NyaSama Railway",
+  "description": "NyaSama railway mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://dev.nyasama.com/nsmc",
@@ -11,7 +11,7 @@
   "credits": "Copyright (C) NSDN 2014 - 2019",
   "logoFile": "logo.png",
   "screenshots": [],
-  "requiredMods": ["NyaSamaTelecom"],
+  "requiredMods": ["NyaSamaTelecom", "NyaSamaOptics"],
   "dependencies": []
 }
 ]

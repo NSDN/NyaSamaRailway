@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamarailway:block/tile_icon",
+  "textures": {
+    "icon": "nyasamarailway:block/rail_sign_vertical_head_8"
+  }
+}

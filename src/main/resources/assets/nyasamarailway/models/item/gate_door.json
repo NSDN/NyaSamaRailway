@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamarailway:block/tile_icon",
+  "textures": {
+    "icon": "nyasamarailway:block/gate_door"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "nyasamarailway:block/pane_cap",
+    "textures": {
+        "pane": "nyasamarailway:block/iron_bars"
+    }
+}

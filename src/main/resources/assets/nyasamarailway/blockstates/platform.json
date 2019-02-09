@@ -1,0 +1,34 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "top": "nyasamarailway:block/platform_side",
+      "side": "nyasamarailway:block/platform_side",
+      "bottom": "nyasamarailway:block/platform_side",
+      "face": "nyasamarailway:block/platform_face"
+    },
+    "model": "nyasamarailway:edge_tall"
+  },
+  "variants": {
+    "normal": [{}],
+    "facing": {
+      "north": [{ "y": 90, "uvlock": true }],
+      "south": [{ "y": 270, "uvlock": true }],
+      "west": [{}],
+      "east": [{ "y": 180, "uvlock": true }]
+    },
+    "half": {
+      "top": [{ "model": "nyasamarailway:edge_top" }],
+      "bottom": [{ "model": "nyasamarailway:edge_bottom" }],
+      "tall": [{
+        "model": "nyasamarailway:edge_tall",
+        "textures": {
+          "top": "nyasamarailway:block/platform_tall",
+          "side": "nyasamarailway:block/platform_tall",
+          "bottom": "nyasamarailway:block/platform_tall",
+          "face": "nyasamarailway:block/platform_tall"
+        }
+      }]
+    }
+  }
+}

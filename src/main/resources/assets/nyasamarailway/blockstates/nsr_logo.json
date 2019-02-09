@@ -1,0 +1,11 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": {
+      "model": "nyasamarailway:cube_block",
+      "textures": {
+        "texture": "nyasamarailway:block/nsr_logo"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "nyasamarailway:block/edge_tall",
+  "textures": {
+    "top": "nyasamarailway:block/platform_tall",
+    "side": "nyasamarailway:block/platform_tall",
+    "bottom": "nyasamarailway:block/platform_tall",
+    "face": "nyasamarailway:block/platform_face"
+  }
+}

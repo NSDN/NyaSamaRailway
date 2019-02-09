@@ -1,0 +1,42 @@
+{
+  "info.reception.pause": {
+    "subtitle": "subtitles.reception.pause",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/reception/pause",
+      "stream": false
+    }]
+  },
+  "info.reception.ready": {
+    "subtitle": "subtitles.reception.ready",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/reception/ready",
+      "stream": false
+    }]
+  },
+  "info.reception.delay": {
+    "subtitle": "subtitles.reception.delay",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/reception/delay",
+      "stream": false
+    }]
+  },
+  "info.reception.close": {
+    "subtitle": "subtitles.reception.close",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/reception/close",
+      "stream": false
+    }]
+  },
+  "info.gate.beep": {
+    "subtitle": "subtitles.gate.beep",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/gate/beep",
+      "stream": false
+    }]
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "nyasamarailway:block/pane_post_ends",
+    "textures": {
+        "pane": "nyasamarailway:block/iron_web"
+    }
+}
