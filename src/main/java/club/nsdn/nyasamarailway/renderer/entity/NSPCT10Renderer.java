@@ -8,7 +8,7 @@ import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
- * Created by drzzm32 on 2018.4.17.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT10Renderer extends AbsCartRenerer {
 

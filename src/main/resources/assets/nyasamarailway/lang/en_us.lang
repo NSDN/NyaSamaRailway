@@ -137,6 +137,8 @@ tile.RailTriSwitch.name=Tri-State Switch
 tile.BlockPlatform.name=Platform Edge
 info.sniffer.set=[NSR] Sniffer Rail's code flashed
 tile.Pillar.name=Pillar
+tile.PillarBig.name=Big Pillar
+tile.PillarQuad.name=Quad Pillar
 tile.BiSignalLight.name=Bi-Signal Light
 tile.TriSignalLight.name=Tri-Signal Light
 tile.SignalLamp.name=Signal Lamp
@@ -157,6 +159,8 @@ tile.TrackSideBlockingHs.name=TS-001B High-Speed Track-Side Blocking Device
 tile.TrackSideSnifferHs.name=TS-002B High-Speed Track-Side Sniffer Device
 tile.TrackSideRFIDHs.name=TS-003B High-Speed Track-Side RFID Device
 info.trackside.invert=Track-Side Device Direction changed
+tile.WireRail.name=Wire Rail
+tile.WireRailNode.name=Wire Rail Node
 
 itemGroup.tabNSTest=NyaSama Test
 tile.BlockNSTest.name=NyaSama Test
@@ -181,6 +185,7 @@ item.ItemNSC3B.name=NSC3B
 item.ItemNSC3BM.name=NSC3BM
 
 subtitles.reception.pause=Parking Beep
+subtitles.reception.jetty=Parking Beep
 subtitles.reception.ready=Depart Beep
 subtitles.reception.delay=Put Off Beep
 subtitles.reception.close=Close-To Beep

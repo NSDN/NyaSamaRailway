@@ -3,7 +3,7 @@ package club.nsdn.nyasamarailway.util;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2018.3.21.
+ * Created by drzzm32 on 2019.2.10
  */
 public class HashMap extends LinkedHashMap<String, String> {
 

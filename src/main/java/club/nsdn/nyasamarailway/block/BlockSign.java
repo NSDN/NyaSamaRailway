@@ -7,7 +7,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
 /**
- * Created by drzzm32 on 2019.1.30.
+ * Created by drzzm32 on 2019.2.10
  */
 public class BlockSign extends BlockGlass {
 

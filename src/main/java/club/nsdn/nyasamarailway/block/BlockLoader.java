@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
- * Created by drzzm32 on 2016.5.5.
+ * Created by drzzm32 on 2019.2.10
  */
 public class BlockLoader {
 
@@ -92,6 +92,7 @@ public class BlockLoader {
         blocks.add(new BlockIronBars());
         blocks.add(new BlockIronWeb());
         blocks.add(new BlockPlatform());
+        blocks.add(new BlockWireRailNode());
 
         GlassShieldAl shieldAl = new GlassShieldAl();
         blocks.add(shieldAl);
@@ -101,6 +102,8 @@ public class BlockLoader {
         blocks.add(corner);
         blocks.add(new GlassShieldCornerHalf(corner));
         blocks.add(new Pillar());
+        blocks.add(new PillarBig());
+        blocks.add(new PillarQuad());
         blocks.add(new RailSignBody());
         blocks.add(new RailSignHead("RailSignHeadBeep", "rail_sign_head_beep", "rail_sign_head_beep"));
         blocks.add(new RailSignHead("RailSignHeadCut", "rail_sign_head_cut", "rail_sign_head_cut"));
@@ -140,6 +143,7 @@ public class BlockLoader {
         blocks.add(new RailStoneSleeper());
         blocks.add(new RailNoSleeper());
         blocks.add(new RailTriSwitch());
+        blocks.add(new WireRail());
 
         blocks.add(new GateFront());
         blocks.add(new GlassShield());

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.9.4.
+ * Created by drzzm32 on 2019.2.10
  */
 public class GateBase extends TileBlock {
 
@@ -200,10 +200,9 @@ public class GateBase extends TileBlock {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity == null) return false;
         if (tileEntity instanceof TileEntityBase) {
-            int meta = ((TileEntityBase) tileEntity).META;
-            EnumFacing dir = getDirFromMeta(meta);
-            if (facing.getAxis() == EnumFacing.Axis.Y) return facing == EnumFacing.DOWN;
-            return dir != facing.rotateY() && dir != facing.rotateY().getOpposite() && facing != EnumFacing.UP;
+            if (facing.getAxis() == EnumFacing.Axis.Y)
+                return facing == EnumFacing.DOWN;
+            return facing != EnumFacing.UP;
         }
         return false;
     }

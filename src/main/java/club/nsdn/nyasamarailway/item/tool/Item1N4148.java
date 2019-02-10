@@ -28,7 +28,7 @@ import java.util.UUID;
 import static club.nsdn.nyasamatelecom.api.util.Util.say;
 
 /**
- * Created by drzzm32 on 2016.8.11.
+ * Created by drzzm32 on 2019.2.10
  */
 public class Item1N4148 extends ToolBase {
 
@@ -177,13 +177,11 @@ public class Item1N4148 extends ToolBase {
         if (tileEntity instanceof ITrackSide) {
             ITrackSide trackSide = (ITrackSide) tileEntity;
 
-            if (player.isSneaking()) {
-                if (trackSide.hasInvert()) {
-                    trackSide.setInvert(!trackSide.isInvert());
-                    say(player, "info.trackside.invert");
+            if (trackSide.hasInvert()) {
+                trackSide.setInvert(!trackSide.isInvert());
+                say(player, "info.trackside.invert");
 
-                    return world.isRemote ? EnumActionResult.PASS : EnumActionResult.SUCCESS;
-                }
+                return world.isRemote ? EnumActionResult.PASS : EnumActionResult.SUCCESS;
             }
         } else if (tileEntity instanceof TriStateSignalBox.TileEntityTriStateSignalBox) {
             TriStateSignalBox.TileEntityTriStateSignalBox signalBox = (TriStateSignalBox.TileEntityTriStateSignalBox) tileEntity;

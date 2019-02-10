@@ -138,6 +138,8 @@ tile.RailTriSwitch.name=三开道岔
 tile.BlockPlatform.name=站台边缘
 info.sniffer.set=[NSR] 嗅探轨程序已更新
 tile.Pillar.name=信号机柱
+tile.PillarBig.name=金属柱
+tile.PillarQuad.name=四方柱
 tile.BiSignalLight.name=双灯信号机
 tile.TriSignalLight.name=三灯信号机
 tile.SignalLamp.name=信号灯
@@ -158,6 +160,8 @@ tile.TrackSideBlockingHs.name=TS-001B高速轨旁闭塞机
 tile.TrackSideSnifferHs.name=TS-002B高速轨旁嗅探机
 tile.TrackSideRFIDHs.name=TS-003B高速轨旁射频机
 info.trackside.invert=轨旁设备方向已变更
+tile.WireRail.name=缆型轨
+tile.WireRailNode.name=缆型轨节点
 
 itemGroup.tabNSTest=喵玉测试
 tile.BlockNSTest.name=喵玉测试
@@ -182,6 +186,7 @@ item.ItemNSC3B.name=NSC3B单轨运输桶
 item.ItemNSC3BM.name=NSC3BM单轨运输桶(机车版)
 
 subtitles.reception.pause=停站提示音
+subtitles.reception.jetty=停站提示音
 subtitles.reception.ready=发车提示音
 subtitles.reception.delay=推迟提示音
 subtitles.reception.close=接近提示音

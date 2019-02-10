@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 
 /**
- * Created by drzzm32 on 2016.5.16.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TrainPacket implements IMessage {
 

@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.2.21.
+ * Created by drzzm32 on 2019.2.10
  */
 public class ConvWireMonoRenderer extends AbsTileEntitySpecialRenderer {
 

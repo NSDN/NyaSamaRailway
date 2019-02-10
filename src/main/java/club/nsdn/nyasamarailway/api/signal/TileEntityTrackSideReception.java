@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.api.signal;
 
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
+import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
 import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.SoundUtil;
@@ -31,7 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 /**
- * Created by drzzm32 on 2019.1.4.
+ * Created by drzzm32 on 2019.2.10
  */
 public abstract class TileEntityTrackSideReception extends TileEntityActuator implements ITriStateReceiver, ITrackSide {
 
@@ -216,20 +217,20 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     protected boolean tryControlFirst(boolean state) {
         TileEntity railTarget = getTarget();
-
-        if (railTarget == null) return false;
-
-        return true;
-    }
-
-    protected boolean tryControlSecond(boolean state) {
-        TileEntity railTarget = getTarget();
         if (railTarget == null) return false;
 
         if (railTarget instanceof TileEntitySignalLight) {
             ((TileEntitySignalLight) railTarget).isPowered = state;
             return true;
         }
+
+        return false;
+    }
+
+    protected boolean tryControlSecond(boolean state) {
+        TileEntity railTarget = getTarget();
+        if (railTarget == null) return false;
+
         return false;
     }
 
@@ -351,20 +352,25 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     }
 
     public static void setCartDefaultPosition(EntityMinecart cart, BlockPos pos) {
+        cart.setVelocity(0, 0, 0);
+        cart.motionX = cart.motionZ = 0.0D;
         cart.setPosition(pos.getX() + 0.5, pos.getY() + 0.0625, pos.getZ() + 0.5);
     }
 
     enum EnumSound {
-        PAUSE_10,
-        PAUSE_20,
+        PAUSE,
+        JETTY,
         READY,
         DELAY
     }
 
     public static void playSoundOnCart(EntityMinecart cart, EnumSound sound) {
         switch (sound) {
-            case PAUSE_10:
+            case PAUSE:
                 SoundUtil.instance().playSound(cart, SoundUtil.instance().RECEPTION_PAUSE);
+                break;
+            case JETTY:
+                SoundUtil.instance().playSound(cart, SoundUtil.instance().RECEPTION_JETTY);
                 break;
             case DELAY:
                 SoundUtil.instance().playSound(cart, SoundUtil.instance().RECEPTION_DELAY);
@@ -433,7 +439,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 }
 
                 if (cart.getPassengers().isEmpty()) {
-                    cart.motionX = 0.0D; cart.motionZ = 0.0D;
+                    if (cart instanceof AbsMotoCart)
+                        ((AbsMotoCart) cart).Velocity = 0.0D;
                     setCartDefaultPosition(cart, pos);
 
                     reception.reset();
@@ -450,11 +457,13 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     //reception.delay = DELAY_TIME * 15 - 1;
                 }
 
-                LinkedList<EntityPlayer> players = new LinkedList<>();
-                for (Entity entity : cart.getPassengers())
-                    if (entity instanceof EntityPlayer)
-                        players.add((EntityPlayer) entity);
-                cart(cart, reception, players);
+                if (!cart.getPassengers().isEmpty()) {
+                    LinkedList<EntityPlayer> players = new LinkedList<>();
+                    for (Entity entity : cart.getPassengers())
+                        if (entity instanceof EntityPlayer)
+                            players.add((EntityPlayer) entity);
+                    cart(cart, reception, players);
+                }
             }
 
             tri(cart, reception);
@@ -490,8 +499,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 setCartDefaultPosition(loco, pos);
                 for (EntityPlayer player : players)
                     Util.say(player, "info.reception.pause", reception.setDelay);
-                if (reception.setDelay == 10) playSoundOnCart(loco, EnumSound.PAUSE_10);
-                else if (reception.setDelay == 20) playSoundOnCart(loco, EnumSound.PAUSE_20);
+                if (reception.setDelay == 10) playSoundOnCart(loco, EnumSound.PAUSE);
+                else if (reception.setDelay == 20) playSoundOnCart(loco, EnumSound.JETTY);
             }
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
@@ -510,7 +519,6 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                         for (EntityPlayer player : players)
                             Util.say(player, "info.reception.delay");
                         playSoundOnCart(loco, EnumSound.DELAY);
-
                     }
                 }
 
@@ -546,6 +554,10 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         }
     }
 
+    protected double getVelSq(EntityMinecart cart) {
+        return cart.motionX * cart.motionX + cart.motionZ * cart.motionZ;
+    }
+
     protected void cart(EntityMinecart cart, TileEntityTrackSideReception reception, LinkedList<EntityPlayer> players) {
         if (reception == null) return; if (cart == null) return;
 
@@ -565,75 +577,67 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             return;
         }
 
-        if (reception.cartType.isEmpty() && (cart.motionX * cart.motionX + cart.motionZ * cart.motionZ == 0))
+        if (reception.cartType.isEmpty() && (getVelSq(cart) == 0))
             registerCart(reception, cart);
 
-        if (players != null) {
-            if ((cart.motionX * cart.motionX + cart.motionZ * cart.motionZ > 0) && !reception.enable) {
-                if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
-                    cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
-                    cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
-                } else {
-                    reception.enable = true;
-                    reception.doorCtrl = true;
-
-                    cart.motionX = 0.0D; cart.motionZ = 0.0D;
-                    setCartDefaultPosition(cart, pos);
-                    for (EntityPlayer player : players)
-                        Util.say(player, "info.reception.pause", reception.setDelay);
-                    if (reception.setDelay == 10) playSoundOnCart(cart, EnumSound.PAUSE_10);
-                    else if (reception.setDelay == 20) playSoundOnCart(cart, EnumSound.PAUSE_20);
-                }
+        if ((getVelSq(cart) > 0) && !reception.enable) {
+            if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
+                cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
+                cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
             } else {
-                if (reception.delay < reception.setDelay * 20 && reception.enable) {
-                    boolean isEnabled = false;
+                reception.enable = true;
+                reception.doorCtrl = true;
 
-                    if (reception.getSender() != null)
-                        isEnabled = reception.senderIsPowered();
-
-                    if (!isEnabled) reception.delay += 1;
-                    else {
-                        reception.count += 1;
-
-                        if (reception.delay + reception.count == reception.setDelay * 15) {
-                            reception.delay = reception.setDelay * 15 - 1;
-                            reception.count += 1;
-                            for (EntityPlayer player : players)
-                                Util.say(player, "info.reception.delay");
-                            playSoundOnCart(cart, EnumSound.DELAY);
-                        }
-                    }
-
-                    if (reception.delay == reception.setDelay * 15) {
-                        reception.count = 0;
-                        reception.doorCtrl = false;
-                        for (EntityPlayer player : players)
-                            Util.say(player, "info.reception.ready", reception.setDelay);
-                        playSoundOnCart(cart, EnumSound.READY);
-                    }
-
-                    cart.motionX = 0.0D;
-                    cart.motionZ = 0.0D;
-                    setCartDefaultPosition(cart, pos);
-                } else {
-                    double dir = (reception.direction == EnumFacing.NORTH || reception.direction == EnumFacing.EAST) ? 1 : -1;
-                    if (reception.isInvert()) dir = -dir;
-                    if (reception.direction.getFrontOffsetZ() != 0) {
-                        if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
-                        if (Math.abs(cart.motionZ) < maxV)
-                            cart.motionZ = -dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1D, 1.0D, 0.1D, 0.02D);
-                    } else if (reception.direction.getFrontOffsetX() != 0) {
-                        if (cart.motionX * dir <= 0.0D) cart.motionX = dir * 0.005D;
-                        if (Math.abs(cart.motionX) < maxV)
-                            cart.motionX = dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1D, 1.0D, 0.1D, 0.02D);
-                    }
-                }
+                if (cart instanceof AbsMotoCart)
+                    ((AbsMotoCart) cart).Velocity = 0.0D;
+                setCartDefaultPosition(cart, pos);
+                for (EntityPlayer player : players)
+                    Util.say(player, "info.reception.pause", reception.setDelay);
+                if (reception.setDelay == 10) playSoundOnCart(cart, EnumSound.PAUSE);
+                else if (reception.setDelay == 20) playSoundOnCart(cart, EnumSound.JETTY);
             }
         } else {
-            cart.motionX = 0.0D; cart.motionZ = 0.0D;
-            setCartDefaultPosition(cart, pos);
+            if (reception.delay < reception.setDelay * 20 && reception.enable) {
+                boolean isEnabled = false;
 
-            reception.reset();
+                if (reception.getSender() != null)
+                    isEnabled = reception.senderIsPowered();
+
+                if (!isEnabled) reception.delay += 1;
+                else {
+                    reception.count += 1;
+
+                    if (reception.delay + reception.count == reception.setDelay * 15) {
+                        reception.delay = reception.setDelay * 15 - 1;
+                        reception.count += 1;
+                        for (EntityPlayer player : players)
+                            Util.say(player, "info.reception.delay");
+                        playSoundOnCart(cart, EnumSound.DELAY);
+                    }
+                }
+
+                if (reception.delay == reception.setDelay * 15) {
+                    reception.count = 0;
+                    reception.doorCtrl = false;
+                    for (EntityPlayer player : players)
+                        Util.say(player, "info.reception.ready", reception.setDelay);
+                    playSoundOnCart(cart, EnumSound.READY);
+                }
+
+                setCartDefaultPosition(cart, pos);
+            } else {
+                double dir = (reception.direction == EnumFacing.NORTH || reception.direction == EnumFacing.EAST) ? 1 : -1;
+                if (reception.isInvert()) dir = -dir;
+                if (reception.direction.getFrontOffsetZ() != 0) {
+                    if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
+                    if (Math.abs(cart.motionZ) < maxV)
+                        cart.motionZ = -dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1D, 1.0D, 0.1D, 0.02D);
+                } else if (reception.direction.getFrontOffsetX() != 0) {
+                    if (cart.motionX * dir <= 0.0D) cart.motionX = dir * 0.005D;
+                    if (Math.abs(cart.motionX) < maxV)
+                        cart.motionX = dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1D, 1.0D, 0.1D, 0.02D);
+                }
+            }
         }
     }
 

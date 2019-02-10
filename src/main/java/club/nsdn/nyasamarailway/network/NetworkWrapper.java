@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
- * Created by drzzm32 on 2016.5.16.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NetworkWrapper {
     public static SimpleNetworkWrapper instance;

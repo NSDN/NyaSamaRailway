@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2016.5.24.
+ * Created by drzzm32 on 2019.2.10
  */
 public class EntityModelBinder {
 

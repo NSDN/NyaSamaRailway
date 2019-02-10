@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2019.1.5.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TrackSideSniffer extends AbsTrackSide {
 

@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.2.24.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT8C extends AbsLimLoco {
 
@@ -77,6 +77,26 @@ public class NSPCT8C extends AbsLimLoco {
             this.setDead();
             if (this.getRidingEntity() != null && this.getRidingEntity() instanceof NSPCT8C)
                 ((NSPCT8C) this.getRidingEntity()).killMinecart(source);
+        }
+
+        @Override
+        public int getMaxPassengerSize() {
+            return 2;
+        }
+
+        @Override // Called by rider
+        public void updatePassenger(Entity entity) {
+            double x = this.posX, z = this.posZ;
+            double y = this.posY + this.getMountedYOffset() + entity.getYOffset();
+            if (this.isPassenger(entity)) {
+                double index = (double) getPassengers().indexOf(entity);
+                double distX = 0.5, distZ = 0.5;
+                double vx, vz;
+                vx = distX * Math.cos(index * Math.PI);
+                vz = distZ * Math.sin(index * Math.PI);
+                Vec3d vec = (new Vec3d(vx, 0.0D, vz)).rotateYaw(-rotationYaw * 0.017453292F + 3.1415926F);
+                entity.setPosition(x + vec.x, y, z + vec.z);
+            }
         }
 
     }

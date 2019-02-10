@@ -13,7 +13,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2018.3.21.
+ * Created by drzzm32 on 2019.2.10
  */
 public abstract class AbsNSCxAM extends AbsLimLoco implements IExtendedInfoCart {
 

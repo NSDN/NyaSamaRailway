@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2018.3.21.
+ * Created by drzzm32 on 2019.2.10
  */
 public abstract class ExtInfoCore extends NSASM {
 

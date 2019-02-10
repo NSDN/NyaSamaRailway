@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.3.21.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT9M extends AbsLimLoco implements IExtendedInfoCart {
 

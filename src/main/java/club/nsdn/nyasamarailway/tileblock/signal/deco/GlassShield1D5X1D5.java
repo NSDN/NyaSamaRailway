@@ -3,7 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.signal.deco;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * Created by drzzm32 on 2017.9.12.
+ * Created by drzzm32 on 2019.2.10
  */
 public class GlassShield1D5X1D5 extends GlassShield {
 

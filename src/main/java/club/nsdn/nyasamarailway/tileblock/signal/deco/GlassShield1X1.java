@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2017.9.12.
+ * Created by drzzm32 on 2019.2.10
  */
 public class GlassShield1X1 extends GlassShield {
 

@@ -7,6 +7,14 @@
       "stream": false
     }]
   },
+  "info.reception.jetty": {
+    "subtitle": "subtitles.reception.jetty",
+    "category": "record",
+    "sounds": [{
+      "name": "nyasamarailway:info/reception/jetty",
+      "stream": false
+    }]
+  },
   "info.reception.ready": {
     "subtitle": "subtitles.reception.ready",
     "category": "record",

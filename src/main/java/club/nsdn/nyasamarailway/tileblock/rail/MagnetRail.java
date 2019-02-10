@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 /**
- * Created by drzzm32 on 2017.1.13.
+ * Created by drzzm32 on 2019.2.10
  */
 public class MagnetRail extends AbsRail {
 

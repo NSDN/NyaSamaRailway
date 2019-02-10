@@ -12,15 +12,15 @@
   "variants": {
     "normal": [{}],
     "facing": {
-      "north": [{ "y": 90, "uvlock": true }],
-      "south": [{ "y": 270, "uvlock": true }],
-      "west": [{}],
-      "east": [{ "y": 180, "uvlock": true }]
+      "north": { "y": 90 },
+      "south": { "y": 270 },
+      "west": {  },
+      "east": { "y": 180 }
     },
     "half": {
-      "top": [{ "model": "nyasamarailway:edge_top" }],
-      "bottom": [{ "model": "nyasamarailway:edge_bottom" }],
-      "tall": [{
+      "top": { "model": "nyasamarailway:edge_top" },
+      "bottom": { "model": "nyasamarailway:edge_bottom" },
+      "tall": {
         "model": "nyasamarailway:edge_tall",
         "textures": {
           "top": "nyasamarailway:block/platform_tall",
@@ -28,7 +28,7 @@
           "bottom": "nyasamarailway:block/platform_tall",
           "face": "nyasamarailway:block/platform_tall"
         }
-      }]
+      }
     }
   }
 }

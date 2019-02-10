@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.1.11.
+ * Created by drzzm32 on 2019.2.10
  */
 public class RailSignVertical extends TileBlock {
 

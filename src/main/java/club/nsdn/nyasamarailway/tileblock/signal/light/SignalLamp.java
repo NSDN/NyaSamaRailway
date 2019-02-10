@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2017.12.10.
+ * Created by drzzm32 on 2019.2.10
  */
 public class SignalLamp extends AbsSignalLight {
 

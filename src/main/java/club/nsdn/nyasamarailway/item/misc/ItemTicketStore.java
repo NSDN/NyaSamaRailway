@@ -3,7 +3,7 @@ package club.nsdn.nyasamarailway.item.misc;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 
 /**
- * Created by drzzm32 on 2017.9.4.
+ * Created by drzzm32 on 2019.2.10
  */
 public class ItemTicketStore extends ItemTicketBase {
 

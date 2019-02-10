@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.9.5.
+ * Created by drzzm32 on 2019.2.10
  */
 public class ItemNyaCoin extends Item {
 

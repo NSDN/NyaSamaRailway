@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.LinkedHashMap;
 
 /**
- * Created by drzzm32 on 2016.5.5.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TileEntityModelBinder {
 
@@ -58,6 +58,8 @@ public class TileEntityModelBinder {
         renderers.put(GlassShieldCorner.TileEntityGlassShieldCorner.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER));
         renderers.put(GlassShieldCornerHalf.TileEntityGlassShieldCornerHalf.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER_HALF));
         renderers.put(Pillar.TileEntityPillar.class, new PillarRenderer());
+        renderers.put(PillarBig.TileEntityPillarBig.class, new PillarBigRenderer());
+        renderers.put(PillarQuad.TileEntityPillarQuad.class, new PillarQuadRenderer());
         renderers.put(RailSignBody.TileEntityRailSignBody.class, new RailSignBodyRenderer());
         renderers.put(RailSignHead.TileEntityRailSignHead.class, new RailSignHeadRenderer());
         renderers.put(RailSignVertical.TileEntityRailSignVertical.class, new RailSignVerticalRenderer());
@@ -88,6 +90,7 @@ public class TileEntityModelBinder {
         renderers.put(RailStoneSleeper.TileEntityRailStoneSleeper.class, new RailRenderer("rail"));
         renderers.put(RailNoSleeper.TileEntityRailNoSleeper.class, new RailRenderer("rail_ns"));
         renderers.put(RailTriSwitch.TileEntityRailTriSwitch.class, new RailTriSwitchRenderer());
+        renderers.put(WireRail.TileEntityWireRail.class, new RailRenderer("rail_wire"));
 
         renderers.put(GateFront.TileEntityGateFront.class, new GateRenderer(GateRenderer.GATE_FRONT));
         renderers.put(GlassShield.TileEntityGlassShield.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD));

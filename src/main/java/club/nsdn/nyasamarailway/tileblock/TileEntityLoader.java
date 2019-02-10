@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.LinkedList;
 
 /**
- * Created by drzzm32 on 2016.5.5.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TileEntityLoader {
 
@@ -50,6 +50,8 @@ public class TileEntityLoader {
         tileEntities.add(GlassShieldCorner.TileEntityGlassShieldCorner.class);
         tileEntities.add(GlassShieldCornerHalf.TileEntityGlassShieldCornerHalf.class);
         tileEntities.add(Pillar.TileEntityPillar.class);
+        tileEntities.add(PillarBig.TileEntityPillarBig.class);
+        tileEntities.add(PillarQuad.TileEntityPillarQuad.class);
         tileEntities.add(RailSignBody.TileEntityRailSignBody.class);
         tileEntities.add(RailSignHead.TileEntityRailSignHead.class);
         tileEntities.add(RailSignVertical.TileEntityRailSignVertical.class);
@@ -74,6 +76,7 @@ public class TileEntityLoader {
         tileEntities.add(RailStoneSleeper.TileEntityRailStoneSleeper.class);
         tileEntities.add(RailNoSleeper.TileEntityRailNoSleeper.class);
         tileEntities.add(RailTriSwitch.TileEntityRailTriSwitch.class);
+        tileEntities.add(WireRail.TileEntityWireRail.class);
 
         tileEntities.add(GateFront.TileEntityGateFront.class);
         tileEntities.add(GlassShield.TileEntityGlassShield.class);

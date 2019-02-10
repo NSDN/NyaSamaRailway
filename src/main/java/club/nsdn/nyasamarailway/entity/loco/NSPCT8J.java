@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.10.6.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT8J extends AbsLimLoco implements IHighSpeedCart, IInspectionCart {
 

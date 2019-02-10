@@ -39,7 +39,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 /**
- * Created by drzzm32 on 2016.6.23.
+ * Created by drzzm32 on 2019.2.10
  */
 public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive, mods.railcraft.api.carts.ILinkableCart {
 

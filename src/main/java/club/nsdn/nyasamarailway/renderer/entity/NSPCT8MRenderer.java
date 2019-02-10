@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by drzzm32 on 2017.10.1.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT8MRenderer extends AbsCartRenerer {
 

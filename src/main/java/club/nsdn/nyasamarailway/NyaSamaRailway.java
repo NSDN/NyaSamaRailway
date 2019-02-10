@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Created by drzzm32 on 2019.1.30.
+ * Created by drzzm32 on 2019.2.10
  */
 @Mod(modid = NyaSamaRailway.MODID, name = NyaSamaRailway.NAME, version = NyaSamaRailway.VERSION)
 public class NyaSamaRailway {

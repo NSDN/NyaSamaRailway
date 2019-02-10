@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import java.util.LinkedList;
 
 /**
- * Created by drzzm32 on 2019.2.3.
+ * Created by drzzm32 on 2019.2.10
  */
 public class SoundUtil {
 
@@ -27,6 +27,7 @@ public class SoundUtil {
     public LinkedList<SoundEvent> sounds;
 
     public final SoundEvent RECEPTION_PAUSE;
+    public final SoundEvent RECEPTION_JETTY;
     public final SoundEvent RECEPTION_READY;
     public final SoundEvent RECEPTION_DELAY;
     public final SoundEvent RECEPTION_CLOSE;
@@ -50,6 +51,7 @@ public class SoundUtil {
         sounds = new LinkedList<>();
 
         RECEPTION_PAUSE = addSound("info.reception.pause");
+        RECEPTION_JETTY = addSound("info.reception.jetty");
         RECEPTION_READY = addSound("info.reception.ready");
         RECEPTION_DELAY = addSound("info.reception.delay");
         RECEPTION_CLOSE = addSound("info.reception.close");

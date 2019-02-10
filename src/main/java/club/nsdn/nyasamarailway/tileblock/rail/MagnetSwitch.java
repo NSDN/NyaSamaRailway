@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.1.8.
+ * Created by drzzm32 on 2019.2.10
  */
 public class MagnetSwitch extends TileBlock {
 

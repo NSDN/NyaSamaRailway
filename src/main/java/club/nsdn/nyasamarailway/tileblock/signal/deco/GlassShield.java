@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
- * Created by drzzm32 on 2017.9.6.
+ * Created by drzzm32 on 2019.2.10
  */
 public class GlassShield extends TileBlock {
 

@@ -8,6 +8,7 @@ import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -17,12 +18,13 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2018.4.17.
+ * Created by drzzm32 on 2019.2.10
  */
 public class NSPCT10M extends AbsLimLoco implements IHighSpeedCart {
 
@@ -138,6 +140,26 @@ public class NSPCT10M extends AbsLimLoco implements IHighSpeedCart {
             TrainController.doMotionWithAirHigh(packet, cart);
         else {
             TrainController.doMotionWithAir(packet, cart);
+        }
+    }
+
+    @Override
+    public int getMaxPassengerSize() {
+        return 4;
+    }
+
+    @Override // Called by rider
+    public void updatePassenger(Entity entity) {
+        double x = this.posX, z = this.posZ;
+        double y = this.posY + this.getMountedYOffset() + entity.getYOffset();
+        if (this.isPassenger(entity)) {
+            double index = (double) getPassengers().indexOf(entity);
+            double distX = 1.0, distZ = 0.5;
+            double vx, vz;
+            vx = distX * Math.cos(index * Math.PI / 2 - Math.PI / 4);
+            vz = distZ * Math.sin(index * Math.PI / 2 - Math.PI / 4);
+            Vec3d vec = (new Vec3d(vx, 0.0D, vz)).rotateYaw(-rotationYaw * 0.017453292F + 3.1415926F);
+            entity.setPosition(x + vec.x, y, z + vec.z);
         }
     }
 

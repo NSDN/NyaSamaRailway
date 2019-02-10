@@ -14,7 +14,7 @@ import club.nsdn.nyasamarailway.api.signal.TileEntitySignalLight;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.7.4.
+ * Created by drzzm32 on 2019.2.10
  */
 public class SignalLightRenderer extends AbsTileEntitySpecialRenderer {
 

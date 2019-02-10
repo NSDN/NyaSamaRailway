@@ -1,0 +1,12 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "texture": "nyasamarailway:block/rail_wire_node"
+    },
+    "model": "nyasamarailway:rail_wire_node"
+  },
+  "variants": {
+    "normal": [{}]
+  }
+}

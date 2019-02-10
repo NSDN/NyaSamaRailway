@@ -1,0 +1,6 @@
+{
+  "parent": "nyasamarailway:block/rail_wire_node",
+  "textures": {
+    "texture": "nyasamarailway:block/rail_wire_node"
+  }
+}

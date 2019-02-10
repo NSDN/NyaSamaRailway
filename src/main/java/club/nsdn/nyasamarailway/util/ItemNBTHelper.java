@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * Created by drzzm32 on 2018.3.7.
+ * Created by drzzm32 on 2019.2.10
  */
 public class ItemNBTHelper<T> {
 

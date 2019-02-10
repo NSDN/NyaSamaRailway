@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * Created by drzzm32 on 2018.1.14.
+ * Created by drzzm32 on 2019.2.10
  */
 public class PillarSignalBi extends AbsSignalLight {
 

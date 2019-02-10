@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by drzzm32 on 2017.10.1.
+ * Created by drzzm32 on 2019.2.10
  */
 public class RailTriSwitch extends AbsRail {
 

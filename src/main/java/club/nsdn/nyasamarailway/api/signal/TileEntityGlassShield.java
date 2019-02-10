@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.9.12.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TileEntityGlassShield extends TileEntityReceiver {
 

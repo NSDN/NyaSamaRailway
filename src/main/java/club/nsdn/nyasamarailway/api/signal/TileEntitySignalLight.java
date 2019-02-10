@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.api.signal;
 
+import club.nsdn.nyasamatelecom.api.device.SignalBox;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -7,7 +8,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2017.12.10.
+ * Created by drzzm32 on 2019.2.10
  */
 public class TileEntitySignalLight extends TileEntityPassiveReceiver {
 
@@ -17,6 +18,14 @@ public class TileEntitySignalLight extends TileEntityPassiveReceiver {
     public boolean isPowered = false;
 
     public int delay;
+
+    public static void registerController() {
+        SignalBox.TileEntitySignalBox.CONTROL_FUNCS.add((tileEntity, state) -> {
+            if (tileEntity instanceof TileEntitySignalLight) {
+                ((TileEntitySignalLight) tileEntity).isPowered = state;
+            }
+        });
+    }
 
     @Override
     public void fromNBT(NBTTagCompound tagCompound) {

@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by drzzm32 on 2016.6.7.
+ * Created by drzzm32 on 2019.2.10
  */
 public class MinecartInteractHandler {
     private static MinecartInteractHandler instance;
