@@ -19,13 +19,8 @@ public class EventRegister {
     public static void registerCommon() {
         MinecraftForge.EVENT_BUS.register(BlockLoader.instance());
         MinecraftForge.EVENT_BUS.register(ItemLoader.instance());
-
         MinecraftForge.EVENT_BUS.register(TileEntityLoader.instance());
-        MinecraftForge.EVENT_BUS.register(TileEntityModelBinder.instance());
-
         MinecraftForge.EVENT_BUS.register(EntityLoader.instance());
-        MinecraftForge.EVENT_BUS.register(EntityModelBinder.instance());
-
         MinecraftForge.EVENT_BUS.register(SoundUtil.instance());
 
         MinecraftForge.EVENT_BUS.register(MinecartInteractHandler.instance());
@@ -39,6 +34,9 @@ public class EventRegister {
     }
 
     public static void registerClient() {
+        MinecraftForge.EVENT_BUS.register(TileEntityModelBinder.instance());
+        MinecraftForge.EVENT_BUS.register(EntityModelBinder.instance());
+
         MinecraftForge.EVENT_BUS.register(NTPCtrlHandler.instance());
     }
 
