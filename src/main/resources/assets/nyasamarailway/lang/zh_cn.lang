@@ -49,6 +49,7 @@ tile.MonoRailBase.name=单轨轨基
 tile.MagnetRail.name=单轨永磁体组件
 item.ItemNSPCT4.name=NSPC-4型单轨客车
 item.ItemNSPCT4M.name=NSPC-4M型单轨客车(机车版)
+item.ItemNSPCT7.name=NSPC-7型自行槽车
 item.ItemNSPCT8.name=NSPC-8型新能源客车
 item.ItemNSPCT8C.name=NSPC-8C型接触网检修车(机车版)
 item.ItemNSPCT8W.name=NSPC-8W型悬挂式单轨客车

@@ -352,8 +352,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     }
 
     public static void setCartDefaultPosition(EntityMinecart cart, BlockPos pos) {
-        cart.setVelocity(0, 0, 0);
-        cart.motionX = cart.motionZ = 0.0D;
+        if (cart.world.isRemote)
+            cart.setVelocity(0,0,0);
+        cart.motionX = cart.motionY = cart.motionZ = 0.0D;
         cart.setPosition(pos.getX() + 0.5, pos.getY() + 0.0625, pos.getZ() + 0.5);
     }
 

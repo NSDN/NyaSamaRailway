@@ -80,6 +80,7 @@ public class ItemLoader {
         items.add(nyaCard);
 
         items.add(new ItemNSPCT4());
+        items.add(new ItemNSPCT7());
         items.add(new ItemNSPCT8());
         items.add(new ItemNSPCT8W());
         items.add(new ItemNSPCT9());

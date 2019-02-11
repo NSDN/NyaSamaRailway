@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
 import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
+import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
@@ -9,6 +10,7 @@ import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMinecart;
@@ -140,6 +142,16 @@ public class NSPCT10J extends AbsLimLoco implements IHighSpeedCart, IInspectionC
         else {
             TrainController.doMotionWithAir(packet, cart);
         }
+    }
+
+    @Override
+    public int getMaxPassengerSize() {
+        return 2;
+    }
+
+    @Override // Called by rider
+    public void updatePassenger(Entity entity) {
+        CartUtil.updatePassenger2(this, entity);
     }
 
 }

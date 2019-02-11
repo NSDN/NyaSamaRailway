@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.entity.cart;
 
 import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
 import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
+import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IConvWireMono;
 import club.nsdn.nyasamarailway.api.rail.IMonoRail;
@@ -85,17 +86,7 @@ public class NSPCT8W extends AbsMotoCart {
 
         @Override // Called by rider
         public void updatePassenger(Entity entity) {
-            double x = this.posX, z = this.posZ;
-            double y = this.posY + this.getMountedYOffset() + entity.getYOffset();
-            if (this.isPassenger(entity)) {
-                double index = (double) getPassengers().indexOf(entity);
-                double distX = 0.5, distZ = 0.5;
-                double vx, vz;
-                vx = distX * Math.cos(index * Math.PI);
-                vz = distZ * Math.sin(index * Math.PI);
-                Vec3d vec = (new Vec3d(vx, 0.0D, vz)).rotateYaw(-rotationYaw * 0.017453292F + 3.1415926F);
-                entity.setPosition(x + vec.x, y, z + vec.z);
-            }
+            CartUtil.updatePassenger2(this, entity);
         }
 
     }

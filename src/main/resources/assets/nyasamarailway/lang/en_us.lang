@@ -49,6 +49,7 @@ tile.MonoRailBase.name=Mono Rail Base
 tile.MagnetRail.name=Magnet Rail
 item.ItemNSPCT4.name=NSPC-4 Mono Rail Cart
 item.ItemNSPCT4M.name=NSPC-4M Mono Rail Cart(M)
+item.ItemNSPCT7.name=NSPC-7 Tanker
 item.ItemNSPCT8.name=NSPC-8 New Energy Cart
 item.ItemNSPCT8C.name=NSPC-8C Cable Car(M)
 item.ItemNSPCT8W.name=NSPC-8W Wire Car

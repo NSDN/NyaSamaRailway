@@ -6,6 +6,7 @@ import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
 import cn.ac.nya.forgeobj.WavefrontObject;
@@ -19,7 +20,6 @@ import javax.annotation.Nonnull;
 public class MonoRailRenderer extends AbsTileEntitySpecialRenderer {
 
     private static final int STRAIGHT = 0, SLOPE = 1, TURNED = 2;
-    private static final int STRAIGHT_P = 3, SLOPE_P = 4, TURNED_P = 5;
 
     private final WavefrontObject[] model;
     private final ResourceLocation[] textures;
@@ -46,12 +46,9 @@ public class MonoRailRenderer extends AbsTileEntitySpecialRenderer {
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_slope_magnet.obj")),
                 new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_turned_magnet.obj"))
         };
-        this.textures = new ResourceLocation[6];
+        this.textures = new ResourceLocation[3];
         for (int i = 0; i < 3; i++) {
             textures[i] = new ResourceLocation("nyasamarailway", texturePath[i]);
-        }
-        for (int i = 3; i < 6; i++) {
-            textures[i] = new ResourceLocation("nyasamarailway", texturePath[i - 3].replace(".png", "_powered.png"));
         }
         this.isMagnet = true;
     }
@@ -73,7 +70,6 @@ public class MonoRailRenderer extends AbsTileEntitySpecialRenderer {
         } else {
             GL11.glShadeModel(GL11.GL_FLAT);
         }
-
 
         GL11.glPushMatrix();
         if (isMagnet &&

@@ -47,6 +47,7 @@ public class EntityLoader {
         entities = new LinkedList<>();
 
         entities.add(NSPCT4.class);
+        entities.add(NSPCT7.class);
         entities.add(NSPCT8.class);
         entities.add(NSPCT8W.class);
         entities.add(NSPCT8W.Container.class);

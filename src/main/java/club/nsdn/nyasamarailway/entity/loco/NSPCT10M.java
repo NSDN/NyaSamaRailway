@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
 import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
+import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
@@ -18,7 +19,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -150,17 +150,7 @@ public class NSPCT10M extends AbsLimLoco implements IHighSpeedCart {
 
     @Override // Called by rider
     public void updatePassenger(Entity entity) {
-        double x = this.posX, z = this.posZ;
-        double y = this.posY + this.getMountedYOffset() + entity.getYOffset();
-        if (this.isPassenger(entity)) {
-            double index = (double) getPassengers().indexOf(entity);
-            double distX = 1.0, distZ = 0.5;
-            double vx, vz;
-            vx = distX * Math.cos(index * Math.PI / 2 - Math.PI / 4);
-            vz = distZ * Math.sin(index * Math.PI / 2 - Math.PI / 4);
-            Vec3d vec = (new Vec3d(vx, 0.0D, vz)).rotateYaw(-rotationYaw * 0.017453292F + 3.1415926F);
-            entity.setPosition(x + vec.x, y, z + vec.z);
-        }
+        CartUtil.updatePassenger4(this, entity);
     }
 
 }

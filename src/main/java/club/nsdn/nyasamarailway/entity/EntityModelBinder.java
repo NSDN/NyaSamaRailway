@@ -42,6 +42,7 @@ public class EntityModelBinder {
         renderers = new LinkedHashMap<>();
 
         renderers.put(NSPCT4.class, NSPCT4Renderer.FACTORY);
+        renderers.put(NSPCT7.class, NSPCT7Renderer.FACTORY);
         renderers.put(NSPCT8.class, NSPCT8Renderer.FACTORY);
         renderers.put(NSPCT8W.class, NSPCT8WRenderer.FACTORY);
         renderers.put(NSPCT8W.Container.class, NSPCT8WRenderer.FACTORY);

@@ -1,20 +1,20 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.ResourceLocation;
-import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
- * Created by drzzm32 on 2019.2.10
+ * Created by drzzm32 on 2019.2.11
  */
-public class NSPCT8Renderer extends AbsCartRenerer {
+public class NSPCT7Renderer extends AbsCartRenerer {
 
-    public static IRenderFactory<EntityMinecart> FACTORY = NSPCT8Renderer::new;
+    public static IRenderFactory<EntityMinecart> FACTORY = NSPCT7Renderer::new;
 
-    private final String _name = "nspc_8";
+    private final String _name = "nspc_7";
 
     private final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_base.obj")
@@ -30,7 +30,7 @@ public class NSPCT8Renderer extends AbsCartRenerer {
             "nyasamarailway", "textures/carts/" + _name + "_print.png"
     );
 
-    public NSPCT8Renderer(RenderManager manager) {
+    public NSPCT7Renderer(RenderManager manager) {
         super(manager);
     }
 

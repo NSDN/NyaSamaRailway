@@ -10,6 +10,8 @@ import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -153,8 +155,11 @@ public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive,
     public void killMinecart(DamageSource source) {
         this.setDead();
         ItemStack stack = getCartItem();
-        if (stack.isEmpty())
-            stack = new ItemStack(ItemLoader.itemCarts.get(getClass()), 1);
+        if (stack.isEmpty()) {
+            Item item = ItemLoader.itemCarts.get(getClass());
+            if (item == null) item = Items.AIR;
+            stack = new ItemStack(item, 1);
+        }
         stack.setStackDisplayName(stack.getDisplayName());
         if (!source.damageType.equals("nsr")) this.entityDropItem(stack, 0.0F);
     }

@@ -38,6 +38,11 @@ public class NSET2 extends AbsLimLoco {
     }
 
     @Override
+    public float getMaxCartSpeedOnRail() {
+        return 3.0F;
+    }
+
+    @Override
     public float getLinkageDistance(EntityMinecart cart) {
         return 3.0F;
     }

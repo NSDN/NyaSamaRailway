@@ -108,8 +108,10 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
         if (minecart instanceof IMonoRailCart)
             GL11.glTranslated(0.0, -((IMonoRailCart) minecart).getShiftY() - 1.3125, 0.0);
 
+        RendererHelper.beginSpecialLighting();
         RendererHelper.renderWithResourceAndRotation(modelBase, 90.0F, textureBase);
         RendererHelper.renderWithResourceAndRotation(modelPrint, 90.0F, print);
+        RendererHelper.endSpecialLighting();
 
         if (!minecart.getPassengers().isEmpty()) {
             if (minecart.getPassengers().get(0) instanceof EntityPlayer) {
