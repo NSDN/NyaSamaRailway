@@ -76,7 +76,7 @@ public class NSPCT4 extends AbsMotoCart implements IMonoRailCart, IExtendedInfoC
         tagCompound.setString("ExtendedInfo", getExtendedInfo());
     }
 
-    public double shiftY = -1.0;
+    public double shiftY = DEFAULT_SHIFT;
 
     @Override
     public double getShiftY() {
@@ -124,9 +124,7 @@ public class NSPCT4 extends AbsMotoCart implements IMonoRailCart, IExtendedInfoC
             IMonoRail rail = (IMonoRail) tileEntity;
             int meta = rail.getMeta();
             meta &= 0x7;
-            if (meta >= 2 && meta <= 5) {
-                if (shiftY < -0.5) shiftY += 0.05;
-            } else if (shiftY > -1.0) shiftY -= 0.05;
+            shiftY = updateShiftY(meta, shiftY);
         } else {
             boolean state;
             state = world.getTileEntity(pos.north()) instanceof IMonoRail;

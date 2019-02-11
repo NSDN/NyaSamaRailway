@@ -106,7 +106,7 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
 
         GL11.glPushMatrix();
         if (minecart instanceof IMonoRailCart)
-            GL11.glTranslated(0.0, -((IMonoRailCart) minecart).getShiftY() - 1.3125, 0.0);
+            GL11.glTranslated(0.0, ((IMonoRailCart) minecart).getShiftY() - 0.3125, 0.0);
 
         RendererHelper.beginSpecialLighting();
         RendererHelper.renderWithResourceAndRotation(modelBase, 90.0F, textureBase);

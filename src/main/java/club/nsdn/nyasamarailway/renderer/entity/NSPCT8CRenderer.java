@@ -46,7 +46,7 @@ public class NSPCT8CRenderer extends AbsCartRenerer {
     public void render(EntityMinecart minecart, double x, double y, double z, float yaw) {
         if (minecart instanceof NSPCT8C) {
             NSPCT8C cart = (NSPCT8C) minecart;
-            GL11.glTranslated(0.0, cart.getShiftYCnt(), 0.0);
+            GL11.glTranslated(0.0, cart.getShiftY() - 1.0, 0.0);
             RendererHelper.renderWithResource(modelHead, textureBase);
         } else if (minecart instanceof NSPCT8C.Container) {
             RendererHelper.renderWithResource(modelBase, textureBase);

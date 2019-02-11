@@ -19,8 +19,8 @@ public class CartUtil {
             vx = dist * Math.cos(index * Math.PI);
             vz = dist * Math.sin(index * Math.PI);
             Vec3d vec = new Vec3d(vx, 0.0D, vz);
-            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             vec = vec.rotatePitch((float) ((cart.rotationPitch + 360) / 180 * Math.PI));
+            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             passenger.setPosition(x + vec.x, y + vec.y, z + vec.z);
         }
     }
@@ -35,8 +35,8 @@ public class CartUtil {
             vx = distX * (double) (((index / 2) == 1) ? 1 : -1);
             vz = distZ * (double) (((index % 3) == 0) ? 1 : -1);
             Vec3d vec = new Vec3d(vx, 0.0D, vz);
-            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             vec = vec.rotatePitch((float) ((cart.rotationPitch + 360) / 180 * Math.PI));
+            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             passenger.setPosition(x + vec.x, y + vec.y, z + vec.z);
         }
     }
@@ -51,8 +51,8 @@ public class CartUtil {
             vx = distX * (double) array[index];
             vz = distZ * (double) (((index / 3) == 0) ? 1 : -1);
             Vec3d vec = new Vec3d(vx, 0.0D, vz);
-            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             vec = vec.rotatePitch((float) ((cart.rotationPitch + 360) / 180 * Math.PI));
+            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
             passenger.setPosition(x + vec.x, y + vec.y, z + vec.z);
         }
     }
