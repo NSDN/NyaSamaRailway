@@ -44,7 +44,7 @@ public class NSC1AM extends AbsNSCxAM implements IRotaCart {
 
     @Override
     public double getMountedYOffset() {
-        return -0.1;
+        return 0.2;
     }
 
     @Nonnull

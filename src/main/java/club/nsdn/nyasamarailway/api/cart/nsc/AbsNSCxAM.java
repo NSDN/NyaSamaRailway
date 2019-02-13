@@ -84,9 +84,7 @@ public abstract class AbsNSCxAM extends AbsLimLoco implements IExtendedInfoCart 
     }
 
     @Override
-    public double getMountedYOffset() {
-        return 0.0;
-    }
+    public abstract double getMountedYOffset();
 
     @Override
     public boolean shouldRiderSit() {

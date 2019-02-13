@@ -31,7 +31,7 @@ public class NSC2A extends AbsNSCxA {
 
     @Override
     public double getMountedYOffset() {
-        return -0.3;
+        return 0.0;
     }
 
     @Nonnull

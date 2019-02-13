@@ -1,9 +1,6 @@
 package club.nsdn.nyasamarailway.entity.nsc;
 
 import club.nsdn.nyasamarailway.api.cart.nsc.AbsNSCxAM;
-import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
-import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
-import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.item.EntityMinecart;
@@ -16,13 +13,6 @@ import javax.annotation.Nonnull;
  * Created by drzzm32 on 2019.2.10
  */
 public class NSC3AM extends AbsNSCxAM {
-
-    private final int INDEX_MV = 28;
-    public double maxVelocity = 0;
-    private int tmpEngineBrake = -1;
-
-    private final int INDEX_EXT = 29;
-    public String extenedInfo = "";
 
     public NSC3AM(World world) {
         super(world);
@@ -41,7 +31,7 @@ public class NSC3AM extends AbsNSCxAM {
 
     @Override
     public double getMountedYOffset() {
-        return -0.3;
+        return 0.0;
     }
 
     @Nonnull

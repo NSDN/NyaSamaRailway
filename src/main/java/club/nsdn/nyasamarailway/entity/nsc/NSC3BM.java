@@ -29,7 +29,7 @@ public class NSC3BM extends AbsNSCxBM {
 
     @Override
     public double getMountedYOffset() {
-        return 0.3 + shiftY;
+        return 0.6 + shiftY;
     }
 
     @Nonnull

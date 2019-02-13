@@ -85,9 +85,7 @@ public abstract class AbsNSCxA extends AbsMotoCart implements IExtendedInfoCart 
     }
 
     @Override
-    public double getMountedYOffset() {
-        return 0.0;
-    }
+    public abstract double getMountedYOffset();
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {

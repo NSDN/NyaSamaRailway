@@ -36,9 +36,7 @@ public abstract class AbsNSCxB extends AbsMotoCart implements IMonoRailCart {
     }
 
     @Override
-    public double getMountedYOffset() {
-        return 0.6 + shiftY;
-    }
+    public abstract double getMountedYOffset();
 
     @Override
     public void doMotion(TrainPacket packet, EntityMinecart cart) {
