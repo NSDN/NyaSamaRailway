@@ -87,9 +87,10 @@ public class TileEntityModelBinder {
         renderers.put(Rail3rd.TileEntityRail3rd.class, new Rail3rdRenderer());
         renderers.put(Rail3rdSwitch.TileEntityRail3rdSwitch.class, new MonoRailSwitchRenderer(true));
         renderers.put(RailBumper.TileEntityRailBumper.class, new RailBumperRenderer());
-        renderers.put(RailStoneSleeper.TileEntityRailStoneSleeper.class, new RailRenderer("rail"));
-        renderers.put(RailNoSleeper.TileEntityRailNoSleeper.class, new RailRenderer("rail_ns"));
-        renderers.put(RailTriSwitch.TileEntityRailTriSwitch.class, new RailTriSwitchRenderer());
+        //renderers.put(RailStoneSleeper.TileEntityRailStoneSleeper.class, new RailRenderer("rail"));
+        //renderers.put(RailNoSleeper.TileEntityRailNoSleeper.class, new RailRenderer("rail_ns"));
+        //renderers.put(RailTriSwitch.TileEntityRailTriSwitch.class, new RailTriSwitchRenderer());
+        renderers.put(RailTriSwitch.TileEntityRailTriSwitch.class, new RailTriSwitchRendererFast());
         renderers.put(WireRail.TileEntityWireRail.class, new RailRenderer("rail_wire"));
 
         renderers.put(GateFront.TileEntityGateFront.class, new GateRenderer(GateRenderer.GATE_FRONT));

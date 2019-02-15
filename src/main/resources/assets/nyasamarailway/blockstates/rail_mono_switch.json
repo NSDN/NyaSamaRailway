@@ -1,4 +1,8 @@
 {
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true }
+  },
   "variants": {
     "shape=north_south": { "model": "nyasamarailway:rail/mono_rail_switch_straight.obj" },
     "shape=east_west": { "model": "nyasamarailway:rail/mono_rail_switch_straight.obj", "y": 90 },

@@ -29,24 +29,11 @@ public class RailTriSwitchRendererFast extends AbsTileEntitySpecialRenderer {
         GlStateManager.pushAttrib();
         GlStateManager.pushMatrix();
 
-        GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+        GlStateManager.translate(x, y, z);
         GlStateManager.disableRescaleNormal();
 
         GlStateManager.pushMatrix();
         {
-            RenderHelper.disableStandardItemLighting();
-            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            if (Minecraft.isAmbientOcclusionEnabled()) {
-                GlStateManager.shadeModel(GL11.GL_SMOOTH);
-            } else {
-                GlStateManager.shadeModel(GL11.GL_FLAT);
-            }
-
-            World world = te.getWorld();
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
-            bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-
             if (te.getBlockType() instanceof RailTriSwitch) {
                 RailTriSwitch blockSwitch = (RailTriSwitch) te.getBlockType();
                 if (te instanceof RailTriSwitch.TileEntityRailTriSwitch) {
@@ -83,22 +70,34 @@ public class RailTriSwitchRendererFast extends AbsTileEntitySpecialRenderer {
                             break;
                     }
 
-                    GL11.glPushMatrix();
-                    GL11.glScalef(0.0625F, 0.0625F, 0.0625F);
-                    GL11.glPushMatrix();
+                    GL11.glTranslated(0.5, 0, 0.5);
                     GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+                    {
+                        RenderHelper.disableStandardItemLighting();
+                        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                        if (Minecraft.isAmbientOcclusionEnabled()) {
+                            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+                        } else {
+                            GlStateManager.shadeModel(GL11.GL_FLAT);
+                        }
 
-                    BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-                    IBakedModel model = dispatcher.getModelForState(state);
-                    dispatcher.getBlockModelRenderer().renderModel(world, model, state, te.getPos(), bufferBuilder, true);
-                    tessellator.draw();
+                        World world = te.getWorld();
+                        Tessellator tessellator = Tessellator.getInstance();
+                        BufferBuilder bufferBuilder = tessellator.getBuffer();
+                        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
+                        GlStateManager.translate(-te.getPos().getX(), -te.getPos().getY(), -te.getPos().getZ());
+                        GL11.glTranslated(-0.5, 0, -0.5);
+
+                        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+                        IBakedModel model = dispatcher.getModelForState(state);
+                        dispatcher.getBlockModelRenderer().renderModel(world, model, state, te.getPos(), bufferBuilder, true);
+                        tessellator.draw();
+
+                        RenderHelper.enableStandardItemLighting();
+                    }
                 }
             }
-
-            RenderHelper.enableStandardItemLighting();
         }
         GlStateManager.popMatrix();
 

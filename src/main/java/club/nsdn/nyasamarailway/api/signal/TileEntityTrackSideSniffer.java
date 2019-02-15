@@ -189,6 +189,37 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
     }
 
     @Override
+    protected void setBoundsByXYZ(double x1, double y1, double z1, double x2, double y2, double z2) {
+        switch (META % METAMAX) {
+            case 0:
+                setBlockBounds(x1, y1, z1, x2, y2, z2);
+                break;
+            case 1:
+                setBlockBounds(1.0 - z2, y1, x1, 1.0 - z1, y2, x2);
+                break;
+            case 2:
+                setBlockBounds(1.0 - x2, y1, 1.0 - z2, 1.0 - x1, y2, 1.0 - z1);
+                break;
+            case 3:
+                setBlockBounds(z1, y1, 1.0 - x2, z2, y2, 1.0 - x1);
+                break;
+
+            case 4:
+                setBlockBounds(x1, 1.0 - y2, z1, x2, 1.0 - y1, z2);
+                break;
+            case 5:
+                setBlockBounds(1.0 - z2, 1.0 - y2, x1, 1.0 - z1, 1.0 - y1, x2);
+                break;
+            case 6:
+                setBlockBounds(1.0 - x2, 1.0 - y2, 1.0 - z2, 1.0 - x1, 1.0 - y1, 1.0 - z1);
+                break;
+            case 7:
+                setBlockBounds(z1, 1.0 - y2, 1.0 - x2, z2, 1.0 - y1, 1.0 - x1);
+                break;
+        }
+    }
+
+    @Override
     public boolean getSGNState() {
         return ITrackSide.hasPowered(this);
     }

@@ -30,6 +30,11 @@ public class MagnetRail extends AbsRail {
             return getBlockMetadata();
         }
 
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 8192.0;
+        }
+
     }
 
     @Override
