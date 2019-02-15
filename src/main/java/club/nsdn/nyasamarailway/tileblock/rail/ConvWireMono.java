@@ -1,6 +1,5 @@
 package club.nsdn.nyasamarailway.tileblock.rail;
 
-import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.api.rail.AbsRail;
 import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import club.nsdn.nyasamarailway.api.rail.IConvWireMono;
@@ -26,7 +25,7 @@ import javax.annotation.Nullable;
  */
 public class ConvWireMono extends AbsRail {
 
-    public static class TileEntityConvWireMono extends TileEntityBase implements IConvWireMono {
+    public static class TileEntityConvWireMono extends TileEntityAbsRailBase implements IConvWireMono {
 
         public EnumFacing direction;
 

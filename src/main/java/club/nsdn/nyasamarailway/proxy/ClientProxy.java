@@ -1,7 +1,9 @@
 package club.nsdn.nyasamarailway.proxy;
 
+import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.event.EventRegister;
 import club.nsdn.nyasamarailway.util.TrainController;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,6 +17,7 @@ public class ClientProxy extends CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         EventRegister.registerClient();
+        OBJLoader.INSTANCE.addDomain(NyaSamaRailway.MODID);
     }
 
     @Override

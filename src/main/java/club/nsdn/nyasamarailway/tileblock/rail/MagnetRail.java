@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  */
 public class MagnetRail extends AbsRail {
 
-    public static class TileEntityMagnetRail extends TileEntityBase implements IMonoRail {
+    public static class TileEntityMagnetRail extends TileEntityAbsRailBase implements IMonoRail {
 
         @Override
         public void update() { }

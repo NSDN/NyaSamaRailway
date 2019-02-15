@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.api.rail.AbsRail;
 import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import club.nsdn.nyasamarailway.api.rail.IBaseRail;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -14,12 +15,7 @@ import net.minecraft.world.World;
  */
 public class MonoRailBase extends AbsRail {
 
-    public static class TileEntityMonoRailBase extends TileEntityBase implements IBaseRail {
-
-        @Override
-        public double getMaxRenderDistanceSquared() {
-            return 65536.0D;
-        }
+    public static class TileEntityMonoRailBase extends TileEntityAbsRailBase implements IBaseRail {
 
         @Override
         public void update() {
@@ -56,6 +52,11 @@ public class MonoRailBase extends AbsRail {
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override

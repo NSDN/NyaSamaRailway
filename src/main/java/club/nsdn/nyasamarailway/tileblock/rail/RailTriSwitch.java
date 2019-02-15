@@ -6,6 +6,7 @@ import club.nsdn.nyasamarailway.api.rail.IMonoSwitch;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -59,7 +60,7 @@ public class RailTriSwitch extends AbsRail {
 
         @Override
         public double getMaxRenderDistanceSquared() {
-            return 32768.0D;
+            return 8192.0;
         }
 
         @Override
@@ -102,6 +103,11 @@ public class RailTriSwitch extends AbsRail {
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override

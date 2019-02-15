@@ -5,6 +5,7 @@ import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,11 +48,6 @@ public class MonoRailSwitch extends AbsRail {
             tagCompound.setString("direction", direction.getName());
 
             return super.toNBT(tagCompound);
-        }
-
-        @Override
-        public double getMaxRenderDistanceSquared() {
-            return 32768.0D;
         }
 
         @Override
@@ -143,6 +139,11 @@ public class MonoRailSwitch extends AbsRail {
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -18,7 +19,12 @@ import javax.annotation.Nullable;
  */
 public class RailStoneSleeper extends AbsRail {
 
-    public static class TileEntityRailStoneSleeper extends TileEntityBase { }
+    public static class TileEntityRailStoneSleeper extends TileEntityAbsRailBase {
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 8192.0;
+        }
+    }
 
     @Override
     public TileEntity createNewTileEntity() {
@@ -37,6 +43,11 @@ public class RailStoneSleeper extends AbsRail {
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial().isReplaceable();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override

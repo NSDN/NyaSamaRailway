@@ -1,14 +1,14 @@
 {
   "variants": {
-    "shape=north_south": { "model": "white_concrete" },
-    "shape=east_west": { "model": "white_concrete" },
-    "shape=ascending_east": { "model": "white_concrete" },
-    "shape=ascending_west": { "model": "white_concrete" },
-    "shape=ascending_north": { "model": "white_concrete" },
-    "shape=ascending_south": { "model": "white_concrete" },
-    "shape=south_east": { "model": "white_concrete" },
-    "shape=south_west": { "model": "white_concrete" },
-    "shape=north_west": { "model": "white_concrete" },
-    "shape=north_east": { "model": "white_concrete" }
+    "shape=north_south": { "model": "nyasamarailway:rail/mono_rail_switch_straight.obj" },
+    "shape=east_west": { "model": "nyasamarailway:rail/mono_rail_switch_straight.obj", "y": 90 },
+    "shape=ascending_east": { "model": "nyasamarailway:rail/mono_rail_slope.obj", "y": 270 },
+    "shape=ascending_west": { "model": "nyasamarailway:rail/mono_rail_slope.obj", "y": 90 },
+    "shape=ascending_north": { "model": "nyasamarailway:rail/mono_rail_slope.obj", "y": 180 },
+    "shape=ascending_south": { "model": "nyasamarailway:rail/mono_rail_slope.obj" },
+    "shape=south_east": { "model": "nyasamarailway:rail/mono_rail_switch_turned.obj", "y": 180 },
+    "shape=south_west": { "model": "nyasamarailway:rail/mono_rail_switch_turned.obj", "y": 270 },
+    "shape=north_west": { "model": "nyasamarailway:rail/mono_rail_switch_turned.obj" },
+    "shape=north_east": { "model": "nyasamarailway:rail/mono_rail_switch_turned.obj", "y": 90 }
   }
 }

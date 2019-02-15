@@ -40,7 +40,7 @@ import net.minecraft.world.World;
  */
 public abstract class AbsRailBase extends BlockRailBase implements ITileEntityProvider {
 
-    public static class TileEntityBase extends club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase {
+    public static class TileEntityAbsRailBase extends club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase {
 
         @Nonnull
         @Override
@@ -90,7 +90,7 @@ public abstract class AbsRailBase extends BlockRailBase implements ITileEntityPr
     }
 
     public TileEntity createNewTileEntity() {
-        return new TileEntityBase();
+        return new TileEntityAbsRailBase();
     }
 
     @Override

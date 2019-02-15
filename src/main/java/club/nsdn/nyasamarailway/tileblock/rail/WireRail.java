@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
  */
 public class WireRail extends AbsRail {
 
-    public static class TileEntityWireRail extends TileEntityBase implements IWireRail {
+    public static class TileEntityWireRail extends TileEntityAbsRailBase implements IWireRail {
 
         @Override
         public void update() { }
