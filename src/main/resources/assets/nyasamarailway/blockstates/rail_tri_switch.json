@@ -1,18 +1,32 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "custom": { "flip-v": true }
+    "custom": { "flip-v": true },
+    "model": "nyasamarailway:rail/rail_tri_switch_straight.obj"
   },
   "variants": {
-    "shape=north_south": { "model": "nyasamarailway:rail/rail_tri_switch_straight.obj" },
-    "shape=east_west": { "model": "nyasamarailway:rail/rail_straight.obj", "y": 90 },
-    "shape=ascending_east": { "model": "nyasamarailway:rail/rail_slope.obj", "y": 270 },
-    "shape=ascending_west": { "model": "nyasamarailway:rail/rail_slope.obj", "y": 90 },
-    "shape=ascending_north": { "model": "nyasamarailway:rail/rail_slope.obj", "y": 180 },
-    "shape=ascending_south": { "model": "nyasamarailway:rail/rail_slope.obj" },
-    "shape=south_east": { "model": "nyasamarailway:rail/rail_turned.obj", "y": 180 },
-    "shape=south_west": { "model": "nyasamarailway:rail/rail_turned.obj", "y": 270 },
-    "shape=north_west": { "model": "nyasamarailway:rail/rail_tri_switch_left.obj" },
-    "shape=north_east": { "model": "nyasamarailway:rail/rail_tri_switch_right.obj" }
+    "direction": {
+      "north": { "y": 180 },
+      "south": {  },
+      "west": { "y": 90 },
+      "east": { "y": 270 }
+    },
+    "state": {
+      "pos": { "model": "nyasamarailway:rail/rail_tri_switch_left.obj" },
+      "neg": { "model": "nyasamarailway:rail/rail_tri_switch_right.obj" },
+      "zero": { "model": "nyasamarailway:rail/rail_tri_switch_straight.obj" }
+    },
+    "shape": {
+      "north_south": {  },
+      "east_west": {  },
+      "ascending_east": {  },
+      "ascending_west": {  },
+      "ascending_north": {  },
+      "ascending_south": {  },
+      "south_east": {  },
+      "south_west": {  },
+      "north_west": {  },
+      "north_east": {  }
+    }
   }
 }

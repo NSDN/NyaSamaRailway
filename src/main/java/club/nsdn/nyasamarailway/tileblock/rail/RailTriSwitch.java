@@ -5,9 +5,13 @@ import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import club.nsdn.nyasamarailway.api.rail.IMonoSwitch;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -70,6 +74,56 @@ public class RailTriSwitch extends AbsRail {
 
     }
 
+    public static enum EnumState implements IStringSerializable {
+        NEG("neg"),
+        ZERO("zero"),
+        POS("pos");
+
+        public static EnumState fromInt(int v) {
+            switch (v) {
+                case -1: return NEG;
+                case 0: return ZERO;
+                case 1: return POS;
+            }
+            return ZERO;
+        }
+
+        private final String name;
+
+        EnumState(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    public static final PropertyDirection DIRECTION = PropertyDirection.create("direction", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum<EnumState> STATE = PropertyEnum.create("state", EnumState.class);
+
+    @Override
+    @Nonnull
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, SHAPE, DIRECTION, STATE);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityRailTriSwitch) {
+            TileEntityRailTriSwitch triSwitch = (TileEntityRailTriSwitch) tileEntity;
+            return super.getActualState(state, world, pos)
+                    .withProperty(DIRECTION, triSwitch.direction)
+                    .withProperty(STATE, EnumState.fromInt(triSwitch.prevState)); // for render
+        }
+        return super.getActualState(state, world, pos);
+    }
+
     @Override
     public TileEntity createNewTileEntity() {
         return new TileEntityRailTriSwitch();
@@ -107,7 +161,7 @@ public class RailTriSwitch extends AbsRail {
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override
