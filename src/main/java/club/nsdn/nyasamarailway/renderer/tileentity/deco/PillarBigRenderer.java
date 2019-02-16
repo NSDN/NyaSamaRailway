@@ -55,7 +55,7 @@ public class PillarBigRenderer extends AbsTileEntitySpecialRenderer {
         // 3 down
         // 4 up
 
-        modelMain.renderOnly("00", "01", "02");
+        modelMain.renderPart("0");
 
         int hmeta = meta >> 6;
         if ((hmeta & PillarBig.getValueByFacing(EnumFacing.UP)) != 0)

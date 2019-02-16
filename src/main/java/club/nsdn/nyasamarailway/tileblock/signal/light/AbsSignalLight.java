@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.tileblock.signal.light;
 
+import club.nsdn.nyasamaoptics.api.ILightSource;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import club.nsdn.nyasamarailway.api.signal.TileEntitySignalLight;
@@ -21,7 +22,7 @@ import java.util.Random;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsSignalLight extends TileBlock {
+public abstract class AbsSignalLight extends TileBlock implements ILightSource {
 
     public static final int LIGHT_N = 0;
     public static final int LIGHT_R = 1;
