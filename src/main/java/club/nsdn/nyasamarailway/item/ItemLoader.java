@@ -67,6 +67,7 @@ public class ItemLoader {
         items = new LinkedList<>();
         itemCarts = new LinkedHashMap<>();
 
+        items.add(new Item74HC04());
         items.add(new Item1N4148());
         items.add(new ItemNTP8Bit());
         items.add(new ItemNTP32Bit());

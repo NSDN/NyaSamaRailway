@@ -1,22 +1,7 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
-
- This work (the API) is licensed under the "MIT" License,
- see LICENSE.md for details.
- -----------------------------------------------------------------------------*/
-
-package mods.railcraft.api.carts;
+package org.thewdj.linkage.api;
 
 import net.minecraft.entity.item.EntityMinecart;
 
-/**
- * This interface should be implemented by any minecart that wishes
- * to change the default linkage behavior.
- * It is NOT required to be able to link a cart,
- * it merely gives you more control over the process.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public interface ILinkableCart {
 
     /**

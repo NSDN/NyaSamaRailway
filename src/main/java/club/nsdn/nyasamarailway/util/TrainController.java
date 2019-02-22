@@ -4,6 +4,8 @@ import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,6 +51,11 @@ public class TrainController {
         }
     }
 
+    public static void say(EntityPlayer player, String format, Object... args) {
+        if (player != null)
+            player.sendMessage(new TextComponentTranslation(format, args));
+    }
+
     @SideOnly(Side.CLIENT)
     public static void doControl(TrainPacket train, EntityPlayer player) {
         if (KeyInput.keyDirUp.isPressed() && KeyInput.DirUP == 0) {
@@ -73,23 +80,23 @@ public class TrainController {
         if (KeyInput.DirUP == 1) {
             if (train.P > 0) {
                 if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    Util.say(player, "info.ntp.notZeroPower");
+                    say(player, "info.ntp.notZeroPower");
             } else {
                 if (train.Dir == -1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = 1;
                 if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    Util.say(player, "info.ntp.dir", train.Dir);
+                    say(player, "info.ntp.dir", train.Dir);
             }
             KeyInput.DirUP = 2;
         } else if (KeyInput.DirDOWN == 1) {
             if (train.P > 0) {
                 if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    Util.say(player, "info.ntp.notZeroPower");
+                    say(player, "info.ntp.notZeroPower");
             } else {
                 if (train.Dir == 1) train.Dir = 0;
                 else if (train.Dir == 0) train.Dir = -1;
                 if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    Util.say(player, "info.ntp.dir", train.Dir);
+                    say(player, "info.ntp.dir", train.Dir);
             }
             KeyInput.DirDOWN = 2;
         }
@@ -98,13 +105,13 @@ public class TrainController {
             if (train.P > 0) train.P -= 1;
             if (train.P < 0) train.P = 0;
             if (!(player.getRidingEntity() instanceof IInspectionCart))
-                Util.say(player, "info.ntp.power", train.P);
+                say(player, "info.ntp.power", train.P);
             KeyInput.PowerDown = 2;
         } else if (KeyInput.PowerUp == 1) {
             if (train.P < MaxP) train.P += 1;
             if (train.P > MaxP) train.P = MaxP;
             if (!(player.getRidingEntity() instanceof IInspectionCart))
-                Util.say(player, "info.ntp.power", train.P);
+                say(player, "info.ntp.power", train.P);
             KeyInput.PowerUp = 2;
         }
 
@@ -112,13 +119,13 @@ public class TrainController {
             if (train.R < 10) train.R += 1;
             if (train.R > 10) train.R = 10;
             if (!(player.getRidingEntity() instanceof IInspectionCart))
-                Util.say(player, "info.ntp.brake", 10 - train.R);
+                say(player, "info.ntp.brake", 10 - train.R);
             KeyInput.BrakeDown = 2;
         } else if (KeyInput.BrakeUp == 1) {
             if (train.R > 1) train.R -= 1;
             if (train.R < 1) train.R = 1;
             if (!(player.getRidingEntity() instanceof IInspectionCart))
-                Util.say(player, "info.ntp.brake", 10 - train.R);
+                say(player, "info.ntp.brake", 10 - train.R);
             KeyInput.BrakeUp = 2;
         }
 
@@ -126,7 +133,7 @@ public class TrainController {
             if (player.getRidingEntity() instanceof IHighSpeedCart) {
                 train.Mode = !train.Mode;
                 if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    Util.say(player, "info.ntp.mode", String.valueOf(train.Mode).toUpperCase());
+                    say(player, "info.ntp.mode", String.valueOf(train.Mode).toUpperCase());
             }
             KeyInput.ModeSwitch = 2;
         }

@@ -11,6 +11,7 @@ import club.nsdn.nyasamarailway.util.NTPCore;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.thewdj.linkage.Linkage;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -20,7 +21,11 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         new CreativeTabLoader(event);
         new NetworkWrapper(event);
+
         EventRegister.registerCommon();
+
+        NyaSamaRailway.logger.info("-= Initialize linkage which cp from RC =-");
+        new Linkage(NyaSamaRailway.logger);
     }
 
     public void init(FMLInitializationEvent event) {

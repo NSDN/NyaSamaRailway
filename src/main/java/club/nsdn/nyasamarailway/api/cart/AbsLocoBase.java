@@ -3,9 +3,11 @@ package club.nsdn.nyasamarailway.api.cart;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
 import club.nsdn.nyasamarailway.util.TrainController;
+import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
@@ -43,7 +45,7 @@ import java.util.*;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive, mods.railcraft.api.carts.ILinkableCart {
+public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive, ILinkableCart {
 
     /** Minecart rotational logic matrix */
     public static final int[][][] MATRIX = new int[][][]{
@@ -453,6 +455,7 @@ public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive,
                     EntityPlayer player = (EntityPlayer) source.getTrueSource();
                     ItemStack stack = player.getHeldItemMainhand();
                     if (stack.isEmpty()) return false;
+                    if (stack.getItem() instanceof Item74HC04) flag = true;
                     if (stack.getItem() instanceof Item1N4148) flag = true;
                 }
                 if (flag || this.getDamage() > 40.0F) {

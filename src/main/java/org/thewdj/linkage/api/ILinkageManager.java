@@ -1,28 +1,10 @@
-/*------------------------------------------------------------------------------
- Copyright (c) CovertJaguar, 2011-2019
-
- This work (the API) is licensed under the "MIT" License,
- see LICENSE.md for details.
- -----------------------------------------------------------------------------*/
-
-package mods.railcraft.api.carts;
+package org.thewdj.linkage.api;
 
 import net.minecraft.entity.item.EntityMinecart;
 
 import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
-/**
- * The LinkageManager contains all the functions needed to link and interact
- * with linked carts.
- * <p/>
- * To obtain an instance of this interface, call #.
- * <p/>
- * Each cart can up to two links. They are called Link A and Link B. Some carts
- * will have only Link A, for example the Tunnel Bore.
- *
- * @author CovertJaguar <http://www.railcraft.info>
- */
 public interface ILinkageManager {
 
     /**
