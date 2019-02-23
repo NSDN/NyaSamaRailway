@@ -50,6 +50,7 @@ public class EntityModelBinder {
         renderers.put(NSPCT10.class, NSPCT10Renderer.FACTORY);
 
         renderers.put(NSET2.class, NSET2Renderer.FACTORY);
+        renderers.put(NSET3.class, NSET3Renderer.FACTORY);
         renderers.put(NSPCT4M.class, NSPCT4MRenderer.FACTORY);
         renderers.put(NSPCT8C.class, NSPCT8CRenderer.FACTORY);
         renderers.put(NSPCT8C.Container.class, NSPCT8CRenderer.FACTORY);

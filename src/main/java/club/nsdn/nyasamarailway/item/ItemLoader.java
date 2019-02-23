@@ -88,6 +88,7 @@ public class ItemLoader {
         items.add(new ItemNSPCT10());
 
         items.add(new ItemNSET2());
+        items.add(new ItemNSET3());
         items.add(new ItemNSPCT4M());
         items.add(new ItemNSPCT8C());
         items.add(new ItemNSPCT8J());

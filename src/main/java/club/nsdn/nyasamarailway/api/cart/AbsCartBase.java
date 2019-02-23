@@ -94,9 +94,10 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit ||
-                        stack.getItem() instanceof ItemNTP32Bit) {
+                if (
+                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
+                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
+                ) {
                     return true;
                 }
                 if (stack.getItem() instanceof ItemMinecart) return true;

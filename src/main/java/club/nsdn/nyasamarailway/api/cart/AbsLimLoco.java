@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.api.cart;
 
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
@@ -76,9 +77,10 @@ public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart {
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit ||
-                        stack.getItem() instanceof ItemNTP32Bit) {
+                if (
+                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
+                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
+                ) {
                     return true;
                 }
                 if (stack.getItem() instanceof ItemMinecart) return true;

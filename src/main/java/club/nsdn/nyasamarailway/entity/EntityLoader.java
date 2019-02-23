@@ -55,6 +55,7 @@ public class EntityLoader {
         entities.add(NSPCT10.class);
 
         entities.add(NSET2.class);
+        entities.add(NSET3.class);
         entities.add(NSPCT4M.class);
         entities.add(NSPCT8C.class);
         entities.add(NSPCT8C.Container.class);
