@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.api.rail.AbsRail;
 import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import club.nsdn.nyasamarailway.api.rail.IBaseRail;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.tileentity.TileEntity;
@@ -37,6 +38,11 @@ public class MonoRailBase extends AbsRail {
     public MonoRailBase() {
         super("MonoRailBase", "rail_mono");
         setLightOpacity(0);
+    }
+
+    @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
+        return 5.0F;
     }
 
     @Override

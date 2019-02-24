@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.rail;
 import club.nsdn.nyasamarailway.api.rail.AbsRail;
 import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +17,11 @@ public class Rail3rdSwitch extends MonoRailSwitch {
 
     public Rail3rdSwitch() {
         super("Rail3rdSwitch", "rail_3rd_switch");
+    }
+
+    @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
+        return 3.0F;
     }
 
     @Override

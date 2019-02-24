@@ -15,7 +15,7 @@ import net.minecraft.world.World;
  */
 public abstract class AbsNSCxBM extends AbsLimLoco implements IMonoRailCart {
 
-    public double shiftY = -1.0;
+    public double shiftY = DEFAULT_SHIFT;
 
     @Override
     public double getShiftY() {

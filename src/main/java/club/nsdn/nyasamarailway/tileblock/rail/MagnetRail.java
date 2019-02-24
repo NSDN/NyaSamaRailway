@@ -48,7 +48,7 @@ public class MagnetRail extends AbsRail {
 
     @Override
     public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
-        return 5.0F;
+        return 8.0F;
     }
 
     @Override

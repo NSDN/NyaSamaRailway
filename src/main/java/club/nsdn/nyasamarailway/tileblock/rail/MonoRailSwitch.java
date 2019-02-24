@@ -5,6 +5,7 @@ import club.nsdn.nyasamatelecom.api.tileentity.TileEntityTriStateReceiver;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -124,6 +125,11 @@ public class MonoRailSwitch extends AbsRail {
 
     public MonoRailSwitch() {
         super("MonoRailSwitch", "rail_mono_switch");
+    }
+
+    @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
+        return 5.0F;
     }
 
     @Override

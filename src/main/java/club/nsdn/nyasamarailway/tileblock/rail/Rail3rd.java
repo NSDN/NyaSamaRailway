@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.rail;
 import club.nsdn.nyasamarailway.api.rail.AbsRail;
 import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -21,6 +22,11 @@ public class Rail3rd extends MonoRailBase {
 
     public Rail3rd() {
         super("Rail3rd", "rail_3rd");
+    }
+
+    @Override
+    public float getRailMaxSpeed(World world, EntityMinecart cart, BlockPos pos) {
+        return 3.0F;
     }
 
     @Override

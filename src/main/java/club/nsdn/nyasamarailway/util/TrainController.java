@@ -179,7 +179,7 @@ public class TrainController {
             packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUp(Math.abs(packet.Velocity), 0.1, 1.0, packet.P / 20.0, 0.02);
 
             if (packet.Velocity < packet.nextVelocity) {
-                packet.Velocity = packet.nextVelocity;
+                packet.Velocity = packet.nextVelocity > packet.Velocity * 10 ? packet.nextVelocity / 10 : packet.nextVelocity;
             }
         }
 
@@ -215,7 +215,7 @@ public class TrainController {
             packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
-                packet.Velocity = packet.nextVelocity;
+                packet.Velocity = packet.nextVelocity > packet.Velocity * 10 ? packet.nextVelocity / 10 : packet.nextVelocity;
             }
         }
 
@@ -249,7 +249,7 @@ public class TrainController {
             packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
-                packet.Velocity = packet.nextVelocity;
+                packet.Velocity = packet.nextVelocity > packet.Velocity * 10 ? packet.nextVelocity / 10 : packet.nextVelocity;
             }
         }
 
@@ -283,7 +283,7 @@ public class TrainController {
             packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
-                packet.Velocity = packet.nextVelocity;
+                packet.Velocity = packet.nextVelocity > packet.Velocity * 10 ? packet.nextVelocity / 10 : packet.nextVelocity;
             }
         }
 
@@ -319,7 +319,7 @@ public class TrainController {
             packet.nextVelocity = Dynamics.LocoMotions.calcVelocityUpWithAir(Math.abs(packet.Velocity), 0.1, 1.0, OutP, DT);
 
             if (packet.Velocity < packet.nextVelocity) {
-                packet.Velocity = packet.nextVelocity;
+                packet.Velocity = packet.nextVelocity > packet.Velocity * 10 ? packet.nextVelocity / 10 : packet.nextVelocity;
             }
         }
 

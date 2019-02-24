@@ -42,7 +42,7 @@ public class NSC1BM extends AbsNSCxBM implements IRotaCart {
 
     @Override
     public double getMountedYOffset() {
-        return 0.8 + shiftY;
+        return -0.1 + shiftY;
     }
 
     @Nonnull

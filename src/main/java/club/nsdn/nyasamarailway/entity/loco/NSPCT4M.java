@@ -98,7 +98,7 @@ public class NSPCT4M extends AbsLimLoco implements IMonoRailCart, IExtendedInfoC
 
     @Override
     public double getMountedYOffset() {
-        return 0.6 + shiftY;
+        return -0.3 + shiftY;
     }
 
     @Override

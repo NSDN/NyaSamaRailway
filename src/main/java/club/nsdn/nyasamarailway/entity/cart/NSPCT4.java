@@ -98,7 +98,7 @@ public class NSPCT4 extends AbsMotoCart implements IMonoRailCart, IExtendedInfoC
 
     @Override
     public double getMountedYOffset() {
-        return 0.6 + shiftY;
+        return -0.3 + shiftY;
     }
 
     @Nonnull
