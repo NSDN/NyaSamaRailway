@@ -131,7 +131,7 @@ public class ItemPierBuilder extends ToolBase {
     }
 
     public boolean isRailBuilding(World world, BlockPos pos) {
-        boolean res = world.getBlockState(pos).getBlock() instanceof BlockRail;
+        boolean res = world.getBlockState(pos).getBlock() instanceof BlockRailBase;
         res &= (
             (
                 world.getBlockState(pos.down().east()).getBlock() instanceof BlockSlab &&
