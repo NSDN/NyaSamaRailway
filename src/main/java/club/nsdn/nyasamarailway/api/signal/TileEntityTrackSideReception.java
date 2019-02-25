@@ -529,10 +529,12 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
                 reception.enable = true;
                 setCartDefaultPosition(loco, pos);
-                for (EntityPlayer player : players)
-                    Util.say(player, "info.reception.pause", reception.setDelay);
-                if (reception.setDelay == 10) playSoundOnCart(loco, EnumSound.PAUSE);
-                else if (reception.setDelay == 20) playSoundOnCart(loco, EnumSound.JETTY);
+                if (reception.setDelay >= 5) {
+                    for (EntityPlayer player : players)
+                        Util.say(player, "info.reception.pause", reception.setDelay);
+                    if (reception.setDelay == 10) playSoundOnCart(loco, EnumSound.PAUSE);
+                    else if (reception.setDelay == 20) playSoundOnCart(loco, EnumSound.JETTY);
+                }
             }
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
@@ -548,18 +550,22 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (reception.delay + reception.count == reception.setDelay * 15) {
                         reception.delay = reception.setDelay * 15 - 1;
                         reception.count += 1;
-                        for (EntityPlayer player : players)
-                            Util.say(player, "info.reception.delay");
-                        playSoundOnCart(loco, EnumSound.DELAY);
+                        if (reception.setDelay >= 5) {
+                            for (EntityPlayer player : players)
+                                Util.say(player, "info.reception.delay");
+                            playSoundOnCart(loco, EnumSound.DELAY);
+                        }
                     }
                 }
 
                 if (reception.delay == reception.setDelay * 15) {
                     reception.count = 0;
                     reception.doorCtrl = false;
-                    for (EntityPlayer player : players)
-                        Util.say(player, "info.reception.ready", reception.setDelay);
-                    playSoundOnCart(loco, EnumSound.READY);
+                    if (reception.setDelay >= 5) {
+                        for (EntityPlayer player : players)
+                            Util.say(player, "info.reception.ready", reception.setDelay);
+                        playSoundOnCart(loco, EnumSound.READY);
+                    }
                 }
 
                 if (loco.Velocity > maxV) {
@@ -623,10 +629,12 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 if (cart instanceof AbsMotoCart)
                     ((AbsMotoCart) cart).Velocity = 0.0D;
                 setCartDefaultPosition(cart, pos);
-                for (EntityPlayer player : players)
-                    Util.say(player, "info.reception.pause", reception.setDelay);
-                if (reception.setDelay == 10) playSoundOnCart(cart, EnumSound.PAUSE);
-                else if (reception.setDelay == 20) playSoundOnCart(cart, EnumSound.JETTY);
+                if (reception.setDelay >= 5) {
+                    for (EntityPlayer player : players)
+                        Util.say(player, "info.reception.pause", reception.setDelay);
+                    if (reception.setDelay == 10) playSoundOnCart(cart, EnumSound.PAUSE);
+                    else if (reception.setDelay == 20) playSoundOnCart(cart, EnumSound.JETTY);
+                }
             }
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
@@ -642,18 +650,22 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (reception.delay + reception.count == reception.setDelay * 15) {
                         reception.delay = reception.setDelay * 15 - 1;
                         reception.count += 1;
-                        for (EntityPlayer player : players)
-                            Util.say(player, "info.reception.delay");
-                        playSoundOnCart(cart, EnumSound.DELAY);
+                        if (reception.setDelay >= 5) {
+                            for (EntityPlayer player : players)
+                                Util.say(player, "info.reception.delay");
+                            playSoundOnCart(cart, EnumSound.DELAY);
+                        }
                     }
                 }
 
                 if (reception.delay == reception.setDelay * 15) {
                     reception.count = 0;
                     reception.doorCtrl = false;
-                    for (EntityPlayer player : players)
-                        Util.say(player, "info.reception.ready", reception.setDelay);
-                    playSoundOnCart(cart, EnumSound.READY);
+                    if (reception.setDelay >= 5) {
+                        for (EntityPlayer player : players)
+                            Util.say(player, "info.reception.ready", reception.setDelay);
+                        playSoundOnCart(cart, EnumSound.READY);
+                    }
                 }
 
                 setCartDefaultPosition(cart, pos);
