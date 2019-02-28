@@ -1,6 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.entity.train.AbsTrain;
+import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
  */
 public class NSRM1Renderer extends AbsTrainRenerer {
 
-    public static IRenderFactory<AbsTrain> FACTORY = NSRM1Renderer::new;
+    public static IRenderFactory<AbsTrainBase> FACTORY = NSRM1Renderer::new;
 
     private final String _name = "nsr_m1";
 
@@ -37,12 +37,12 @@ public class NSRM1Renderer extends AbsTrainRenerer {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(AbsTrain train) {
+    protected ResourceLocation getEntityTexture(AbsTrainBase train) {
         return textureBase;
     }
 
     @Override
-    public void render(AbsTrain train, double x, double y, double z, float yaw) {
+    public void render(AbsTrainBase train, double x, double y, double z, float yaw) {
         GlStateManager.pushMatrix();
         GlStateManager.scale(0.0625, 0.0625, 0.0625);
 

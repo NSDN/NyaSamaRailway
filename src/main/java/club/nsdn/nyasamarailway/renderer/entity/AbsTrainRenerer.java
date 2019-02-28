@@ -1,22 +1,20 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.entity.train.AbsTrain;
+import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
  * Created by drzzm32 on 2019.2.27
  */
-public abstract class AbsTrainRenerer extends Render<AbsTrain> {
+public abstract class AbsTrainRenerer extends Render<AbsTrainBase> {
 
-    public static IRenderFactory<AbsTrain> FACTORY_DUMMY = (RenderManager manager) -> new AbsTrainRenerer(manager) {
+    public static IRenderFactory<AbsTrainBase> FACTORY_DUMMY = (RenderManager manager) -> new AbsTrainRenerer(manager) {
         @Override
-        public void render(AbsTrain train, double x, double y, double z, float yaw) {
+        public void render(AbsTrainBase train, double x, double y, double z, float yaw) {
 
         }
     };
@@ -27,12 +25,12 @@ public abstract class AbsTrainRenerer extends Render<AbsTrain> {
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(AbsTrain train) {
+    protected ResourceLocation getEntityTexture(AbsTrainBase train) {
         return new ResourceLocation("textures/entity/minetrain.png");
     }
 
     @Override
-    public void doRender(AbsTrain train, double x, double y, double z, float yaw, float v) {
+    public void doRender(AbsTrainBase train, double x, double y, double z, float yaw, float v) {
         GlStateManager.pushMatrix();
         this.bindEntityTexture(train);
 
@@ -49,6 +47,6 @@ public abstract class AbsTrainRenerer extends Render<AbsTrain> {
         GlStateManager.popMatrix();
     }
 
-    public abstract void render(AbsTrain train, double x, double y, double z, float yaw);
+    public abstract void render(AbsTrainBase train, double x, double y, double z, float yaw);
 
 }

@@ -1,10 +1,12 @@
-package club.nsdn.nyasamarailway.entity.train;
+package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,10 +30,10 @@ import java.util.UUID;
 /**
  * Created by drzzm32 on 2019.2.27
  */
-public abstract class AbsTrain extends Entity {
+public abstract class AbsTrainBase extends Entity {
 
-    private static final DataParameter<Integer> BOGIE_A = EntityDataManager.createKey(AbsTrain.class, DataSerializers.VARINT);
-    private static final DataParameter<Integer> BOGIE_B = EntityDataManager.createKey(AbsTrain.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> BOGIE_A = EntityDataManager.createKey(AbsTrainBase.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> BOGIE_B = EntityDataManager.createKey(AbsTrainBase.class, DataSerializers.VARINT);
 
     public UUID uuidA = UUID.randomUUID(), uuidB = UUID.randomUUID();
 
@@ -42,13 +44,13 @@ public abstract class AbsTrain extends Entity {
     public double lerpYaw;
     public double lerpPitch;
 
-    public AbsTrain(World world) {
+    public AbsTrainBase(World world) {
         super(world);
         this.preventEntitySpawning = true;
         this.setSize(1.5F, 1.75F);
     }
 
-    public AbsTrain(World world, double x, double y, double z) {
+    public AbsTrainBase(World world, double x, double y, double z) {
         this(world);
         this.setPosition(x, y, z);
         this.motionX = 0.0D;
@@ -81,7 +83,7 @@ public abstract class AbsTrain extends Entity {
         tagCompound.setUniqueId("uuidB", this.uuidB);
     }
 
-    public AbsTrain setBogieA(EntityMinecart bogie) {
+    public AbsTrainBase setBogieA(EntityMinecart bogie) {
         if (bogie != null) {
             if (!world.isRemote)
                 this.uuidA = bogie.getUniqueID();
@@ -90,7 +92,7 @@ public abstract class AbsTrain extends Entity {
         return this;
     }
 
-    public AbsTrain setBogieB(EntityMinecart bogie) {
+    public AbsTrainBase setBogieB(EntityMinecart bogie) {
         if (bogie != null) {
             if (!world.isRemote)
                 this.uuidB = bogie.getUniqueID();
@@ -161,7 +163,7 @@ public abstract class AbsTrain extends Entity {
 
     @Override
     public void applyEntityCollision(@Nonnull Entity entity) {
-        if (entity instanceof AbsTrain) {
+        if (entity instanceof AbsTrainBase) {
             if (entity.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
                 super.applyEntityCollision(entity);
             }
@@ -242,12 +244,17 @@ public abstract class AbsTrain extends Entity {
     }
 
     @Nonnull
-    public abstract Item getItem();
+    public Item getItem() { return Items.AIR; }
 
     public void killTrain(DamageSource source) {
         this.setDead();
-        ItemStack stack = new ItemStack(getItem(), 1);
-        stack.setStackDisplayName(stack.getDisplayName());
+        ItemStack stack = ItemStack.EMPTY;
+        Item item = getItem();
+        if (item == Items.AIR) {
+            item = ItemLoader.itemTrains.get(getClass());
+            if (item == null) item = Items.AIR;
+            stack = new ItemStack(item, 1);
+        }
         if (!source.damageType.equals("nsr")) this.entityDropItem(stack, 0.0F);
     }
 

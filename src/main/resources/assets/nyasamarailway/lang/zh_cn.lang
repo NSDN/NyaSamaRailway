@@ -196,6 +196,7 @@ item.ItemNSC3BM.name=NSC3BM单轨运输桶(机车版)
 item.ItemNSBT2.name=NSB-2型转向架
 item.ItemNSBT2M.name=NSB-2M型动力转向架
 item.ItemNSRM1.name=NSR-M1型列车
+item.ItemNSRM1T.name=NSR-M1T型拖车
 
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音

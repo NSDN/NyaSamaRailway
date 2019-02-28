@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.loco.*;
 import club.nsdn.nyasamarailway.entity.nsc.*;
 import club.nsdn.nyasamarailway.entity.train.NSRM1;
+import club.nsdn.nyasamarailway.entity.train.NSRM1T;
 import club.nsdn.nyasamarailway.renderer.entity.*;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -79,6 +80,7 @@ public class EntityModelBinder {
         renderers.put(NSBT2.class, NSBT2Renderer.FACTORY);
         renderers.put(NSBT2M.class, NSBT2MRenderer.FACTORY);
         renderers.put(NSRM1.class, NSRM1Renderer.FACTORY);
+        renderers.put(NSRM1T.class, NSRM1Renderer.FACTORY);
     }
 
 }

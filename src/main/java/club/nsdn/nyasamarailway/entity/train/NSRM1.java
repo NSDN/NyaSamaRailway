@@ -1,20 +1,23 @@
 package club.nsdn.nyasamarailway.entity.train;
 
+import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
-import club.nsdn.nyasamarailway.item.ItemLoader;
+import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -23,7 +26,7 @@ import javax.annotation.Nonnull;
  *
  * Created by drzzm32 on 2019.2.27
  */
-public class NSRM1 extends AbsTrain {
+public class NSRM1 extends AbsTrainBase {
 
     private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
@@ -98,14 +101,8 @@ public class NSRM1 extends AbsTrain {
     }
 
     @Override // Called by rider
-    public void updatePassenger(Entity entity) {
+    public void updatePassenger(@Nonnull Entity entity) {
         CartUtil.updatePassenger12(this, entity);
-    }
-
-    @Nonnull
-    @Override
-    public Item getItem() {
-        return ItemLoader.itemNSRM1;
     }
 
     @Override
@@ -137,9 +134,35 @@ public class NSRM1 extends AbsTrain {
         }
     }
 
+    public TileEntityGlassShield getShield(BlockPos pos, EnumFacing facing) {
+        TileEntity te = world.getTileEntity(pos.offset(facing));
+        if (te instanceof TileEntityGlassShield)
+            return (TileEntityGlassShield) te;
+        return null;
+    }
+
     @Override
     public void onUpdate() {
         super.onUpdate();
+
+        if (!world.isRemote) {
+            EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+            BlockPos pos = getPosition();
+            TileEntityGlassShield shield = getShield(pos.offset(facing.rotateYCCW()), facing);
+            if (shield != null) {
+                if (shield.state == TileEntityGlassShield.STATE_OPENING)
+                    setDoorStateLeft(true);
+                else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
+                    setDoorStateLeft(false);
+            }
+            shield = getShield(pos.offset(facing.rotateY()), facing);
+            if (shield != null) {
+                if (shield.state == TileEntityGlassShield.STATE_OPENING)
+                    setDoorStateRight(true);
+                else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
+                    setDoorStateRight(false);
+            }
+        }
 
         if (world.isRemote) {
             if (prevDoorStateLeft != getDoorStateLeft()) {

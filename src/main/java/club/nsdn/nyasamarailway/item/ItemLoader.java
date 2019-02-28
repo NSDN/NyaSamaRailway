@@ -1,12 +1,14 @@
 package club.nsdn.nyasamarailway.item;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.item.cart.*;
 import club.nsdn.nyasamarailway.item.loco.*;
 import club.nsdn.nyasamarailway.item.misc.*;
 import club.nsdn.nyasamarailway.item.nsc.*;
 import club.nsdn.nyasamarailway.item.tool.*;
 import club.nsdn.nyasamarailway.item.train.ItemNSRM1;
+import club.nsdn.nyasamarailway.item.train.ItemNSRM1T;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
@@ -34,13 +36,12 @@ public class ItemLoader {
     public static LinkedList<Item> items;
 
     public static LinkedHashMap<Class<? extends EntityMinecart>, AbsItemCart> itemCarts;
+    public static LinkedHashMap<Class<? extends AbsTrainBase>, AbsItemTrain> itemTrains;
 
     public static ItemNyaCoin nyaCoin;
     public static ItemTicketOnce oneCard;
     public static ItemTicketStore nyaCard;
     public static LinkedList<ItemTicketStore> itemNyaGifts;
-
-    public static AbsItemTrain itemNSRM1;
 
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
@@ -50,6 +51,8 @@ public class ItemLoader {
         for (Item i : items) {
             if (i instanceof AbsItemCart)
                 itemCarts.put(((AbsItemCart) i).cartClass, ((AbsItemCart) i));
+            if (i instanceof AbsItemTrain)
+                itemTrains.put(((AbsItemTrain) i).trainClass, ((AbsItemTrain) i));
         }
     }
 
@@ -69,6 +72,7 @@ public class ItemLoader {
     public ItemLoader() {
         items = new LinkedList<>();
         itemCarts = new LinkedHashMap<>();
+        itemTrains = new LinkedHashMap<>();
 
         items.add(new Item74HC04());
         items.add(new Item1N4148());
@@ -115,8 +119,8 @@ public class ItemLoader {
 
         items.add(new ItemNSBT2());
         items.add(new ItemNSBT2M());
-        itemNSRM1 = new ItemNSRM1();
-        items.add(itemNSRM1);
+        items.add(new ItemNSRM1());
+        items.add(new ItemNSRM1T());
 
         itemNyaGifts = new LinkedList<>();
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift1", "item_nyagift_1","item_nyagift_1"));

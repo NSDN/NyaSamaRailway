@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.item;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
@@ -20,8 +21,11 @@ import net.minecraft.world.World;
  */
 public abstract class AbsItemTrain extends Item {
 
-    public AbsItemTrain(String name, String id) {
+    public final Class<? extends AbsTrainBase> trainClass;
+
+    public AbsItemTrain(Class<? extends AbsTrainBase> trainClass, String name, String id) {
         super();
+        this.trainClass = trainClass;
         setMaxStackSize(64);
         setUnlocalizedName(name);
         setRegistryName(NyaSamaRailway.MODID, id);

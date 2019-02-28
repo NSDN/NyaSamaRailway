@@ -194,6 +194,7 @@ item.ItemNSC3BM.name=NSC3BM
 item.ItemNSBT2.name=NSB-2 Bogie
 item.ItemNSBT2M.name=NSB-2M Motor Bogie
 item.ItemNSRM1.name=NSR-M1 Metro
+item.ItemNSRM1T.name=NSR-M1T Trailer
 
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep
