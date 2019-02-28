@@ -57,4 +57,24 @@ public class CartUtil {
         }
     }
 
+    public static void updatePassenger12(Entity cart, Entity passenger) {
+        double x = cart.posX, z = cart.posZ;
+        double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
+        if (cart.isPassenger(passenger)) {
+            int index = cart.getPassengers().indexOf(passenger);
+            double distX = 1.0, distZ = 0.5;
+            double vx, vz;
+            int[] array = {
+                    -2, -1, 0, 1, 2,
+                    2, 1, 0, -1, -2
+            };
+            vx = distX * (double) array[index];
+            vz = distZ * (double) (((index / 6) == 0) ? 1 : -1);
+            Vec3d vec = new Vec3d(vx, 0.0D, vz);
+            vec = vec.rotatePitch((float) ((cart.rotationPitch + 360) / 180 * Math.PI));
+            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI));
+            passenger.setPosition(x + vec.x, y + vec.y, z + vec.z);
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.loco.*;
 import club.nsdn.nyasamarailway.entity.nsc.*;
+import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -79,6 +80,10 @@ public class EntityLoader {
         entities.add(NSC3AM.class);
         entities.add(NSC3B.class);
         entities.add(NSC3BM.class);
+
+        entities.add(NSBT2.class);
+        entities.add(NSBT2M.class);
+        entities.add(NSRM1.class);
     }
 
 }

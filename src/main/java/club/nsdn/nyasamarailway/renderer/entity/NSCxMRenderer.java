@@ -10,6 +10,7 @@ import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
@@ -192,14 +193,10 @@ public class NSCxMRenderer extends AbsCartRenerer {
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         GL11.glTranslatef(0.0F, -0.5F, 0.0F);
 
-        RendererHelper.beginSpecialLightingNoDepth();
-
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         doRenderHUD(minecart);
         GL11.glPopMatrix();
-
-        RendererHelper.endSpecialLightingNoDepth();
 
         GL11.glPopMatrix();
     }
@@ -245,6 +242,8 @@ public class NSCxMRenderer extends AbsCartRenerer {
 
                 GL11.glPushMatrix();
                 GL11.glRotated(45, 0, 1, 0);
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 // HUD1406
                 doRenderText(0, "-= NSR--NTP =-");
@@ -257,6 +256,8 @@ public class NSCxMRenderer extends AbsCartRenerer {
 
                 GL11.glPushMatrix();
                 GL11.glRotated(-45, 0, 1, 0);
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 // HUD1406
                 doRenderText(0, "-= NTP--EXT =-");
@@ -270,6 +271,8 @@ public class NSCxMRenderer extends AbsCartRenerer {
                 GL11.glPushMatrix();
                 GL11.glRotated(30, 0, 0, 1);
                 GL11.glTranslated(0.5, 0, 0);
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterV, textureMeterV);
                 angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
                 if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -285,6 +288,8 @@ public class NSCxMRenderer extends AbsCartRenerer {
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
 
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterA, textureMeterA);
                 angle = a / 0.03F * ANGLE_HALF;
                 if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;

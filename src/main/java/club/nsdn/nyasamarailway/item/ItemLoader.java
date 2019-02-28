@@ -6,6 +6,7 @@ import club.nsdn.nyasamarailway.item.loco.*;
 import club.nsdn.nyasamarailway.item.misc.*;
 import club.nsdn.nyasamarailway.item.nsc.*;
 import club.nsdn.nyasamarailway.item.tool.*;
+import club.nsdn.nyasamarailway.item.train.ItemNSRM1;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.Item;
@@ -38,6 +39,8 @@ public class ItemLoader {
     public static ItemTicketOnce oneCard;
     public static ItemTicketStore nyaCard;
     public static LinkedList<ItemTicketStore> itemNyaGifts;
+
+    public static AbsItemTrain itemNSRM1;
 
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event) {
@@ -109,6 +112,11 @@ public class ItemLoader {
         items.add(new ItemNSC3AM());
         items.add(new ItemNSC3B());
         items.add(new ItemNSC3BM());
+
+        items.add(new ItemNSBT2());
+        items.add(new ItemNSBT2M());
+        itemNSRM1 = new ItemNSRM1();
+        items.add(itemNSRM1);
 
         itemNyaGifts = new LinkedList<>();
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift1", "item_nyagift_1","item_nyagift_1"));

@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.entity.loco.NSPCT10J;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.ResourceLocation;
@@ -84,15 +85,11 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
-        RendererHelper.beginSpecialLightingNoDepth();
-
         doRenderHUD(minecart);
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         doRenderHUD(minecart);
         GL11.glPopMatrix();
-
-        RendererHelper.endSpecialLightingNoDepth();
     }
 
     private void doRenderHUD(EntityMinecart cart) {
@@ -107,6 +104,8 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
             boolean high = loco.getHighSpeedMode();
 
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
             String pwr = String.format("%2d", p);
@@ -122,6 +121,8 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
 
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
             angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -137,6 +138,8 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
 
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
             angle = a / 0.06F * ANGLE_HALF;
             if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
