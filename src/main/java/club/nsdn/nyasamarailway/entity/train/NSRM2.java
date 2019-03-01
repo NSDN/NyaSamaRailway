@@ -141,26 +141,34 @@ public class NSRM2 extends AbsTrainBase {
         return null;
     }
 
+    public void setDoorState(boolean invert, boolean value) {
+        if (invert) setDoorStateRight(value);
+        else setDoorStateLeft(value);
+    }
+
     @Override
     public void onUpdate() {
         super.onUpdate();
 
         if (!world.isRemote) {
             EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+            boolean invert = facing.getAxis() == EnumFacing.Axis.X;
             BlockPos pos = getPosition();
             TileEntityGlassShield shield = getShield(pos.offset(facing.rotateYCCW()), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorStateLeft(true);
+                    setDoorState(invert, true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorStateLeft(false);
+                    setDoorState(invert, false);
             }
+
+            invert = !invert;
             shield = getShield(pos.offset(facing.rotateY()), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorStateRight(true);
+                    setDoorState(invert, true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorStateRight(false);
+                    setDoorState(invert, false);
             }
         }
 

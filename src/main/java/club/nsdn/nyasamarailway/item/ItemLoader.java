@@ -125,6 +125,8 @@ public class ItemLoader {
         items.add(new ItemNSRM2());
         items.add(new ItemNSRM2T());
 
+        items.add(new ItemNSRD1());
+
         itemNyaGifts = new LinkedList<>();
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift1", "item_nyagift_1","item_nyagift_1"));
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift2", "item_nyagift_2","item_nyagift_2"));

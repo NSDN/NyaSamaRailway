@@ -83,7 +83,7 @@ public abstract class AbsTrainBase extends Entity {
         tagCompound.setUniqueId("uuidB", this.uuidB);
     }
 
-    public AbsTrainBase setBogieA(EntityMinecart bogie) {
+    public AbsTrainBase setBogieA(Entity bogie) {
         if (bogie != null) {
             if (!world.isRemote)
                 this.uuidA = bogie.getUniqueID();
@@ -92,7 +92,7 @@ public abstract class AbsTrainBase extends Entity {
         return this;
     }
 
-    public AbsTrainBase setBogieB(EntityMinecart bogie) {
+    public AbsTrainBase setBogieB(Entity bogie) {
         if (bogie != null) {
             if (!world.isRemote)
                 this.uuidB = bogie.getUniqueID();
@@ -101,44 +101,40 @@ public abstract class AbsTrainBase extends Entity {
         return this;
     }
 
-    public EntityMinecart getBogieA() {
+    public Entity getBogieA() {
         Entity entity = world.getEntityByID(dataManager.get(BOGIE_A));
         if (!world.isRemote && world instanceof WorldServer) {
             Entity serverEntity = ((WorldServer) world).getEntityFromUuid(this.uuidA);
-            if (serverEntity instanceof EntityMinecart) {
+            if (serverEntity != null) {
                 if (!serverEntity.equals(entity)) {
                     dataManager.set(BOGIE_A, serverEntity.getEntityId());
                 }
-                return (EntityMinecart) serverEntity;
+                return serverEntity;
             } else {
                 this.uuidA = UUID.randomUUID();
                 dataManager.set(BOGIE_A, -1);
                 return null;
             }
         }
-        if (entity instanceof EntityMinecart)
-            return (EntityMinecart) entity;
-        return null;
+        return entity;
     }
 
-    public EntityMinecart getBogieB() {
+    public Entity getBogieB() {
         Entity entity = world.getEntityByID(dataManager.get(BOGIE_B));
         if (!world.isRemote && world instanceof WorldServer) {
             Entity serverEntity = ((WorldServer) world).getEntityFromUuid(this.uuidB);
-            if (serverEntity instanceof EntityMinecart) {
+            if (serverEntity != null) {
                 if (!serverEntity.equals(entity)) {
                     dataManager.set(BOGIE_B, serverEntity.getEntityId());
                 }
-                return (EntityMinecart) serverEntity;
+                return serverEntity;
             } else {
                 this.uuidB = UUID.randomUUID();
                 dataManager.set(BOGIE_B, -1);
                 return null;
             }
         }
-        if (entity instanceof EntityMinecart)
-            return (EntityMinecart) entity;
-        return null;
+        return entity;
     }
 
     @Override
@@ -232,8 +228,10 @@ public abstract class AbsTrainBase extends Entity {
                     if (getBogieB() != null) getBogieB().setDead();
                 } else {
                     this.killTrain(source);
-                    if (getBogieA() != null) getBogieA().killMinecart(source);
-                    if (getBogieB() != null) getBogieB().killMinecart(source);
+                    if (getBogieA() != null && getBogieA() instanceof EntityMinecart)
+                        ((EntityMinecart) getBogieA()).killMinecart(source);
+                    if (getBogieB() != null && getBogieB() instanceof EntityMinecart)
+                        ((EntityMinecart) getBogieB()).killMinecart(source);
                 }
             }
 
@@ -311,6 +309,10 @@ public abstract class AbsTrainBase extends Entity {
         }
     }
 
+    public double getTrainYOffset() {
+        return 1.0;
+    }
+
     @Override
     public void onUpdate() {
         this.prevPosX = this.posX;
@@ -320,16 +322,16 @@ public abstract class AbsTrainBase extends Entity {
         this.tickLerp();
 
         if (getBogieA() != null && getBogieB() != null) {
-            EntityMinecart bogieA = getBogieA();
-            EntityMinecart bogieB = getBogieB();
+            Entity bogieA = getBogieA();
+            Entity bogieB = getBogieB();
 
             double x, y, z, yaw, pitch;
             x = (bogieA.posX + bogieB.posX) / 2;
-            y = (bogieA.posY + bogieB.posY) / 2 + 1;
+            y = (bogieA.posY + bogieB.posY) / 2 + getTrainYOffset();
             z = (bogieA.posZ + bogieB.posZ) / 2;
 
             Vec3d vec = bogieB.getPositionVector().subtract(bogieA.getPositionVector());
-            yaw = Math.atan(vec.z / vec.x) * 180 / Math.PI;
+            yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
             double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
             pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
             this.setRotation((float) yaw, (float) pitch);

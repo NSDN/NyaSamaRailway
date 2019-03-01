@@ -10,7 +10,7 @@ public final class LinkageHandler {
     public static final String LINK_A_TIMER = "linkA_timer";
     public static final String LINK_B_TIMER = "linkB_timer";
     public static final double LINK_DRAG = 0.95;
-    public static final float MAX_DISTANCE = 8F;
+    public static final float MAX_DISTANCE = 16F;
     private static final float STIFFNESS = 0.7F;
     private static final float HS_STIFFNESS = 0.7F;
     private static final float DAMPING = 0.4F;
