@@ -36,7 +36,7 @@ public class NSBT2M extends AbsLimLoco {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 3.0F;
+        return 2.0F;
     }
 
     @Override

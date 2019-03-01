@@ -197,6 +197,10 @@ item.ItemNSBT2.name=NSB-2型转向架
 item.ItemNSBT2M.name=NSB-2M型动力转向架
 item.ItemNSRM1.name=NSR-M1型列车
 item.ItemNSRM1T.name=NSR-M1T型拖车
+item.ItemNSBT3.name=NSB-3型转向架
+item.ItemNSBT3M.name=NSB-3M型动力转向架
+item.ItemNSRM2.name=NSR-M2型列车
+item.ItemNSRM2T.name=NSR-M2T型拖车
 
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音

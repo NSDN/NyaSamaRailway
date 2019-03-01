@@ -15,20 +15,20 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2019.2.27
+ * Created by drzzm32 on 2019.3.1
  */
-public class NSBT2 extends AbsMotoCart {
+public class NSBT3 extends AbsMotoCart {
 
     public final float R = 0.21875F;
     public float angle = 0;
 
-    public NSBT2(World world) {
+    public NSBT3(World world) {
         super(world);
         ignoreFrustumCheck = true;
         setSize(1.0F, 0.5F);
     }
 
-    public NSBT2(World world, double x, double y, double z) {
+    public NSBT3(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         setSize(1.0F, 0.5F);
@@ -36,7 +36,7 @@ public class NSBT2 extends AbsMotoCart {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override
