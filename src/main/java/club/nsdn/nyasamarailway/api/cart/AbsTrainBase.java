@@ -297,8 +297,8 @@ public abstract class AbsTrainBase extends Entity {
     }
 
     @Override
-    protected void addPassenger(Entity p_addPassenger_1_) {
-        super.addPassenger(p_addPassenger_1_);
+    protected void addPassenger(Entity entity) {
+        super.addPassenger(entity);
         if (this.canPassengerSteer() && this.lerpSteps > 0) {
             this.lerpSteps = 0;
             this.posX = this.lerpX;
@@ -311,6 +311,11 @@ public abstract class AbsTrainBase extends Entity {
 
     public double getTrainYOffset() {
         return 1.0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public double getRenderYOffset() {
+        return -1.0;
     }
 
     @Override

@@ -621,7 +621,7 @@ public abstract class AbsLocoBase extends EntityMinecart implements ILocomotive,
                 if (!list.isEmpty()) {
                     for(int j1 = 0; j1 < list.size(); ++j1) {
                         Entity entity1 = (Entity)list.get(j1);
-                        if (!(entity1 instanceof EntityPlayer) && !(entity1 instanceof EntityIronGolem) && !(entity1 instanceof EntityMinecart) && !this.isBeingRidden() && !entity1.isRiding()) {
+                        if (!(entity1 instanceof EntityPlayer) && !(entity1 instanceof EntityIronGolem) && !(entity1 instanceof EntityMinecart) && canFitPassenger(entity1) && !entity1.isRiding()) {
                             entity1.startRiding(this);
                         } else {
                             entity1.applyEntityCollision(this);

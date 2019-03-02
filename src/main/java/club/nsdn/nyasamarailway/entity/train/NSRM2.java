@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.entity.train;
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
+import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
@@ -18,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -132,6 +134,74 @@ public class NSRM2 extends AbsTrainBase {
 
             return true;
         }
+    }
+
+    public boolean getStateLeft(boolean invert) {
+        if (invert)
+            return getDoorStateRight();
+        return getDoorStateLeft();
+    }
+
+    public boolean getStateRight(boolean invert) {
+        if (invert)
+            return getDoorStateLeft();
+        return getDoorStateRight();
+    }
+
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = this.getPosition();
+        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+        boolean invert = facing.getAxis() == EnumFacing.Axis.X;
+        if (getStateLeft(invert))
+            pos = pos.offset(facing.rotateYCCW(), 2);
+        else if (getStateRight(invert))
+            pos = pos.offset(facing.rotateY(), 2);
+        else {
+            if (world.getBlockState(pos.offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
+                pos = pos.offset(facing.rotateYCCW(), 2);
+            else if (world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
+                pos = pos.offset(facing.rotateY(), 2);
+            else {
+                super.removePassenger(entity);
+                return;
+            }
+        }
+
+        super.removePassenger(entity);
+        entity.setPositionAndUpdate(
+                pos.getX() + 0.5,
+                pos.getY() + 0.5,
+                pos.getZ() + 0.5
+        );
+    }
+
+    @Override
+    protected boolean canFitPassenger(Entity entity) {
+        boolean res = super.canFitPassenger(entity);
+        BlockPos pos = this.getPosition();
+        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+
+        if (getDoorStateLeft() || getDoorStateRight()) {
+            boolean invert = facing.getAxis() == EnumFacing.Axis.X;
+            if (getStateLeft(invert))
+                pos = pos.offset(facing.rotateYCCW());
+            else if (getStateRight(invert))
+                pos = pos.offset(facing.rotateY());
+
+            Vec3i vec = entity.getPosition().subtract(pos);
+            if (facing.getAxis() == EnumFacing.Axis.X) {
+                return Math.abs(vec.getZ()) <= 2 && Math.abs(vec.getX()) <= 1 && res;
+            } else if (facing.getAxis() == EnumFacing.Axis.Z) {
+                return Math.abs(vec.getX()) <= 2 && Math.abs(vec.getZ()) <= 1 && res;
+            }
+        }
+
+        pos = this.getPosition();
+        if (getShield(pos.offset(facing.rotateYCCW()), facing) != null) return false;
+        if (getShield(pos.offset(facing.rotateY()), facing) != null) return false;
+
+        return res;
     }
 
     public TileEntityGlassShield getShield(BlockPos pos, EnumFacing facing) {
