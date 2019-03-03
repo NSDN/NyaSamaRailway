@@ -10,29 +10,23 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
- * Created by drzzm32 on 2019.2.27
+ * Created by drzzm32 on 2019.3.3
  */
-public class NSRM1Renderer extends AbsTrainRenerer {
+public class NSE4Renderer extends AbsTrainRenerer {
 
-    public static IRenderFactory<AbsTrainBase> FACTORY = NSRM1Renderer::new;
+    public static IRenderFactory<AbsTrainBase> FACTORY = NSE4Renderer::new;
 
-    private final String _name = "nsr_m1";
+    private final String _name = "nse_4";
 
     private final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_main.obj")
-    );
-    private final WavefrontObject modelPrint = new WavefrontObject(
-            new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_print.obj")
     );
 
     private final ResourceLocation textureBase = new ResourceLocation(
             "nyasamarailway", "textures/carts/" + _name + "_base.png"
     );
-    private final ResourceLocation texturePrint = new ResourceLocation(
-            "nyasamarailway", "textures/carts/" + _name + "_print.png"
-    );
 
-    public NSRM1Renderer(RenderManager manager) {
+    public NSE4Renderer(RenderManager manager) {
         super(manager);
     }
 
@@ -47,48 +41,11 @@ public class NSRM1Renderer extends AbsTrainRenerer {
         GlStateManager.scale(0.0625, 0.0625, 0.0625);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(textureBase);
-        modelBase.renderAllExcept("door1l", "door1r", "door2l", "door2r", "w0", "w1", "w2", "w3", "w4", "w5");
+        modelBase.renderAllExcept( "w0", "w1", "w2", "w3");
 
-        if (train instanceof NSRM1) {
-            NSRM1 metro = (NSRM1) train;
-
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            modelBase.renderOnly("w0", "w1", "w2", "w3", "w4", "w5");
-
-            double prog = metro.doorProgressLeft / 100.0 * 15;
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            modelBase.renderPart("door1l");
-            GlStateManager.popMatrix();
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            modelBase.renderPart("door1r");
-            GlStateManager.popMatrix();
-
-            prog = metro.doorProgressRight / 100.0 * 15;
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            modelBase.renderPart("door2l");
-            GlStateManager.popMatrix();
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            modelBase.renderPart("door2r");
-            GlStateManager.popMatrix();
-        }
-
-        Minecraft.getMinecraft().getTextureManager().bindTexture(texturePrint);
-        modelPrint.renderAll();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        modelBase.renderOnly("w0", "w1", "w2", "w3");
 
         GlStateManager.popMatrix();
     }

@@ -92,6 +92,8 @@ public class EntityModelBinder {
         renderers.put(NSRD1Shelf.class, NSRD1ShelfRenderer.FACTORY);
         renderers.put(NSRD1Main.class, NSRD1MainRenderer.FACTORY);
 
+        renderers.put(NSE4.class, NSE4Renderer.FACTORY);
+
         renderers.put(NSRD2Shelf.class, NSRD2ShelfRenderer.FACTORY);
         renderers.put(NSRD2Main.class, NSRD2MainRenderer.FACTORY);
 

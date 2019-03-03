@@ -1,7 +1,6 @@
 package club.nsdn.nyasamarailway.api.cart;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -9,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
  */
 public class CartUtil {
 
-    public static void updatePassenger2(EntityMinecart cart, Entity passenger) {
+    public static void updatePassenger2(Entity cart, Entity passenger) {
         double x = cart.posX, z = cart.posZ;
         double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
         if (cart.isPassenger(passenger)) {
@@ -25,7 +24,25 @@ public class CartUtil {
         }
     }
 
-    public static void updatePassenger4(EntityMinecart cart, Entity passenger) {
+    public static void updatePassenger2e(Entity cart, Entity passenger) {
+        double x = cart.posX, z = cart.posZ;
+        double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
+        if (cart.isPassenger(passenger)) {
+            double index = (double) cart.getPassengers().indexOf(passenger);
+            double dist = 0.5;
+            double vx, vz;
+            vx = dist * Math.cos(index * Math.PI);
+            vz = dist * Math.sin(index * Math.PI);
+            if (cart.getPassengers().size() == 1)
+                vx = vz = 0;
+            Vec3d vec = new Vec3d(vx, 0.0D, vz);
+            vec = vec.rotatePitch((float) ((cart.rotationPitch + 360) / 180 * Math.PI));
+            vec = vec.rotateYaw((float) ((180 - cart.rotationYaw) / 180 * Math.PI + Math.PI / 2));
+            passenger.setPosition(x + vec.x, y + vec.y, z + vec.z);
+        }
+    }
+
+    public static void updatePassenger4(Entity cart, Entity passenger) {
         double x = cart.posX, z = cart.posZ;
         double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
         if (cart.isPassenger(passenger)) {
@@ -41,7 +58,7 @@ public class CartUtil {
         }
     }
 
-    public static void updatePassenger6(EntityMinecart cart, Entity passenger) {
+    public static void updatePassenger6(Entity cart, Entity passenger) {
         double x = cart.posX, z = cart.posZ;
         double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
         if (cart.isPassenger(passenger)) {

@@ -128,6 +128,8 @@ public class ItemLoader {
         items.add(new ItemNSRM3());
         items.add(new ItemNSRM3T());
 
+        items.add(new ItemNSE4());
+
         items.add(new ItemNSRA1());
         items.add(new ItemNSRA2());
 
