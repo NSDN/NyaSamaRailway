@@ -202,6 +202,7 @@ item.ItemNSBT3M.name=NSB-3M型动力转向架
 item.ItemNSRM2.name=NSR-M2型列车
 item.ItemNSRM2T.name=NSR-M2T型拖车
 item.ItemNSRD1.name=NSR-D1型下沉平车
+item.ItemNSRD2.name=NSR-D2型下沉平车
 
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音

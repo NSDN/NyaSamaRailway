@@ -27,29 +27,29 @@ public class ItemNSRD1 extends AbsItemTrain {
 
     @Override
     public void doSpawn(World world, double x, double y, double z, EntityPlayer player, EnumFacing facing) {
-        NSBT4A bogieA1 = new NSBT4A(world, x, y, z);
         BlockPos pos = new BlockPos(0, 0, 0);
+        NSBT4A bogieA1 = new NSBT4A(world, x, y, z);
+            pos = pos.offset(facing, 1);
+            NSRD1Shelf shelfA = new NSRD1Shelf(world, x + pos.getX(), y + 1, z + pos.getZ());
         pos = pos.offset(facing, 1);
-        NSRD1Shelf shelfA = new NSRD1Shelf(world, x + pos.getX(), y + 1, z + pos.getZ());
-        pos = pos.offset(facing, 1);
-        NSBT4A bogieA2 = new NSBT4A(world, x + pos.getX(), y, z + pos.getZ());
-        LinkageManager.INSTANCE.createLink(bogieA1, bogieA2);
-        shelfA.setBogieA(bogieA1).setBogieB(bogieA2);
+        NSBT4A bogieA2 = new NSBT4A(world, x + pos.getX(), y, z + pos.getZ(), 3.0F);
+            LinkageManager.INSTANCE.createLink(bogieA1, bogieA2);
+            shelfA.setBogieA(bogieA1).setBogieB(bogieA2);
+
+                pos = pos.offset(facing, 3);
+                NSRD1Main main = new NSRD1Main(world, x + pos.getX(), y + 1, z + pos.getZ());
 
         pos = pos.offset(facing, 3);
-        NSRD1Main main = new NSRD1Main(world, x + pos.getX(), y + 2, z + pos.getZ());
-
-        pos = pos.offset(facing, 3);
-        NSBT4B bogieB1 = new NSBT4B(world, x + pos.getX(), y, z + pos.getZ());
-        pos = pos.offset(facing, 1);
-        NSRD1Shelf shelfB = new NSRD1Shelf(world, x + pos.getX(), y + 1, z + pos.getZ());
+        NSBT4B bogieB1 = new NSBT4B(world, x + pos.getX(), y, z + pos.getZ(), 3.0F);
+            pos = pos.offset(facing, 1);
+            NSRD1Shelf shelfB = new NSRD1Shelf(world, x + pos.getX(), y + 1, z + pos.getZ());
         pos = pos.offset(facing, 1);
         NSBT4B bogieB2 = new NSBT4B(world, x + pos.getX(), y, z + pos.getZ());
-        LinkageManager.INSTANCE.createLink(bogieB1, bogieB2);
-        shelfB.setBogieA(bogieB1).setBogieB(bogieB2);
+            LinkageManager.INSTANCE.createLink(bogieB1, bogieB2);
+            shelfB.setBogieA(bogieB1).setBogieB(bogieB2);
 
-        LinkageManager.INSTANCE.createLink(bogieA2, bogieB1);
-        main.setBogieA(shelfA).setBogieB(shelfB);
+                LinkageManager.INSTANCE.createLink(bogieA2, bogieB1);
+                main.setBogieA(shelfA).setBogieB(shelfB);
 
         world.spawnEntity(bogieA1); world.spawnEntity(shelfA); world.spawnEntity(bogieA2);
         world.spawnEntity(bogieB1); world.spawnEntity(shelfB); world.spawnEntity(bogieB2);

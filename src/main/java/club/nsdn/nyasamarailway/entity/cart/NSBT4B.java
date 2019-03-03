@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,6 +24,8 @@ public class NSBT4B extends AbsMotoCart implements IBogie {
     public final float R = 0.21875F;
     public float angle = 0;
 
+    protected float linkDist = 1.0F;
+
     public NSBT4B(World world) {
         super(world);
         ignoreFrustumCheck = true;
@@ -33,6 +36,11 @@ public class NSBT4B extends AbsMotoCart implements IBogie {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         setSize(1.0F, 0.5F);
+    }
+
+    public NSBT4B(World world, double x, double y, double z, float linkDist) {
+        this(world, x, y, z);
+        this.linkDist = linkDist;
     }
 
     @Override
@@ -53,15 +61,29 @@ public class NSBT4B extends AbsMotoCart implements IBogie {
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
         if (cart instanceof NSBT4A)
-            return 5.0F;
+            return linkDist * 1.5F;
         return 2.0F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
         if (cart instanceof NSBT4A)
-            return 3.0F;
+            return linkDist;
         return 1.0F;
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+
+        linkDist = tagCompound.getFloat("linkDist");
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+
+        tagCompound.setFloat("linkDist", linkDist);
     }
 
     @Nonnull
