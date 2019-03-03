@@ -21,11 +21,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
 /**
- *
  * Created by drzzm32 on 2019.2.27
  */
 public class NSRM1 extends AbsTrainBase {
@@ -95,6 +96,12 @@ public class NSRM1 extends AbsTrainBase {
     @Override
     public double getMountedYOffset() {
         return 0.25;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getRenderFixOffset() {
+        return -0.25;
     }
 
     @Override

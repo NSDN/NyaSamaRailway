@@ -5,11 +5,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
 /**
- *
  * Created by drzzm32 on 2019.3.1
  */
 public class NSRD1Shelf extends AbsTrainBase {
@@ -32,6 +33,12 @@ public class NSRD1Shelf extends AbsTrainBase {
     @Override
     public boolean processInitialInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
         return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getRenderFixOffset() {
+        return -0.25;
     }
 
     @Override

@@ -318,6 +318,11 @@ public abstract class AbsTrainBase extends Entity {
         return -1.0;
     }
 
+    @SideOnly(Side.CLIENT)
+    public double getRenderFixOffset() {
+        return 0.0;
+    }
+
     @Override
     public void onUpdate() {
         this.prevPosX = this.posX;

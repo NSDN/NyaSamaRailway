@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
 import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
+import club.nsdn.nyasamarailway.api.cart.IBogie;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
@@ -17,7 +18,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.3.1
  */
-public class NSBT3M extends AbsLimLoco {
+public class NSBT3M extends AbsLimLoco implements IBogie {
 
     public final float R = 0.21875F;
     public float angle = 0;

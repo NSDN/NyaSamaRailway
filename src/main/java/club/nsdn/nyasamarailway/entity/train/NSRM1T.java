@@ -3,7 +3,6 @@ package club.nsdn.nyasamarailway.entity.train;
 import net.minecraft.world.World;
 
 /**
- *
  * Created by drzzm32 on 2019.3.1
  */
 public class NSRM1T extends NSRM1 {

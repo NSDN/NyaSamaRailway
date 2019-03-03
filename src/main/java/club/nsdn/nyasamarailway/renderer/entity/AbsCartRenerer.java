@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.api.cart.IBogie;
 import club.nsdn.nyasamarailway.api.cart.INamedCart;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -69,7 +70,10 @@ public abstract class AbsCartRenerer extends Render<EntityMinecart> {
             }
         }
 
+        GlStateManager.translate(0, 0.0625, 0);
         GlStateManager.translate((float)x, (float)y + 0.375F, (float)z);
+        if (cart instanceof IBogie)
+            GlStateManager.translate(0, -((IBogie) cart).getRenderFixOffset(), 0);
         GlStateManager.rotate(180.0F - yaw, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-pitch, 0.0F, 0.0F, 1.0F);
         float roll = (float)cart.getRollingAmplitude() - v;
@@ -83,7 +87,8 @@ public abstract class AbsCartRenerer extends Render<EntityMinecart> {
         }
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, 0.0625, 0);
+        if (cart instanceof IBogie)
+            GlStateManager.translate(0, ((IBogie) cart).getRenderFixOffset(), 0);
         render(cart, x, y, z, yaw);
         GlStateManager.popMatrix();
 
