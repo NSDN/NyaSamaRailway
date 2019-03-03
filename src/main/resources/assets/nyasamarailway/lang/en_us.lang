@@ -201,6 +201,10 @@ item.ItemNSRM2.name=NSR-M2 Metro
 item.ItemNSRM2T.name=NSR-M2T Trailer
 item.ItemNSRD1.name=NSR-D1 Cargo
 item.ItemNSRD2.name=NSR-D2 Cargo
+item.ItemNSRM3.name=NSR-M3 V-Rail Metro
+item.ItemNSRM3T.name=NSR-M3T Trailer
+item.ItemNSRA1.name=NSR-A1 Automatic-Control Unit
+item.ItemNSRA2.name=NSR-A2 Automatic-Control Unit
 
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep

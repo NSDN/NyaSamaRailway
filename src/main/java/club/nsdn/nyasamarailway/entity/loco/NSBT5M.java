@@ -1,8 +1,7 @@
-package club.nsdn.nyasamarailway.entity.cart;
+package club.nsdn.nyasamarailway.entity.loco;
 
-import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
+import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
 import club.nsdn.nyasamarailway.api.cart.IBogie;
-import club.nsdn.nyasamarailway.entity.loco.NSRA1;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
@@ -17,20 +16,17 @@ import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2019.2.27
+ * Created by drzzm32 on 2019.3.1
  */
-public class NSBT2 extends AbsMotoCart implements IBogie {
+public class NSBT5M extends AbsLimLoco implements IBogie {
 
-    public final float R = 0.21875F;
-    public float angle = 0;
-
-    public NSBT2(World world) {
+    public NSBT5M(World world) {
         super(world);
         ignoreFrustumCheck = true;
         setSize(1.0F, 0.5F);
     }
 
-    public NSBT2(World world, double x, double y, double z) {
+    public NSBT5M(World world, double x, double y, double z) {
         super(world, x, y, z);
         ignoreFrustumCheck = true;
         setSize(1.0F, 0.5F);
@@ -38,30 +34,16 @@ public class NSBT2 extends AbsMotoCart implements IBogie {
 
     @Override
     public float getMaxCartSpeedOnRail() {
-        return 2.0F;
-    }
-
-    @Override
-    public double getMountedYOffset() {
-        return 0;
-    }
-
-    @Override
-    public boolean shouldRiderSit() {
-        return false;
+        return 3.0F;
     }
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        if (cart instanceof NSRA1)
-            return 2.0F;
         return 4.0F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        if (cart instanceof NSRA1)
-            return 1.0F;
         return 2.0F;
     }
 
@@ -78,21 +60,7 @@ public class NSBT2 extends AbsMotoCart implements IBogie {
 
     @Override
     public void doMotion(TrainPacket packet, EntityMinecart cart) {
-        //TrainController.doMotionWithAir(packet, cart);
-    }
-
-    @Override
-    public void onUpdate() {
-        super.onUpdate();
-
-        if (world.isRemote) {
-            double dir = 0, yaw = TrainController.calcYaw(this) * Math.PI / 180.0;
-            if (this.motionX != 0)
-                dir = Math.signum(this.motionX / Math.cos(yaw));
-            else if (this.motionZ != 0)
-                dir = Math.signum(this.motionZ / -Math.sin(yaw));
-            this.angle += ((float) (getMotorVel() / R * 180 / Math.PI) * (float) dir);
-        }
+        TrainController.doMotionWithAir(packet, cart);
     }
 
     @Override

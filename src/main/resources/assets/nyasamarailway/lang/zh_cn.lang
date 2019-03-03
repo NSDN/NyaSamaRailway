@@ -203,6 +203,10 @@ item.ItemNSRM2.name=NSR-M2型列车
 item.ItemNSRM2T.name=NSR-M2T型拖车
 item.ItemNSRD1.name=NSR-D1型下沉平车
 item.ItemNSRD2.name=NSR-D2型下沉平车
+item.ItemNSRM3.name=NSR-M3型虚拟轨道列车
+item.ItemNSRM3T.name=NSR-M3T型拖车
+item.ItemNSRA1.name=NSR-A1型自动控制单元
+item.ItemNSRA2.name=NSR-A2型自动控制单元
 
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音
