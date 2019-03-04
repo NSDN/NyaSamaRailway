@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.entity.train;
 
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
@@ -22,7 +23,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.3.3
  */
-public class NSE4 extends AbsTrainBase {
+public class NSE4 extends AbsTrainBase implements IInspectionCart {
 
     public NSE4(World world) {
         super(world);
@@ -86,9 +87,9 @@ public class NSE4 extends AbsTrainBase {
     protected void removePassenger(Entity entity) {
         BlockPos pos = this.getPosition();
         EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
-        if (world.getBlockState(pos.offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
+        if (world.getBlockState(pos.down().offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
             pos = pos.offset(facing.rotateYCCW(), 2);
-        else if (world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
+        else if (world.getBlockState(pos.down().offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
             pos = pos.offset(facing.rotateY(), 2);
         else {
             super.removePassenger(entity);

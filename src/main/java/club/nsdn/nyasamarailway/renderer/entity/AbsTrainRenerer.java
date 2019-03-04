@@ -34,7 +34,7 @@ public abstract class AbsTrainRenerer extends Render<AbsTrainBase> {
         GlStateManager.pushMatrix();
         this.bindEntityTexture(train);
 
-        GlStateManager.translate((float) x, (float) y + 0.375F, (float) z);
+        GlStateManager.translate((float) x, (float) y + 0.375F + 0.0625F, (float) z);
         GlStateManager.translate(0, train.getRenderYOffset(), 0);
         GlStateManager.translate(0, -train.getRenderFixOffset(), 0);
         GlStateManager.rotate(180.0F - train.rotationYaw, 0.0F, 1.0F, 0.0F);

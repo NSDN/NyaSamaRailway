@@ -165,9 +165,9 @@ public class NSRM1 extends AbsTrainBase {
         else if (getStateRight(invert))
             pos = pos.offset(facing.rotateY(), 2);
         else {
-            if (world.getBlockState(pos.offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
+            if (world.getBlockState(pos.down().offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
                 pos = pos.offset(facing.rotateYCCW(), 2);
-            else if (world.getBlockState(pos.offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
+            else if (world.getBlockState(pos.down().offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
                 pos = pos.offset(facing.rotateY(), 2);
             else {
                 super.removePassenger(entity);
