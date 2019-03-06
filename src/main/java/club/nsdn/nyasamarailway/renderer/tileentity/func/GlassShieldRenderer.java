@@ -21,32 +21,15 @@ import javax.annotation.Nonnull;
  */
 public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
-    private static final int MODEL_NORMAL = 0;
-    private static final int MODEL_HALF = 1;
-    private static final int MODEL_1X1 = 2;
-    private static final int MODEL_3X1 = 3;
-    private static final int MODEL_3X1D5 = 4;
-    private static final int MODEL_1D5X1D5 = 5;
-    private static final int MODEL_ALBASE = 2;
-    private final WavefrontObject[] modelMain;
-    private final WavefrontObject[] modelMainAl;
-    private final WavefrontObject[] modelCorner;
-
-    private final ResourceLocation textureMain;
-    private final ResourceLocation textureMainAl;
-    private final ResourceLocation textureCorner;
-
     public static final int SHIELD = 0;
     public static final int SHIELD_HALF = 1;
     public static final int SHIELD_1X1 = 2;
     public static final int SHIELD_3X1 = 3;
     public static final int SHIELD_3X1D5 = 4;
-    public static final int SHIELD_AL = 5;
-    public static final int SHIELD_AL_HALF = 6;
-    public static final int SHIELD_AL_BASE = 7;
-    public static final int SHIELD_CORNER = 8;
-    public static final int SHIELD_CORNER_HALF = 9;
-    public static final int SHIELD_1D5X1D5 = 10;
+    public static final int SHIELD_1D5X1D5 = 5;
+    
+    private final WavefrontObject[] modelMain;
+    private final ResourceLocation textureMain;
     private final int renderType;
 
     public static final float ANIMATION_STEP = 4;
@@ -73,29 +56,8 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
                         new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_1d5x1d5.obj")
                 )
         };
-        modelMainAl = new WavefrontObject[] {
-                new WavefrontObject(
-                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_al.obj")
-                ),
-                new WavefrontObject(
-                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_al_half.obj")
-                ),
-                new WavefrontObject(
-                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_albase.obj")
-                )
-        };
-        modelCorner = new WavefrontObject[] {
-                new WavefrontObject(
-                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_corner.obj")
-                ),
-                new WavefrontObject(
-                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_corner_half.obj")
-                )
-        };
 
         textureMain = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_main.png");
-        textureMainAl = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_al_main.png");
-        textureCorner = new ResourceLocation("nyasamarailway", "textures/blocks/glass_shield_corner.png");
 
         this.renderType = renderType;
     }
@@ -124,6 +86,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
+        GL11.glTranslatef(0, -0.00625F, 0);
 
         RenderHelper.disableStandardItemLighting();
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -151,7 +114,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_NORMAL], textureMain);
+                    RendererHelper.renderWithResource(modelMain[SHIELD], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
@@ -165,7 +128,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_HALF], textureMain);
+                    RendererHelper.renderWithResource(modelMain[SHIELD_HALF], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
@@ -185,7 +148,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                             GL11.glPushMatrix();
                             GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                            RendererHelper.renderWithResource(modelMain[MODEL_1X1], textureMain);
+                            RendererHelper.renderWithResource(modelMain[SHIELD_1X1], textureMain);
                             GL11.glPopMatrix();
 
                             GL11.glPopMatrix();
@@ -203,7 +166,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_3X1], textureMain);
+                    RendererHelper.renderWithResource(modelMain[SHIELD_3X1], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
@@ -220,7 +183,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_3X1D5], textureMain);
+                    RendererHelper.renderWithResource(modelMain[SHIELD_3X1D5], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
@@ -235,48 +198,10 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
-                    RendererHelper.renderWithResource(modelMain[MODEL_1D5X1D5], textureMain);
+                    RendererHelper.renderWithResource(modelMain[SHIELD_1D5X1D5], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (renderType) {
-                case SHIELD_AL:
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                    GL11.glPushMatrix();
-                    GL11.glScalef(1.0F, 1.0F, 1.5F);
-                    RendererHelper.renderWithResource(modelMainAl[MODEL_NORMAL], textureMainAl);
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
-                    break;
-                case SHIELD_AL_HALF:
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                    GL11.glPushMatrix();
-                    GL11.glScalef(1.0F, 1.0F, 1.5F);
-                    RendererHelper.renderWithResource(modelMainAl[MODEL_HALF], textureMainAl);
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
-                    break;
-                case SHIELD_AL_BASE:
-                    GL11.glPushMatrix();
-                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
-                    GL11.glPushMatrix();
-                    GL11.glScalef(1.0F, 1.0F, 1.5F);
-                    RendererHelper.renderWithResource(modelMainAl[MODEL_ALBASE], textureMainAl);
-                    GL11.glPopMatrix();
-                    GL11.glPopMatrix();
-                    break;
-                case SHIELD_CORNER:
-                    RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_NORMAL], angle, textureCorner);
-                    break;
-                case SHIELD_CORNER_HALF:
-                    RendererHelper.renderWithResourceAndRotation(modelCorner[MODEL_HALF], angle, textureCorner);
                     break;
                 default:
                     break;

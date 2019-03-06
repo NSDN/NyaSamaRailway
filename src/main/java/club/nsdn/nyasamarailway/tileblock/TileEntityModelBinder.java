@@ -52,11 +52,6 @@ public class TileEntityModelBinder {
     public TileEntityModelBinder() {
         renderers = new LinkedHashMap<>();
 
-        renderers.put(GlassShieldAl.TileEntityGlassShieldAl.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL));
-        renderers.put(GlassShieldAlBase.TileEntityGlassShieldAlBase.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_BASE));
-        renderers.put(GlassShieldAlHalf.TileEntityGlassShieldAlHalf.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_AL_HALF));
-        renderers.put(GlassShieldCorner.TileEntityGlassShieldCorner.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER));
-        renderers.put(GlassShieldCornerHalf.TileEntityGlassShieldCornerHalf.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_CORNER_HALF));
         renderers.put(Pillar.TileEntityPillar.class, new PillarRenderer());
         renderers.put(PillarBig.TileEntityPillarBig.class, new PillarBigRenderer());
         renderers.put(PillarQuad.TileEntityPillarQuad.class, new PillarQuadRenderer());

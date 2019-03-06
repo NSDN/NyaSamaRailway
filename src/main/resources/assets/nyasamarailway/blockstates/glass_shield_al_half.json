@@ -1,9 +1,16 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "white_concrete"
+    "model": "nyasamarailway:glass_shield_al_half"
   },
   "variants": {
-    "normal": [{}]
+    "normal": [{}],
+    "inventory": [{}],
+    "facing": {
+      "north": {  },
+      "east": { "y": 90 },
+      "south": { "y": 180 },
+      "west": { "y": 270 }
+    }
   }
 }

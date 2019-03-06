@@ -44,11 +44,6 @@ public class TileEntityLoader {
     public TileEntityLoader() {
         tileEntities = new LinkedList<>();
 
-        tileEntities.add(GlassShieldAl.TileEntityGlassShieldAl.class);
-        tileEntities.add(GlassShieldAlBase.TileEntityGlassShieldAlBase.class);
-        tileEntities.add(GlassShieldAlHalf.TileEntityGlassShieldAlHalf.class);
-        tileEntities.add(GlassShieldCorner.TileEntityGlassShieldCorner.class);
-        tileEntities.add(GlassShieldCornerHalf.TileEntityGlassShieldCornerHalf.class);
         tileEntities.add(Pillar.TileEntityPillar.class);
         tileEntities.add(PillarBig.TileEntityPillarBig.class);
         tileEntities.add(PillarQuad.TileEntityPillarQuad.class);

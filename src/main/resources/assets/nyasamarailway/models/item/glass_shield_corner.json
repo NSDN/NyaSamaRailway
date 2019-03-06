@@ -1,6 +1,0 @@
-{
-  "parent": "nyasamarailway:block/tile_icon",
-  "textures": {
-    "icon": "nyasamarailway:block/glass_shield_corner"
-  }
-}

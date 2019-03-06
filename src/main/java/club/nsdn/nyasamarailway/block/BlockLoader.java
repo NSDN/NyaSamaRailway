@@ -94,13 +94,12 @@ public class BlockLoader {
         blocks.add(new BlockPlatform());
         blocks.add(new BlockWireRailNode());
 
-        GlassShieldAl shieldAl = new GlassShieldAl();
-        blocks.add(shieldAl);
-        blocks.add(new GlassShieldAlBase());
-        blocks.add(new GlassShieldAlHalf(shieldAl));
-        GlassShieldCorner corner = new GlassShieldCorner();
-        blocks.add(corner);
-        blocks.add(new GlassShieldCornerHalf(corner));
+        blocks.add(new BlockGlassShield("GlassShieldAl", "glass_shield_al", 1, 1, 0.125));
+        blocks.add(new BlockGlassShield("GlassShieldAlHalf", "glass_shield_al_half", 1, 0.5, 0.125));
+        blocks.add(new BlockGlassShield("GlassShieldAlBase", "glass_shield_albase", 1, 1.5, 0.125));
+        blocks.add(new BlockGlassShieldCorner("GlassShieldCorner", "glass_shield_corner", true));
+        blocks.add(new BlockGlassShieldCorner("GlassShieldCornerHalf", "glass_shield_corner_half", false));
+
         blocks.add(new Pillar());
         blocks.add(new PillarBig());
         blocks.add(new PillarQuad());
