@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.block.BlockLoader;
 import club.nsdn.nyasamarailway.entity.EntityLoader;
 import club.nsdn.nyasamarailway.entity.EntityModelBinder;
 import club.nsdn.nyasamarailway.item.ItemLoader;
+import club.nsdn.nyasamarailway.renderer.tileentity.func.BuildRouteRenderer;
 import club.nsdn.nyasamarailway.tileblock.TileEntityLoader;
 import club.nsdn.nyasamarailway.tileblock.TileEntityModelBinder;
 import club.nsdn.nyasamarailway.util.SoundUtil;
@@ -38,6 +39,7 @@ public class EventRegister {
         MinecraftForge.EVENT_BUS.register(EntityModelBinder.instance());
 
         MinecraftForge.EVENT_BUS.register(NTPCtrlHandler.instance());
+        MinecraftForge.EVENT_BUS.register(BuildRouteRenderer.instance());
     }
 
 }

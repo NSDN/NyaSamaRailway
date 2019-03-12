@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "nyasamarailway:dot_block",
+    "textures": {
+      "texture": "nyasamarailway:block/build_endpoint"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

@@ -209,6 +209,9 @@ item.ItemNSE4.name=NSE-4型机车
 item.ItemNSRA1.name=NSR-A1型自动控制单元
 item.ItemNSRA2.name=NSR-A2型自动控制单元
 
+tile.BuildEndpoint.name=建造端点
+tile.BuildNode.name=建造节点
+
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音
 subtitles.reception.ready=发车提示音

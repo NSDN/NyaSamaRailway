@@ -97,6 +97,9 @@ public class TileEntityLoader {
         tileEntities.add(TrackSideRFIDHs.TileEntityTrackSideRFIDHs.class);
         tileEntities.add(TrackSideSniffer.TileEntityTrackSideSniffer.class);
         tileEntities.add(TrackSideSnifferHs.TileEntityTrackSideSnifferHs.class);
+
+        tileEntities.add(TileEntityBuildEndpoint.class);
+        tileEntities.add(BuildNode.TileEntityBuildNode.class);
     }
 
 }

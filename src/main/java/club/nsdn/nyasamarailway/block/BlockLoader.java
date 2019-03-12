@@ -168,6 +168,9 @@ public class BlockLoader {
         blocks.add(new TrackSideRFIDHs());
         blocks.add(new TrackSideSniffer());
         blocks.add(new TrackSideSnifferHs());
+
+        blocks.add(new BuildEndpoint());
+        blocks.add(new BuildNode());
     }
 
 }

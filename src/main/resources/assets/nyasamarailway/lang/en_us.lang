@@ -207,6 +207,9 @@ item.ItemNSE4.name=NSE-4 Locomotive
 item.ItemNSRA1.name=NSR-A1 Automatic-Control Unit
 item.ItemNSRA2.name=NSR-A2 Automatic-Control Unit
 
+tile.BuildEndpoint.name=Build Endpoint
+tile.BuildNode.name=Build Node
+
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep
 subtitles.reception.ready=Depart Beep

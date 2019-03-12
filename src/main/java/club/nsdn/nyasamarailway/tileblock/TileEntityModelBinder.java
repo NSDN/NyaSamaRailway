@@ -2,9 +2,7 @@ package club.nsdn.nyasamarailway.tileblock;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.renderer.tileentity.deco.*;
-import club.nsdn.nyasamarailway.renderer.tileentity.func.GateRenderer;
-import club.nsdn.nyasamarailway.renderer.tileentity.func.GlassShieldRenderer;
-import club.nsdn.nyasamarailway.renderer.tileentity.func.TicketBlockRenderer;
+import club.nsdn.nyasamarailway.renderer.tileentity.func.*;
 import club.nsdn.nyasamarailway.renderer.tileentity.rail.*;
 import club.nsdn.nyasamarailway.renderer.tileentity.signal.*;
 import club.nsdn.nyasamarailway.tileblock.deco.*;
@@ -13,8 +11,8 @@ import club.nsdn.nyasamarailway.tileblock.rail.*;
 import club.nsdn.nyasamarailway.tileblock.signal.deco.*;
 import club.nsdn.nyasamarailway.tileblock.signal.light.*;
 import club.nsdn.nyasamarailway.tileblock.signal.trackside.*;
-import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,9 +32,9 @@ public class TileEntityModelBinder {
         return instance;
     }
 
-    public static LinkedHashMap<Class<? extends TileEntityBase>, AbsTileEntitySpecialRenderer> renderers;
+    public static LinkedHashMap<Class<? extends TileEntityBase>, TileEntitySpecialRenderer<? super TileEntityBase>> renderers;
 
-    private static void bind(AbsTileEntitySpecialRenderer renderer, Class<? extends TileEntityBase> tileEntity) {
+    private static void bind(TileEntitySpecialRenderer<? super TileEntityBase> renderer, Class<? extends TileEntityBase> tileEntity) {
         ClientRegistry.bindTileEntitySpecialRenderer(tileEntity, renderer);
     }
 
@@ -112,6 +110,8 @@ public class TileEntityModelBinder {
         renderers.put(TrackSideRFIDHs.TileEntityTrackSideRFIDHs.class, new TrackSideRenderer("track_side_rfid_hs_sign"));
         renderers.put(TrackSideSniffer.TileEntityTrackSideSniffer.class, new TrackSideRenderer("track_side_sniffer_sign"));
         renderers.put(TrackSideSnifferHs.TileEntityTrackSideSnifferHs.class, new TrackSideRenderer("track_side_sniffer_hs_sign"));
+
+        //renderers.put(TileEntityBuildEndpoint.class, new BuildRouteRenderer());
     }
 
 }
