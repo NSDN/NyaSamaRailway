@@ -6,8 +6,10 @@ import club.nsdn.nyasamarailway.api.rail.IMonoRail;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 /**
@@ -46,6 +48,19 @@ public abstract class AbsNSCxBM extends AbsLimLoco implements IMonoRailCart {
     @Override
     public void doMotion(TrainPacket packet, EntityMinecart cart) {
         TrainController.doMotionWithAir(packet, cart);
+    }
+
+    @Override
+    protected void moveAlongCurvedTrack() {
+        Vec3d pos = nowEndPoint.get(nowProgress);
+        Vec3d vec = nowEndPoint.get(nowProgress + 0.005);
+        vec = vec.subtract(pos).normalize();
+
+        double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
+        double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
+        double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+        setRotation((float) yaw, (float) pitch);
+        setPositionAndUpdate(pos.x, pos.y + CURVED_SHIFT, pos.z);
     }
 
     @Override

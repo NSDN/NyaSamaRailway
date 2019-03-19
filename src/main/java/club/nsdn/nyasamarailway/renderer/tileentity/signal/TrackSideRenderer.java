@@ -96,8 +96,8 @@ public class TrackSideRenderer extends AbsTileEntitySpecialRenderer {
             RendererHelper.renderWithResource(ledMdl[LED_TXD], ledTex[trackSide.getTXDState() ? SIGN_Y : SIGN_NONE]);
             RendererHelper.renderWithResource(ledMdl[LED_RXD], ledTex[trackSide.getRXDState() ? SIGN_G : SIGN_NONE]);
 
-            RendererHelper.renderWithResource(ledMdl[LED_FRT], ledTex[trackSide.hasInvert() ? (trackSide.isInvert() ? SIGN_NONE : SIGN_W) : SIGN_NONE]);
-            RendererHelper.renderWithResource(ledMdl[LED_BCK], ledTex[trackSide.hasInvert() ? (trackSide.isInvert() ? SIGN_W : SIGN_NONE) : SIGN_NONE]);
+            RendererHelper.renderWithResource(ledMdl[LED_FRT], ledTex[trackSide.hasInvert() ? (trackSide.getInvertForRender() ? SIGN_NONE : SIGN_W) : SIGN_NONE]);
+            RendererHelper.renderWithResource(ledMdl[LED_BCK], ledTex[trackSide.hasInvert() ? (trackSide.getInvertForRender() ? SIGN_W : SIGN_NONE) : SIGN_NONE]);
 
             GL11.glPopMatrix();
         }

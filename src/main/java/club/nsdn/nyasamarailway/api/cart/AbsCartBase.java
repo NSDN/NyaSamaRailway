@@ -1,11 +1,13 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
 import club.nsdn.nyasamarailway.item.ItemLoader;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.Item74HC04;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
+import club.nsdn.nyasamarailway.item.tool.*;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumFacing;
 import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
@@ -59,6 +61,12 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     /** appears to be the progress of the turn */
     public boolean isInReverse;
 
+    private static final DataParameter<Boolean> CURVED = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.BOOLEAN);
+
+    public TileEntityRailEndpoint nowEndPoint = null;
+    public double nowProgress = 0;
+    public double progressDir = 0;
+
     public AbsCartBase(World world) {
         super(world);
     }
@@ -66,6 +74,17 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public AbsCartBase(World world, double x, double y, double z) {
         super(world, x, y, z);
     }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+
+        dataManager.register(CURVED, false);
+    }
+
+    public void setCurved(boolean state) { dataManager.set(CURVED, state); }
+
+    public boolean getCurved() { return dataManager.get(CURVED); }
 
     @Nonnull
     public abstract ItemStack getCartItem();
@@ -188,19 +207,42 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public void onLinkBroken(EntityMinecart cart) {
     }
 
-    @Override
-    protected void moveAlongTrack(BlockPos pos, IBlockState state) {
+    public boolean hasSpecialUpdate() { return false; }
+
+    public void specialUpdate() {
+
+    }
+
+    protected TileEntityRailEndpoint getNearbyEndpoint() {
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.posY);
+        int z = MathHelper.floor(this.posZ);
+
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntityRailEndpoint endpoint = null;
+
+        pos = pos.down();
+
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileEntityTrackSideReception) {
-            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) tileEntity;
-            if (getPassengers().isEmpty() && !reception.cartType.isEmpty()) {
-                if (!reception.cartType.equals("loco"))
-                    return;
-            }
-        }
+        if (tileEntity instanceof TileEntityRailEndpoint)
+            endpoint = (TileEntityRailEndpoint) tileEntity;
 
-        /* ******************************** MAIN FUNC ******************************** */
+        return endpoint;
+    }
 
+    protected void moveAlongCurvedTrack() {
+        Vec3d pos = nowEndPoint.get(nowProgress);
+        Vec3d vec = nowEndPoint.get(nowProgress + 0.005);
+        vec = vec.subtract(pos).normalize();
+
+        double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
+        double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
+        double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+        setRotation((float) yaw, (float) pitch);
+        setPositionAndUpdate(pos.x, pos.y, pos.z);
+    }
+
+    protected void moveAlongTrackCore(BlockPos pos, IBlockState state) {
         this.fallDistance = 0.0F;
         Vec3d vec3d = this.getPos(this.posX, this.posY, this.posZ);
         this.posY = (double)pos.getY();
@@ -213,8 +255,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
 
         double slopeAdjustment = this.getSlopeAdjustment();
-        BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = blockrailbase.getRailDirection(this.world, pos, state, this);
-        switch(blockrailbase$enumraildirection) {
+        BlockRailBase.EnumRailDirection direction = blockrailbase.getRailDirection(this.world, pos, state, this);
+        switch(direction) {
             case ASCENDING_EAST:
                 this.motionX -= slopeAdjustment;
                 ++this.posY;
@@ -232,7 +274,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 ++this.posY;
         }
 
-        int[][] aint = MATRIX[blockrailbase$enumraildirection.getMetadata()];
+        int[][] aint = MATRIX[direction.getMetadata()];
         double d1 = (double)(aint[1][0] - aint[0][0]);
         double d2 = (double)(aint[1][2] - aint[0][2]);
         double d3 = Math.sqrt(d1 * d1 + d2 * d2);
@@ -327,14 +369,14 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
 
         /** HOLY SHIT! THE CODE CAUSES BUG!
-        int j = MathHelper.floor(this.posX);
-        int i = MathHelper.floor(this.posZ);
-        if (j != pos.getX() || i != pos.getZ()) {
-            vel = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.motionX = vel * (double)(j - pos.getX());
-            this.motionZ = vel * (double)(i - pos.getZ());
-        }
-        */
+         int j = MathHelper.floor(this.posX);
+         int i = MathHelper.floor(this.posZ);
+         if (j != pos.getX() || i != pos.getZ()) {
+         vel = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+         this.motionX = vel * (double)(j - pos.getX());
+         this.motionZ = vel * (double)(i - pos.getZ());
+         }
+         */
 
         if (this.shouldDoRailFunctions()) {
             ((BlockRailBase)state.getBlock()).onMinecartPass(this.world, this, pos);
@@ -346,13 +388,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 double d16 = 0.06D;
                 this.motionX += this.motionX / d15 * 0.06D;
                 this.motionZ += this.motionZ / d15 * 0.06D;
-            } else if (blockrailbase$enumraildirection == BlockRailBase.EnumRailDirection.EAST_WEST) {
+            } else if (direction == BlockRailBase.EnumRailDirection.EAST_WEST) {
                 if (this.world.getBlockState(pos.west()).isNormalCube()) {
                     this.motionX = 0.02D;
                 } else if (this.world.getBlockState(pos.east()).isNormalCube()) {
                     this.motionX = -0.02D;
                 }
-            } else if (blockrailbase$enumraildirection == BlockRailBase.EnumRailDirection.NORTH_SOUTH) {
+            } else if (direction == BlockRailBase.EnumRailDirection.NORTH_SOUTH) {
                 if (this.world.getBlockState(pos.north()).isNormalCube()) {
                     this.motionZ = 0.02D;
                 } else if (this.world.getBlockState(pos.south()).isNormalCube()) {
@@ -360,7 +402,20 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 }
             }
         }
+    }
 
+    @Override
+    protected void moveAlongTrack(BlockPos pos, IBlockState state) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityTrackSideReception) {
+            TileEntityTrackSideReception reception = (TileEntityTrackSideReception) tileEntity;
+            if (getPassengers().isEmpty() && !reception.cartType.isEmpty()) {
+                if (!reception.cartType.equals("loco"))
+                    return;
+            }
+        }
+
+        moveAlongTrackCore(pos, state);
     }
 
     @Override
@@ -421,11 +476,25 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
+
+        if (tagCompound.hasKey("railEndpoint")) {
+            nowEndPoint = new TileEntityRailEndpoint();
+            nowEndPoint.setWorld(world);
+            nowEndPoint.fromNBT(tagCompound);
+        }
+        nowProgress = tagCompound.getDouble("nowProgress");
+        progressDir = tagCompound.getDouble("progressDir");
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
+
+        if (nowEndPoint != null) {
+            nowEndPoint.toNBT(tagCompound);
+        }
+        tagCompound.setDouble("nowProgress", nowProgress);
+        tagCompound.setDouble("progressDir", progressDir);
     }
 
     /*******************************************************************************************************************/
@@ -489,46 +558,117 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
-            if (!this.hasNoGravity()) {
-                this.motionY -= 0.03999999910593033D;
-            }
 
             int x = MathHelper.floor(this.posX);
-            y = MathHelper.floor(this.posY);
+                y = MathHelper.floor(this.posY);
             int z = MathHelper.floor(this.posZ);
-            if (!BlockRailBase.isRailBlock(this.world, new BlockPos(x, y, z)) && BlockRailBase.isRailBlock(this.world, new BlockPos(x, y - 1, z))) {
-                --y;
-            }
 
-            BlockPos blockpos = new BlockPos(x, y, z);
-            IBlockState iblockstate = this.world.getBlockState(blockpos);
-            if (this.canUseRail() && BlockRailBase.isRailBlock(iblockstate)) {
-                this.moveAlongTrack(blockpos, iblockstate);
-                if (iblockstate.getBlock() == Blocks.ACTIVATOR_RAIL) {
-                    this.onActivatorRailPass(x, y, z, (Boolean)iblockstate.getValue(BlockRailPowered.POWERED));
-                }
+            BlockPos pos = new BlockPos(x, y, z);
+            IBlockState state = this.world.getBlockState(pos);
+
+            if (hasSpecialUpdate()) {
+                specialUpdate();
             } else {
-                this.moveDerailedMinecart();
-            }
+                if (!(state.getBlock() instanceof BlockRailBase)) {
+                    TileEntityRailEndpoint endpoint = getNearbyEndpoint();
 
-            this.doBlockCollisions();
-            this.rotationPitch = 0.0F;
-            double d0 = this.prevPosX - this.posX;
-            double d2 = this.prevPosZ - this.posZ;
-            if (d0 * d0 + d2 * d2 > 0.001D) {
-                this.rotationYaw = (float)(MathHelper.atan2(d2, d0) * 180.0D / 3.141592653589793D);
-                if (this.isInReverse) {
-                    this.rotationYaw += 180.0F;
+                    if (endpoint != null) {
+                        if (endpoint.len() > 0 && nowEndPoint != endpoint) {
+                            setCurved(true);
+                            nowEndPoint = endpoint;
+                            nowProgress = 0;
+                            progressDir = 1;
+                        }
+
+                        TileEntity target = endpoint.getTarget();
+                        if (target instanceof TileEntityRailEndpoint) {
+                            endpoint = (TileEntityRailEndpoint) target;
+                            if (endpoint.len() > 0 && nowEndPoint != endpoint) {
+                                setCurved(true);
+                                nowEndPoint = endpoint;
+                                nowProgress = endpoint.len();
+                                progressDir = -1;
+                            }
+                        }
+                    }
+
+                    if (getCurved() && nowEndPoint != null) {
+                        if (nowEndPoint.len() == 0) {
+                            nowEndPoint = null;
+                        } else {
+                            if (nowProgress > nowEndPoint.len()) {
+                                TileEntityRailEndpoint next = nowEndPoint.parseNext();
+                                if (next != null) {
+                                    if (next.len() > 0 && nowEndPoint != next) {
+                                        setCurved(true);
+                                        nowEndPoint = next;
+                                        nowProgress = 0;
+                                        progressDir = 1;
+                                    }
+                                }
+                            }
+                            moveAlongCurvedTrack();
+
+                            EnumFacing.Axis axis = nowEndPoint.axis();
+                            if (axis == EnumFacing.Axis.X)
+                                nowProgress += Math.abs(motionX) * progressDir;
+                            else if (axis == EnumFacing.Axis.Z)
+                                nowProgress += Math.abs(motionZ) * progressDir;
+
+                            motionX = Math.abs(motionX) * Math.signum(posX - prevPosX);
+                            motionZ = Math.abs(motionZ) * Math.signum(posZ - prevPosZ);
+
+                            applyDrag();
+                        }
+                    }
+                } else {
+                    setCurved(false);
+                    nowEndPoint = null;
+                    nowProgress = 0;
+                    progressDir = 0;
+                }
+
+                if (nowEndPoint == null) {
+                    if (!this.hasNoGravity()) {
+                        this.motionY -= 0.03999999910593033D;
+                    }
+
+                    if (!BlockRailBase.isRailBlock(this.world, new BlockPos(x, y, z)) && BlockRailBase.isRailBlock(this.world, new BlockPos(x, y - 1, z))) {
+                        --y;
+                    }
+
+                    BlockPos blockpos = new BlockPos(x, y, z);
+                    IBlockState iblockstate = this.world.getBlockState(blockpos);
+                    if (this.canUseRail() && BlockRailBase.isRailBlock(iblockstate)) {
+                        this.moveAlongTrack(blockpos, iblockstate);
+                        if (iblockstate.getBlock() == Blocks.ACTIVATOR_RAIL) {
+                            this.onActivatorRailPass(x, y, z, (Boolean)iblockstate.getValue(BlockRailPowered.POWERED));
+                        }
+                    } else {
+                        this.moveDerailedMinecart();
+                    }
+
+                    this.doBlockCollisions();
+                    this.rotationPitch = 0.0F;
+                    double dx = this.posX - this.prevPosX;
+                    double dz = this.posZ - this.prevPosZ;
+                    if (dx * dx + dz * dz > 0.001D) {
+                        this.rotationYaw = (float)(MathHelper.atan2(dz, dx) * 180.0D / 3.141592653589793D);
+                        if (this.isInReverse) {
+                            this.rotationYaw += 180.0F;
+                        }
+                    }
+
+                    double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
+                    if (dYaw < -170.0D || dYaw >= 170.0D) {
+                        this.rotationYaw += 180.0F;
+                        this.isInReverse = !this.isInReverse;
+                    }
+
+                    this.setRotation(this.rotationYaw, this.rotationPitch);
                 }
             }
 
-            double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
-            if (dYaw < -170.0D || dYaw >= 170.0D) {
-                this.rotationYaw += 180.0F;
-                this.isInReverse = !this.isInReverse;
-            }
-
-            this.setRotation(this.rotationYaw, this.rotationPitch);
             AxisAlignedBB box;
             if (getCollisionHandler() != null) {
                 box = getCollisionHandler().getMinecartCollisionBox(this);
@@ -605,13 +745,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
         IBlockState iblockstate = this.world.getBlockState(new BlockPos(x, y, z));
         if (BlockRailBase.isRailBlock(iblockstate)) {
-            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = ((BlockRailBase)iblockstate.getBlock()).getRailDirection(this.world, new BlockPos(x, y, z), iblockstate, this);
+            BlockRailBase.EnumRailDirection direction = ((BlockRailBase)iblockstate.getBlock()).getRailDirection(this.world, new BlockPos(x, y, z), iblockstate, this);
             doubleY = (double)y;
-            if (blockrailbase$enumraildirection.isAscending()) {
+            if (direction.isAscending()) {
                 doubleY = (double)(y + 1);
             }
 
-            int[][] aint = MATRIX[blockrailbase$enumraildirection.getMetadata()];
+            int[][] aint = MATRIX[direction.getMetadata()];
             double d0 = (double)(aint[1][0] - aint[0][0]);
             double d1 = (double)(aint[1][2] - aint[0][2]);
             double d2 = Math.sqrt(d0 * d0 + d1 * d1);
@@ -643,8 +783,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
         IBlockState iblockstate = this.world.getBlockState(new BlockPos(x, y, z));
         if (BlockRailBase.isRailBlock(iblockstate)) {
-            BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = ((BlockRailBase)iblockstate.getBlock()).getRailDirection(this.world, new BlockPos(x, y, z), iblockstate, this);
-            int[][] aint = MATRIX[blockrailbase$enumraildirection.getMetadata()];
+            BlockRailBase.EnumRailDirection direction = ((BlockRailBase)iblockstate.getBlock()).getRailDirection(this.world, new BlockPos(x, y, z), iblockstate, this);
+            int[][] aint = MATRIX[direction.getMetadata()];
             double d0 = (double)x + 0.5D + (double)aint[0][0] * 0.5D;
             double d1 = (double)y + 0.0625D + (double)aint[0][1] * 0.5D;
             double d2 = (double)z + 0.5D + (double)aint[0][2] * 0.5D;

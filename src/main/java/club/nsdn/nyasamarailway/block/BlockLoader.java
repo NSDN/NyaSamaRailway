@@ -171,6 +171,8 @@ public class BlockLoader {
 
         blocks.add(new BuildEndpoint());
         blocks.add(new BuildNode());
+        blocks.add(new RailEndpoint());
+        blocks.add(new RailNode());
     }
 
 }

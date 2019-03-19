@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "nyasamarailway:mono_rail_palm",
+    "textures": {
+      "texture": "nyasamarailway:block/rail_endpoint"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "palm": {
+      "true": { "model": "nyasamarailway:mono_rail_palm" },
+      "false": { "model": "nyasamarailway:mono_rail_pad" }
+    }
+  }
+}

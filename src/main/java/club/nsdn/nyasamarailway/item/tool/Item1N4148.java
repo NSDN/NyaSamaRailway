@@ -178,7 +178,7 @@ public class Item1N4148 extends ToolBase {
             ITrackSide trackSide = (ITrackSide) tileEntity;
 
             if (trackSide.hasInvert()) {
-                trackSide.setInvert(!trackSide.isInvert());
+                trackSide.flipInvert();
                 say(player, "info.trackside.invert");
 
                 return world.isRemote ? EnumActionResult.PASS : EnumActionResult.SUCCESS;

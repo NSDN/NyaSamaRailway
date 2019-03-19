@@ -209,6 +209,8 @@ item.ItemNSRA2.name=NSR-A2 Automatic-Control Unit
 
 tile.BuildEndpoint.name=Build Endpoint
 tile.BuildNode.name=Build Node
+tile.RailEndpoint.name=Rail Endpoint
+tile.RailNode.name=Rail Node
 
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep

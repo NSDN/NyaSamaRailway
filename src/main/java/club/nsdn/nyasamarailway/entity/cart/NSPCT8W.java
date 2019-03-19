@@ -76,8 +76,11 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
         @Override
         public void killMinecart(DamageSource source) {
             this.setDead();
-            if (this.getRidingEntity() != null && this.getRidingEntity() instanceof NSPCT8W)
-                ((NSPCT8W) this.getRidingEntity()).killMinecart(source);
+            Entity entity = this.getRidingEntity();
+            if (entity instanceof NSPCT8W) {
+                this.dismountRidingEntity();
+                ((NSPCT8W) entity).killMinecart(source);
+            }
         }
 
         @Override
@@ -88,6 +91,36 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
         @Override // Called by rider
         public void updatePassenger(Entity entity) {
             CartUtil.updatePassenger2(this, entity);
+        }
+
+        @Override
+        public boolean hasSpecialUpdate() {
+            return getRidingEntity() instanceof NSPCT8W;
+        }
+
+        @Override
+        public void specialUpdate() {
+            Entity entity = getRidingEntity();
+            if (entity instanceof NSPCT8W) {
+                NSPCT8W bogie = (NSPCT8W) entity;
+
+                this.prevPosX = this.posX;
+                this.prevPosY = this.posY;
+                this.prevPosZ = this.posZ;
+                this.prevRotationYaw = this.rotationYaw;
+                this.prevRotationPitch = this.rotationPitch;
+
+                double x = this.posX, y = this.posY, z = this.posZ;
+
+                double len = -2.0 + bogie.getShiftY();
+                Vec3d mod = new Vec3d(0, len, 0);
+                mod = mod.rotatePitch((float) (bogie.rotationPitch / 180 * Math.PI));
+                mod = mod.rotateYaw((float) ((180 - bogie.rotationYaw) / 180 * Math.PI));
+                x += mod.x; y += mod.y; z += mod.z;
+
+                this.setRotation(bogie.rotationYaw, 0.0F);
+                this.setPositionAndUpdate(x, y + bogie.getMountedYOffset(), z);
+            }
         }
 
     }
@@ -183,9 +216,13 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
 
     @Override
     public void killMinecart(DamageSource source) {
-        if (this.getRidingEntity() != null && this.getRidingEntity() instanceof Container)
-            this.getRidingEntity().setDead();
-        this.setDead();
+        if (!getPassengers().isEmpty()) {
+            for (Entity e : getPassengers()) {
+                if (e instanceof Container)
+                    e.setDead();
+            }
+        }
+        super.killMinecart(source);
     }
 
     @Override
@@ -211,47 +248,28 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
 
     @Override // Called by rider
     public void updatePassenger(Entity entity) {
-        if (entity == getPassengers().get(0)) {
-            double x = this.posX, y = this.posY, z = this.posZ;
+        double x = this.posX, y = this.posY, z = this.posZ;
 
-            int bx = MathHelper.floor(x);
-            int by = MathHelper.floor(y);
-            int bz = MathHelper.floor(z);
-            BlockPos pos = new BlockPos(bx, by, bz);
-            Block block = world.getBlockState(pos).getBlock();
-            int meta = block.getMetaFromState(world.getBlockState(pos));
+        double len = -2.0 + getShiftY();
+        Vec3d mod = new Vec3d(0, len, 0);
+        if (onSlope) mod = mod.rotatePitch((float) (Math.PI / 4));
+        mod = mod.rotateYaw((float) ((180 - rotationYaw) / 180 * Math.PI));
+        x += mod.x; y += mod.y; z += mod.z;
 
-            double len = -2.0 + getShiftY();
-            Vec3d mod = new Vec3d(0, len, 0);
-            if (onSlope) mod = mod.rotatePitch((float) (Math.PI / 4));
-            mod = mod.rotateYaw((float) ((180 - rotationYaw) / 180 * Math.PI));
-            x += mod.x; y += mod.y; z += mod.z;
+        entity.setPosition(x, y + this.getMountedYOffset(), z);
+    }
 
-            entity.setPositionAndRotation(
-                    x, y + this.getMountedYOffset(), z,
-                    this.rotationYaw, 0.0F
-            );
-            if (entity instanceof Container) {
-                Container container = (Container) entity;
-                if (world.isRemote)
-                    container.setPositionAndRotationDirect(
-                            x, y + this.getMountedYOffset(), z,
-                            this.rotationYaw, 0.0F, -2,
-                            false
-                    );
+    @Override
+    protected void moveAlongCurvedTrack() {
+        Vec3d pos = nowEndPoint.get(nowProgress);
+        Vec3d vec = nowEndPoint.get(nowProgress + 0.005);
+        vec = vec.subtract(pos).normalize();
 
-                boolean fix = true;
-                if (block instanceof BlockRailBase) {
-                    fix = !((BlockRailBase) block).isFlexibleRail(world, pos) || meta < 6 || meta > 9;
-                }
-
-                if ((((int) container.rotationYaw) % 90) != 0 && fix) {
-                    container.prevRotationYaw = container.rotationYaw = (float) (MathHelper.floor(
-                            (double) (this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3
-                    ) * 90.0F;
-                }
-            }
-        }
+        double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
+        double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
+        double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+        setRotation((float) yaw, (float) pitch);
+        setPositionAndUpdate(pos.x, pos.y + CURVED_SHIFT, pos.z);
     }
 
     @Override

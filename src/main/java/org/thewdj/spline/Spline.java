@@ -1,5 +1,8 @@
 package org.thewdj.spline;
 
+import net.minecraft.nbt.NBTTagCompound;
+
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,6 +19,7 @@ public class Spline {
     private ArrayList<Double> m_x,m_y;
     private ArrayList<Double> m_a,m_b,m_c;
     private double m_b0, m_c0;
+
     private bd_type m_left, m_right;
     private double m_left_value, m_right_value;
     private boolean m_force_linear_extrapolation;
@@ -26,20 +30,39 @@ public class Spline {
         m_left_value = 0.0;
         m_right_value = 0.0;
         m_force_linear_extrapolation = false;
+
+        m_x = new ArrayList<>(); m_y = new ArrayList<>();
+        m_a = new ArrayList<>(); m_b = new ArrayList<>(); m_c = new ArrayList<>();
     }
 
-    public void set_boundary(bd_type left, double left_value, bd_type right, double right_value) {
-        set_boundary(left, left_value, right, right_value, false);
+    public void toNBT(@Nonnull NBTTagCompound tagCompound, String prefix) {
+        tagCompound.setDouble(prefix + "parB0", m_b0);
+        tagCompound.setDouble(prefix + "parC0", m_c0);
+        for (int i = 0; i < m_x.size(); i++)
+            tagCompound.setDouble(prefix + "matX_" + i, m_x.get(i));
+        for (int i = 0; i < m_y.size(); i++)
+            tagCompound.setDouble(prefix + "matY_" + i, m_y.get(i));
+        for (int i = 0; i < m_a.size(); i++)
+            tagCompound.setDouble(prefix + "matA_" + i, m_a.get(i));
+        for (int i = 0; i < m_b.size(); i++)
+            tagCompound.setDouble(prefix + "matB_" + i, m_b.get(i));
+        for (int i = 0; i < m_c.size(); i++)
+            tagCompound.setDouble(prefix + "matC_" + i, m_c.get(i));
     }
 
-    public void set_boundary(bd_type left, double left_value, bd_type right, double right_value, boolean force_linear_extrapolation) {
-        assert(m_x.size() == 0);
-
-        m_left = left;
-        m_right = right;
-        m_left_value = left_value;
-        m_right_value = right_value;
-        m_force_linear_extrapolation = force_linear_extrapolation;
+    public void fromNBT(@Nonnull NBTTagCompound tagCompound, String prefix) {
+        m_b0 = tagCompound.getDouble(prefix + "parB0");
+        m_c0 = tagCompound.getDouble(prefix + "parC0");
+        for (int i = 0; tagCompound.hasKey(prefix + "matX_" + i); i++)
+            m_x.add(i, tagCompound.getDouble(prefix + "matX_" + i));
+        for (int i = 0; tagCompound.hasKey(prefix + "matY_" + i); i++)
+            m_y.add(i, tagCompound.getDouble(prefix + "matY_" + i));
+        for (int i = 0; tagCompound.hasKey(prefix + "matA_" + i); i++)
+            m_a.add(i, tagCompound.getDouble(prefix + "matA_" + i));
+        for (int i = 0; tagCompound.hasKey(prefix + "matB_" + i); i++)
+            m_b.add(i, tagCompound.getDouble(prefix + "matB_" + i));
+        for (int i = 0; tagCompound.hasKey(prefix + "matC_" + i); i++)
+            m_c.add(i, tagCompound.getDouble(prefix + "matC_" + i));
     }
 
     public void set_points(ArrayList<Double> x, ArrayList<Double> y) {
@@ -174,7 +197,21 @@ public class Spline {
         return interpol;
     }
 
-    public double deriv(int order, double x) {
+    /*public void set_boundary(bd_type left, double left_value, bd_type right, double right_value) {
+        set_boundary(left, left_value, right, right_value, false);
+    }
+
+    public void set_boundary(bd_type left, double left_value, bd_type right, double right_value, boolean force_linear_extrapolation) {
+        assert(m_x.size() == 0);
+
+        m_left = left;
+        m_right = right;
+        m_left_value = left_value;
+        m_right_value = right_value;
+        m_force_linear_extrapolation = force_linear_extrapolation;
+    }*/
+
+    /*public double deriv(int order, double x) {
         assert(order > 0);
 
         int n = m_x.size();
@@ -230,6 +267,6 @@ public class Spline {
             }
         }
         return interpol;
-    }
+    }*/
 
 }

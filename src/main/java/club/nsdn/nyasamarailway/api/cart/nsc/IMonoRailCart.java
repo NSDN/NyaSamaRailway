@@ -5,6 +5,8 @@ package club.nsdn.nyasamarailway.api.cart.nsc;
  */
 public interface IMonoRailCart {
 
+    double CURVED_SHIFT = 1.5 + 0.0625;
+
     double DEFAULT_SHIFT = 0.0;
     double SLOPE_SHIFT = 0.25;
 

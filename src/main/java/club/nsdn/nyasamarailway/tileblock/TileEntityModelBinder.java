@@ -111,7 +111,10 @@ public class TileEntityModelBinder {
         renderers.put(TrackSideSniffer.TileEntityTrackSideSniffer.class, new TrackSideRenderer("track_side_sniffer_sign"));
         renderers.put(TrackSideSnifferHs.TileEntityTrackSideSnifferHs.class, new TrackSideRenderer("track_side_sniffer_hs_sign"));
 
+        /** NOW WE USE GLOBAL RENDERER */
         //renderers.put(TileEntityBuildEndpoint.class, new BuildRouteRenderer());
+
+        renderers.put(RailEndpoint.TileEntityRailEndpoint.class, new CurvedRailRenderer());
     }
 
 }

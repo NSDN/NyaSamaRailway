@@ -24,6 +24,8 @@ public interface ITrackSide {
     boolean hasInvert();
     boolean isInvert();
     default void setInvert(boolean value) {  }
+    default void flipInvert() {  }
+    default boolean getInvertForRender() { return isInvert(); }
 
     static EnumFacing.Axis getAxis() {
         return EnumFacing.Axis.Y; // check the left

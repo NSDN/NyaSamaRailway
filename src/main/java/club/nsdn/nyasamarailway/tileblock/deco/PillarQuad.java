@@ -36,6 +36,11 @@ public class PillarQuad extends TileBlock {
             return super.getRenderBoundingBox().expand(4, 4, 4);
         }
 
+        @Override
+        public double getMaxRenderDistanceSquared() {
+            return 32768.0;
+        }
+
     }
 
     public PillarQuad() {

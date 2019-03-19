@@ -100,6 +100,8 @@ public class TileEntityLoader {
 
         tileEntities.add(TileEntityBuildEndpoint.class);
         tileEntities.add(BuildNode.TileEntityBuildNode.class);
+        tileEntities.add(RailEndpoint.TileEntityRailEndpoint.class);
+        tileEntities.add(RailNode.TileEntityRailNode.class);
     }
 
 }

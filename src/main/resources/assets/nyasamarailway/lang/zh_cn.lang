@@ -211,6 +211,8 @@ item.ItemNSRA2.name=NSR-A2型自动控制单元
 
 tile.BuildEndpoint.name=建造端点
 tile.BuildNode.name=建造节点
+tile.RailEndpoint.name=轨道端点
+tile.RailNode.name=轨道节点
 
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音

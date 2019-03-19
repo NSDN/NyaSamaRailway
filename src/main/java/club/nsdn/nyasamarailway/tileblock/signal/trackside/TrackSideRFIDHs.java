@@ -73,6 +73,16 @@ public class TrackSideRFIDHs extends AbsTrackSide {
 
         @Override
         public boolean isInvert() {
+            return ((META & 0x4) != 0) ^ invert;
+        }
+
+        @Override
+        public void flipInvert() {
+            invert = !invert;
+        }
+
+        @Override
+        public boolean getInvertForRender() {
             return invert;
         }
 

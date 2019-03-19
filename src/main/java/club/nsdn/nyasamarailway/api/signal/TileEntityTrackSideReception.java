@@ -151,6 +151,16 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     @Override
     public boolean isInvert() {
+        return ((META & 0x4) != 0) ^ invert;
+    }
+
+    @Override
+    public void flipInvert() {
+        invert = !invert;
+    }
+
+    @Override
+    public boolean getInvertForRender() {
         return invert;
     }
 
@@ -451,9 +461,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 }
 
                 LinkedList<EntityPlayer> players = new LinkedList<>();
-                for (Entity entity : cart.getPassengers())
+                for (Entity entity : cart.getPassengers()) {
                     if (entity instanceof EntityPlayer)
                         players.add((EntityPlayer) entity);
+                    else if (!entity.getPassengers().isEmpty()) {
+                        for (Entity e : entity.getPassengers())
+                            if (e instanceof EntityPlayer)
+                                players.add((EntityPlayer) e);
+                    }
+                }
 
                 if (cart instanceof AbsLocoBase)
                     loco((AbsLocoBase) cart, reception, players);
@@ -491,10 +507,18 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
                 if (!cart.getPassengers().isEmpty()) {
                     LinkedList<EntityPlayer> players = new LinkedList<>();
-                    for (Entity entity : cart.getPassengers())
+                    for (Entity entity : cart.getPassengers()) {
                         if (entity instanceof EntityPlayer)
                             players.add((EntityPlayer) entity);
-                    cart(cart, reception, players);
+                        else if (!entity.getPassengers().isEmpty()) {
+                            for (Entity e : entity.getPassengers())
+                                if (e instanceof EntityPlayer)
+                                    players.add((EntityPlayer) e);
+                        }
+                    }
+
+                    if (!players.isEmpty())
+                        cart(cart, reception, players);
                 }
             }
 
