@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.api.signal;
 
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
 import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
+import club.nsdn.nyasamarailway.api.cart.IContainer;
 import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.SoundUtil;
@@ -464,7 +465,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 for (Entity entity : cart.getPassengers()) {
                     if (entity instanceof EntityPlayer)
                         players.add((EntityPlayer) entity);
-                    else if (!entity.getPassengers().isEmpty()) {
+                    else if (entity instanceof IContainer) {
                         for (Entity e : entity.getPassengers())
                             if (e instanceof EntityPlayer)
                                 players.add((EntityPlayer) e);
@@ -486,7 +487,16 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     reception.controlTarget(reception.doorCtrl);
                 }
 
-                if (cart.getPassengers().isEmpty()) {
+                boolean noPassenger = true;
+                if (!cart.getPassengers().isEmpty()) {
+                    for (Entity entity : cart.getPassengers()) {
+                        if (entity instanceof IContainer)
+                            noPassenger &= !((IContainer) entity).hasPassenger();
+                        else
+                            noPassenger = false;
+                    }
+                }
+                if (noPassenger) {
                     if (cart instanceof AbsMotoCart)
                         ((AbsMotoCart) cart).Velocity = 0.0D;
                     setCartDefaultPosition(cart, pos);
@@ -505,12 +515,12 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     //reception.delay = DELAY_TIME * 15 - 1;
                 }
 
-                if (!cart.getPassengers().isEmpty()) {
+                if (!noPassenger) {
                     LinkedList<EntityPlayer> players = new LinkedList<>();
                     for (Entity entity : cart.getPassengers()) {
                         if (entity instanceof EntityPlayer)
                             players.add((EntityPlayer) entity);
-                        else if (!entity.getPassengers().isEmpty()) {
+                        else if (entity instanceof IContainer) {
                             for (Entity e : entity.getPassengers())
                                 if (e instanceof EntityPlayer)
                                     players.add((EntityPlayer) e);

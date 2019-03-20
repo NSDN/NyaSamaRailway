@@ -145,7 +145,28 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         return new Vec3d(x, y, z);
     }
 
-    void updateRoute() {
+    void makeSplines() {
+        if (points.size() <= 2) return;
+
+        ArrayList<Double> x = new ArrayList<>();
+        ArrayList<Double> y = new ArrayList<>();
+        ArrayList<Double> z = new ArrayList<>();
+        ArrayList<Double> h = new ArrayList<>();
+        for (Vec3d vec : points) {
+            x.add(vec.x); y.add(vec.y); z.add(vec.z);
+            h.add(len(vec.x, vec.z));
+        }
+
+        if (!inv) {
+            hline.set_points(x, z);
+        } else {
+            hline.set_points(z, x);
+        }
+
+        vline.set_points(h, y);
+    }
+
+    public void updateRoute() {
         points.clear();
 
         TileEntity te = this; double offset = 0.5;
@@ -171,28 +192,13 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         points.addFirst(first.add(vecf.scale(-offset)));
         points.addLast(last.add(vecl.scale(offset)));*/
 
-        ArrayList<Double> x = new ArrayList<>();
-        ArrayList<Double> y = new ArrayList<>();
-        ArrayList<Double> z = new ArrayList<>();
-        ArrayList<Double> h = new ArrayList<>();
-        for (Vec3d vec : points) {
-            x.add(vec.x); y.add(vec.y); z.add(vec.z);
-            h.add(len(vec.x, vec.z));
-        }
-
-        if (!inv) {
-            hline.set_points(x, z);
-        } else {
-            hline.set_points(z, x);
-        }
-
-        vline.set_points(h, y);
+        makeSplines();
     }
 
     @Override
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
-        hline.toNBT(tagCompound, "hLine_");
-        vline.toNBT(tagCompound, "vLine_");
+        //hline.toNBT(tagCompound, "hLine_");
+        //vline.toNBT(tagCompound, "vLine_");
 
         for (int i = 0; i < points.size(); i++) {
             tagCompound.setDouble("point_" + i + "_X", points.get(i).x);
@@ -209,8 +215,8 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
     public void fromNBT(NBTTagCompound tagCompound) {
         super.fromNBT(tagCompound);
 
-        hline.fromNBT(tagCompound, "hLine_");
-        vline.fromNBT(tagCompound, "vLine_");
+        //hline.fromNBT(tagCompound, "hLine_");
+        //vline.fromNBT(tagCompound, "vLine_");
 
         double x, y, z;
         for (int i = 0; tagCompound.hasKey("point_" + i + "_X"); i++) {
@@ -221,6 +227,8 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         }
 
         inv = tagCompound.getBoolean("inv");
+
+        makeSplines();
     }
 
     @Override

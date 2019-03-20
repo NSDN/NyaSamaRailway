@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.entity.loco;
 import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
 import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.api.cart.IContainer;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IConvWireMono;
@@ -48,7 +49,7 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
         container.startRiding(head);
     }
 
-    public static class Container extends AbsCartBase {
+    public static class Container extends AbsCartBase implements IContainer {
 
         public Container(World world) {
             super(world);
@@ -60,6 +61,11 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             super(world, x, y, z);
             ignoreFrustumCheck = true;
             setSize(1.0F, 1.0F);
+        }
+
+        @Override
+        public boolean hasPassenger() {
+            return !getPassengers().isEmpty();
         }
 
         @Override

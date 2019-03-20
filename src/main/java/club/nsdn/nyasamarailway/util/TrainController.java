@@ -31,6 +31,7 @@ public class TrainController {
         public final static KeyBinding keyBrakeUp = new KeyBinding("ntp.control.brake.up", Keyboard.KEY_PERIOD, "ntp.control.title");
         public final static KeyBinding keyBrakeDown = new KeyBinding("ntp.control.brake.down", Keyboard.KEY_COMMA, "ntp.control.title");
         public final static KeyBinding keyModeSwitch = new KeyBinding("ntp.control.mode.switch", Keyboard.KEY_M, "ntp.control.title");
+        public final static KeyBinding keyEmeBrake = new KeyBinding("ntp.control.brake.emergency", Keyboard.KEY_RMENU, "ntp.control.title");
 
         public static int DirUP = 0;
         public static int DirDOWN = 0;
@@ -39,6 +40,7 @@ public class TrainController {
         public static int BrakeDown = 0;
         public static int BrakeUp = 0;
         public static int ModeSwitch = 0;
+        public static int EmeBrake = 0;
 
         public static void registerKeyBindings() {
             ClientRegistry.registerKeyBinding(keyPowerUp);
@@ -48,6 +50,7 @@ public class TrainController {
             ClientRegistry.registerKeyBinding(keyBrakeUp);
             ClientRegistry.registerKeyBinding(keyBrakeDown);
             ClientRegistry.registerKeyBinding(keyModeSwitch);
+            ClientRegistry.registerKeyBinding(keyEmeBrake);
         }
     }
 
@@ -75,6 +78,9 @@ public class TrainController {
         }
         if (KeyInput.keyModeSwitch.isPressed() && KeyInput.ModeSwitch == 0) {
             KeyInput.ModeSwitch = 1;
+        }
+        if (KeyInput.keyEmeBrake.isPressed() && KeyInput.EmeBrake == 0) {
+            KeyInput.EmeBrake = 1;
         }
 
         if (KeyInput.DirUP == 1) {
@@ -137,6 +143,13 @@ public class TrainController {
             }
             KeyInput.ModeSwitch = 2;
         }
+        if (KeyInput.EmeBrake == 1) {
+            train.P = 0;
+            train.R = 1;
+            if (!(player.getRidingEntity() instanceof IInspectionCart))
+                say(player, "info.ntp.eme", String.valueOf(train.Mode).toUpperCase());
+            KeyInput.EmeBrake = 2;
+        }
 
         if (!KeyInput.keyDirUp.isPressed() && KeyInput.DirUP == 2) {
             KeyInput.DirUP = 0;
@@ -155,6 +168,9 @@ public class TrainController {
         }
         if (!KeyInput.keyModeSwitch.isPressed() && KeyInput.ModeSwitch == 2) {
             KeyInput.ModeSwitch = 0;
+        }
+        if (!KeyInput.keyEmeBrake.isPressed() && KeyInput.EmeBrake == 2) {
+            KeyInput.EmeBrake = 0;
         }
 
     }

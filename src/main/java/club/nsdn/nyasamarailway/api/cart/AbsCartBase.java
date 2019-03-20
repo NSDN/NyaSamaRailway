@@ -207,6 +207,10 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public void onLinkBroken(EntityMinecart cart) {
     }
 
+    public double getOptionalDir() {
+        return 0;
+    }
+
     public boolean hasSpecialUpdate() { return false; }
 
     public void specialUpdate() {
@@ -481,6 +485,9 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             nowEndPoint = new TileEntityRailEndpoint();
             nowEndPoint.setWorld(world);
             nowEndPoint.fromNBT(tagCompound);
+            setCurved(true);
+        } else {
+            setCurved(false);
         }
         nowProgress = tagCompound.getDouble("nowProgress");
         progressDir = tagCompound.getDouble("progressDir");
@@ -609,11 +616,15 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             }
                             moveAlongCurvedTrack();
 
+                            double dir = progressDir;
+                            /*if (getOptionalDir() != 0)
+                                dir *= getOptionalDir();*/
+
                             EnumFacing.Axis axis = nowEndPoint.axis();
                             if (axis == EnumFacing.Axis.X)
-                                nowProgress += Math.abs(motionX) * progressDir;
+                                nowProgress += Math.abs(motionX) * dir;
                             else if (axis == EnumFacing.Axis.Z)
-                                nowProgress += Math.abs(motionZ) * progressDir;
+                                nowProgress += Math.abs(motionZ) * dir;
 
                             motionX = Math.abs(motionX) * Math.signum(posX - prevPosX);
                             motionZ = Math.abs(motionZ) * Math.signum(posZ - prevPosZ);

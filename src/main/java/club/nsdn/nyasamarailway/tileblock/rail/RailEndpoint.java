@@ -129,6 +129,8 @@ public class RailEndpoint extends BlockContainer {
 
                     say(player, "[NSR] Rail built.");
                     endpoint.refresh();
+                } else {
+                    endpoint.clearVertices();
                 }
 
                 return true;
