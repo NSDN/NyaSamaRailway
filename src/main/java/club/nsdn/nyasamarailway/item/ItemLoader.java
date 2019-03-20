@@ -128,6 +128,9 @@ public class ItemLoader {
         items.add(new ItemNSRM3());
         items.add(new ItemNSRM3T());
 
+        items.add(new ItemNSRM4());
+        items.add(new ItemNSRM4T());
+
         items.add(new ItemNSE4());
 
         items.add(new ItemNSRA1());

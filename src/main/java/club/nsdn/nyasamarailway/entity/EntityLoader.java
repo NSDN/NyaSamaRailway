@@ -109,6 +109,9 @@ public class EntityLoader {
 
         entities.add(NSRA1.class);
         entities.add(NSRA2.class);
+
+        entities.add(NSRM4.class);
+        entities.add(NSRM4T.class);
     }
 
 }

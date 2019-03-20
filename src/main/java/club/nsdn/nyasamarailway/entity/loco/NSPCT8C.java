@@ -205,12 +205,12 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
 
     @Override
     public float getLinkageDistance(EntityMinecart cart) {
-        return 2.0F;
+        return 4.0F;
     }
 
     @Override
     public float getOptimalDistance(EntityMinecart cart) {
-        return 1.6F;
+        return 2.0F;
     }
 
     @Nonnull

@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.tileblock.rail;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -109,12 +109,12 @@ public class RailEndpoint extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItemMainhand();
-        if (stack.getItem() instanceof Item1N4148) {
+        if (stack.getItem() instanceof Item74HC04) {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileEntityRailEndpoint) {
                 TileEntityRailEndpoint endpoint = (TileEntityRailEndpoint) te;
 
-                if (!world.isRemote){
+                if (!world.isRemote && player.isSneaking()){
                     endpoint.updateRoute();
 
                     Vec3d vec;
@@ -129,7 +129,9 @@ public class RailEndpoint extends BlockContainer {
 
                     say(player, "[NSR] Rail built.");
                     endpoint.refresh();
-                } else {
+                }
+
+                if (world.isRemote && !player.isSneaking()) {
                     endpoint.clearVertices();
                 }
 

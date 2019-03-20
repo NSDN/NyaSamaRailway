@@ -104,6 +104,9 @@ public class EntityModelBinder {
 
         renderers.put(NSRA1.class, NSRA1Renderer.FACTORY);
         renderers.put(NSRA2.class, NSRA2Renderer.FACTORY);
+
+        renderers.put(NSRM4.class, NSRM4Renderer.FACTORY);
+        renderers.put(NSRM4T.class, NSRM4Renderer.FACTORY);
     }
 
 }
