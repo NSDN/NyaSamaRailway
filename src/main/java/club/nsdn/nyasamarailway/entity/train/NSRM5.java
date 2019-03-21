@@ -27,23 +27,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 
 /**
- * Created by drzzm32 on 2019.3.20
+ * Created by drzzm32 on 2019.3.21
  */
-public class NSRM4 extends AbsTrainBase {
+public class NSRM5 extends AbsTrainBase {
 
-    private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM4.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM4.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM5.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM5.class, DataSerializers.BOOLEAN);
 
     private boolean prevDoorStateLeft = false, prevDoorStateRight = false;
     public int doorProgressLeft = 0, doorProgressRight = 0;
 
     public final int STEP = 4;
 
-    public NSRM4(World world) {
+    public NSRM5(World world) {
         super(world);
     }
 
-    public NSRM4(World world, double x, double y, double z) {
+    public NSRM5(World world, double x, double y, double z) {
         super(world, x, y, z);
     }
 
@@ -95,7 +95,12 @@ public class NSRM4 extends AbsTrainBase {
 
     @Override
     public double getTrainYOffset() {
-        return -3.5;
+        return 1.0 - 0.3125;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public double getRenderYOffset() {
+        return -1.0;
     }
 
     @Override

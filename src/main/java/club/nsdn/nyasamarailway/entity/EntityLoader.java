@@ -112,6 +112,12 @@ public class EntityLoader {
 
         entities.add(NSRM4.class);
         entities.add(NSRM4T.class);
+
+        entities.add(NSBT6.class);
+        entities.add(NSBT6M.class);
+        entities.add(NSRM5.class);
+        entities.add(NSRM5T.class);
+        entities.add(NSRM5L.class);
     }
 
 }

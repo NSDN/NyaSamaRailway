@@ -1,11 +1,16 @@
 package club.nsdn.nyasamarailway.api.rail;
 
+import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.util.Vertex;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
+import cn.ac.nya.forgeobj.Face;
+import cn.ac.nya.forgeobj.GroupObject;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +27,49 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
 
     @SideOnly(Side.CLIENT)
     public LinkedList<Vertex> cookedVertices = new LinkedList<>();
+
+    @SideOnly(Side.CLIENT)
+    public double getRenderStep() { return 0.5; }
+
+    @SideOnly(Side.CLIENT)
+    public void cookVertices(@Nonnull WavefrontObject model) {
+        Vec3d vec, nex; double step = this.getRenderStep();
+        for (double d = 0; d <= this.len(); d += step) {
+            if (d == this.len()) {
+                vec = this.get(d - step / 100.0);
+                nex = this.get(d);
+                nex = nex.subtract(vec);
+                vec = this.get(d);
+            } else {
+                vec = this.get(d);
+                nex = this.get(d + step);
+                nex = nex.subtract(vec);
+            }
+
+            double yaw = Math.atan2(nex.z, nex.x);
+            double hlen = Math.sqrt(nex.x * nex.x + nex.z * nex.z);
+            double pitch = Math.atan(nex.y / hlen);
+
+            for (GroupObject group : model.groupObjects) {
+                for (Face face : group.faces) {
+                    for (int i = 0; i < face.vertices.length; ++i) {
+                        if (face.textureCoordinates != null && face.textureCoordinates.length > 0) {
+                            Vertex vertex = new Vertex();
+
+                            Vec3d pos = new Vec3d((double) face.vertices[i].x, (double) face.vertices[i].y, (double) face.vertices[i].z);
+                            pos = CartUtil.rotatePitchFix(pos, (float) -pitch).rotateYaw((float) -yaw).add(vec);
+
+                            vertex.pos(pos.x, pos.y, pos.z)
+                                    .tex((double) face.textureCoordinates[i].u, (double) face.textureCoordinates[i].v)
+                                    .nor(face.faceNormal.x, face.faceNormal.y, face.faceNormal.z);
+
+                            this.cookedVertices.add(vertex);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     public void clearVertices() {

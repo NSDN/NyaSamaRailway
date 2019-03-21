@@ -99,34 +99,8 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             CartUtil.updatePassenger2(this, entity);
         }
 
-        @Override
-        public boolean hasSpecialUpdate() {
-            return getRidingEntity() instanceof NSPCT8C;
-        }
-
-        @Override
-        public void specialUpdate() {
-            Entity entity = getRidingEntity();
-            if (entity instanceof NSPCT8C) {
-                NSPCT8C bogie = (NSPCT8C) entity;
-
-                this.prevPosX = this.posX;
-                this.prevPosY = this.posY;
-                this.prevPosZ = this.posZ;
-                this.prevRotationYaw = this.rotationYaw;
-                this.prevRotationPitch = this.rotationPitch;
-
-                double x = this.posX, y = this.posY, z = this.posZ;
-
-                double len = -2.0 + bogie.getShiftY();
-                Vec3d mod = new Vec3d(0, len, 0);
-                mod = mod.rotatePitch((float) (bogie.rotationPitch / 180 * Math.PI));
-                mod = mod.rotateYaw((float) ((180 - bogie.rotationYaw) / 180 * Math.PI));
-                x += mod.x; y += mod.y; z += mod.z;
-
-                this.setRotation(bogie.rotationYaw, 0.0F);
-                this.setPositionAndUpdate(x, y + bogie.getMountedYOffset(), z);
-            }
+        public void setRotation(double yaw, double pitch) {
+            this.setRotation((float) yaw, (float) pitch);
         }
 
     }
@@ -253,15 +227,21 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
 
     @Override // Called by rider
     public void updatePassenger(Entity entity) {
-        double x = this.posX, y = this.posY, z = this.posZ;
+        if (entity instanceof Container) {
+            double x = this.posX, y = this.posY, z = this.posZ;
 
-        double len = -2.0 + getShiftY();
-        Vec3d mod = new Vec3d(0, len, 0);
-        if (onSlope) mod = mod.rotatePitch((float) (Math.PI / 4));
-        mod = mod.rotateYaw((float) ((180 - rotationYaw) / 180 * Math.PI));
-        x += mod.x; y += mod.y; z += mod.z;
+            double len = -2.0 + this.getShiftY();
+            Vec3d mod = new Vec3d(0, len, 0);
+            if (getCurved())
+                mod = CartUtil.rotatePitchFix(mod, (float) ((this.rotationPitch + 360) / 180 * Math.PI));
+            else if (onSlope)
+                mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));
+            mod = mod.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI));
+            x += mod.x; y += mod.y; z += mod.z;
 
-        entity.setPosition(x, y + this.getMountedYOffset(), z);
+            ((Container) entity).setRotation((double) this.rotationYaw, 0.0D);
+            entity.setPosition(x, y + this.getMountedYOffset(), z);
+        }
     }
 
     @Override
