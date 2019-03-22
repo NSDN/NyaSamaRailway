@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,10 +25,17 @@ import java.util.LinkedList;
 public class TileEntityRailEndpoint extends TileEntityActuator {
 
     @SideOnly(Side.CLIENT)
-    public LinkedList<Vertex> cookedVertices = new LinkedList<>();
+    protected LinkedList<Vertex> cookedVertices;
 
     @SideOnly(Side.CLIENT)
     public double getRenderStep() { return 0.5; }
+
+    @SideOnly(Side.CLIENT)
+    public LinkedList<Vertex> getVerticles() {
+        if (cookedVertices == null)
+            cookedVertices = new LinkedList<>();
+        return cookedVertices;
+    }
 
     @SideOnly(Side.CLIENT)
     public void cookVertices(@Nonnull WavefrontObject model) {

@@ -121,7 +121,8 @@ public class BuildEndpoint extends BlockContainer {
     }
 
     void say(EntityPlayer player, String format, Object... args) {
-        player.sendMessage(new TextComponentString(String.format(format, args)));
+        if (!player.world.isRemote)
+            player.sendMessage(new TextComponentString(String.format(format, args)));
     }
 
     @Override
@@ -132,23 +133,21 @@ public class BuildEndpoint extends BlockContainer {
             if (te instanceof TileEntityBuildEndpoint) {
                 TileEntityBuildEndpoint endpoint = (TileEntityBuildEndpoint) te;
 
+                endpoint.updateRoute();
+
+                Vec3d vec; endpoint.reset();
+                while (endpoint.hasNext()) {
+                    vec = endpoint.next();
+                    if (Double.isNaN(vec.x + vec.y + vec.z) || Double.isInfinite(vec.x + vec.y + vec.z)) {
+                        say(player, "[NSR] NAN ERROR | INF ERROR");
+                        endpoint.points.clear();
+                        return true;
+                    }
+                }
+
                 if (!world.isRemote){
                     endpoint.theTask = null;
-                    endpoint.reset();
-                    endpoint.updateRoute();
-
-                    Vec3d vec; endpoint.reset();
-                    while (endpoint.hasNext()) {
-                        vec = endpoint.next();
-                        if (Double.isNaN(vec.x + vec.y + vec.z) || Double.isInfinite(vec.x + vec.y + vec.z)) {
-                            say(player, "[NSR] NAN ERROR | INF ERROR");
-                            endpoint.points.clear();
-                            return true;
-                        }
-                    }
-
                     say(player, "[NSR] Total: %d", endpoint.points.size());
-
                     endpoint.refresh();
                 }
 
