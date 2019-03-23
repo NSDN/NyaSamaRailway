@@ -86,6 +86,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     Spline hline = new Spline();
     Spline vline = new Spline();
 
+    Vec3d origin = Vec3d.ZERO;
     LinkedList<Vec3d> points = new LinkedList<>();
 
     public void clear() { points.clear(); }
@@ -123,7 +124,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
         }
         y = vline.get(len(x, z));
 
-        return new Vec3d(x, y, z);
+        return new Vec3d(x, y, z).add(origin);
     }
 
     public TileEntityRailEndpoint parseNext() {
@@ -183,6 +184,22 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
 
         if (points.size() <= 2) return;
 
+        Vec3d orig = new Vec3d(this.getPos());
+        for (int i = 0; i < points.size(); i++) {
+            Vec3d vec = points.get(i);
+            points.set(i, vec.subtract(orig));
+        }
+        this.origin = orig;
+
+        Vec3d last = points.peekLast();
+        if (last.x < 0 || last.y < 0 || last.z < 0) {
+            this.origin = last.add(orig);
+            for (int i = 0; i < points.size(); i++) {
+                Vec3d vec = points.get(i);
+                points.set(i, vec.subtract(last));
+            }
+        }
+
         inv = Math.abs(points.peekLast().x - points.peekFirst().x) <= Math.abs(points.peekLast().z - points.peekFirst().z);
 
         /*Vec3d first = points.peekFirst(), fnext = points.get(points.indexOf(first) + 1);
@@ -207,6 +224,10 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
             tagCompound.setDouble("point_" + i + "_Z", points.get(i).z);
         }
 
+        tagCompound.setDouble("originX", origin.x);
+        tagCompound.setDouble("originY", origin.y);
+        tagCompound.setDouble("originZ", origin.z);
+
         tagCompound.setBoolean("inv", inv);
 
         return super.toNBT(tagCompound);
@@ -228,6 +249,11 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
             z = tagCompound.getDouble("point_" + i + "_Z");
             points.add(i, new Vec3d(x, y, z));
         }
+
+        x = tagCompound.getDouble("originX");
+        y = tagCompound.getDouble("originY");
+        z = tagCompound.getDouble("originZ");
+        origin = new Vec3d(x, y, z);
 
         inv = tagCompound.getBoolean("inv");
 

@@ -105,6 +105,7 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
     Spline hline = new Spline();
     Spline vline = new Spline();
 
+    Vec3d origin = Vec3d.ZERO;
     LinkedList<Vec3d> points = new LinkedList<>();
 
     static double len(double a, double b) {
@@ -142,7 +143,7 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         if (hasNext())
             counter += 1.0;
 
-        return new Vec3d(x, y, z);
+        return new Vec3d(x, y, z).add(origin);
     }
 
     void makeSplines() {
@@ -183,6 +184,22 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         }
 
         if (points.size() <= 2) return;
+
+        Vec3d orig = new Vec3d(this.getPos());
+        for (int i = 0; i < points.size(); i++) {
+            Vec3d vec = points.get(i);
+            points.set(i, vec.subtract(orig));
+        }
+        this.origin = orig;
+
+        Vec3d last = points.peekLast();
+        if (last.x < 0 || last.y < 0 || last.z < 0) {
+            this.origin = last.add(orig);
+            for (int i = 0; i < points.size(); i++) {
+                Vec3d vec = points.get(i);
+                points.set(i, vec.subtract(last));
+            }
+        }
 
         inv = Math.abs(points.peekLast().x - points.peekFirst().x) <= Math.abs(points.peekLast().z - points.peekFirst().z);
 
