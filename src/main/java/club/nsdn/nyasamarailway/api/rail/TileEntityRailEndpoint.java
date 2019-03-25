@@ -243,6 +243,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
         //vline.fromNBT(tagCompound, "vLine_");
 
         double x, y, z;
+        points.clear();
         for (int i = 0; tagCompound.hasKey("point_" + i + "_X"); i++) {
             x = tagCompound.getDouble("point_" + i + "_X");
             y = tagCompound.getDouble("point_" + i + "_Y");
