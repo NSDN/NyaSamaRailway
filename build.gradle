@@ -55,6 +55,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    compile files('libs/NyaSamaLib-2.0.jar')
     compile files('libs/NyaSamaTelecom-2.0.jar')
     compile files('libs/NyaSamaOptics-2.0.jar')
 

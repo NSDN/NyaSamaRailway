@@ -11,7 +11,7 @@
   "credits": "Copyright (C) NSDN 2014 - 2019",
   "logoFile": "logo.png",
   "screenshots": [],
-  "requiredMods": ["NyaSamaTelecom", "NyaSamaOptics"],
+  "requiredMods": ["nyasamalib", "nyasamatelecom", "nyasamaoptics"],
   "dependencies": []
 }
 ]
