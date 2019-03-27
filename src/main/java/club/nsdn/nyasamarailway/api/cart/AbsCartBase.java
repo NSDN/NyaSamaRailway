@@ -242,6 +242,12 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
         double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
         double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+
+        double vx = pos.x - this.posX;
+        double vy = pos.y - this.posY;
+        double vz = pos.z - this.posZ;
+        this.move(MoverType.SELF, vx, vy, vz);
+
         setRotation((float) yaw, (float) pitch);
         setPositionAndUpdate(pos.x, pos.y, pos.z);
     }

@@ -88,7 +88,7 @@ public class NSBT6M extends AbsNSCxBM implements IBogie {
             if (bogie.getBaseCartID().equals(this.getBaseCartID()))
                 return isLong ? 7.0F : 4.0F;
         }
-        return 2.0F;
+        return 3.0F;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class NSBT6M extends AbsNSCxBM implements IBogie {
             if (bogie.getBaseCartID().equals(this.getBaseCartID()))
                 return isLong ? 5.0F : 2.0F;
         }
-        return 1.0F;
+        return 1.5F;
     }
 
     @Nonnull

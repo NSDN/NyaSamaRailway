@@ -7,6 +7,7 @@ import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IMonoRail;
 import club.nsdn.nyasamarailway.util.HashMap;
 import club.nsdn.nyasamarailway.util.TrainController;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -128,6 +129,12 @@ public class NSPCT4M extends AbsLimLoco implements IMonoRailCart, IExtendedInfoC
         double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
         double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
         double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+
+        double vx = pos.x - this.posX;
+        double vy = pos.y - this.posY;
+        double vz = pos.z - this.posZ;
+        this.move(MoverType.SELF, vx, vy, vz);
+
         setRotation((float) yaw, (float) pitch);
         setPositionAndUpdate(pos.x, pos.y + CURVED_SHIFT, pos.z);
     }
