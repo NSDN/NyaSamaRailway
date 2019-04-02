@@ -1,9 +1,6 @@
 package club.nsdn.nyasamarailway.entity.loco;
 
-import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
-import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
-import club.nsdn.nyasamarailway.api.cart.CartUtil;
-import club.nsdn.nyasamarailway.api.cart.IContainer;
+import club.nsdn.nyasamarailway.api.cart.*;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IConvWireMono;
@@ -11,7 +8,6 @@ import club.nsdn.nyasamarailway.api.rail.IMonoRail;
 import club.nsdn.nyasamarailway.api.rail.IWireRail;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityMinecart;
@@ -44,13 +40,13 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
         if (!name.isEmpty()) head.setCustomNameTag(name);
         world.spawnEntity(head);
 
-        AbsCartBase container = new Container(world, x, y - 3.0, z);
+        AbsContainer container = new Container(world, x, y - 3.0, z);
         world.spawnEntity(container);
 
         container.startRiding(head);
     }
 
-    public static class Container extends AbsCartBase implements IContainer {
+    public static class Container extends AbsContainer implements IContainer {
 
         public Container(World world) {
             super(world);
@@ -74,22 +70,6 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             return 0.4;
         }
 
-        @Nonnull
-        @Override
-        public ItemStack getCartItem() {
-            return ItemStack.EMPTY;
-        }
-
-        @Override
-        public void killMinecart(DamageSource source) {
-            this.setDead();
-            Entity entity = this.getRidingEntity();
-            if (entity instanceof NSPCT8C) {
-                this.dismountRidingEntity();
-                ((NSPCT8C) entity).killMinecart(source);
-            }
-        }
-
         @Override
         public int getMaxPassengerSize() {
             return 2;
@@ -100,8 +80,12 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             CartUtil.updatePassenger2(this, entity);
         }
 
-        public void setRotation(double yaw, double pitch) {
-            this.setRotation((float) yaw, (float) pitch);
+        @Override
+        public void update() {
+            Entity entity = this.getRidingEntity();
+            if (entity instanceof NSPCT8C) {
+                this.setRotation(entity.rotationYaw, 0.0F);
+            } else this.setDead();
         }
 
     }
@@ -240,7 +224,6 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             mod = mod.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI));
             x += mod.x; y += mod.y; z += mod.z;
 
-            ((Container) entity).setRotation((double) this.rotationYaw, 0.0D);
             entity.setPosition(x, y + this.getMountedYOffset(), z);
         }
     }

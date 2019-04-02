@@ -14,9 +14,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -24,41 +21,25 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 /**
  * Created by drzzm32 on 2019.2.27
  */
-public abstract class AbsTrainBase extends Entity {
+public abstract class AbsTrainBase extends AbsContainer {
 
     private static final DataParameter<Integer> BOGIE_A = EntityDataManager.createKey(AbsTrainBase.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BOGIE_B = EntityDataManager.createKey(AbsTrainBase.class, DataSerializers.VARINT);
 
     public UUID uuidA = UUID.randomUUID(), uuidB = UUID.randomUUID();
 
-    public int lerpSteps;
-    public double lerpX;
-    public double lerpY;
-    public double lerpZ;
-    public double lerpYaw;
-    public double lerpPitch;
-
     public AbsTrainBase(World world) {
         super(world);
-        this.preventEntitySpawning = true;
         this.setSize(1.5F, 1.75F);
     }
 
     public AbsTrainBase(World world, double x, double y, double z) {
-        this(world);
-        this.setPosition(x, y, z);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+        super(world, x, y, z);
     }
 
     @Override
@@ -138,26 +119,6 @@ public abstract class AbsTrainBase extends Entity {
     }
 
     @Override
-    @Nonnull
-    public AxisAlignedBB getEntityBoundingBox() {
-        return super.getEntityBoundingBox();
-    }
-
-    @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getEntityBoundingBox();
-    }
-
-    @Override
-    @Nonnull
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getRenderBoundingBox() {
-        AxisAlignedBB aabb = this.getEntityBoundingBox();
-        return aabb.expand(2, 1, 2).expand(-2, -1, -2);
-    }
-
-    @Override
     public void applyEntityCollision(@Nonnull Entity entity) {
         if (entity instanceof AbsTrainBase) {
             if (entity.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
@@ -167,42 +128,6 @@ public abstract class AbsTrainBase extends Entity {
             super.applyEntityCollision(entity);
         }
     }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return !this.isDead;
-    }
-
-    @Override
-    public boolean processInitialInteract(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
-        if (player.isSneaking()) {
-            return false;
-        } else if (!canFitPassenger(player)) {
-            return true;
-        } else {
-            ItemStack stack = player.getHeldItemMainhand();
-            if (!stack.isEmpty()) {
-                if (
-                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
-                ) {
-                    return true;
-                }
-            }
-            if (!this.world.isRemote) {
-                player.startRiding(this);
-            }
-
-            return true;
-        }
-    }
-
-    @Override
-    protected boolean canFitPassenger(Entity entity) {
-        return getPassengers().size() < getMaxPassengerSize();
-    }
-
-    public abstract int getMaxPassengerSize();
 
     @Override // Called by rider
     public abstract void updatePassenger(@Nonnull Entity entity);
@@ -256,59 +181,6 @@ public abstract class AbsTrainBase extends Entity {
         if (!source.damageType.equals("nsr")) this.entityDropItem(stack, 0.0F);
     }
 
-    @Override
-    protected boolean canTriggerWalking() {
-        return false;
-    }
-
-    @Override
-    public void setPosition(double x, double y, double z) {
-        this.posX = x;
-        this.posY = y;
-        this.posZ = z;
-        float w = this.width / 2.0F;
-        float h = this.height;
-        this.setEntityBoundingBox(new AxisAlignedBB(x - (double)w, y, z - (double)w, x + (double)w, y + (double)h, z + (double)w));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int i, boolean b) {
-        this.lerpX = x;
-        this.lerpY = y;
-        this.lerpZ = z;
-        this.lerpYaw = (double) yaw;
-        this.lerpPitch = (double) pitch;
-        this.lerpSteps = 10;
-    }
-
-    public void tickLerp() {
-        if (this.lerpSteps > 0 && !this.canPassengerSteer()) {
-            double x = this.posX + (this.lerpX - this.posX) / (double)this.lerpSteps;
-            double y = this.posY + (this.lerpY - this.posY) / (double)this.lerpSteps;
-            double z = this.posZ + (this.lerpZ - this.posZ) / (double)this.lerpSteps;
-            double yaw = MathHelper.wrapDegrees(this.lerpYaw - (double)this.rotationYaw);
-            this.rotationYaw = (float)((double)this.rotationYaw + yaw / (double)this.lerpSteps);
-            this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpPitch - (double)this.rotationPitch) / (double)this.lerpSteps);
-            --this.lerpSteps;
-            this.setPosition(x, y, z);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-        }
-    }
-
-    @Override
-    protected void addPassenger(Entity entity) {
-        super.addPassenger(entity);
-        if (this.canPassengerSteer() && this.lerpSteps > 0) {
-            this.lerpSteps = 0;
-            this.posX = this.lerpX;
-            this.posY = this.lerpY;
-            this.posZ = this.lerpZ;
-            this.rotationYaw = (float)this.lerpYaw;
-            this.rotationPitch = (float)this.lerpPitch;
-        }
-    }
-
     public double getTrainYOffset() {
         return 1.0;
     }
@@ -324,13 +196,7 @@ public abstract class AbsTrainBase extends Entity {
     }
 
     @Override
-    public void onUpdate() {
-        this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        super.onUpdate();
-        this.tickLerp();
-
+    public void update() {
         if (getBogieA() != null && getBogieB() != null) {
             Entity bogieA = getBogieA();
             Entity bogieB = getBogieB();

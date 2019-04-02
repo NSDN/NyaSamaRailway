@@ -115,11 +115,6 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
         dataManager.set(MAXV, (float) value);
     }
 
-    @Override
-    public double getOptionalDir() {
-        return getMotorDir();
-    }
-
     public abstract void doMotion(TrainPacket packet, EntityMinecart cart);
 
     @Override

@@ -46,7 +46,7 @@ public class EntityModelBinder {
         renderers.put(NSPCT7.class, NSPCT7Renderer.FACTORY);
         renderers.put(NSPCT8.class, NSPCT8Renderer.FACTORY);
         renderers.put(NSPCT8W.class, NSPCT8WRenderer.FACTORY);
-        renderers.put(NSPCT8W.Container.class, NSPCT8WRenderer.FACTORY);
+        renderers.put(NSPCT8W.Container.class, NSPCT8WRenderer.CONTAINER);
         renderers.put(NSPCT9.class, NSPCT9Renderer.FACTORY);
         renderers.put(NSPCT10.class, NSPCT10Renderer.FACTORY);
 
@@ -54,7 +54,7 @@ public class EntityModelBinder {
         renderers.put(NSET3.class, NSET3Renderer.FACTORY);
         renderers.put(NSPCT4M.class, NSPCT4MRenderer.FACTORY);
         renderers.put(NSPCT8C.class, NSPCT8CRenderer.FACTORY);
-        renderers.put(NSPCT8C.Container.class, NSPCT8CRenderer.FACTORY);
+        renderers.put(NSPCT8C.Container.class, NSPCT8CRenderer.CONTAINER);
         renderers.put(NSPCT8J.class, NSPCT8JRenderer.FACTORY);
         renderers.put(NSPCT8M.class, NSPCT8MRenderer.FACTORY);
         renderers.put(NSPCT9M.class, NSPCT9MRenderer.FACTORY);

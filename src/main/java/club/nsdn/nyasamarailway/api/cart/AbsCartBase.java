@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.api.cart;
 
 import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
+import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.*;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
@@ -207,8 +208,29 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public void onLinkBroken(EntityMinecart cart) {
     }
 
-    public double getOptionalDir() {
-        return 0;
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = this.getPosition();
+
+        if (world.getBlockState(pos.north()).getBlock() instanceof BlockPlatform)
+            pos = pos.north(2).up();
+        else if (world.getBlockState(pos.south()).getBlock() instanceof BlockPlatform)
+            pos = pos.south(2).up();
+        else if (world.getBlockState(pos.west()).getBlock() instanceof BlockPlatform)
+            pos = pos.west(2).up();
+        else if (world.getBlockState(pos.east()).getBlock() instanceof BlockPlatform)
+            pos = pos.east(2).up();
+        else {
+            super.removePassenger(entity);
+            return;
+        }
+
+        super.removePassenger(entity);
+        entity.setPositionAndUpdate(
+                pos.getX() + 0.5,
+                pos.getY() + 0.1,
+                pos.getZ() + 0.5
+        );
     }
 
     public boolean hasSpecialUpdate() { return false; }
@@ -566,6 +588,9 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
 
         if (this.world.isRemote) {
+            if (hasSpecialUpdate())
+                specialUpdate();
+
             super.onUpdate();
         } else {
             this.prevPosX = this.posX;

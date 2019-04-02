@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.api.cart.AbsContainer;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT8W;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -15,23 +16,36 @@ import org.lwjgl.opengl.GL11;
 public class NSPCT8WRenderer extends AbsCartRenerer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSPCT8WRenderer::new;
+    public static IRenderFactory<AbsContainer> CONTAINER = Container::new;
 
-    private final WavefrontObject modelBase = new WavefrontObject(
+    private static final WavefrontObject modelBase = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/nspc_8w_base.obj")
     );
-    private final WavefrontObject modelPrint = new WavefrontObject(
+    private static final WavefrontObject modelPrint = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/nspc_8w_print.obj")
     );
-    private final WavefrontObject modelHead = new WavefrontObject(
+    private static final WavefrontObject modelHead = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/carts/nspc_8w_head.obj")
     );
 
-    private final ResourceLocation textureBase = new ResourceLocation(
+    private static final ResourceLocation textureBase = new ResourceLocation(
             "nyasamarailway", "textures/carts/nspc_8w_base.png"
     );
-    private final ResourceLocation texturePrint = new ResourceLocation(
+    private static final ResourceLocation texturePrint = new ResourceLocation(
             "nyasamarailway", "textures/carts/nspc_8w_print.png"
     );
+
+    public static class Container extends AbsContainerRenerer {
+
+        public Container(RenderManager manager) { super(manager); }
+
+        @Override
+        public void render(AbsContainer container, double x, double y, double z, float yaw) {
+            RendererHelper.renderWithResource(modelBase, textureBase);
+            RendererHelper.renderWithResource(modelPrint, texturePrint);
+        }
+
+    }
 
     public NSPCT8WRenderer(RenderManager manager) {
         super(manager);
@@ -48,9 +62,6 @@ public class NSPCT8WRenderer extends AbsCartRenerer {
             NSPCT8W cart = (NSPCT8W) minecart;
             GL11.glTranslated(0.0, cart.getShiftY() - 1.0, 0.0);
             RendererHelper.renderWithResource(modelHead, textureBase);
-        } else if (minecart instanceof NSPCT8W.Container) {
-            RendererHelper.renderWithResource(modelBase, textureBase);
-            RendererHelper.renderWithResource(modelPrint, texturePrint);
         }
     }
 }

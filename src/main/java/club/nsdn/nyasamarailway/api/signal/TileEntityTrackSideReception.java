@@ -191,6 +191,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     }
 
     public static final int SPAWN_DELAY = 10;
+    public static final int FIRST_DELAY = 5;
 
     public int delay = 0;
     public int count = 0;
@@ -201,6 +202,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     public String cartType = "";
     public String extInfo = "";
     public int setDelay = 10;
+
+    public boolean prevNoPassenger = true;
 
     @Override
     public void fromNBT(NBTTagCompound tagCompound) {
@@ -512,7 +515,13 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     reception.prev = true;
                 } else if (reception.prev) {
                     reception.prev = false;
-                    //reception.delay = DELAY_TIME * 15 - 1;
+                    reception.reset();
+
+                    if (getVelSq(cart) == 0 && reception.prevNoPassenger) {
+                        // First ride, only in cart mode
+                        if (reception.setDelay >= 5)
+                            reception.delay = (reception.setDelay - FIRST_DELAY) * 20;
+                    }
                 }
 
                 if (!noPassenger) {
@@ -530,6 +539,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (!players.isEmpty())
                         cart(cart, reception, players);
                 }
+
+                reception.prevNoPassenger = noPassenger;
             }
 
             tri(cart, reception);
@@ -663,7 +674,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 if (cart instanceof AbsMotoCart)
                     ((AbsMotoCart) cart).Velocity = 0.0D;
                 setCartDefaultPosition(cart, pos);
-                if (reception.setDelay >= 5) {
+                if (reception.setDelay >= 5 && reception.delay == 0) {
                     for (EntityPlayer player : players)
                         Util.say(player, "info.reception.pause", reception.setDelay);
                     if (reception.setDelay == 10) playSoundOnCart(cart, EnumSound.PAUSE);

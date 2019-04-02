@@ -26,7 +26,7 @@ public abstract class AbsTrainRenerer extends Render<AbsTrainBase> {
 
     @Override
     protected ResourceLocation getEntityTexture(AbsTrainBase train) {
-        return new ResourceLocation("textures/entity/minetrain.png");
+        return new ResourceLocation("textures/entity/minecart.png");
     }
 
     @Override

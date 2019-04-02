@@ -103,11 +103,6 @@ public abstract class AbsLocoBase extends AbsCartBase implements ILocomotive, IL
         dataManager.set(PVEL, (float) value);
     }
 
-    @Override
-    public double getOptionalDir() {
-        return getEngineDir();
-    }
-
     private static final DataParameter<Boolean> TICKET = EntityDataManager.createKey(AbsLocoBase.class, DataSerializers.BOOLEAN);
     public static final byte ANCHOR_RADIUS = 2;
     public static final byte MAX_CHUNKS = 25;
