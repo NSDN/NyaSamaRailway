@@ -43,7 +43,7 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
         AbsContainer container = new Container(world, x, y - 3.0, z);
         world.spawnEntity(container);
 
-        container.startRiding(head);
+        container.setBase(head);
     }
 
     public static class Container extends AbsContainer implements IContainer {
@@ -82,9 +82,28 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
 
         @Override
         public void update() {
-            Entity entity = this.getRidingEntity();
+            Entity entity = this.getBase();
             if (entity instanceof NSPCT8W) {
-                this.setRotation(entity.rotationYaw, 0.0F);
+                NSPCT8W base = (NSPCT8W) entity;
+                double x = base.posX, y = base.posY, z = base.posZ;
+
+                double len = -2.0 + base.getShiftY();
+                Vec3d mod = new Vec3d(0, len, 0);
+                if (base.getCurved())
+                    mod = CartUtil.rotatePitchFix(mod, (float) ((base.rotationPitch + 360) / 180 * Math.PI));
+                /*else if (base.onSlope())
+                    mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));*/
+                mod = mod.rotateYaw((float) ((base.rotationYaw + 360) / 180 * Math.PI));
+                x += mod.x; y += mod.y; z += mod.z;
+                y = y + base.getMountedYOffset();
+
+                this.setRotation(base.rotationYaw, 0.0F);
+
+                this.motionX = x - this.posX;
+                this.motionY = y - this.posY;
+                this.motionZ = z - this.posZ;
+
+                this.move(MoverType.SELF, motionX, motionY, motionZ);
             } else this.setDead();
         }
 
@@ -94,8 +113,6 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
 
     public void setBogie(boolean state) { isBogie = state; }
 
-    public boolean onSlope;
-
     public double defShiftY = 0.0;
     public double shiftY = 0.0;
     public static final double MONO = DEFAULT_SHIFT;
@@ -104,12 +121,17 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
     private static final DataParameter<Float> DEF_SHIFT = EntityDataManager.createKey(NSPCT8W.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> NOW_SHIFT = EntityDataManager.createKey(NSPCT8W.class, DataSerializers.FLOAT);
 
+    private static final DataParameter<Float> NOW_YAW = EntityDataManager.createKey(NSPCT8W.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> ON_SLOPE = EntityDataManager.createKey(NSPCT8W.class, DataSerializers.BOOLEAN);
+
     @Override
     protected void entityInit() {
         super.entityInit();
 
         dataManager.register(DEF_SHIFT, 0.0F);
         dataManager.register(NOW_SHIFT, 0.0F);
+        dataManager.register(NOW_YAW, 0.0F);
+        dataManager.register(ON_SLOPE, false);
     }
 
 
@@ -129,6 +151,23 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
     public void setShiftY(double shift) {
         this.shiftY = shift;
         dataManager.set(NOW_SHIFT, (float) shift);
+    }
+
+    public float getYaw() {
+        return dataManager.get(NOW_YAW);
+    }
+
+    public void setYaw(float yaw) {
+        this.rotationYaw = yaw;
+        dataManager.set(NOW_YAW, yaw);
+    }
+
+    public boolean onSlope() {
+        return dataManager.get(ON_SLOPE);
+    }
+
+    public void onSlope(boolean val) {
+        dataManager.set(ON_SLOPE, val);
     }
 
     @Override
@@ -228,7 +267,7 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
             Vec3d mod = new Vec3d(0, len, 0);
             if (getCurved())
                 mod = CartUtil.rotatePitchFix(mod, (float) ((this.rotationPitch + 360) / 180 * Math.PI));
-            else if (onSlope)
+            else if (onSlope())
                 mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));
             mod = mod.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI));
             x += mod.x; y += mod.y; z += mod.z;
@@ -308,7 +347,7 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
             } else if (rail instanceof IMonoRail) {
                 int meta = ((IMonoRail) rail).getMeta();
                 meta &= 0x7;
-                onSlope = (meta >= 2 && meta <= 5);
+                onSlope(meta >= 2 && meta <= 5);
                 defShiftY = getDefaultShiftY(meta);
             } else if (rail instanceof IWireRail) {
                 defShiftY = WIRE;
@@ -325,6 +364,10 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
 
             setShiftY(shiftY);
             setDefShiftY(defShiftY);
+
+            setYaw(this.rotationYaw);
+        } else {
+            this.rotationYaw = getYaw();
         }
 
         super.onUpdate();

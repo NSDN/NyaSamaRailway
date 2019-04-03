@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
@@ -8,21 +9,31 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 /**
  * Created by drzzm32 on 2019.4.2.
  */
 public abstract class AbsContainer extends Entity {
+
+    private static final DataParameter<Integer> BASE = EntityDataManager.createKey(AbsContainer.class, DataSerializers.VARINT);
+
+    public UUID baseUUID = UUID.randomUUID();
 
     public int lerpSteps;
     public double lerpX;
@@ -49,13 +60,48 @@ public abstract class AbsContainer extends Entity {
     }
 
     @Override
-    protected void entityInit() {  }
+    protected void entityInit() {
+        dataManager.register(BASE, -1);
+    }
 
     @Override
-    protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {  }
+    protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
+        dataManager.set(BASE, tagCompound.getInteger("Base"));
+        this.baseUUID = tagCompound.getUniqueId("baseUUID");
+    }
 
     @Override
-    protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {  }
+    protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
+        tagCompound.setInteger("Base", dataManager.get(BASE));
+        tagCompound.setUniqueId("baseUUID", this.baseUUID);
+    }
+
+    public AbsContainer setBase(Entity base) {
+        if (base != null) {
+            if (!world.isRemote)
+                this.baseUUID = base.getUniqueID();
+            dataManager.set(BASE, base.getEntityId());
+        }
+        return this;
+    }
+
+    public Entity getBase() {
+        Entity entity = world.getEntityByID(dataManager.get(BASE));
+        if (!world.isRemote && world instanceof WorldServer) {
+            Entity serverEntity = ((WorldServer) world).getEntityFromUuid(this.baseUUID);
+            if (serverEntity != null) {
+                if (!serverEntity.equals(entity)) {
+                    dataManager.set(BASE, serverEntity.getEntityId());
+                }
+                return serverEntity;
+            } else {
+                this.baseUUID = UUID.randomUUID();
+                dataManager.set(BASE, -1);
+                return null;
+            }
+        }
+        return entity;
+    }
 
     @Override
     @Nonnull
@@ -204,6 +250,31 @@ public abstract class AbsContainer extends Entity {
             this.rotationYaw = (float)this.lerpYaw;
             this.rotationPitch = (float)this.lerpPitch;
         }
+    }
+
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = this.getPosition();
+
+        if (world.getBlockState(pos.north()).getBlock() instanceof BlockPlatform)
+            pos = pos.north(2).up();
+        else if (world.getBlockState(pos.south()).getBlock() instanceof BlockPlatform)
+            pos = pos.south(2).up();
+        else if (world.getBlockState(pos.west()).getBlock() instanceof BlockPlatform)
+            pos = pos.west(2).up();
+        else if (world.getBlockState(pos.east()).getBlock() instanceof BlockPlatform)
+            pos = pos.east(2).up();
+        else {
+            super.removePassenger(entity);
+            return;
+        }
+
+        super.removePassenger(entity);
+        entity.setPositionAndUpdate(
+                pos.getX() + 0.5,
+                pos.getY() + 0.1,
+                pos.getZ() + 0.5
+        );
     }
 
     public abstract void update();

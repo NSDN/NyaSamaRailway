@@ -648,8 +648,6 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             moveAlongCurvedTrack();
 
                             double dir = progressDir;
-                            /*if (getOptionalDir() != 0)
-                                dir *= getOptionalDir();*/
 
                             EnumFacing.Axis axis = nowEndPoint.axis();
                             if (axis == EnumFacing.Axis.X)
@@ -696,6 +694,16 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     double dz = this.posZ - this.prevPosZ;
                     if (dx * dx + dz * dz > 0.001D) {
                         this.rotationYaw = (float)(MathHelper.atan2(dz, dx) * 180.0D / 3.141592653589793D);
+                        if (this.isInReverse) {
+                            this.rotationYaw += 180.0F;
+                        }
+                    } else if (state.getBlock() instanceof BlockRailBase) {
+                        BlockRailBase railBase = (BlockRailBase) state.getBlock();
+                        BlockRailBase.EnumRailDirection direction = railBase.getRailDirection(world, pos, state, this);
+                        switch (direction) {
+                            case EAST_WEST: this.rotationYaw = 0.0F; break;
+                            case NORTH_SOUTH: this.rotationYaw = 90.0F; break;
+                        }
                         if (this.isInReverse) {
                             this.rotationYaw += 180.0F;
                         }

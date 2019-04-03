@@ -44,12 +44,16 @@ public abstract class AbsTrainBase extends AbsContainer {
 
     @Override
     protected void entityInit() {
+        super.entityInit();
+
         dataManager.register(BOGIE_A, -1);
         dataManager.register(BOGIE_B, -1);
     }
 
     @Override
     protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+
         dataManager.set(BOGIE_A, tagCompound.getInteger("bogieA"));
         dataManager.set(BOGIE_B, tagCompound.getInteger("bogieB"));
         this.uuidA = tagCompound.getUniqueId("uuidA");
@@ -58,6 +62,8 @@ public abstract class AbsTrainBase extends AbsContainer {
 
     @Override
     protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+
         tagCompound.setInteger("bogieA", dataManager.get(BOGIE_A));
         tagCompound.setInteger("bogieB", dataManager.get(BOGIE_B));
         tagCompound.setUniqueId("uuidA", this.uuidA);
