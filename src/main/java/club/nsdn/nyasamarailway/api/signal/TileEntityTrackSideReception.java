@@ -311,6 +311,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         delay = 0;
         doorCtrl = false;
         enable = false;
+        if (getTarget() != null)
+            controlTarget(doorCtrl);
     }
 
     public static boolean configure(World world, BlockPos pos, EntityPlayer player) {

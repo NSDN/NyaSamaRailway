@@ -697,16 +697,6 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                         if (this.isInReverse) {
                             this.rotationYaw += 180.0F;
                         }
-                    } else if (state.getBlock() instanceof BlockRailBase) {
-                        BlockRailBase railBase = (BlockRailBase) state.getBlock();
-                        BlockRailBase.EnumRailDirection direction = railBase.getRailDirection(world, pos, state, this);
-                        switch (direction) {
-                            case EAST_WEST: this.rotationYaw = 0.0F; break;
-                            case NORTH_SOUTH: this.rotationYaw = 90.0F; break;
-                        }
-                        if (this.isInReverse) {
-                            this.rotationYaw += 180.0F;
-                        }
                     }
 
                     double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);

@@ -8,6 +8,8 @@ import club.nsdn.nyasamarailway.api.rail.IMonoRail;
 import club.nsdn.nyasamarailway.api.rail.IWireRail;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityMinecart;
@@ -43,7 +45,7 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
         AbsContainer container = new Container(world, x, y - 3.0, z);
         world.spawnEntity(container);
 
-        container.setBase(head);
+        container.startRiding(head);
     }
 
     public static class Container extends AbsContainer implements IContainer {
@@ -80,31 +82,53 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
             CartUtil.updatePassenger2(this, entity);
         }
 
-        @Override
-        public void update() {
-            Entity entity = this.getBase();
+        public void updateThis(Entity entity) {
             if (entity instanceof NSPCT8C) {
                 NSPCT8C base = (NSPCT8C) entity;
                 double x = base.posX, y = base.posY, z = base.posZ;
 
-                double len = -2.0 + base.getShiftY();
+                double len = -1.0, shift = -1.0 + base.getShiftY();
                 Vec3d mod = new Vec3d(0, len, 0);
                 if (base.getCurved())
-                    mod = CartUtil.rotatePitchFix(mod, (float) ((base.rotationPitch + 360) / 180 * Math.PI));
-                /*else if (base.onSlope())
-                    mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));*/
-                mod = mod.rotateYaw((float) ((base.rotationYaw + 360) / 180 * Math.PI));
+                    mod = CartUtil.rotatePitchFix(mod, (float) (base.rotationPitch / 180 * Math.PI));
+                else if (base.onSlope())
+                    mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));
+                mod = mod.rotateYaw((float) ((180 - base.rotationYaw) / 180 * Math.PI));
                 x += mod.x; y += mod.y; z += mod.z;
-                y = y + base.getMountedYOffset();
+                y = y + base.getMountedYOffset() + shift;
 
-                this.setRotation(base.rotationYaw, 0.0F);
+                this.setPosition(x, y, z);
 
-                this.motionX = x - this.posX;
-                this.motionY = y - this.posY;
-                this.motionZ = z - this.posZ;
+                x = MathHelper.floor(base.posX);
+                y = MathHelper.floor(base.posY);
+                z = MathHelper.floor(base.posZ);
 
-                this.move(MoverType.SELF, motionX, motionY, motionZ);
-            } else this.setDead();
+                BlockPos pos = new BlockPos(x, y, z);
+                IBlockState state = base.world.getBlockState(pos);
+                double dx = this.posX - this.prevPosX;
+                double dz = this.posZ - this.prevPosZ;
+                if (dx * dx + dz * dz < 0.001D) {
+                    if (state.getBlock() instanceof BlockRailBase) {
+                        BlockRailBase railBase = (BlockRailBase) state.getBlock();
+                        BlockRailBase.EnumRailDirection direction = railBase.getRailDirection(world, pos, state, base);
+                        switch (direction) {
+                            case EAST_WEST: this.rotationYaw = 0.0F; break;
+                            case NORTH_SOUTH: this.rotationYaw = 90.0F; break;
+                        }
+                    }
+                } else {
+                    this.rotationYaw = base.rotationYaw;
+                }
+
+                this.setRotation(this.rotationYaw, 0.0F);
+            }
+        }
+
+        @Override
+        public void update() {
+            Entity entity = this.getRidingEntity();
+            if (!(entity instanceof NSPCT8C))
+                this.setDead();
         }
 
     }
@@ -252,18 +276,7 @@ public class NSPCT8C extends AbsLimLoco implements IMonoRailCart {
     @Override // Called by rider
     public void updatePassenger(Entity entity) {
         if (entity instanceof Container) {
-            double x = this.posX, y = this.posY, z = this.posZ;
-
-            double len = -2.0 + this.getShiftY();
-            Vec3d mod = new Vec3d(0, len, 0);
-            if (getCurved())
-                mod = CartUtil.rotatePitchFix(mod, (float) ((this.rotationPitch + 360) / 180 * Math.PI));
-            else if (onSlope())
-                mod = CartUtil.rotatePitchFix(mod, (float) (Math.PI / 4));
-            mod = mod.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI));
-            x += mod.x; y += mod.y; z += mod.z;
-
-            entity.setPosition(x, y + this.getMountedYOffset(), z);
+            ((Container) entity).updateThis(this);
         }
     }
 
