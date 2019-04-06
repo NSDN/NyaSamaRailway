@@ -112,4 +112,20 @@ public class NSPCT9 extends AbsMotoCart implements IExtendedInfoCart {
         TrainController.doMotionWithAir(packet, cart);
     }
 
+    @Override
+    public boolean hasWatchDog() {
+        return true;
+    }
+
+    @Override
+    public boolean feedWatchDog() {
+        if (getMotorState()) {
+            return hasPassenger();
+        } else if (isMoving()) {
+            if (getMotorBrake() > 1)
+                return hasPassenger();
+        }
+        return true;
+    }
+
 }

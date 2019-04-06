@@ -1,7 +1,7 @@
 package club.nsdn.nyasamarailway.api.signal;
 
 import club.nsdn.nyasamatelecom.api.device.SignalBox;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityPassiveReceiver;
+import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class TileEntitySignalLight extends TileEntityPassiveReceiver {
+public class TileEntitySignalLight extends TileEntityReceiver {
 
     public String lightType = "red&green";
     public String prevLightType = "null";

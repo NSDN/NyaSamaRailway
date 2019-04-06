@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.api.signal;
 
 import club.nsdn.nyasamarailway.api.cart.*;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
+import club.nsdn.nyasamatelecom.api.device.SignalBox;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
@@ -22,6 +23,14 @@ import java.util.LinkedHashMap;
  * Created by drzzm32 on 2019.2.10
  */
 public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrackSide, ITrackSidePowerable {
+
+    public static void registerController() {
+        SignalBox.TileEntitySignalBox.CONTROL_FUNCS.add((tileEntity, state) -> {
+            if (tileEntity instanceof TileEntityTrackSideRFID) {
+                ((TileEntityTrackSideRFID) tileEntity).setPowered(state);
+            }
+        });
+    }
 
     public static abstract class RFIDCore<T extends TileEntityTrackSideRFID> extends NSASM {
 

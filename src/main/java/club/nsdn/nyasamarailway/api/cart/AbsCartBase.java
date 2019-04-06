@@ -239,6 +239,20 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
     }
 
+    public boolean isMoving() {
+        return motionX * motionX + motionZ * motionZ > 0.001;
+    }
+
+    public boolean hasPassenger() {
+        return !getPassengers().isEmpty();
+    }
+
+    public boolean hasWatchDog() { return false; }
+
+    public boolean feedWatchDog() {
+        return true;
+    }
+
     protected TileEntityRailEndpoint getNearbyEndpoint() {
         int x = MathHelper.floor(this.posX);
         int y = MathHelper.floor(this.posY);
@@ -596,6 +610,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
+
+            if (hasWatchDog()) {
+                if (!feedWatchDog()) {
+                    this.setDead();
+                    return;
+                }
+            }
 
             int x = MathHelper.floor(this.posX);
                 y = MathHelper.floor(this.posY);

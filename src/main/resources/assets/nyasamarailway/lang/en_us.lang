@@ -172,7 +172,7 @@ tile.WireRail.name=Wire Rail
 tile.WireRailNode.name=Wire Rail Node
 
 itemGroup.tabNSTest=NyaSama Test
-tile.BlockNSTest.name=NyaSama Test
+tile.NSTest.name=NyaSama Test
 item.ItemNyaGift1.name=NyaGift #1
 item.ItemNyaGift2.name=NyaGift #2
 item.ItemNyaGift3.name=NyaGift #3

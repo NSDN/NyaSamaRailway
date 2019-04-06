@@ -104,6 +104,16 @@ public interface ITrackSide {
         return getMinecarts(tile, dir, EnumFacing.DOWN, 0);
     }
 
+    static LinkedList<EntityMinecart> getMinecarts(TileEntityBase tile, EnumFacing dir, EnumFacing offset) {
+        LinkedList<EntityMinecart> carts = new LinkedList<>();
+        LinkedList<EntityMinecart> buff;
+        for (int i = 0; i <= 8; i++) { //Total: 9 blocks
+            buff = getMinecarts(tile, dir, offset, i);
+            if (buff != null) carts.addAll(buff);
+        }
+        return carts;
+    }
+
     static EntityMinecart getMinecart(World world, BlockPos pos) {
         LinkedList<EntityMinecart> carts = getMinecarts(world, pos);
         if (carts.isEmpty()) return null;

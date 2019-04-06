@@ -310,6 +310,32 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
     }
 
     @Override
+    public boolean hasPassenger() {
+        if (!getPassengers().isEmpty()) {
+            Entity e = getPassengers().get(0);
+            if (e instanceof Container)
+                return ((Container) e).hasPassenger();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasWatchDog() {
+        return !isBogie;
+    }
+
+    @Override
+    public boolean feedWatchDog() {
+        if (getMotorState()) {
+            return hasPassenger();
+        } else if (isMoving()) {
+            if (getMotorBrake() > 1)
+                return hasPassenger();
+        }
+        return true;
+    }
+
+    @Override
     public void onUpdate() {
         if (!world.isRemote) {
             int px = MathHelper.floor(this.prevPosX);

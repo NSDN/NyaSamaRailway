@@ -174,7 +174,7 @@ tile.WireRail.name=缆型轨
 tile.WireRailNode.name=缆型轨节点
 
 itemGroup.tabNSTest=喵玉测试
-tile.BlockNSTest.name=喵玉测试
+tile.NSTest.name=喵玉测试
 item.ItemNyaGift1.name=冥界地铁纪念卡
 item.ItemNyaGift2.name=铁科院纪念卡
 item.ItemNyaGift3.name=旧都地铁纪念卡

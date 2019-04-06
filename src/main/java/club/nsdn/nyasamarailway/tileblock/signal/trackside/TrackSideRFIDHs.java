@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -177,51 +178,55 @@ public class TrackSideRFIDHs extends AbsTrackSide {
                 }
 
                 EnumFacing offset = rfid.isInvert() ? rfid.direction.getOpposite() : rfid.direction;
-                EntityMinecart cart = ITrackSide.getMinecart(rfid, rfid.direction, offset);
+                LinkedList<EntityMinecart> carts = ITrackSide.getMinecarts(rfid, rfid.direction, offset);
 
-                if (cart instanceof AbsLocoBase) {
-                    AbsLocoBase loco = (AbsLocoBase) cart;
+                if (carts != null) {
+                    for (EntityMinecart cart : carts) {
+                        if (cart instanceof AbsLocoBase) {
+                            AbsLocoBase loco = (AbsLocoBase) cart;
 
-                    if (hasPowered || rfid.senderIsPowered()) {
-                        loco.setEnginePower(rfid.P);
-                        loco.setEngineBrake(rfid.R);
-                    }
-                } else if (cart instanceof IMotorCart) {
-                    IMotorCart motorCart = (IMotorCart) cart;
+                            if (hasPowered || rfid.senderIsPowered()) {
+                                loco.setEnginePower(rfid.P);
+                                loco.setEngineBrake(rfid.R);
+                            }
+                        } else if (cart instanceof IMotorCart) {
+                            IMotorCart motorCart = (IMotorCart) cart;
 
-                    if (hasPowered || rfid.senderIsPowered()) {
-                        motorCart.setMotorPower(rfid.P);
-                        motorCart.setMotorBrake(rfid.R);
-                        motorCart.setMotorState(rfid.state);
-                    }
-                }
+                            if (hasPowered || rfid.senderIsPowered()) {
+                                motorCart.setMotorPower(rfid.P);
+                                motorCart.setMotorBrake(rfid.R);
+                                motorCart.setMotorState(rfid.state);
+                            }
+                        }
 
-                if (cart instanceof ILimitVelCart) {
-                    ILimitVelCart limitVelCart = (ILimitVelCart) cart;
+                        if (cart instanceof ILimitVelCart) {
+                            ILimitVelCart limitVelCart = (ILimitVelCart) cart;
 
-                    if (hasPowered || rfid.senderIsPowered()) {
-                        limitVelCart.setMaxVelocity(rfid.vel);
-                    }
-                }
+                            if (hasPowered || rfid.senderIsPowered()) {
+                                limitVelCart.setMaxVelocity(rfid.vel);
+                            }
+                        }
 
-                if (cart instanceof IHighSpeedCart) {
-                    IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
+                        if (cart instanceof IHighSpeedCart) {
+                            IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
 
-                    if (hasPowered || rfid.senderIsPowered()) {
-                        highSpeedCart.setHighSpeedMode(rfid.high);
-                    }
-                }
+                            if (hasPowered || rfid.senderIsPowered()) {
+                                highSpeedCart.setHighSpeedMode(rfid.high);
+                            }
+                        }
 
-                if (cart instanceof IExtendedInfoCart) {
-                    IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
+                        if (cart instanceof IExtendedInfoCart) {
+                            IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
 
-                    if (hasPowered || rfid.senderIsPowered()) {
-                        if (!rfid.cartSide.equals("null"))
-                            infoCart.setExtendedInfo("side", rfid.cartSide);
-                        if (!rfid.cartStr.equals("null"))
-                            infoCart.setExtendedInfo("str", rfid.cartStr);
-                        if (!rfid.cartJet.equals("null"))
-                            infoCart.setExtendedInfo("jet", rfid.cartJet);
+                            if (hasPowered || rfid.senderIsPowered()) {
+                                if (!rfid.cartSide.equals("null"))
+                                    infoCart.setExtendedInfo("side", rfid.cartSide);
+                                if (!rfid.cartStr.equals("null"))
+                                    infoCart.setExtendedInfo("str", rfid.cartStr);
+                                if (!rfid.cartJet.equals("null"))
+                                    infoCart.setExtendedInfo("jet", rfid.cartJet);
+                            }
+                        }
                     }
                 }
 

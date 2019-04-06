@@ -135,6 +135,22 @@ public class NSPCT4 extends AbsMotoCart implements IMonoRailCart, IExtendedInfoC
     }
 
     @Override
+    public boolean hasWatchDog() {
+        return true;
+    }
+
+    @Override
+    public boolean feedWatchDog() {
+        if (getMotorState()) {
+            return hasPassenger();
+        } else if (isMoving()) {
+            if (getMotorBrake() > 1)
+                return hasPassenger();
+        }
+        return true;
+    }
+
+    @Override
     public void onUpdate() {
         int x = MathHelper.floor(this.posX);
         int y = MathHelper.floor(this.posY);

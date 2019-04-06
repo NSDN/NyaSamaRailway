@@ -502,8 +502,14 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     }
                 }
                 if (noPassenger) {
-                    if (cart instanceof AbsMotoCart)
+                    if (cart instanceof AbsMotoCart) {
                         ((AbsMotoCart) cart).Velocity = 0.0D;
+                        ((AbsMotoCart) cart).setMotorPower(0);
+                        ((AbsMotoCart) cart).setMotorBrake(1);
+                        ((AbsMotoCart) cart).setMotorState(false);
+                        ((AbsMotoCart) cart).setMotorVel(0);
+                    }
+
                     setCartDefaultPosition(cart, pos);
 
                     reception.reset();
@@ -673,8 +679,13 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                 reception.enable = true;
                 reception.doorCtrl = true;
 
-                if (cart instanceof AbsMotoCart)
+                if (cart instanceof AbsMotoCart) {
                     ((AbsMotoCart) cart).Velocity = 0.0D;
+                    ((AbsMotoCart) cart).setMotorPower(0);
+                    ((AbsMotoCart) cart).setMotorBrake(1);
+                    ((AbsMotoCart) cart).setMotorState(false);
+                    ((AbsMotoCart) cart).setMotorVel(0);
+                }
                 setCartDefaultPosition(cart, pos);
                 if (reception.setDelay >= 5 && reception.delay == 0) {
                     for (EntityPlayer player : players)
@@ -717,6 +728,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
                 setCartDefaultPosition(cart, pos);
             } else {
+                if (cart instanceof AbsMotoCart)
+                    ((AbsMotoCart) cart).setMotorBrake(10);
+
                 double dir = (reception.direction == EnumFacing.NORTH || reception.direction == EnumFacing.EAST) ? 1 : -1;
                 if (reception.isInvert()) dir = -dir;
                 if (reception.direction.getFrontOffsetZ() != 0) {
