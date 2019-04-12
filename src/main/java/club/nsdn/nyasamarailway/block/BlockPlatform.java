@@ -65,7 +65,7 @@ public class BlockPlatform extends Block {
     }
 
     public BlockPlatform() {
-        super( Material.IRON);
+        super(Material.IRON);
         setUnlocalizedName("BlockPlatform");
         setRegistryName(NyaSamaRailway.MODID, "platform");
         setHardness(5.0F);
