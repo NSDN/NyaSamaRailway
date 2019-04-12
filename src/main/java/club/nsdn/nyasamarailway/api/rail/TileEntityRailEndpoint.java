@@ -1,11 +1,10 @@
 package club.nsdn.nyasamarailway.api.rail;
 
-import club.nsdn.nyasamarailway.api.cart.CartUtil;
-import club.nsdn.nyasamarailway.util.Vertex;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
-import cn.ac.nya.forgeobj.Face;
-import cn.ac.nya.forgeobj.GroupObject;
-import cn.ac.nya.forgeobj.WavefrontObject;
+import cn.ac.nya.mutable.MutableModel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -18,27 +17,33 @@ import org.thewdj.spline.Spline;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by drzzm32 on 2019.3.17.
  */
 public class TileEntityRailEndpoint extends TileEntityActuator {
 
+    @Override
+    public boolean hasFastRenderer() {
+        return true;
+    }
+
     @SideOnly(Side.CLIENT)
-    protected LinkedList<Vertex> cookedVertices;
+    protected LinkedList<BakedQuad> bakedQuads;
 
     @SideOnly(Side.CLIENT)
     public double getRenderStep() { return 0.5; }
 
     @SideOnly(Side.CLIENT)
-    public LinkedList<Vertex> getVerticles() {
-        if (cookedVertices == null)
-            cookedVertices = new LinkedList<>();
-        return cookedVertices;
+    public List<BakedQuad> getQuads() {
+        if (bakedQuads == null)
+            bakedQuads = new LinkedList<>();
+        return bakedQuads;
     }
 
     @SideOnly(Side.CLIENT)
-    public void cookVertices(@Nonnull WavefrontObject model) {
+    public void cookModel(@Nonnull IBakedModel model, TextureAtlasSprite texture) {
         Vec3d vec, nex; double step = this.getRenderStep();
         for (double d = 0; d <= this.len(); d += step) {
             if (d == this.len()) {
@@ -56,30 +61,18 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
             double hlen = Math.sqrt(nex.x * nex.x + nex.z * nex.z);
             double pitch = Math.atan(nex.y / hlen);
 
-            for (GroupObject group : model.groupObjects) {
-                for (Face face : group.faces) {
-                    for (int i = 0; i < face.vertices.length; ++i) {
-                        if (face.textureCoordinates != null && face.textureCoordinates.length > 0) {
-                            Vertex vertex = new Vertex();
+            List<BakedQuad> quads = model.getQuads(null, null, 0);
+            MutableModel mutableModel = new MutableModel(quads);
+            mutableModel.translate(-0.5, -0.5, 0.5).rotateZ((float) pitch).rotateY((float) yaw).translate(vec.x, vec.y, vec.z);
+            mutableModel.setTexture(texture);
 
-                            Vec3d pos = new Vec3d((double) face.vertices[i].x, (double) face.vertices[i].y, (double) face.vertices[i].z);
-                            pos = CartUtil.rotatePitchFix(pos, (float) -pitch).rotateYaw((float) -yaw).add(vec);
-
-                            vertex.pos(pos.x, pos.y, pos.z)
-                                    .tex((double) face.textureCoordinates[i].u, (double) face.textureCoordinates[i].v)
-                                    .nor(face.faceNormal.x, face.faceNormal.y, face.faceNormal.z);
-
-                            this.cookedVertices.add(vertex);
-                        }
-                    }
-                }
-            }
+            bakedQuads.addAll(mutableModel.getBakedQuads());
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public void clearVertices() {
-        cookedVertices.clear();
+    public void clearModel() {
+        bakedQuads.clear();
     }
 
     boolean inv = false;

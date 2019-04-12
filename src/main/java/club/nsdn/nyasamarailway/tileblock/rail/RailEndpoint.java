@@ -132,7 +132,7 @@ public class RailEndpoint extends BlockContainer {
                 }
 
                 if (world.isRemote && !player.isSneaking()) {
-                    endpoint.clearVertices();
+                    endpoint.clearModel();
                 }
 
                 return true;

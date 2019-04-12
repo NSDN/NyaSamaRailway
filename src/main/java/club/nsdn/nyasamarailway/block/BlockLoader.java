@@ -41,6 +41,8 @@ public class BlockLoader {
     public static LightBeam light;
     public static LightBeam lineLight;
 
+    public static MdlCurvedRail curvedRail;
+
     public void getLightBeams() {
         light = club.nsdn.nyasamaoptics.block.BlockLoader.light;
         lineLight = club.nsdn.nyasamaoptics.block.BlockLoader.lineLight;
@@ -88,6 +90,9 @@ public class BlockLoader {
         blocks.add(logo);
         nsTest = new BlockNSTest();
         blocks.add(nsTest);
+
+        curvedRail = new MdlCurvedRail();
+        blocks.add(curvedRail);
 
         blocks.add(new BlockIronBars());
         blocks.add(new BlockIronWeb());

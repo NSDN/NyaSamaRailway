@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "normal_rail_flat",
+    "custom": { "flip-v": true }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "type": {
+      "mono": { "model": "nyasamarailway:rail/mono_rail_curved.obj", "y": 90 },
+      "ns": {  },
+      "ss": {  }
+    }
+  }
+}

@@ -1,64 +1,74 @@
 package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
 import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
-import club.nsdn.nyasamarailway.util.Vertex;
-import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
-import club.nsdn.nyasamatelecom.api.render.RendererHelper;
+import club.nsdn.nyasamarailway.block.MdlCurvedRail;
+import club.nsdn.nyasamarailway.block.BlockLoader;
+import club.nsdn.nyasamatelecom.api.render.AbsFastTESR;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
-import cn.ac.nya.forgeobj.WavefrontObject;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Created by drzzm32 on 2019.3.17.
  */
-public class CurvedRailRenderer extends AbsTileEntitySpecialRenderer {
+public class CurvedRailRenderer extends AbsFastTESR {
 
-    private final WavefrontObject model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_curved.obj"));
-    private final ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_curved.png");
+    public void render(BufferBuilder buffer, double x, double y, double z, List<BakedQuad> quads) {
+        buffer.setTranslation(x, y, z);
+
+        int i = 0xF00000;
+        for (BakedQuad quad: quads) {
+            buffer.addVertexData(quad.getVertexData());
+            buffer.putBrightness4(i, i, i, i);
+
+            float diffuse = 1;
+            if (quad.shouldApplyDiffuseLighting())
+                diffuse = net.minecraftforge.client.model.pipeline.LightUtil.diffuseLight(quad.getFace());
+
+            buffer.putColorMultiplier(diffuse, diffuse, diffuse, 4);
+            buffer.putColorMultiplier(diffuse, diffuse, diffuse, 3);
+            buffer.putColorMultiplier(diffuse, diffuse, diffuse, 2);
+            buffer.putColorMultiplier(diffuse, diffuse, diffuse, 1);
+
+            buffer.putPosition(0, 0, 0);
+        }
+    }
 
     @Override
-    public boolean isGlobalRenderer(TileEntity te) {
+    public boolean isGlobalRenderer(TileEntityBase te) {
         return true;
     }
 
     @Override
-    public void render(@Nonnull TileEntityBase te, double x, double y, double z, float partialTicks, int destroyStage, float partial) {
+    public void renderTileEntityFast(@Nonnull TileEntityBase te, double x, double y, double z, float partialTicks, int destroyStage, float partial, @Nonnull BufferBuilder buffer) {
         if (te instanceof TileEntityRailEndpoint) {
             TileEntityRailEndpoint endpoint = (TileEntityRailEndpoint) te;
-            BlockPos blockPos = endpoint.getPos();
 
-            GL11.glPushMatrix();
-            GL11.glTranslated(x - blockPos.getX(), y - blockPos.getY() + 1.0, z - blockPos.getZ());
+            if (endpoint.getQuads().isEmpty()) {
+                BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+                TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
 
-            Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+                IBlockState state = BlockLoader.curvedRail.getDefaultState();
+                IBakedModel model = modelShapes.getModelForState(state.withProperty(MdlCurvedRail.TYPE, MdlCurvedRail.EnumType.MONO));
+                TextureAtlasSprite texture = textureMap.getAtlasSprite("nyasamarailway:rails/mono_rail_curved");
 
-            RendererHelper.beginSpecialLighting();
+                endpoint.cookModel(model, texture);
+            }
 
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder buffer = tessellator.getBuffer();
+            x = x - endpoint.getPos().getX();
+            y = y - endpoint.getPos().getY() + 1.0;
+            z = z - endpoint.getPos().getZ();
 
-            buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
-
-            if (endpoint.getVerticles().isEmpty())
-                endpoint.cookVertices(model);
-
-            for (Vertex vertex : endpoint.getVerticles())
-                vertex.push(buffer);
-
-            tessellator.draw();
-
-            RendererHelper.endSpecialLighting();
-
-            GL11.glPopMatrix();
+            render(buffer, x, y, z, endpoint.getQuads());
         }
     }
 

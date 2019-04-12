@@ -75,8 +75,8 @@ public class TileEntityModelBinder {
                 }
         ));
         renderers.put(MagnetSwitch.TileEntityMagnetSwitch.class, new MonoRailSwitchRenderer(false));
-        renderers.put(MonoRailBase.TileEntityMonoRailBase.class, new MonoRailRenderer());
-        renderers.put(MonoRailSwitch.TileEntityMonoRailSwitch.class, new MonoRailSwitchRenderer());
+        //renderers.put(MonoRailBase.TileEntityMonoRailBase.class, new MonoRailRenderer());
+        //renderers.put(MonoRailSwitch.TileEntityMonoRailSwitch.class, new MonoRailSwitchRenderer());
         renderers.put(Rail3rd.TileEntityRail3rd.class, new Rail3rdRenderer());
         renderers.put(Rail3rdSwitch.TileEntityRail3rdSwitch.class, new MonoRailSwitchRenderer(true));
         renderers.put(RailBumper.TileEntityRailBumper.class, new RailBumperRenderer());
