@@ -1,17 +1,30 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "nyasamarailway:mono_rail_palm",
+    "model": "nyasamarailway:mono_rail_pad",
     "textures": {
       "texture": "nyasamarailway:block/rail_endpoint"
     }
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}],
+    "inventory": [{
+      "submodel": {
+        "sub": { "model": "nyasamarailway:mono_rail_palm" }
+      }
+    }],
+    "type": {
+      "mono": {  },
+      "ns": { "model": "nyasamarailway:rail_ns_sign" },
+      "ss": { "model": "nyasamarailway:rail_ss_sign" }
+    },
     "palm": {
-      "true": { "model": "nyasamarailway:mono_rail_palm" },
-      "false": { "model": "nyasamarailway:mono_rail_pad" }
+      "true": {
+        "submodel": {
+          "sub": { "model": "nyasamarailway:mono_rail_palm" }
+        }
+      },
+      "false": {  }
     }
   }
 }

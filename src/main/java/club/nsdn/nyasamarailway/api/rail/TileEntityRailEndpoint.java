@@ -1,16 +1,20 @@
 package club.nsdn.nyasamarailway.api.rail;
 
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.tileblock.rail.RailEndpoint;
 import club.nsdn.nyasamarailway.util.Vertex;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
 import cn.ac.nya.forgeobj.Face;
 import cn.ac.nya.forgeobj.GroupObject;
 import cn.ac.nya.forgeobj.WavefrontObject;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.thewdj.spline.Spline;
@@ -24,6 +28,19 @@ import java.util.LinkedList;
  */
 public class TileEntityRailEndpoint extends TileEntityActuator {
 
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        if (oldState.getBlock() == newState.getBlock()) {
+            if (
+                oldState.getPropertyKeys().contains(RailEndpoint.TYPE) &&
+                newState.getPropertyKeys().contains(RailEndpoint.TYPE)
+            ) {
+                return oldState.getValue(RailEndpoint.TYPE) != newState.getValue(RailEndpoint.TYPE);
+            }
+        }
+        return super.shouldRefresh(world, pos, oldState, newState);
+    }
+
     @SideOnly(Side.CLIENT)
     protected LinkedList<Vertex> cookedVertices;
 
@@ -31,7 +48,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     public double getRenderStep() { return 0.5; }
 
     @SideOnly(Side.CLIENT)
-    public LinkedList<Vertex> getVerticles() {
+    public LinkedList<Vertex> getVertices() {
         if (cookedVertices == null)
             cookedVertices = new LinkedList<>();
         return cookedVertices;

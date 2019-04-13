@@ -48,10 +48,10 @@ public class CurvedRailRenderer extends AbsTileEntitySpecialRenderer {
 
             buffer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
-            if (endpoint.getVerticles().isEmpty())
+            if (endpoint.getVertices().isEmpty())
                 endpoint.cookVertices(model);
 
-            for (Vertex vertex : endpoint.getVerticles())
+            for (Vertex vertex : endpoint.getVertices())
                 vertex.push(buffer);
 
             tessellator.draw();

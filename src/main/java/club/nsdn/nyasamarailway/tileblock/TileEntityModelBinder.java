@@ -115,6 +115,7 @@ public class TileEntityModelBinder {
         //renderers.put(TileEntityBuildEndpoint.class, new BuildRouteRenderer());
 
         renderers.put(RailEndpoint.TileEntityRailEndpoint.class, new CurvedRailRenderer());
+        renderers.put(RailEndpoint.TileEntityFastRailEndpoint.class, new CurvedRailFastRenderer());
     }
 
 }
