@@ -18,6 +18,7 @@ public class MdlCurvedRail extends Block {
 
     public static enum EnumType implements IStringSerializable {
         MONO("mono"),
+        MONO_FAST("mono_fast"),
         NS("ns"),
         SS("ss");
 

@@ -8,7 +8,8 @@
     "normal": [{}],
     "inventory": [{}],
     "type": {
-      "mono": { "model": "nyasamarailway:rail/mono_rail_curved.obj", "y": 90 },
+      "mono": { "model": "nyasamarailway:rail/mono_rail_curved.obj" },
+      "mono_fast": { "model": "nyasamarailway:mono_rail_curved", "y": 90 },
       "ns": {  },
       "ss": {  }
     }

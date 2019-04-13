@@ -58,14 +58,14 @@ public class CurvedRailRenderer extends AbsFastTESR {
                 TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
 
                 IBlockState state = BlockLoader.curvedRail.getDefaultState();
-                IBakedModel model = modelShapes.getModelForState(state.withProperty(MdlCurvedRail.TYPE, MdlCurvedRail.EnumType.MONO));
+                IBakedModel model = modelShapes.getModelForState(state.withProperty(MdlCurvedRail.TYPE, MdlCurvedRail.EnumType.MONO_FAST));
                 TextureAtlasSprite texture = textureMap.getAtlasSprite("nyasamarailway:rails/mono_rail_curved");
 
                 endpoint.cookModel(model, texture);
             }
 
             x = x - endpoint.getPos().getX();
-            y = y - endpoint.getPos().getY() + 1.0;
+            y = y - endpoint.getPos().getY() + 0.5;
             z = z - endpoint.getPos().getZ();
 
             render(buffer, x, y, z, endpoint.getQuads());

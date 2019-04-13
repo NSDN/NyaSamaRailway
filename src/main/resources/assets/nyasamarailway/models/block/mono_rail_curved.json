@@ -1,0 +1,28 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "nyasamarailway:rails/mono_rail_curved",
+		"particle": "nyasamarailway:rails/mono_rail_curved"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 2],
+			"to": [12, 12, 14],
+			"faces": {
+				"north": {"uv": [2, 2, 6, 8], "texture": "#0"},
+				"east": {"uv": [1, 2, 7, 8], "texture": "#0"},
+				"south": {"uv": [2, 2, 6, 8], "texture": "#0"},
+				"west": {"uv": [1, 2, 7, 8], "texture": "#0"},
+				"up": {"uv": [2, 0, 6, 8], "texture": "#0"},
+				"down": {"uv": [2, 0, 6, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 12.1, 4],
+			"to": [12, 12.1, 12],
+			"faces": {
+				"up": {"uv": [8, 8, 16, 16], "texture": "#0"}
+			}
+		}
+	]
+}
