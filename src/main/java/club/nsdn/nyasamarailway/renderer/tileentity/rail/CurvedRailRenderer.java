@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
  */
 public class CurvedRailRenderer extends AbsTileEntitySpecialRenderer {
 
-    private final WavefrontObject model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_curved.obj"));
+    private final WavefrontObject model = new WavefrontObject(new ResourceLocation("nyasamarailway", "models/rails/mono_rail_curved_simple.obj"));
     private final ResourceLocation texture = new ResourceLocation("nyasamarailway", "textures/rails/mono_rail_curved.png");
 
     @Override
