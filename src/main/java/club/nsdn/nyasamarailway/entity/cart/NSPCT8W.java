@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.entity.cart;
 
 import club.nsdn.nyasamarailway.api.cart.*;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
+import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IConvWireMono;
 import club.nsdn.nyasamarailway.api.rail.IMonoRail;
@@ -288,6 +289,24 @@ public class NSPCT8W extends AbsMotoCart implements IMonoRailCart {
         if (entity instanceof Container) {
             ((Container) entity).updateThis(this);
         }
+    }
+
+    @Override
+    protected TileEntityRailEndpoint getNearbyEndpoint() {
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.posY);
+        int z = MathHelper.floor(this.posZ);
+
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntityRailEndpoint endpoint = null;
+
+        pos = pos.down();
+
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityRailEndpoint)
+            endpoint = (TileEntityRailEndpoint) tileEntity;
+
+        return endpoint;
     }
 
     @Override

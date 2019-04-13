@@ -23,8 +23,8 @@
 	},
 	"elements": [
 		{
-			"from": [4, 0, 4],
-			"to": [12, 1, 12],
+			"from": [5, 0, 5],
+			"to": [11, 1, 11],
 			"color": 7,
 			"faces": {
 				"north": {"uv": [4, 15, 12, 16], "texture": "#texture"},

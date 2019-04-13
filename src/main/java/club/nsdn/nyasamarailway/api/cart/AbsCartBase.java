@@ -261,8 +261,6 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         BlockPos pos = new BlockPos(x, y, z);
         TileEntityRailEndpoint endpoint = null;
 
-        pos = pos.down();
-
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityRailEndpoint)
             endpoint = (TileEntityRailEndpoint) tileEntity;
@@ -278,6 +276,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         double yaw = Math.atan2(vec.z, vec.x) * 180 / Math.PI;
         double hlen = Math.sqrt(vec.x * vec.x + vec.z * vec.z);
         double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
+
+        pos = pos.subtract(0, 0.5 - 0.0625, 0);
 
         double vx = pos.x - this.posX;
         double vy = pos.y - this.posY;

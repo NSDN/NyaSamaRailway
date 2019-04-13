@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.api.cart.nsc;
 
 import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
+import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.api.rail.IMonoRail;
 import club.nsdn.nyasamarailway.util.TrainController;
@@ -44,6 +45,24 @@ public abstract class AbsNSCxB extends AbsMotoCart implements IMonoRailCart {
     @Override
     public void doMotion(TrainPacket packet, EntityMinecart cart) {
         TrainController.doMotionWithAir(packet, cart);
+    }
+
+    @Override
+    protected TileEntityRailEndpoint getNearbyEndpoint() {
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.posY);
+        int z = MathHelper.floor(this.posZ);
+
+        BlockPos pos = new BlockPos(x, y, z);
+        TileEntityRailEndpoint endpoint = null;
+
+        pos = pos.down();
+
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityRailEndpoint)
+            endpoint = (TileEntityRailEndpoint) tileEntity;
+
+        return endpoint;
     }
 
     @Override
