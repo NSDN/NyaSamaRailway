@@ -669,12 +669,19 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             moveAlongCurvedTrack();
 
                             double dir = progressDir;
-
-                            EnumFacing.Axis axis = nowEndPoint.axis();
-                            if (axis == EnumFacing.Axis.X)
-                                nowProgress += Math.abs(motionX) * dir;
-                            else if (axis == EnumFacing.Axis.Z)
-                                nowProgress += Math.abs(motionZ) * dir;
+                            double velSq = motionX * motionX + motionZ * motionZ;
+                            double vel = Math.sqrt(velSq), dProgress = vel;
+                            Vec3d now = nowEndPoint.get(nowProgress);
+                            for (double i = 0; i <= vel; i += vel / 16) {
+                                Vec3d vec = nowEndPoint.get(nowProgress + i);
+                                vec = vec.subtract(now);
+                                double lenSq = vec.lengthSquared();
+                                if (lenSq >= velSq) {
+                                    dProgress = i;
+                                    break;
+                                }
+                            }
+                            nowProgress += dProgress * dir;
 
                             motionX = Math.abs(motionX) * Math.signum(posX - prevPosX);
                             motionZ = Math.abs(motionZ) * Math.signum(posZ - prevPosZ);

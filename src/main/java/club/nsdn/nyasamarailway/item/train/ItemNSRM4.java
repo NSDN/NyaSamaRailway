@@ -30,6 +30,8 @@ public class ItemNSRM4 extends AbsItemTrain {
         pos = pos.offset(facing, 2);
         NSPCT8W bogie = new NSPCT8W(world, x + pos.getX(), y, z + pos.getZ());
 
+        bogie.setBogie(true);
+
         LinkageManager.INSTANCE.createLink(motor, bogie);
         car.setBogieA(motor).setBogieB(bogie);
 
