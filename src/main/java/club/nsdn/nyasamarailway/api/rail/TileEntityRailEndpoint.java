@@ -63,7 +63,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
 
             List<BakedQuad> quads = model.getQuads(null, null, 0);
             MutableModel mutableModel = new MutableModel(quads);
-            mutableModel.rotateZ((float) pitch).rotateY((float) yaw).translate(vec.x, vec.y, vec.z);
+            mutableModel.rotateZ((float) -pitch).rotateY((float) yaw).translate(vec.x, vec.y, vec.z);
             mutableModel.setTexture(texture);
 
             bakedQuads.addAll(mutableModel.getBakedQuads());

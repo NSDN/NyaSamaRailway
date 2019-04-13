@@ -121,10 +121,12 @@ public class MonoRailSwitch extends AbsRail {
 
     public MonoRailSwitch(String name, String id) {
         super(name, id);
+        setLightOpacity(0);
     }
 
     public MonoRailSwitch() {
         super("MonoRailSwitch", "rail_mono_switch");
+        setLightOpacity(0);
     }
 
     @Override
@@ -149,7 +151,7 @@ public class MonoRailSwitch extends AbsRail {
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
