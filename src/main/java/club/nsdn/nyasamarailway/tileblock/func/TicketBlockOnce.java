@@ -8,6 +8,7 @@ import club.nsdn.nyasamarailway.tileblock.TileBlock;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -58,6 +59,16 @@ public class TicketBlockOnce extends TileBlock {
             return super.toNBT(tagCompound);
         }
 
+        public EnumFacing dirFromMeta(int meta) {
+            switch (meta & 0x3) {
+                case 0: return EnumFacing.NORTH;
+                case 1: return EnumFacing.EAST;
+                case 2: return EnumFacing.SOUTH;
+                case 3: return EnumFacing.WEST;
+            }
+            return EnumFacing.DOWN;
+        }
+
         @Override
         public void updateSignal(World world, BlockPos pos) {
             TileEntity tileEntity = world.getTileEntity(pos);
@@ -68,6 +79,17 @@ public class TicketBlockOnce extends TileBlock {
                 if ((meta & 0x4) != 0) {
                     ticketBlock.delay += 1;
                     if (ticketBlock.delay > TileEntityTicketBlockOnce.DELAY * 20) {
+                        ItemStack itemStack = new ItemStack(ItemLoader.nyaCoin);
+                        ItemNyaCoin.setValue(itemStack, ticketBlock.setOver);
+                        EnumFacing facing = dirFromMeta(meta);
+                        EntityItem entityItem = new EntityItem(
+                                world,
+                                pos.getX() + 0.5 + facing.getFrontOffsetX(),
+                                pos.getY() + 0.5 + facing.getFrontOffsetY(),
+                                pos.getZ() + 0.5 + facing.getFrontOffsetZ(),
+                                itemStack
+                        );
+                        world.spawnEntity(entityItem);
                         ticketBlock.META = meta & 0x3;
                         ticketBlock.refresh();
                     }
