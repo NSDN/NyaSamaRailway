@@ -3,11 +3,13 @@ package club.nsdn.nyasamarailway.renderer.tileentity.func;
 import club.nsdn.nyasamarailway.tileblock.func.TileEntityBuildEndpoint;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
+import club.nsdn.nyasamatelecom.item.NyaGameMR;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -40,17 +42,23 @@ public class BuildRouteRenderer extends AbsTileEntitySpecialRenderer {
         if (Minecraft.getMinecraft().world == null)
             return;
 
-        List<TileEntity> list = Minecraft.getMinecraft().world.loadedTileEntityList;
         EntityPlayerSP player = Minecraft.getMinecraft().player;
+        for (ItemStack stack : player.getEquipmentAndArmor()) {
+            if (stack.getItem() instanceof NyaGameMR) {
+                List<TileEntity> list = Minecraft.getMinecraft().world.loadedTileEntityList;
 
-        for (TileEntity tileEntity : list) {
-            if (tileEntity instanceof TileEntityBuildEndpoint)
-                render((TileEntityBase) tileEntity,
-                        tileEntity.getPos().getX() - player.chasingPosX,
-                        tileEntity.getPos().getY() - player.chasingPosY,
-                        tileEntity.getPos().getZ() - player.chasingPosZ,
-                        0, 0, 0
-                );
+                for (TileEntity tileEntity : list) {
+                    if (tileEntity instanceof TileEntityBuildEndpoint)
+                        render((TileEntityBase) tileEntity,
+                                tileEntity.getPos().getX() - player.chasingPosX,
+                                tileEntity.getPos().getY() - player.chasingPosY,
+                                tileEntity.getPos().getZ() - player.chasingPosZ,
+                                0, 0, 0
+                        );
+                }
+
+                return;
+            }
         }
     }
 
