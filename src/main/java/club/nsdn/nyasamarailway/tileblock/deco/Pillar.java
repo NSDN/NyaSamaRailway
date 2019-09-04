@@ -107,10 +107,12 @@ public class Pillar extends TileBlock {
         if (block instanceof BlockStairs) return false;
 
         if (block instanceof BlockSlab) {
-            if ((world.getBlockState(pos).getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP))
-                return world.getBlockState(pos.up()).getBlock() == this;
-            else
-                return world.getBlockState(pos.down()).getBlock() == this;
+            if (!((BlockSlab) block).isDouble()) {
+                if ((world.getBlockState(pos).getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP))
+                    return world.getBlockState(pos.up()).getBlock() == this;
+                else
+                    return world.getBlockState(pos.down()).getBlock() == this;
+            }
         }
 
         if (block instanceof BlockFence || block instanceof BlockWall) {
