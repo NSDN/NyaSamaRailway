@@ -3,6 +3,7 @@ tile.NSRSign.name=NyaSama Railway
 tile.NSDNLogo.name=NSDN Logo
 tile.NSRLogo.name=NyaSama Railway Logo
 tile.RailBumper.name=Bumper
+tile.RailBigBumper.name=Big Bumper
 tile.PierTag.name=Pier Tag
 item.ItemNTP8Bit.name=NTP 8bit
 item.ItemNTP32Bit.name=NTP 32bit
@@ -170,6 +171,7 @@ tile.TrackSideRFIDHs.name=TS-003B High-Speed Track-Side RFID Device
 info.trackside.invert=Track-Side Device Direction changed
 tile.WireRail.name=Wire Rail
 tile.WireRailNode.name=Wire Rail Node
+tile.RailNorStoneSleeper.name=Normal Rail(Stone Sleeper)
 
 itemGroup.tabNSTest=NyaSama Test
 tile.NSTest.name=NyaSama Test
@@ -213,6 +215,10 @@ item.ItemNSRM5L.name=NSR-M5L Straddle Monorail Locomotive
 item.ItemNSE4.name=NSE-4 Locomotive
 item.ItemNSRA1.name=NSR-A1 Automatic-Control Unit
 item.ItemNSRA2.name=NSR-A2 Automatic-Control Unit
+item.ItemNSBT3G.name=NSB-3G Bogie
+item.ItemNSBT3GM.name=NSB-3GM Motor Bogie
+item.ItemNSRM2G.name=NSR-M2G Metro
+item.ItemNSRM2GT.name=NSR-M2GT Trailer
 
 tile.BuildEndpoint.name=Build Endpoint
 tile.BuildNode.name=Build Node

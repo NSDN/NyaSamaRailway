@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "custom": { "flip-v": true }
+  },
+  "variants": {
+    "shape=north_south": { "model": "nyasamarailway:rail/rail_nor_straight.obj" },
+    "shape=east_west": { "model": "nyasamarailway:rail/rail_nor_straight.obj", "y": 90 },
+    "shape=ascending_east": { "model": "nyasamarailway:rail/rail_nor_slope.obj", "y": 270 },
+    "shape=ascending_west": { "model": "nyasamarailway:rail/rail_nor_slope.obj", "y": 90 },
+    "shape=ascending_north": { "model": "nyasamarailway:rail/rail_nor_slope.obj", "y": 180 },
+    "shape=ascending_south": { "model": "nyasamarailway:rail/rail_nor_slope.obj" },
+    "shape=south_east": { "model": "nyasamarailway:rail/rail_turned.obj", "y": 180 },
+    "shape=south_west": { "model": "nyasamarailway:rail/rail_turned.obj", "y": 270 },
+    "shape=north_west": { "model": "nyasamarailway:rail/rail_turned.obj" },
+    "shape=north_east": { "model": "nyasamarailway:rail/rail_turned.obj", "y": 90 }
+  }
+}

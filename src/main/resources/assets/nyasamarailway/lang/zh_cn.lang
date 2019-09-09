@@ -3,6 +3,7 @@ tile.NSRSign.name=喵玉铁路
 tile.NSDNLogo.name=NSDN标志
 tile.NSRLogo.name=喵玉铁路标志
 tile.RailBumper.name=车挡
+tile.RailBigBumper.name=大型车挡
 tile.PierTag.name=桥墩标签
 item.ItemNTP8Bit.name=喵玉列车控制器8位版
 item.ItemNTP32Bit.name=喵玉列车控制器32位版
@@ -172,6 +173,7 @@ tile.TrackSideRFIDHs.name=TS-003B高速轨旁射频机
 info.trackside.invert=轨旁设备方向已变更
 tile.WireRail.name=缆型轨
 tile.WireRailNode.name=缆型轨节点
+tile.RailNorStoneSleeper.name=标准轨(混凝土枕)
 
 itemGroup.tabNSTest=喵玉测试
 tile.NSTest.name=喵玉测试
@@ -215,6 +217,10 @@ item.ItemNSRM5L.name=NSR-M5L型跨座式单轨列车
 item.ItemNSE4.name=NSE-4型机车
 item.ItemNSRA1.name=NSR-A1型自动控制单元
 item.ItemNSRA2.name=NSR-A2型自动控制单元
+item.ItemNSBT3G.name=NSB-3G型转向架
+item.ItemNSBT3GM.name=NSB-3GM型动力转向架
+item.ItemNSRM2G.name=NSR-M2G型列车
+item.ItemNSRM2GT.name=NSR-M2GT型拖车
 
 tile.BuildEndpoint.name=建造端点
 tile.BuildNode.name=建造节点

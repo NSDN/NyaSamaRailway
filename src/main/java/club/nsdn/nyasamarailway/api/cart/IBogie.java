@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface IBogie {
     @SideOnly(Side.CLIENT)
     default double getRenderFixOffset() { return 0.1875; }
+    @SideOnly(Side.CLIENT)
+    default double getRenderYOffset() { return 0.0; }
     default UUID getBaseCartID() { return UUID.randomUUID(); }
     default Entity getBaseCart() { return null; }
     default void setBaseCart(Entity baseCart) {  }

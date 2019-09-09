@@ -1,8 +1,10 @@
 package club.nsdn.nyasamarailway.api.rail;
 
+import club.nsdn.nyasamarailway.tileblock.rail.RailEndpoint;
 import club.nsdn.nyasamarailway.util.Vertex;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import cn.ac.nya.mutable.MutableModel;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -28,7 +30,12 @@ public class TileEntityFastRailEndpoint extends TileEntityRailEndpoint {
     protected LinkedList<BakedQuad> bakedQuads;
 
     @SideOnly(Side.CLIENT)
-    public double getRenderStep() { return 0.25; }
+    public double getRenderStep() {
+        IBlockState endState = getWorld().getBlockState(getPos());
+        if (endState.getValue(RailEndpoint.TYPE) == RailEndpoint.EnumType.SS_NOR)
+            return 0.5;
+        return 0.25;
+    }
 
     @SideOnly(Side.CLIENT)
     public List<BakedQuad> getQuads() {

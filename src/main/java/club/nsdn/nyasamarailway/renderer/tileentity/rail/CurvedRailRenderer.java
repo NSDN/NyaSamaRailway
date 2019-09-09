@@ -41,7 +41,7 @@ public class CurvedRailRenderer extends AbsTileEntitySpecialRenderer {
 
             Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 
-            RendererHelper.beginSpecialLighting();
+            //RendererHelper.beginSpecialLighting();
 
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
@@ -56,7 +56,7 @@ public class CurvedRailRenderer extends AbsTileEntitySpecialRenderer {
 
             tessellator.draw();
 
-            RendererHelper.endSpecialLighting();
+            //RendererHelper.endSpecialLighting();
 
             GL11.glPopMatrix();
         }

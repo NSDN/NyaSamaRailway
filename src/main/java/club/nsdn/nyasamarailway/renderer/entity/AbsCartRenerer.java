@@ -87,8 +87,10 @@ public abstract class AbsCartRenerer extends Render<EntityMinecart> {
         }
 
         GlStateManager.pushMatrix();
-        if (cart instanceof IBogie)
+        if (cart instanceof IBogie) {
             GlStateManager.translate(0, ((IBogie) cart).getRenderFixOffset(), 0);
+            GlStateManager.translate(0, ((IBogie) cart).getRenderYOffset(), 0);
+        }
         render(cart, x, y, z, yaw);
         GlStateManager.popMatrix();
 

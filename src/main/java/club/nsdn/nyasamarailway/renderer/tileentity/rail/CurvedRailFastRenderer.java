@@ -65,6 +65,8 @@ public class CurvedRailFastRenderer extends AbsFastTESR {
                     type = MdlCurvedRail.EnumType.NS;
                 else if (endState.getValue(RailEndpoint.TYPE) == RailEndpoint.EnumType.SS)
                     type = MdlCurvedRail.EnumType.SS;
+                else if (endState.getValue(RailEndpoint.TYPE) == RailEndpoint.EnumType.SS_NOR)
+                    type = MdlCurvedRail.EnumType.SS_NOR;
 
                 IBlockState state = BlockLoader.curvedRail.getDefaultState();
                 IBakedModel model = modelShapes.getModelForState(state.withProperty(MdlCurvedRail.TYPE, type));

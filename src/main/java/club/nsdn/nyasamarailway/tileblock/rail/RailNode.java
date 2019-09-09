@@ -35,7 +35,8 @@ public class RailNode extends BlockContainer {
     public static enum EnumType implements IStringSerializable {
         MONO("mono"),
         NS("ns"),
-        SS("ss");
+        SS("ss"),
+        SS_NOR("ss_nor");
 
         private final String name;
 
@@ -164,6 +165,10 @@ public class RailNode extends BlockContainer {
                     return true;
                 } else if (block instanceof MonoRailBase) {
                     state = state.withProperty(TYPE, EnumType.MONO);
+                    world.setBlockState(pos, state);
+                    return true;
+                } else if (block instanceof RailNorStoneSleeper) {
+                    state = state.withProperty(TYPE, EnumType.SS_NOR);
                     world.setBlockState(pos, state);
                     return true;
                 }

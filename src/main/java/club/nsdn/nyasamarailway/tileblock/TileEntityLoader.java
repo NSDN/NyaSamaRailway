@@ -68,10 +68,12 @@ public class TileEntityLoader {
         tileEntities.add(Rail3rd.TileEntityRail3rd.class);
         tileEntities.add(Rail3rdSwitch.TileEntityRail3rdSwitch.class);
         tileEntities.add(RailBumper.TileEntityRailBumper.class);
+        tileEntities.add(RailBigBumper.TileEntityRailBigBumper.class);
         tileEntities.add(RailStoneSleeper.TileEntityRailStoneSleeper.class);
         tileEntities.add(RailNoSleeper.TileEntityRailNoSleeper.class);
         tileEntities.add(RailTriSwitch.TileEntityRailTriSwitch.class);
         tileEntities.add(WireRail.TileEntityWireRail.class);
+        tileEntities.add(RailNorStoneSleeper.TileEntityRailNorStoneSleeper.class);
 
         tileEntities.add(GateFront.TileEntityGateFront.class);
         tileEntities.add(GlassShield.TileEntityGlassShield.class);

@@ -144,10 +144,12 @@ public class BlockLoader {
         blocks.add(new Rail3rd());
         blocks.add(new Rail3rdSwitch());
         blocks.add(new RailBumper());
+        blocks.add(new RailBigBumper());
         blocks.add(new RailStoneSleeper());
         blocks.add(new RailNoSleeper());
         blocks.add(new RailTriSwitch());
         blocks.add(new WireRail());
+        blocks.add(new RailNorStoneSleeper());
 
         blocks.add(new GateFront());
         blocks.add(new GlassShield());

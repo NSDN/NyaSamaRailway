@@ -16,7 +16,8 @@
     "type": {
       "mono": {  },
       "ns": { "model": "nyasamarailway:rail_ns_sign" },
-      "ss": { "model": "nyasamarailway:rail_ss_sign" }
+      "ss": { "model": "nyasamarailway:rail_ss_sign" },
+      "ss_nor": { "model": "nyasamarailway:rail_ss_sign" }
     },
     "palm": {
       "true": {

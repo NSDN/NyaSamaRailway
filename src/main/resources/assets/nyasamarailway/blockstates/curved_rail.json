@@ -10,7 +10,8 @@
     "type": {
       "mono": { "model": "nyasamarailway:rail/mono_rail_curved.obj" },
       "ns": { "model": "nyasamarailway:rail/rail_ns_curved.obj" },
-      "ss": { "model": "nyasamarailway:rail/rail_curved.obj" }
+      "ss": { "model": "nyasamarailway:rail/rail_curved.obj" },
+      "ss_nor": { "model": "nyasamarailway:rail/rail_nor_curved.obj" }
     }
   }
 }
