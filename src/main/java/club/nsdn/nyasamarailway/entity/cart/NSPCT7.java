@@ -35,7 +35,7 @@ public class NSPCT7 extends AbsMotoCart {
 
     @Override
     public double getMountedYOffset() {
-        return 0.8;
+        return 0.925;
     }
 
     @Override

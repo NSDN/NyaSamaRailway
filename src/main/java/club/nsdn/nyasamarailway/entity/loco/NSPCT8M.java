@@ -75,7 +75,7 @@ public class NSPCT8M extends AbsLimLoco implements IHighSpeedCart {
 
     @Override
     public double getMountedYOffset() {
-        return 0.4;
+        return 0.0;
     }
 
     @Override

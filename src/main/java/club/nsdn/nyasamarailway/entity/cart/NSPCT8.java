@@ -75,7 +75,7 @@ public class NSPCT8 extends AbsMotoCart implements IHighSpeedCart {
 
     @Override
     public double getMountedYOffset() {
-        return 0.4;
+        return 0.0;
     }
 
     @Override
