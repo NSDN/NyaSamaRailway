@@ -85,10 +85,13 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
         RendererHelper.renderWithResource(modelBase, textureBase);
         RendererHelper.renderWithResource(modelPrint, texturePrint);
 
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, 0.125F, 0.0F);
         doRenderHUD(minecart);
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
         doRenderHUD(minecart);
+        GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
 
