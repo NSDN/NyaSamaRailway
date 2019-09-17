@@ -74,4 +74,20 @@ public class NSPCT7 extends AbsMotoCart {
         CartUtil.updatePassenger6(this, entity);
     }
 
+    @Override
+    public boolean hasWatchDog() {
+        return true;
+    }
+
+    @Override
+    public boolean feedWatchDog() {
+        if (getMotorState()) {
+            return hasPassenger();
+        } else if (isMoving()) {
+            if (getMotorBrake() > 1)
+                return hasPassenger();
+        }
+        return true;
+    }
+
 }

@@ -2,11 +2,13 @@ package club.nsdn.nyasamarailway.entity.cart;
 
 import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
+import club.nsdn.nyasamarailway.util.HashMap;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.entity.Entity;
@@ -26,16 +28,20 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class NSPCT10 extends AbsMotoCart implements IHighSpeedCart {
+public class NSPCT10 extends AbsMotoCart implements IHighSpeedCart, IExtendedInfoCart {
 
     public boolean isHighSpeedMode = false;
     private static final DataParameter<Boolean> HIGH = EntityDataManager.createKey(NSPCT10.class, DataSerializers.BOOLEAN);
+
+    public String extenedInfo = "";
+    private static final DataParameter<String> EXT = EntityDataManager.createKey(NSPCT10.class, DataSerializers.STRING);
 
     @Override
     protected void entityInit() {
         super.entityInit();
 
         dataManager.register(HIGH, false);
+        dataManager.register(EXT, "");
     }
 
     public void modifyHighSpeedMode(EntityPlayer player) {
@@ -50,11 +56,39 @@ public class NSPCT10 extends AbsMotoCart implements IHighSpeedCart {
         return dataManager.get(HIGH);
     }
 
+    public String getExtendedInfo() {
+        return dataManager.get(EXT);
+    }
+
+    public void setExtendedInfo(String info) {
+        this.extenedInfo = info;
+        dataManager.set(EXT, info);
+    }
+
+    @Override
+    public String getExtendedInfo(String key) {
+        HashMap info = new HashMap();
+        info.fromString(getExtendedInfo());
+        if (info.containsKey(key))
+            return info.get(key);
+        return "";
+    }
+
+    @Override
+    public void setExtendedInfo(String key, String data) {
+        HashMap info = new HashMap();
+        info.fromString(getExtendedInfo());
+        info.remove(key);
+        info.put(key, data);
+        setExtendedInfo(info.toString());
+    }
+
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
 
         setHighSpeedMode(tagCompound.getBoolean("HighSpeed"));
+        setExtendedInfo(tagCompound.getString("ExtendedInfo"));
     }
 
     @Override
@@ -62,6 +96,7 @@ public class NSPCT10 extends AbsMotoCart implements IHighSpeedCart {
         super.writeEntityToNBT(tagCompound);
 
         tagCompound.setBoolean("HighSpeed", getHighSpeedMode());
+        tagCompound.setString("ExtendedInfo", getExtendedInfo());
     }
 
     public NSPCT10(World world) {
@@ -151,6 +186,22 @@ public class NSPCT10 extends AbsMotoCart implements IHighSpeedCart {
     @Override // Called by rider
     public void updatePassenger(Entity entity) {
         CartUtil.updatePassenger4(this, entity);
+    }
+
+    @Override
+    public boolean hasWatchDog() {
+        return true;
+    }
+
+    @Override
+    public boolean feedWatchDog() {
+        if (getMotorState()) {
+            return hasPassenger();
+        } else if (isMoving()) {
+            if (getMotorBrake() > 1)
+                return hasPassenger();
+        }
+        return true;
     }
 
 }

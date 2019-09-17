@@ -111,7 +111,7 @@ public class CartUtil {
         double y = cart.posY + cart.getMountedYOffset() + passenger.getYOffset();
         if (cart.isPassenger(passenger)) {
             int index = cart.getPassengers().indexOf(passenger);
-            double distX = 1.75, distZ = 0.75;
+            double distX = 2.0, distZ = 1.0;
             double vx, vz;
             int[] array = {
                     -2, -1, 0, 1, 2,
