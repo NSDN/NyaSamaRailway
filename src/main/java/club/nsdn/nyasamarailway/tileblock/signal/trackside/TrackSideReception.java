@@ -46,17 +46,22 @@ public class TrackSideReception extends AbsTrackSide {
             if (cartType.equals("loco")) return;
 
             EntityMinecart cart = null;
-            if (cartType.equals(NSPCT8.class.getName())) {
+            if (cartType.equals(NSPCT7.class.getName())) {
+                cart = new NSPCT7(world, x, y, z);
+            } else if (cartType.equals(NSPCT8.class.getName())) {
                 cart = new NSPCT8(world, x, y, z);
-            } else if (cartType.equals(NSPCT10.class.getName())) {
-                cart = new NSPCT10(world, x, y, z);
-            } else if (cartType.equals(NSPCT4.class.getName())) {
-                cart = new NSPCT4(world, x, y, z);
-            } else if (cartType.equals(NSPCT8W.class.getName())) {
-                NSPCT8W.doSpawn(world, x, y, z);
+                ((NSPCT8) cart).setExtendedInfo(extInfo);
             } else if (cartType.equals(NSPCT9.class.getName())) {
                 cart = new NSPCT9(world, x, y, z);
                 ((NSPCT9) cart).setExtendedInfo(extInfo);
+            } else if (cartType.equals(NSPCT10.class.getName())) {
+                cart = new NSPCT10(world, x, y, z);
+                ((NSPCT10) cart).setExtendedInfo(extInfo);
+            } else if (cartType.equals(NSPCT4.class.getName())) {
+                cart = new NSPCT4(world, x, y, z);
+                ((NSPCT4) cart).setExtendedInfo(extInfo);
+            } else if (cartType.equals(NSPCT8W.class.getName())) {
+                NSPCT8W.doSpawn(world, x, y, z);
             } else if (cartType.contains("nsc")) {
                 spawnNSC(world, x, y, z);
             } else {

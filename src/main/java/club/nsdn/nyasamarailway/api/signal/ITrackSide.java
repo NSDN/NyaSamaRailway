@@ -60,15 +60,9 @@ public interface ITrackSide {
 
     static LinkedList<EntityMinecart> getMinecarts(World world, BlockPos pos) {
         float bBoxSize = 0.125F;
-        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
         List bBox = world.getEntitiesWithinAABB(
                 EntityMinecart.class,
-                new AxisAlignedBB((double) ((float) x + bBoxSize),
-                        (double) y,
-                        (double) ((float) z + bBoxSize),
-                        (double) ((float) (x + 1) - bBoxSize),
-                        (double) ((float) (y + 1) - bBoxSize),
-                        (double) ((float) (z + 1) - bBoxSize))
+                new AxisAlignedBB(pos).shrink(bBoxSize)
         );
         LinkedList<EntityMinecart> carts = new LinkedList<>();
         for (Object i : bBox.toArray()) {

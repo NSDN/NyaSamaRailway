@@ -482,12 +482,17 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             }
         } else {
             if (!hasCart) {
-                reception.count += 1;
-                if (reception.count >= SPAWN_DELAY * 20) {
-                    reception.reset();
-                    reception.spawn();
+                if (!reception.cartType.isEmpty()) {
+                    reception.count += 1;
+                    if (reception.count >= SPAWN_DELAY * 20) {
+                        reception.reset();
+                        reception.spawn();
+                    }
                 }
             } else {
+                if (reception.cartType.isEmpty() && (getVelSq(cart) == 0))
+                    registerCart(reception, cart);
+
                 if (reception.getTarget() != null) {
                     reception.controlTarget(reception.doorCtrl);
                 }
@@ -667,9 +672,6 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         if (reception.cartType.equals("loco")) {
             return;
         }
-
-        if (reception.cartType.isEmpty() && (getVelSq(cart) == 0))
-            registerCart(reception, cart);
 
         if ((getVelSq(cart) > 0) && !reception.enable) {
             if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {

@@ -57,30 +57,32 @@ public class Item1N4148 extends ToolBase {
             if (tileEntity instanceof TileEntityTransceiver) {
                 TileEntityTransceiver thisRail = (TileEntityTransceiver) tileEntity;
 
-                UUID uuid = player.getUniqueID();
-                if (tmpRails.containsKey(uuid)) {
-                    if (tmpRails.get(uuid) == thisRail) {
-                        thisRail.setTransceiver(null);
-                        say(player, "info.blocking.abort");
-                    } else {
-                        if (thisRail.getTransceiver() == tmpRails.get(uuid)) {
-                            thisRail.getTransceiver().setTransceiver(null);
+                if (!world.isRemote) {
+                    UUID uuid = player.getUniqueID();
+                    if (tmpRails.containsKey(uuid)) {
+                        if (tmpRails.get(uuid) == thisRail) {
                             thisRail.setTransceiver(null);
-                            say(player, "info.blocking.disconnected");
-
+                            say(player, "info.blocking.abort");
                         } else {
-                            thisRail.setTransceiver(tmpRails.get(uuid));
-                            thisRail.getTransceiver().setTransceiver(thisRail);
-                            say(player, "info.blocking.connected");
-                        }
-                    }
-                    tmpRails.remove(uuid);
-                } else {
-                    tmpRails.put(uuid, thisRail);
-                    say(player, "info.blocking.begin");
-                }
+                            if (thisRail.getTransceiver() == tmpRails.get(uuid)) {
+                                thisRail.getTransceiver().setTransceiver(null);
+                                thisRail.setTransceiver(null);
+                                say(player, "info.blocking.disconnected");
 
-                return world.isRemote ? EnumActionResult.PASS : EnumActionResult.SUCCESS;
+                            } else {
+                                thisRail.setTransceiver(tmpRails.get(uuid));
+                                thisRail.getTransceiver().setTransceiver(thisRail);
+                                say(player, "info.blocking.connected");
+                            }
+                        }
+                        tmpRails.remove(uuid);
+                    } else {
+                        tmpRails.put(uuid, thisRail);
+                        say(player, "info.blocking.begin");
+                    }
+
+                    return EnumActionResult.SUCCESS;
+                }
             } else if (tileEntity instanceof TileEntityTrackSideReception) {
                 TileEntityTrackSideReception reception = (TileEntityTrackSideReception) tileEntity;
 
