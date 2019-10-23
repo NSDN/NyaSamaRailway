@@ -31,8 +31,8 @@ public interface ITrackSide {
         return EnumFacing.Axis.Y; // check the left
     }
 
-    static EnumFacing getRailOffset(EnumFacing pos) {
-        return pos.rotateAround(getAxis()).getOpposite();
+    static EnumFacing getRailOffset(EnumFacing dir) {
+        return dir.rotateAround(getAxis()).getOpposite();
     }
 
     /**

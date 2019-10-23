@@ -1,10 +1,10 @@
 package club.nsdn.nyasamarailway.tileblock.signal.trackside;
 
 import club.nsdn.nyasamarailway.api.signal.ITrackSide;
-import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideBlocking;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -23,12 +23,11 @@ public class TrackSideBlocking extends AbsTrackSide {
             setInfo(13, 0.25, 0.3125, 1);
         }
 
-        protected boolean hasCart(BlockPos start, BlockPos end) {
+        protected boolean hasCart(BlockPos start, Vec3i vec) {
             float bBoxSize = 0.125F;
             List bBox = world.getEntitiesWithinAABB(
                     EntityMinecart.class,
-                    new AxisAlignedBB(start, end).shrink(bBoxSize)
-                            .expand(1, 1, 1)
+                    new AxisAlignedBB(start).expand(vec.getX(), vec.getY(), vec.getZ()).shrink(bBoxSize)
             );
             return !bBox.isEmpty();
         }
@@ -52,9 +51,17 @@ public class TrackSideBlocking extends AbsTrackSide {
                     }
                     if (nearbyCount == 0) {
                         TileEntity tile = blocking.getTransceiver();
-                        boolean state = hasCart(blocking.getPos(), tile.getPos());
-                        ITrackSide.setPowered(blocking, state);
-                        ITrackSide.setPowered(blocking.getTransceiver(), state);
+                        if (tile instanceof TileEntityTrackSideBlocking) {
+                            TileEntityTrackSideBlocking next = (TileEntityTrackSideBlocking) tile;
+                            if (blocking.direction.equals(next.direction)) {
+                                EnumFacing offset = ITrackSide.getRailOffset(blocking.direction);
+                                Vec3i vec = tile.getPos().subtract(blocking.getPos());
+                                BlockPos start = blocking.getPos().offset(offset);
+                                boolean state = hasCart(start, vec);
+                                ITrackSide.setPowered(blocking, state);
+                                ITrackSide.setPowered(blocking.getTransceiver(), state);
+                            }
+                        }
                     } else if (hasCart && !hasPowered) {
                         if (ITrackSide.nearbyHasPowered(blocking)) {
                             ITrackSide.setPowered(blocking, true);
