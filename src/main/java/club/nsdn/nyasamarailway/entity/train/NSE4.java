@@ -56,7 +56,7 @@ public class NSE4 extends AbsTrainBase implements IInspectionCart {
 
     @Override // Called by rider
     public void updatePassenger(@Nonnull Entity entity) {
-        CartUtil.updatePassenger2e(this, entity);
+        CartUtil.updatePassenger2CE(this, entity);
     }
 
     @Override

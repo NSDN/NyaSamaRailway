@@ -123,7 +123,7 @@ public class NSRM2G extends AbsTrainBase {
 
     @Override // Called by rider
     public void updatePassenger(@Nonnull Entity entity) {
-        CartUtil.updatePassenger12G(this, entity);
+        CartUtil.updatePassenger12CG(this, entity);
     }
 
     @Override

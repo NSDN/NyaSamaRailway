@@ -121,7 +121,7 @@ public class NSRM5L extends AbsTrainBase {
 
     @Override // Called by rider
     public void updatePassenger(@Nonnull Entity entity) {
-        CartUtil.updatePassenger24(this, entity);
+        CartUtil.updatePassenger24C(this, entity);
     }
 
     @Override
