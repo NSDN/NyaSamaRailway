@@ -533,7 +533,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     if (getVelSq(cart) == 0 && reception.prevNoPassenger) {
                         // First ride, only in cart mode
                         if (reception.setDelay >= 5)
-                            reception.delay = (reception.setDelay - FIRST_DELAY) * 20;
+                            reception.delay = (reception.setDelay - FIRST_DELAY) * 20 - 1;
                     }
                 }
 
