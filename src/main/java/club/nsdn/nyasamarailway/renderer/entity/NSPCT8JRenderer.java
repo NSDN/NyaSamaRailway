@@ -88,10 +88,6 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.125F, 0.0F);
         doRenderHUD(minecart);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        doRenderHUD(minecart);
-        GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
 
@@ -103,7 +99,6 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
             float lim = (float) loco.getMaxVelocity();
             float a = v - (float) loco.getEnginePrevVel();
 
-            float angle;
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
             boolean high = loco.getHighSpeedMode();
 
@@ -124,41 +119,67 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
 
+            GL11.glPushMatrix();
+            GL11.glRotated(180, 0, 1, 0);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
-            RendererHelper.renderWithResource(modelMeterV, textureMeterV);
-            angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
-            if (angle > ANGLE_HALF) angle = ANGLE_HALF;
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
-            GL11.glTranslatef(-0.00625F, 0.0F, 0.00625F);
-            GL11.glPushMatrix();
-            GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glPushMatrix();
-            GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
-            RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
-            GL11.glPopMatrix();
-            GL11.glPopMatrix();
+            RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
+            // HUD1406
+            doRenderText(0, "-= NTP--EXT =-");
+            doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
+            doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
+            doRenderText(3, "cur:" + (loco.getCurved() ? "TRUE" : "FALSE"));
+            doRenderText(4, "dim:" + String.format("%d", loco.dimension));
+            doRenderText(5, "yaw:" + String.format("%1.2f", loco.rotationYaw));
             GL11.glPopMatrix();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            RendererHelper.renderWithResource(modelMeterA, textureMeterA);
-            angle = a / 0.03F * ANGLE_HALF;
-            if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
+            doRenderMeter(loco);
             GL11.glPushMatrix();
-            GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
-            GL11.glTranslatef(-0.00625F, 0.0F, -0.00625F);
-            GL11.glPushMatrix();
-            GL11.glRotatef(-45.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glPushMatrix();
-            GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
-            RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+            GL11.glRotated(180, 0, 1, 0);
+            doRenderMeter(loco);
             GL11.glPopMatrix();
-            GL11.glPopMatrix();
-            GL11.glPopMatrix();
-
         }
+    }
+
+    private void doRenderMeter(NSPCT8J loco) {
+        float v = (float) loco.getEngineVel();
+        float a = v - (float) loco.getEnginePrevVel();
+
+        float angle;
+
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        RendererHelper.renderWithResource(modelMeterV, textureMeterV);
+        angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+        if (angle > ANGLE_HALF) angle = ANGLE_HALF;
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
+        GL11.glTranslatef(-0.00625F, 0.0F, 0.00625F);
+        GL11.glPushMatrix();
+        GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glPushMatrix();
+        GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
+        RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        RendererHelper.renderWithResource(modelMeterA, textureMeterA);
+        angle = a / 0.03F * ANGLE_HALF;
+        if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.625F, 0.9375F, 0.625F);
+        GL11.glTranslatef(-0.00625F, 0.0F, -0.00625F);
+        GL11.glPushMatrix();
+        GL11.glRotatef(-45.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glPushMatrix();
+        GL11.glRotatef(angle, 1.0F, 0.0F, 0.0F);
+        RendererHelper.renderWithResource(modelMeterPointer, textureMeterPointer);
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
     }
 
     private void doRenderText(int r, String text) {

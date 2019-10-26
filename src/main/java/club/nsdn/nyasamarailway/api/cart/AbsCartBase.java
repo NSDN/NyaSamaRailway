@@ -8,7 +8,6 @@ import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumFacing;
 import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
@@ -288,7 +287,83 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         setPositionAndUpdate(pos.x, pos.y, pos.z);
     }
 
-    protected void moveAlongTrackCore(BlockPos pos, IBlockState state) {
+    private void moveAlongCurvedTrackCore(IBlockState state) {
+        if (!(state.getBlock() instanceof BlockRailBase)) {
+            TileEntityRailEndpoint endpoint = getNearbyEndpoint();
+
+            if (endpoint != null) {
+                if (endpoint.len() > 0 && nowEndPoint != endpoint) {
+                    setCurved(true);
+                    nowEndPoint = endpoint;
+                    nowProgress = 0;
+                    progressDir = 1;
+                }
+
+                TileEntity target = endpoint.getTarget();
+                if (target instanceof TileEntityRailEndpoint) {
+                    endpoint = (TileEntityRailEndpoint) target;
+                    if (endpoint.len() > 0 && nowEndPoint != endpoint) {
+                        setCurved(true);
+                        nowEndPoint = endpoint;
+                        nowProgress = endpoint.len();
+                        progressDir = -1;
+                    }
+                }
+            }
+
+            if (getCurved() && nowEndPoint != null) {
+                if (nowEndPoint.len() == 0) {
+                    nowEndPoint = null;
+                } else {
+                    if (nowProgress > nowEndPoint.len()) {
+                        TileEntityRailEndpoint next = nowEndPoint.parseNext();
+                        if (next != null) {
+                            if (next.len() > 0 && nowEndPoint != next) {
+                                setCurved(true);
+                                nowEndPoint = next;
+                                nowProgress = 0;
+                                progressDir = 1;
+                            }
+                        } else {
+                            setCurved(false);
+                            nowEndPoint = null;
+                            nowProgress = 0;
+                            progressDir = 0;
+                            return;
+                        }
+                    }
+                    moveAlongCurvedTrack();
+
+                    double dir = progressDir;
+                    double velSq = motionX * motionX + motionZ * motionZ;
+                    double vel = Math.sqrt(velSq), dProgress = vel;
+                    Vec3d now = nowEndPoint.get(nowProgress);
+                    for (double i = 0; i <= vel; i += vel / 16) {
+                        Vec3d vec = nowEndPoint.get(nowProgress + i);
+                        vec = vec.subtract(now);
+                        double lenSq = vec.lengthSquared();
+                        if (lenSq >= velSq) {
+                            dProgress = i;
+                            break;
+                        }
+                    }
+                    nowProgress += dProgress * dir;
+
+                    motionX = Math.abs(motionX) * Math.signum(posX - prevPosX);
+                    motionZ = Math.abs(motionZ) * Math.signum(posZ - prevPosZ);
+
+                    applyDrag();
+                }
+            }
+        } else {
+            setCurved(false);
+            nowEndPoint = null;
+            nowProgress = 0;
+            progressDir = 0;
+        }
+    }
+
+    void moveAlongTrackCore(BlockPos pos, IBlockState state) {
         this.fallDistance = 0.0F;
         Vec3d vec3d = this.getPos(this.posX, this.posY, this.posZ);
         this.posY = (double)pos.getY();
@@ -562,7 +637,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             this.outOfWorld();
         }
 
-        int y;
+        int x, y, z;
         if (!this.world.isRemote && this.world instanceof WorldServer) {
             this.world.profiler.startSection("portal");
             MinecraftServer minecraftserver = this.world.getMinecraftServer();
@@ -618,83 +693,18 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 }
             }
 
-            int x = MathHelper.floor(this.posX);
-                y = MathHelper.floor(this.posY);
-            int z = MathHelper.floor(this.posZ);
-
-            BlockPos pos = new BlockPos(x, y, z);
-            IBlockState state = this.world.getBlockState(pos);
+            x = Math.round((float) this.posX);
+            y = Math.round((float) this.posY);
+            z = Math.round((float) this.posZ);
 
             if (hasSpecialUpdate()) {
                 specialUpdate();
             } else {
-                if (!(state.getBlock() instanceof BlockRailBase)) {
-                    TileEntityRailEndpoint endpoint = getNearbyEndpoint();
+                moveAlongCurvedTrackCore(this.world.getBlockState(new BlockPos(x, y, z)));
 
-                    if (endpoint != null) {
-                        if (endpoint.len() > 0 && nowEndPoint != endpoint) {
-                            setCurved(true);
-                            nowEndPoint = endpoint;
-                            nowProgress = 0;
-                            progressDir = 1;
-                        }
-
-                        TileEntity target = endpoint.getTarget();
-                        if (target instanceof TileEntityRailEndpoint) {
-                            endpoint = (TileEntityRailEndpoint) target;
-                            if (endpoint.len() > 0 && nowEndPoint != endpoint) {
-                                setCurved(true);
-                                nowEndPoint = endpoint;
-                                nowProgress = endpoint.len();
-                                progressDir = -1;
-                            }
-                        }
-                    }
-
-                    if (getCurved() && nowEndPoint != null) {
-                        if (nowEndPoint.len() == 0) {
-                            nowEndPoint = null;
-                        } else {
-                            if (nowProgress > nowEndPoint.len()) {
-                                TileEntityRailEndpoint next = nowEndPoint.parseNext();
-                                if (next != null) {
-                                    if (next.len() > 0 && nowEndPoint != next) {
-                                        setCurved(true);
-                                        nowEndPoint = next;
-                                        nowProgress = 0;
-                                        progressDir = 1;
-                                    }
-                                }
-                            }
-                            moveAlongCurvedTrack();
-
-                            double dir = progressDir;
-                            double velSq = motionX * motionX + motionZ * motionZ;
-                            double vel = Math.sqrt(velSq), dProgress = vel;
-                            Vec3d now = nowEndPoint.get(nowProgress);
-                            for (double i = 0; i <= vel; i += vel / 16) {
-                                Vec3d vec = nowEndPoint.get(nowProgress + i);
-                                vec = vec.subtract(now);
-                                double lenSq = vec.lengthSquared();
-                                if (lenSq >= velSq) {
-                                    dProgress = i;
-                                    break;
-                                }
-                            }
-                            nowProgress += dProgress * dir;
-
-                            motionX = Math.abs(motionX) * Math.signum(posX - prevPosX);
-                            motionZ = Math.abs(motionZ) * Math.signum(posZ - prevPosZ);
-
-                            applyDrag();
-                        }
-                    }
-                } else {
-                    setCurved(false);
-                    nowEndPoint = null;
-                    nowProgress = 0;
-                    progressDir = 0;
-                }
+                x = MathHelper.floor(this.posX);
+                y = MathHelper.floor(this.posY);
+                z = MathHelper.floor(this.posZ);
 
                 if (nowEndPoint == null) {
                     if (!this.hasNoGravity()) {

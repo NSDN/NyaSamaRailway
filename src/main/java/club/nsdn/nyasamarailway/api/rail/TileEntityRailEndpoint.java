@@ -7,12 +7,14 @@ import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
 import cn.ac.nya.forgeobj.Face;
 import cn.ac.nya.forgeobj.GroupObject;
 import cn.ac.nya.forgeobj.WavefrontObject;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,7 +59,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     @SideOnly(Side.CLIENT)
     public void cookVertices(@Nonnull WavefrontObject model) {
         Vec3d vec, nex; double step = this.getRenderStep();
-        for (double d = 0; d <= this.len(); d += step) {
+        for (double d = step; d <= this.len(); d += step) {
             if (d == this.len()) {
                 vec = this.get(d - step / 100.0);
                 nex = this.get(d);
@@ -98,6 +100,8 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     public void clearVertices() {
         cookedVertices.clear();
     }
+
+    private static final double OFFSET = 0.5;
 
     boolean inv = false;
     Spline hline = new Spline();
@@ -183,15 +187,33 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
         vline.set_points(h, y);
     }
 
+    private EnumFacing nearbyHasRail(Vec3d vec) {
+        int x = MathHelper.floor(vec.x - OFFSET);
+        int y = MathHelper.floor(vec.y - OFFSET);
+        int z = MathHelper.floor(vec.z - OFFSET);
+        BlockPos pos = new BlockPos(x, y, z);
+
+        if (world.getBlockState(pos.north()).getBlock() instanceof BlockRailBase)
+            return EnumFacing.NORTH;
+        if (world.getBlockState(pos.south()).getBlock() instanceof BlockRailBase)
+            return EnumFacing.SOUTH;
+        if (world.getBlockState(pos.west()).getBlock() instanceof BlockRailBase)
+            return EnumFacing.WEST;
+        if (world.getBlockState(pos.east()).getBlock() instanceof BlockRailBase)
+            return EnumFacing.EAST;
+
+        return null;
+    }
+
     public void updateRoute() {
         points.clear();
 
-        TileEntity te = this; double offset = 0.5;
+        TileEntity te = this;
         while (true) {
             if (te instanceof TileEntityActuator) {
                 TileEntityActuator actuator = (TileEntityActuator) te;
                 Vec3d vec = new Vec3d(actuator.getPos());
-                vec = vec.addVector(offset, offset, offset);
+                vec = vec.addVector(OFFSET, OFFSET, OFFSET);
                 if (points.contains(vec)) break;
                 points.add(vec);
                 te = ((TileEntityActuator) te).getTarget();
@@ -201,7 +223,24 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
 
         if (points.size() <= 2) return;
 
-        Vec3d orig = new Vec3d(this.getPos());
+        EnumFacing facing = nearbyHasRail(points.peekFirst());
+        if (facing != null) {
+            points.set(0,points.peekFirst().addVector(
+                    facing.getFrontOffsetX() * 0.5,
+                    0,
+                    facing.getFrontOffsetZ() * 0.5
+            ));
+        }
+        facing = nearbyHasRail(points.peekLast());
+        if (facing != null) {
+            points.set(points.size() - 1, points.peekLast().addVector(
+                    facing.getFrontOffsetX() * 0.5,
+                    0,
+                    facing.getFrontOffsetZ() * 0.5
+            ));
+        }
+
+        Vec3d orig = new Vec3d(this.getPos()).addVector(OFFSET, OFFSET, OFFSET);
         for (int i = 0; i < points.size(); i++) {
             Vec3d vec = points.get(i);
             points.set(i, vec.subtract(orig));
@@ -219,21 +258,12 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
 
         inv = Math.abs(points.peekLast().x - points.peekFirst().x) <= Math.abs(points.peekLast().z - points.peekFirst().z);
 
-        /*Vec3d first = points.peekFirst(), fnext = points.get(points.indexOf(first) + 1);
-        Vec3d last = points.peekLast(), lnext = points.get(points.indexOf(last) - 1);
-        Vec3d vecf = fnext.subtract(first), vecl = last.subtract(lnext);
-        points.addFirst(first.add(vecf.scale(-offset)));
-        points.addLast(last.add(vecl.scale(offset)));*/
-
         makeSplines();
     }
 
     @Override
     public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
         tagCompound.setInteger("railEndpoint", 0);
-
-        //hline.toNBT(tagCompound, "hLine_");
-        //vline.toNBT(tagCompound, "vLine_");
 
         for (int i = 0; i < points.size(); i++) {
             tagCompound.setDouble("point_" + i + "_X", points.get(i).x);
@@ -255,9 +285,6 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
         super.fromNBT(tagCompound);
 
         tagCompound.getInteger("railEndpoint");
-
-        //hline.fromNBT(tagCompound, "hLine_");
-        //vline.fromNBT(tagCompound, "vLine_");
 
         double x, y, z;
         points.clear();
