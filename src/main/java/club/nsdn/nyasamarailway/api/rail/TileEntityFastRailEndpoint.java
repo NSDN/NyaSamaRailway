@@ -47,7 +47,7 @@ public class TileEntityFastRailEndpoint extends TileEntityRailEndpoint {
     @SideOnly(Side.CLIENT)
     public void cookModel(@Nonnull IBakedModel model, TextureAtlasSprite texture) {
         Vec3d vec, nex; double step = this.getRenderStep();
-        for (double d = 0; d <= this.len(); d += step) {
+        for (double d = step / 2; d < this.len(); d += step) {
             if (d == this.len()) {
                 vec = this.get(d - step / 100.0);
                 nex = this.get(d);

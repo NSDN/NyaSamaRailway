@@ -145,12 +145,11 @@ public class NSPCT4 extends AbsMotoCart implements IMonoRailCart, IExtendedInfoC
         double pitch = Math.atan(vec.y / hlen) * 180 / Math.PI;
 
         double vx = pos.x - this.posX;
-        double vy = pos.y - this.posY;
+        double vy = pos.y + CURVED_SHIFT - this.posY;
         double vz = pos.z - this.posZ;
         this.move(MoverType.SELF, vx, vy, vz);
-
+        setPosition(pos.x, pos.y + CURVED_SHIFT, pos.z);
         setRotation((float) yaw, (float) pitch);
-        setPositionAndUpdate(pos.x, pos.y + CURVED_SHIFT, pos.z);
     }
 
     @Override

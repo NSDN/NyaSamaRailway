@@ -59,7 +59,7 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     @SideOnly(Side.CLIENT)
     public void cookVertices(@Nonnull WavefrontObject model) {
         Vec3d vec, nex; double step = this.getRenderStep();
-        for (double d = step; d <= this.len(); d += step) {
+        for (double d = step / 2; d < this.len(); d += step) {
             if (d == this.len()) {
                 vec = this.get(d - step / 100.0);
                 nex = this.get(d);
@@ -188,9 +188,9 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
     }
 
     private EnumFacing nearbyHasRail(Vec3d vec) {
-        int x = MathHelper.floor(vec.x - OFFSET);
-        int y = MathHelper.floor(vec.y - OFFSET);
-        int z = MathHelper.floor(vec.z - OFFSET);
+        int x = MathHelper.floor(vec.x);
+        int y = MathHelper.floor(vec.y);
+        int z = MathHelper.floor(vec.z);
         BlockPos pos = new BlockPos(x, y, z);
 
         if (world.getBlockState(pos.north()).getBlock() instanceof BlockRailBase)
@@ -200,6 +200,16 @@ public class TileEntityRailEndpoint extends TileEntityActuator {
         if (world.getBlockState(pos.west()).getBlock() instanceof BlockRailBase)
             return EnumFacing.WEST;
         if (world.getBlockState(pos.east()).getBlock() instanceof BlockRailBase)
+            return EnumFacing.EAST;
+
+        pos = pos.up();
+        if (world.getTileEntity(pos.north()) instanceof IBaseRail)
+            return EnumFacing.NORTH;
+        if (world.getTileEntity(pos.south()) instanceof IBaseRail)
+            return EnumFacing.SOUTH;
+        if (world.getTileEntity(pos.west()) instanceof IBaseRail)
+            return EnumFacing.WEST;
+        if (world.getTileEntity(pos.east()) instanceof IBaseRail)
             return EnumFacing.EAST;
 
         return null;
