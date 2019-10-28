@@ -348,8 +348,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     Vec3d now = nowEndPoint.get(nowProgress);
                     Vec3d vec = nowEndPoint.get(nowProgress + 0.005);
                     vec = vec.subtract(now).normalize();
-                    motionX = Math.abs(motionX) * Math.signum(vec.x);
-                    motionZ = Math.abs(motionZ) * Math.signum(vec.z);
+                    motionX = vel * vec.x;
+                    motionZ = vel * vec.z;
 
                     for (double i = 0; i <= vel; i += vel / 16) {
                         vec = nowEndPoint.get(nowProgress + i);
