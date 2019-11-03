@@ -2,12 +2,18 @@ package club.nsdn.nyasamarailway.item;
 
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
+import club.nsdn.nyasamarailway.util.ExtInfoCore;
+import club.nsdn.nyasamatelecom.api.tool.NGTablet;
+import club.nsdn.nyasamatelecom.api.util.NSASM;
+import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -59,12 +65,66 @@ public abstract class AbsItemCart extends Item {
                     else
                         selfSpawn(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.0625D + offsetY, (double) pos.getZ() + 0.5D, "", player);
                 } else {
-                    EntityMinecart entityminecart = getCart(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.0625D + offsetY, (double)pos.getZ() + 0.5D);
-                    if (stack.hasDisplayName()) {
-                        entityminecart.setCustomNameTag(stack.getDisplayName());
+                    EntityMinecart cart = getCart(world, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.0625D + offsetY, (double)pos.getZ() + 0.5D);
+
+                    if (cart instanceof IExtendedInfoCart) {
+                        double x = (double)pos.getX() + 0.5D;
+                        double y = (double)pos.getY() + 0.0625D + offsetY;
+                        double z = (double)pos.getZ() + 0.5D;
+
+                        ItemStack ngt;
+                        for (int i = 0; i < 9; i++) {
+                            ngt = player.inventory.mainInventory.get(i);
+                            if (ngt == ItemStack.EMPTY) continue;
+                            if (ngt.getItem() instanceof NGTablet) {
+                                NBTTagList list = Util.getTagListFromNGT(ngt);
+
+                                if (list != null) {
+                                    String[][] code = NSASM.getCode(list);
+
+                                    new ExtInfoCore(code) {
+                                        @Override
+                                        public World getWorld() {
+                                            return world;
+                                        }
+
+                                        @Override
+                                        public double getX() {
+                                            return x;
+                                        }
+
+                                        @Override
+                                        public double getY() {
+                                            return y;
+                                        }
+
+                                        @Override
+                                        public double getZ() {
+                                            return z;
+                                        }
+
+                                        @Override
+                                        public EntityPlayer getPlayer() {
+                                            return player;
+                                        }
+
+                                        @Override
+                                        public IExtendedInfoCart getCart() {
+                                            return (IExtendedInfoCart) cart;
+                                        }
+                                    }.run();
+
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    world.spawnEntity(entityminecart);
+                    if (stack.hasDisplayName()) {
+                        cart.setCustomNameTag(stack.getDisplayName());
+                    }
+
+                    world.spawnEntity(cart);
                 }
             }
 
