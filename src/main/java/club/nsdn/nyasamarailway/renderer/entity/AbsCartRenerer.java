@@ -115,7 +115,8 @@ public abstract class AbsCartRenerer extends Render<EntityMinecart> {
         GL11.glScalef(0.0125F, -0.0125F, 1.0F);
         GL11.glPushMatrix();
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        int i = 0;
+        int i = 0, len = str.split("\n").length;
+        if (len > 4) i = (len - 4) * (-renderer.FONT_HEIGHT);
         for (String s : str.split("\n")) {
             renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0xFFD740);
             i += renderer.FONT_HEIGHT;
