@@ -82,7 +82,7 @@ public class NSPCT10Renderer extends AbsCartRenerer {
     }
 
     private void doRenderStr(FontRenderer renderer, String str) {
-        doRenderStr(renderer, str, 1.5F, 2.0F, 2.0F);
+        doRenderStr(renderer, str, 1.5F, 2.25F, 2.0F);
     }
 
 }
