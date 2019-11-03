@@ -94,29 +94,7 @@ public class NSPCT8MRenderer extends AbsCartRenerer {
     }
 
     private void doRenderStr(FontRenderer renderer, String str) {
-        final float offset = 1.125F, offsetY = 1.25F;
-        final float scale = 1.5F;
-
-        GL11.glPushMatrix();
-        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, offsetY, offset);
-        GL11.glPushMatrix();
-        GL11.glScalef(scale, scale, 1.0F);
-        GL11.glPushMatrix();
-        GL11.glScalef(0.0125F, -0.0125F, 1.0F);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        int i = 0;
-        for (String s : str.split("\n")) {
-            renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0xFFD740);
-            i += renderer.FONT_HEIGHT;
-        }
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        doRenderStr(renderer, str, 1.125F, 1.25F, 1.5F);
     }
 
 }

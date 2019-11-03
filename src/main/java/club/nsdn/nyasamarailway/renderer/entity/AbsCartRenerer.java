@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.api.cart.IBogie;
 import club.nsdn.nyasamarailway.api.cart.INamedCart;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -10,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -101,5 +103,28 @@ public abstract class AbsCartRenerer extends Render<EntityMinecart> {
     }
 
     public abstract void render(EntityMinecart cart, double x, double y, double z, float yaw);
+
+    protected static void doRenderStr(FontRenderer renderer, String str, float offset, float offsetY, float scale) {
+        GL11.glPushMatrix();
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.0F, offsetY, offset);
+        GL11.glPushMatrix();
+        GL11.glScalef(scale, scale, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glScalef(0.0125F, -0.0125F, 1.0F);
+        GL11.glPushMatrix();
+        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+        int i = 0;
+        for (String s : str.split("\n")) {
+            renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0xFFD740);
+            i += renderer.FONT_HEIGHT;
+        }
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+        GL11.glPopMatrix();
+    }
 
 }

@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -59,11 +60,12 @@ public class NTPCore implements LEDPlate.ISpecialCommand {
         int totalCart = world.getEntitiesWithinAABB(EntityMinecart.class, aabb).size();
         int nsrCart = world.getEntitiesWithinAABB(AbsCartBase.class, aabb).size();
         int nsrLoco = world.getEntitiesWithinAABB(AbsLocoBase.class, aabb).size();
+        int players = world.getEntitiesWithinAABB(EntityPlayer.class, aabb).size();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        lines[len - 1] = String.format("[%02d:%02d:%02d] [NTP] range: %d (y: %d), total: %d, cart: %d, loco: %d, etc: %s",
+        lines[len - 1] = String.format("[%02d:%02d:%02d] [NTP] range: %d (y: %d), total: %d, cart: %d, loco: %d, players: %d",
                 calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND),
-                (int) range, (int) rangeY, totalCart, nsrCart, nsrLoco, world.getBiome(pos).getBiomeName()
+                (int) range, (int) rangeY, totalCart, nsrCart, nsrLoco, players
         );
 
         StringBuilder builder = new StringBuilder();

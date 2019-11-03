@@ -202,23 +202,7 @@ public class NSCxMRenderer extends AbsCartRenerer {
     }
 
     private void doRenderStr(FontRenderer renderer, String str) {
-        GL11.glPushMatrix();
-        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, 1.0F, 0.625F);
-        GL11.glPushMatrix();
-        GL11.glScalef(0.0125F, -0.0125F, 1.0F);
-        GL11.glPushMatrix();
-        GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        int i = 0;
-        for (String s : str.split("\n")) {
-            renderer.drawString(s, -renderer.getStringWidth(s) / 2, i, 0x00BCD4);
-            i += renderer.FONT_HEIGHT;
-        }
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
-        GL11.glPopMatrix();
+        doRenderStr(renderer, str, 0.625F, 1.0F, 1.0F);
     }
 
     private void doRenderHUD(EntityMinecart cart) {
