@@ -5,8 +5,6 @@ import club.nsdn.nyasamarailway.tileblock.signal.deco.GlassShield1X1;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -88,16 +86,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
         GL11.glTranslatef(0, -0.00625F, 0);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
+        //RendererHelper.beginSpecialLighting();
 
         int angle = (meta & 0x3) * 90;
 
@@ -208,7 +197,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
             }
         }
 
-        RenderHelper.enableStandardItemLighting();
+        RendererHelper.endSpecialLighting();
 
         GL11.glPopMatrix();
     }

@@ -4,8 +4,6 @@ import club.nsdn.nyasamarailway.api.signal.ITrackSide;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
@@ -66,16 +64,7 @@ public class TrackSideRenderer extends AbsTileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
+        //RendererHelper.beginSpecialLighting();
 
         GL11.glPushMatrix();
 
@@ -92,6 +81,8 @@ public class TrackSideRenderer extends AbsTileEntitySpecialRenderer {
             RendererHelper.renderWithResource(modelBase, textureBase);
             RendererHelper.renderWithResource(modelSign, textureSign);
 
+            RendererHelper.beginSpecialLighting();
+
             RendererHelper.renderWithResource(ledMdl[LED_SGN], ledTex[trackSide.getSGNState() ? SIGN_R : SIGN_NONE]);
             RendererHelper.renderWithResource(ledMdl[LED_TXD], ledTex[trackSide.getTXDState() ? SIGN_Y : SIGN_NONE]);
             RendererHelper.renderWithResource(ledMdl[LED_RXD], ledTex[trackSide.getRXDState() ? SIGN_G : SIGN_NONE]);
@@ -104,7 +95,7 @@ public class TrackSideRenderer extends AbsTileEntitySpecialRenderer {
 
         GL11.glPopMatrix();
 
-        RenderHelper.enableStandardItemLighting();
+        RendererHelper.endSpecialLighting();
 
         GL11.glPopMatrix();
     }

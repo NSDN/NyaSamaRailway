@@ -6,8 +6,6 @@ import club.nsdn.nyasamarailway.tileblock.func.TicketBlockOnce;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.ResourceLocation;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
@@ -110,16 +108,7 @@ public class TicketBlockRenderer extends AbsTileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y  + 0.5F, (float) z + 0.5F);
 
-        RenderHelper.disableStandardItemLighting();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        if (Minecraft.isAmbientOcclusionEnabled()) {
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-        } else {
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
+        //RendererHelper.beginSpecialLighting();
 
         int angle = (meta & 0x3) * 90;
 
@@ -130,6 +119,8 @@ public class TicketBlockRenderer extends AbsTileEntitySpecialRenderer {
                 if (te instanceof TicketBlockOnce.TileEntityTicketBlockOnce) {
                     TicketBlockOnce.TileEntityTicketBlockOnce ticketBlock = (TicketBlockOnce.TileEntityTicketBlockOnce) te;
                     int over = ticketBlock.setOver;
+
+                    RendererHelper.beginSpecialLighting();
 
                     if ((meta & 0x4) == 0) {
                         if (over > 1) {
@@ -153,6 +144,8 @@ public class TicketBlockRenderer extends AbsTileEntitySpecialRenderer {
                         int over = ticketBlock.over;
                         int s1 = over / 1000, s2 = (over % 1000) / 100, s3 = (over % 100) / 10, s4 = over % 10;
 
+                        RendererHelper.beginSpecialLighting();
+
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_OVER], angle, textureMain);
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_1], angle, textureText[s1]);
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_2], angle, textureText[s2]);
@@ -165,12 +158,14 @@ public class TicketBlockRenderer extends AbsTileEntitySpecialRenderer {
                     RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_INSERT], angle, textureMain);
                 break;
             case COIN:
+                RendererHelper.renderWithResourceAndRotation(modelCoinBase, angle, textureMain);
                 if (te instanceof CoinBlock.TileEntityCoinBlock) {
                     CoinBlock.TileEntityCoinBlock coinBlock = (CoinBlock.TileEntityCoinBlock) te;
                     int value = coinBlock.value;
                     int s2 = (value % 100) / 10, s3 = value % 10;
 
-                    RendererHelper.renderWithResourceAndRotation(modelCoinBase, angle, textureMain);
+                    RendererHelper.beginSpecialLighting();
+
                     RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_2], angle, textureText[s2]);
                     RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_3], angle, textureText[s3]);
                 }
@@ -179,7 +174,7 @@ public class TicketBlockRenderer extends AbsTileEntitySpecialRenderer {
                 break;
         }
 
-        RenderHelper.enableStandardItemLighting();
+        RendererHelper.endSpecialLighting();
 
         GL11.glPopMatrix();
     }
