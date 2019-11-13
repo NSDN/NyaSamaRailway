@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.entity.train;
 
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
@@ -95,7 +96,13 @@ public class NSRM4 extends AbsTrainBase {
 
     @Override
     public double getTrainYOffset() {
-        return -3.5;
+        double offset = 0;
+        if (getBogieA() instanceof IMonoRailCart)
+            offset += ((IMonoRailCart) getBogieA()).getShiftY();
+        if (getBogieB() instanceof IMonoRailCart)
+            offset += ((IMonoRailCart) getBogieB()).getShiftY();
+        offset /= 2;
+        return -3.5 + offset;
     }
 
     @Override
