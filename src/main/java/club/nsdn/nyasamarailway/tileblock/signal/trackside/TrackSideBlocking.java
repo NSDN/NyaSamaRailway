@@ -55,7 +55,13 @@ public class TrackSideBlocking extends AbsTrackSide {
                             TileEntityTrackSideBlocking next = (TileEntityTrackSideBlocking) tile;
                             if (blocking.direction.equals(next.direction)) {
                                 EnumFacing offset = ITrackSide.getRailOffset(blocking.direction);
+
                                 Vec3i vec = tile.getPos().subtract(blocking.getPos());
+                                if (blocking.META > 4) // for mono rails
+                                    vec = ((BlockPos) vec).add(0, -1, 0);
+                                else
+                                    vec = ((BlockPos) vec).add(0, 1, 0);
+
                                 BlockPos start = blocking.getPos().offset(offset);
                                 boolean state = hasCart(start, vec);
                                 ITrackSide.setPowered(blocking, state);
