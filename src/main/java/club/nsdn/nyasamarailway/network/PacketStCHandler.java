@@ -27,6 +27,7 @@ public class PacketStCHandler implements IMessageHandler<TrainPacket, IMessage> 
                 ntp8Bit.brake.set(stack, packet.R);
                 ntp8Bit.dir.set(stack, packet.Dir);
                 ntp8Bit.mode.set(stack, packet.Mode);
+                ntp8Bit.mblk.set(stack, packet.MBlk);
             } else if (stack.getItem() instanceof ItemNTP32Bit) {
                 ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
                 ntp32Bit.power.set(stack, packet.P);

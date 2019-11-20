@@ -33,7 +33,7 @@ public class TrainController {
         public final static KeyBinding keyBrakeDown = new KeyBinding("ntp.control.brake.down", Keyboard.KEY_COMMA, "ntp.control.title");
         public final static KeyBinding keyModeSwitch = new KeyBinding("ntp.control.mode.switch", Keyboard.KEY_M, "ntp.control.title");
         public final static KeyBinding keyEmeBrake = new KeyBinding("ntp.control.brake.emergency", Keyboard.KEY_RMENU, "ntp.control.title");
-        public final static KeyBinding keyMobBlock = new KeyBinding("ntp.control.mode.mblk", Keyboard.KEY_RCONTROL, "ntp.control.title");
+        public final static KeyBinding keyMobBlock = new KeyBinding("ntp.control.mode.mblk", Keyboard.KEY_RSHIFT, "ntp.control.title");
 
         public static int DirUP = 0;
         public static int DirDOWN = 0;
@@ -143,11 +143,9 @@ public class TrainController {
         }
 
         if (KeyInput.ModeSwitch == 1) {
-            if (player.getRidingEntity() instanceof IHighSpeedCart) {
-                train.Mode = !train.Mode;
-                if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    say(player, "info.ntp.mode", String.valueOf(train.Mode).toUpperCase());
-            }
+            train.Mode = !train.Mode;
+            if (!(player.getRidingEntity() instanceof IInspectionCart))
+                say(player, "info.ntp.mode", String.valueOf(train.Mode).toUpperCase());
             KeyInput.ModeSwitch = 2;
         }
         if (KeyInput.EmeBrake == 1) {
@@ -158,11 +156,9 @@ public class TrainController {
             KeyInput.EmeBrake = 2;
         }
         if (KeyInput.MobBlock == 1) {
-            if (player.getRidingEntity() instanceof IMobileBlocking) {
-                train.MBlk = !train.MBlk;
-                if (!(player.getRidingEntity() instanceof IInspectionCart))
-                    say(player, "info.ntp.mblk", String.valueOf(train.MBlk).toUpperCase());
-            }
+            train.MBlk = !train.MBlk;
+            if (!(player.getRidingEntity() instanceof IInspectionCart))
+                say(player, "info.ntp.mblk", String.valueOf(train.MBlk).toUpperCase());
             KeyInput.MobBlock = 2;
         }
 
