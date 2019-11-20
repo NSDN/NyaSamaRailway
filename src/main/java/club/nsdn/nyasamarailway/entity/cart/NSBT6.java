@@ -1,8 +1,7 @@
 package club.nsdn.nyasamarailway.entity.cart;
 
+import club.nsdn.nyasamarailway.api.cart.AbsMonoCart;
 import club.nsdn.nyasamarailway.api.cart.IBogie;
-import club.nsdn.nyasamarailway.api.cart.nsc.AbsNSCxB;
-import club.nsdn.nyasamarailway.network.TrainPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +19,7 @@ import java.util.UUID;
 /**
  * Created by drzzm32 on 2019.3.21
  */
-public class NSBT6 extends AbsNSCxB implements IBogie {
+public class NSBT6 extends AbsMonoCart implements IBogie {
 
     protected UUID baseCart = UUID.randomUUID();
     protected boolean isLong = false;
@@ -114,11 +113,6 @@ public class NSBT6 extends AbsNSCxB implements IBogie {
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
         return MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand));
-    }
-
-    @Override
-    public void doMotion(TrainPacket packet, EntityMinecart cart) {
-        //TrainController.doMotionWithAir(packet, cart);
     }
 
     @Override

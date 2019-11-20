@@ -103,6 +103,7 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
             float angle;
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
             boolean high = loco.getHighSpeedMode();
+            boolean MBlkState = loco.getBlockingState();
 
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
@@ -115,7 +116,7 @@ public class NSPCT10JRenderer extends AbsCartRenerer {
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
-            doRenderText(1, "dir:  " + dir);
+            doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");

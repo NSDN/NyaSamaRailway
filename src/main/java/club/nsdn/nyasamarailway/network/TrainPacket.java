@@ -16,7 +16,7 @@ import net.minecraftforge.common.DimensionManager;
  */
 public class TrainPacket implements IMessage {
 
-    public int P; public int R; public int Dir; public boolean Mode;
+    public int P; public int R; public int Dir; public boolean Mode; public boolean MBlk;
 
     public int dimensionID;
 
@@ -36,6 +36,7 @@ public class TrainPacket implements IMessage {
         this.prevYaw = 0;
 
         this.Mode = false;
+        this.MBlk = false;
     }
 
     public TrainPacket(int P, int R, int Dir) {
@@ -54,6 +55,7 @@ public class TrainPacket implements IMessage {
             this.R = ntp8Bit.brake.get(stack);
             this.Dir = ntp8Bit.dir.get(stack);
             this.Mode = ntp8Bit.mode.get(stack);
+            this.MBlk = ntp8Bit.mblk.get(stack);
         } else if (stack.getItem() instanceof ItemNTP32Bit) {
             ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
             this.P = ntp32Bit.power.get(stack);
@@ -70,6 +72,7 @@ public class TrainPacket implements IMessage {
             ntp8Bit.brake.set(stack, this.R);
             ntp8Bit.dir.set(stack, this.Dir);
             ntp8Bit.mode.set(stack, this.Mode);
+            ntp8Bit.mblk.set(stack, this.MBlk);
         } else if (stack.getItem() instanceof ItemNTP32Bit) {
             ItemNTP32Bit ntp32Bit = (ItemNTP32Bit) stack.getItem();
             ntp32Bit.power.set(stack, this.P);
@@ -84,6 +87,7 @@ public class TrainPacket implements IMessage {
         buf.writeInt(this.R);
         buf.writeInt(this.Dir);
         buf.writeBoolean(this.Mode);
+        buf.writeBoolean(this.MBlk);
     }
 
     @Override
@@ -92,6 +96,7 @@ public class TrainPacket implements IMessage {
         this.R = buf.readInt();
         this.Dir = buf.readInt();
         this.Mode = buf.readBoolean();
+        this.MBlk = buf.readBoolean();
     }
 
     public EntityMinecart getCartInServer(int cartID) {

@@ -79,6 +79,12 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
             prt("info.rfid.vel", rfid.vel);
         }
 
+        public void setMBlk(TileEntityTrackSideRFID rfid, EntityPlayer player, int value) {
+            if (rfid == null) return;
+            rfid.mblk = value > 0;
+            prt("info.rfid.mblk", rfid.mblk ? 1 : 0);
+        }
+
         @Override
         public void loadFunc(LinkedHashMap<String, Operator> funcList) {
             funcList.put("pwr", ((dst, src) -> {
@@ -128,6 +134,16 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
 
                 if (dst.type == RegType.INT) {
                     setHighSpeed(getRFID(), getPlayer(), (int) dst.data);
+                    return Result.OK;
+                }
+                return Result.ERR;
+            }));
+            funcList.put("mblk", ((dst, src) -> {
+                if (src != null) return Result.ERR;
+                if (dst == null) return Result.ERR;
+
+                if (dst.type == RegType.INT) {
+                    setMBlk(getRFID(), getPlayer(), (int) dst.data);
                     return Result.OK;
                 }
                 return Result.ERR;
@@ -255,6 +271,7 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
     public double vel = 0;
     public boolean high = false;
     public boolean state = false;
+    public boolean mblk = false;
 
     public String cartSide = "null", cartStr = "null", cartJet = "null";
 
@@ -271,6 +288,7 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
         vel = tagCompound.getDouble("vel");
         high = tagCompound.getBoolean("high");
         state = tagCompound.getBoolean("state");
+        mblk = tagCompound.getBoolean("mblk");
 
         cartSide = tagCompound.getString("cartSide");
         cartStr = tagCompound.getString("cartStr");
@@ -287,6 +305,7 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
         tagCompound.setDouble("vel", vel);
         tagCompound.setBoolean("high", high);
         tagCompound.setBoolean("state", state);
+        tagCompound.setBoolean("mblk", mblk);
 
         tagCompound.setString("cartSide", cartSide);
         tagCompound.setString("cartStr", cartStr);
@@ -363,6 +382,62 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
         tick(world, pos);
     }
 
+    protected static void controlCart(EntityMinecart cart, TileEntityTrackSideRFID rfid, boolean hasPowered) {
+        if (cart instanceof AbsLocoBase) {
+            AbsLocoBase loco = (AbsLocoBase) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                loco.setEnginePower(rfid.P);
+                loco.setEngineBrake(rfid.R);
+            }
+        } else if (cart instanceof IMotorCart) {
+            IMotorCart motorCart = (IMotorCart) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                motorCart.setMotorPower(rfid.P);
+                motorCart.setMotorBrake(rfid.R);
+                motorCart.setMotorState(rfid.state);
+            }
+        }
+
+        if (cart instanceof ILimitVelCart) {
+            ILimitVelCart limitVelCart = (ILimitVelCart) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                limitVelCart.setMaxVelocity(rfid.vel);
+            }
+        }
+
+        if (cart instanceof IHighSpeedCart) {
+            IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                highSpeedCart.setHighSpeedMode(rfid.high);
+            }
+        }
+
+        if (cart instanceof IMobileBlocking) {
+            IMobileBlocking mblkCart = (IMobileBlocking) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                mblkCart.setBlockingState(rfid.mblk);
+            }
+        }
+
+        if (cart instanceof IExtendedInfoCart) {
+            IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
+
+            if (hasPowered || rfid.senderIsPowered()) {
+                if (!rfid.cartSide.equals("null"))
+                    infoCart.setExtendedInfo("side", rfid.cartSide);
+                if (!rfid.cartStr.equals("null"))
+                    infoCart.setExtendedInfo("str", rfid.cartStr);
+                if (!rfid.cartJet.equals("null"))
+                    infoCart.setExtendedInfo("jet", rfid.cartJet);
+            }
+        }
+    }
+
     public void tick(World world, BlockPos pos) {
         if (world.isRemote) return;
         TileEntity tileEntity = world.getTileEntity(pos);
@@ -381,51 +456,7 @@ public class TileEntityTrackSideRFID extends TileEntityReceiver implements ITrac
 
             EntityMinecart cart = ITrackSide.getMinecart(rfid, rfid.direction);
 
-            if (cart instanceof AbsLocoBase) {
-                AbsLocoBase loco = (AbsLocoBase) cart;
-
-                if (hasPowered || rfid.senderIsPowered()) {
-                    loco.setEnginePower(rfid.P);
-                    loco.setEngineBrake(rfid.R);
-                }
-            } else if (cart instanceof IMotorCart) {
-                IMotorCart motorCart = (IMotorCart) cart;
-
-                if (hasPowered || rfid.senderIsPowered()) {
-                    motorCart.setMotorPower(rfid.P);
-                    motorCart.setMotorBrake(rfid.R);
-                    motorCart.setMotorState(rfid.state);
-                }
-            }
-
-            if (cart instanceof ILimitVelCart) {
-                ILimitVelCart limitVelCart = (ILimitVelCart) cart;
-
-                if (hasPowered || rfid.senderIsPowered()) {
-                    limitVelCart.setMaxVelocity(rfid.vel);
-                }
-            }
-
-            if (cart instanceof IHighSpeedCart) {
-                IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
-
-                if (hasPowered || rfid.senderIsPowered()) {
-                    highSpeedCart.setHighSpeedMode(rfid.high);
-                }
-            }
-
-            if (cart instanceof IExtendedInfoCart) {
-                IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
-
-                if (hasPowered || rfid.senderIsPowered()) {
-                    if (!rfid.cartSide.equals("null"))
-                        infoCart.setExtendedInfo("side", rfid.cartSide);
-                    if (!rfid.cartStr.equals("null"))
-                        infoCart.setExtendedInfo("str", rfid.cartStr);
-                    if (!rfid.cartJet.equals("null"))
-                        infoCart.setExtendedInfo("jet", rfid.cartJet);
-                }
-            }
+            controlCart(cart, rfid, hasPowered);
 
             if (rfid.hasChanged()) {
                 rfid.updateChanged();

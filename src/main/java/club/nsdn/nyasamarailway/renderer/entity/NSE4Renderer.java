@@ -133,6 +133,8 @@ public class NSE4Renderer extends AbsTrainRenerer {
             float angle;
             int d = motor.getEngineDir(), p = motor.getEnginePower(), r = motor.getEngineBrake();
 
+            boolean MBlkState = motor.getBlockingState();
+
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
             String pwr = String.format("%2d", p);
             String brk = String.format("%2d", 10 - r);
@@ -147,7 +149,7 @@ public class NSE4Renderer extends AbsTrainRenerer {
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
-            doRenderText(1, "dir:  " + dir);
+            doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : "  RUN"));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");

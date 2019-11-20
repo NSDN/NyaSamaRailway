@@ -1,6 +1,5 @@
 package club.nsdn.nyasamarailway.tileblock.signal.trackside;
 
-import club.nsdn.nyasamarailway.api.cart.*;
 import club.nsdn.nyasamarailway.api.signal.ITrackSide;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideRFID;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
@@ -181,53 +180,8 @@ public class TrackSideRFIDHs extends AbsTrackSide {
                 LinkedList<EntityMinecart> carts = ITrackSide.getMinecarts(rfid, rfid.direction, offset);
 
                 if (carts != null) {
-                    for (EntityMinecart cart : carts) {
-                        if (cart instanceof AbsLocoBase) {
-                            AbsLocoBase loco = (AbsLocoBase) cart;
-
-                            if (hasPowered || rfid.senderIsPowered()) {
-                                loco.setEnginePower(rfid.P);
-                                loco.setEngineBrake(rfid.R);
-                            }
-                        } else if (cart instanceof IMotorCart) {
-                            IMotorCart motorCart = (IMotorCart) cart;
-
-                            if (hasPowered || rfid.senderIsPowered()) {
-                                motorCart.setMotorPower(rfid.P);
-                                motorCart.setMotorBrake(rfid.R);
-                                motorCart.setMotorState(rfid.state);
-                            }
-                        }
-
-                        if (cart instanceof ILimitVelCart) {
-                            ILimitVelCart limitVelCart = (ILimitVelCart) cart;
-
-                            if (hasPowered || rfid.senderIsPowered()) {
-                                limitVelCart.setMaxVelocity(rfid.vel);
-                            }
-                        }
-
-                        if (cart instanceof IHighSpeedCart) {
-                            IHighSpeedCart highSpeedCart = (IHighSpeedCart) cart;
-
-                            if (hasPowered || rfid.senderIsPowered()) {
-                                highSpeedCart.setHighSpeedMode(rfid.high);
-                            }
-                        }
-
-                        if (cart instanceof IExtendedInfoCart) {
-                            IExtendedInfoCart infoCart = (IExtendedInfoCart) cart;
-
-                            if (hasPowered || rfid.senderIsPowered()) {
-                                if (!rfid.cartSide.equals("null"))
-                                    infoCart.setExtendedInfo("side", rfid.cartSide);
-                                if (!rfid.cartStr.equals("null"))
-                                    infoCart.setExtendedInfo("str", rfid.cartStr);
-                                if (!rfid.cartJet.equals("null"))
-                                    infoCart.setExtendedInfo("jet", rfid.cartJet);
-                            }
-                        }
-                    }
+                    for (EntityMinecart cart : carts)
+                        controlCart(cart, rfid, hasPowered);
                 }
 
                 if (rfid.hasChanged()) {

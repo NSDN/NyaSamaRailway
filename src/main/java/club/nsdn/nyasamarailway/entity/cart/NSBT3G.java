@@ -1,8 +1,7 @@
 package club.nsdn.nyasamarailway.entity.cart;
 
-import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
+import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
 import club.nsdn.nyasamarailway.api.cart.IBogie;
-import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -18,7 +17,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.9.9.
  */
-public class NSBT3G extends AbsMotoCart implements IBogie {
+public class NSBT3G extends AbsCartBase implements IBogie {
 
     public final float R = 0.109375F;
     public float angle = 0;
@@ -82,11 +81,6 @@ public class NSBT3G extends AbsMotoCart implements IBogie {
     }
 
     @Override
-    public void doMotion(TrainPacket packet, EntityMinecart cart) {
-        //TrainController.doMotionWithAir(packet, cart);
-    }
-
-    @Override
     public void onUpdate() {
         super.onUpdate();
 
@@ -96,7 +90,7 @@ public class NSBT3G extends AbsMotoCart implements IBogie {
                 dir = Math.signum(this.motionX / Math.cos(yaw));
             else if (this.motionZ != 0)
                 dir = Math.signum(this.motionZ / -Math.sin(yaw));
-            this.angle += ((float) (getMotorVel() / R * 180 / Math.PI) * (float) dir);
+            this.angle += ((float) (getSpeed() / R * 180 / Math.PI) * (float) dir);
         }
     }
 

@@ -8,6 +8,7 @@ import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumFacing;
 import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
@@ -60,6 +61,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     };
     /** appears to be the progress of the turn */
     public boolean isInReverse;
+
+    public EnumFacing facing = EnumFacing.DOWN;
 
     private static final DataParameter<Boolean> CURVED = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.BOOLEAN);
 
@@ -115,7 +118,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             if (!stack.isEmpty()) {
                 if (
                         stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
+                                stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
                 ) {
                     return true;
                 }
@@ -230,6 +233,10 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 pos.getY() + 0.1,
                 pos.getZ() + 0.5
         );
+    }
+
+    public double getSpeed() {
+        return Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
     }
 
     public boolean hasSpecialUpdate() { return false; }
@@ -692,6 +699,15 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
             super.onUpdate();
         } else {
+            if ((this.posX - this.prevPosX) > 0)
+                this.facing = EnumFacing.EAST;
+            else if ((this.posX - this.prevPosX) < 0)
+                this.facing = EnumFacing.WEST;
+            else if ((this.posZ - this.prevPosZ) > 0)
+                this.facing = EnumFacing.SOUTH;
+            else if ((this.posZ - this.prevPosZ) < 0)
+                this.facing = EnumFacing.NORTH;
+
             this.prevPosX = this.posX;
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;

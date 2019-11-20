@@ -1,9 +1,8 @@
 package club.nsdn.nyasamarailway.entity.cart;
 
-import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
+import club.nsdn.nyasamarailway.api.cart.AbsCartBase;
 import club.nsdn.nyasamarailway.api.cart.IBogie;
 import club.nsdn.nyasamarailway.entity.loco.NSRA2;
-import club.nsdn.nyasamarailway.network.TrainPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +17,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.3.3
  */
-public class NSBT5 extends AbsMotoCart implements IBogie {
+public class NSBT5 extends AbsCartBase implements IBogie {
 
     public NSBT5(World world) {
         super(world);
@@ -70,11 +69,6 @@ public class NSBT5 extends AbsMotoCart implements IBogie {
     @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
         return MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, player, hand));
-    }
-
-    @Override
-    public void doMotion(TrainPacket packet, EntityMinecart cart) {
-        //TrainController.doMotionWithAir(packet, cart);
     }
 
     @Override

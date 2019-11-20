@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.util;
 
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,6 +33,7 @@ public class TrainController {
         public final static KeyBinding keyBrakeDown = new KeyBinding("ntp.control.brake.down", Keyboard.KEY_COMMA, "ntp.control.title");
         public final static KeyBinding keyModeSwitch = new KeyBinding("ntp.control.mode.switch", Keyboard.KEY_M, "ntp.control.title");
         public final static KeyBinding keyEmeBrake = new KeyBinding("ntp.control.brake.emergency", Keyboard.KEY_RMENU, "ntp.control.title");
+        public final static KeyBinding keyMobBlock = new KeyBinding("ntp.control.mode.mblk", Keyboard.KEY_RCONTROL, "ntp.control.title");
 
         public static int DirUP = 0;
         public static int DirDOWN = 0;
@@ -41,6 +43,7 @@ public class TrainController {
         public static int BrakeUp = 0;
         public static int ModeSwitch = 0;
         public static int EmeBrake = 0;
+        public static int MobBlock = 0;
 
         public static void registerKeyBindings() {
             ClientRegistry.registerKeyBinding(keyPowerUp);
@@ -51,6 +54,7 @@ public class TrainController {
             ClientRegistry.registerKeyBinding(keyBrakeDown);
             ClientRegistry.registerKeyBinding(keyModeSwitch);
             ClientRegistry.registerKeyBinding(keyEmeBrake);
+            ClientRegistry.registerKeyBinding(keyMobBlock);
         }
     }
 
@@ -81,6 +85,9 @@ public class TrainController {
         }
         if (KeyInput.keyEmeBrake.isPressed() && KeyInput.EmeBrake == 0) {
             KeyInput.EmeBrake = 1;
+        }
+        if (KeyInput.keyMobBlock.isPressed() && KeyInput.MobBlock == 0) {
+            KeyInput.MobBlock = 1;
         }
 
         if (KeyInput.DirUP == 1) {
@@ -150,6 +157,14 @@ public class TrainController {
                 say(player, "info.ntp.eme", String.valueOf(train.Mode).toUpperCase());
             KeyInput.EmeBrake = 2;
         }
+        if (KeyInput.MobBlock == 1) {
+            if (player.getRidingEntity() instanceof IMobileBlocking) {
+                train.MBlk = !train.MBlk;
+                if (!(player.getRidingEntity() instanceof IInspectionCart))
+                    say(player, "info.ntp.mblk", String.valueOf(train.MBlk).toUpperCase());
+            }
+            KeyInput.MobBlock = 2;
+        }
 
         if (!KeyInput.keyDirUp.isPressed() && KeyInput.DirUP == 2) {
             KeyInput.DirUP = 0;
@@ -171,6 +186,9 @@ public class TrainController {
         }
         if (!KeyInput.keyEmeBrake.isPressed() && KeyInput.EmeBrake == 2) {
             KeyInput.EmeBrake = 0;
+        }
+        if (!KeyInput.keyMobBlock.isPressed() && KeyInput.MobBlock == 2) {
+            KeyInput.MobBlock = 0;
         }
 
     }

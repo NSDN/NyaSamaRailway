@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.entity.loco.NSPCT8J;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import net.minecraft.client.renderer.GlStateManager;
@@ -102,6 +103,8 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
             boolean high = loco.getHighSpeedMode();
 
+            boolean MBlkState = loco.getBlockingState();
+
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
@@ -113,7 +116,7 @@ public class NSPCT8JRenderer extends AbsCartRenerer {
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
-            doRenderText(1, "dir:  " + dir);
+            doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : (high ? " HIGH" : "  RUN")));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");

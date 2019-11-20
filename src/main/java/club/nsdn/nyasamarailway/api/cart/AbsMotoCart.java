@@ -12,21 +12,22 @@ import net.minecraft.world.World;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILimitVelCart {
+public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILimitVelCart, IMobileBlocking {
 
     public int P;
     public int R;
     public int Dir;
     public double Velocity;
-    public boolean motorState;
     public double maxVelocity = 0;
 
     private static final DataParameter<Integer> POWER = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> BRAKE = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> DIR = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.VARINT);
     private static final DataParameter<Float> VEL = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.FLOAT);
-    private static final DataParameter<Boolean> STATE = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> MAXV = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.FLOAT);
+
+    private static final DataParameter<Boolean> STATE = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> MBLK = EntityDataManager.createKey(AbsMotoCart.class, DataSerializers.BOOLEAN);
 
     private int tmpMotorBrake = -1;
 
@@ -37,8 +38,10 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
         dataManager.register(BRAKE, 0);
         dataManager.register(DIR, 0);
         dataManager.register(VEL, 0.0F);
-        dataManager.register(STATE, false);
         dataManager.register(MAXV, 0.0F);
+
+        dataManager.register(STATE, false);
+        dataManager.register(MBLK, false);
     }
 
     public AbsMotoCart(World world) {
@@ -63,7 +66,6 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
 
     @Override
     public void setMotorState(boolean motorState) {
-        this.motorState = motorState;
         dataManager.set(STATE, motorState);
     }
 
@@ -115,11 +117,45 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
         dataManager.set(MAXV, (float) value);
     }
 
+    @Override
+    public boolean getBlockingState() {
+        return dataManager.get(MBLK);
+    }
+
+    @Override
+    public void setBlockingState(boolean value) {
+        dataManager.set(MBLK, value);
+    }
+
     public abstract void doMotion(TrainPacket packet, EntityMinecart cart);
 
     @Override
     protected void applyDrag() {
-        if (this.motorState) {
+        if (getMotorState()) {
+            if (getBlockingState()) {
+                if (IMobileBlocking.hasCartFrom32(world, this)) {
+                    TrainPacket packet = new TrainPacket(0, 1, getMotorDir());
+                    packet.Velocity = this.Velocity;
+                    if (IMobileBlocking.hasCartFrom16(world, this)) {
+                        TrainController.doMotion(packet, this); // stop!
+                    } else {
+                        double vel = getSpeed();
+                        if (vel < 0.1) {
+                            packet.P = 1; packet.R = 10;
+                            doMotion(packet, this); // slow move
+                        } else if (vel < 0.2) {
+                            doMotion(packet, this); // control speed
+                        } else {
+                            TrainController.doMotion(packet, this); // EB!
+                        }
+                    }
+                    setMotorVel((float) packet.Velocity);
+
+                    super.applyDrag();
+                    return;
+                }
+            }
+
             TrainPacket tmpPacket = new TrainPacket(getMotorPower(), getMotorBrake(), getMotorDir());
             tmpPacket.Velocity = this.Velocity;
             if (this.maxVelocity > 0) {
@@ -155,6 +191,8 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
         setMotorState(tagCompound.getBoolean("MotorState"));
 
         setMaxVelocity(tagCompound.getDouble("MotorMaxV"));
+
+        setBlockingState(tagCompound.getBoolean("MBlk"));
     }
 
     @Override
@@ -167,6 +205,8 @@ public abstract class AbsMotoCart extends AbsCartBase implements IMotorCart, ILi
         tagCompound.setBoolean("MotorState", getMotorState());
 
         tagCompound.setDouble("MotorMaxV", getMaxVelocity());
+
+        tagCompound.setBoolean("MBlk", getBlockingState());
     }
 
 }

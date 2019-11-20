@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.entity.loco.NSPCT9M;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
@@ -176,6 +177,7 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
 
             float angle;
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
+            boolean MBlkState = loco.getBlockingState();
 
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
@@ -188,7 +190,7 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
-            doRenderText(1, "dir:  " + dir);
+            doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : "  RUN"));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");

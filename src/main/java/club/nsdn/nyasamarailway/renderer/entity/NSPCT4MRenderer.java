@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.renderer.entity;
 import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
 import club.nsdn.nyasamarailway.api.cart.ILocomotive;
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
@@ -181,6 +182,10 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
                 float angle;
                 int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
 
+                boolean MBlkState = false;
+                if (cart instanceof IMobileBlocking)
+                    MBlkState = ((IMobileBlocking) cart).getBlockingState();
+
                 String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
                 String pwr = String.format("%2d", p);
                 String brk = String.format("%2d", 10 - r);
@@ -194,7 +199,7 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 // HUD1406
                 doRenderText(0, "-= NSR--NTP =-");
-                doRenderText(1, "dir:  " + dir);
+                doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
                 doRenderText(2, "pwr: " + pwr + (r <= 1 ? " STOP" : "  RUN"));
                 doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
                 doRenderText(4, "vel:" + sv + "m/t");

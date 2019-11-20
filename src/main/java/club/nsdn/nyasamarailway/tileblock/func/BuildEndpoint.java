@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.tileblock.func;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
@@ -98,7 +99,7 @@ public class BuildEndpoint extends BlockContainer {
                             (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F
                     );
                     if (world.getBlockState(next).getBlock() != this)
-                        endpoint.theTask.place(world, next);
+                        endpoint.theTask.place(world, next, endpoint::recordUndo);
 
                     world.scheduleUpdate(pos, this, endpoint.theTask.tick);
                 } else {
@@ -145,13 +146,26 @@ public class BuildEndpoint extends BlockContainer {
                     }
                 }
 
-                if (!world.isRemote){
+                if (!world.isRemote) {
                     endpoint.theTask = null;
                     say(player, "[NSR] Total: %d", endpoint.points.size());
                     endpoint.refresh();
                 }
 
                 return true;
+            }
+        } else if (stack.getItem() instanceof Item74HC04) {
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityBuildEndpoint) {
+                TileEntityBuildEndpoint endpoint = (TileEntityBuildEndpoint) te;
+
+                if (!world.isRemote && player.isSneaking()) {
+                    if (!endpoint.oldBlocks.isEmpty()) {
+                        endpoint.undo(world);
+                        say(player, "[NSR] Undo success!");
+                    }
+                    return true;
+                }
             }
         } else if (stack.getItem() instanceof ItemNGTablet) {
             NBTTagList list = Util.getTagListFromNGT(stack);
@@ -257,6 +271,7 @@ public class BuildEndpoint extends BlockContainer {
                         TileEntityBuildEndpoint endpoint = (TileEntityBuildEndpoint) te;
 
                         endpoint.reset();
+                        endpoint.clearUndo();
                         endpoint.theTask = task;
                         endpoint.theTask.make();
                         say(player, "[NSR] Building started.");

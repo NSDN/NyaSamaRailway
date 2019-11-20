@@ -178,6 +178,8 @@ public class NSPCT9Renderer extends AbsCartRenerer {
             int d = loco.getMotorDir(), p = loco.getMotorPower(), r = loco.getMotorBrake();
             boolean isOff = !loco.getMotorState();
 
+            boolean MBlkState = loco.getBlockingState();
+
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
@@ -189,7 +191,7 @@ public class NSPCT9Renderer extends AbsCartRenerer {
 
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
-            doRenderText(1, "dir:  " + dir);
+            doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : "  RUN"));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");

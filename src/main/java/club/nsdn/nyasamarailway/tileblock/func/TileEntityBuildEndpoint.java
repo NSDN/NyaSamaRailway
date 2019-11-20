@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,6 +38,10 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
 
         public LinkedList<BlockPos> blocks = new LinkedList<>();
 
+        public interface IRecord {
+            void record(World world, BlockPos pos);
+        }
+
         public Task setTick(int t) { tick = t; return this; }
 
         public Task setType(int t) { type = t; return this; }
@@ -49,11 +52,12 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
 
         public Task setHeight(int h) { height = Math.abs(h); return this; }
 
-        public void place(World world, BlockPos pos) {
+        public void place(World world, BlockPos pos, IRecord record) {
             IBlockState state = Block.getBlockById(block).getDefaultState();
             for (BlockPos offset : blocks) {
                 if (world.getTileEntity(pos.add(offset)) instanceof TileEntityBuildEndpoint)
                     continue;
+                record.record(world, pos.add(offset));
                 world.setBlockState(pos.add(offset), state);
             }
         }
@@ -100,6 +104,33 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
     }
 
     public Task theTask = null;
+
+    public static class BackBlk {
+        public BlockPos pos;
+        public IBlockState state;
+
+        public BackBlk(BlockPos pos, IBlockState state) {
+            this.pos = pos;
+            this.state = state;
+        }
+    }
+    public LinkedList<BackBlk> oldBlocks = new LinkedList<>();
+
+    public void recordUndo(World world, BlockPos pos) {
+        oldBlocks.add(new BackBlk(pos, world.getBlockState(pos)));
+    }
+
+    public void undo(World world) {
+        while (!oldBlocks.isEmpty()) {
+            BackBlk blk = oldBlocks.removeLast();
+            world.setBlockState(blk.pos, blk.state);
+        }
+        oldBlocks.clear();
+    }
+
+    public void clearUndo() {
+        oldBlocks.clear();
+    }
 
     boolean inv = false;
     Spline hline = new Spline();

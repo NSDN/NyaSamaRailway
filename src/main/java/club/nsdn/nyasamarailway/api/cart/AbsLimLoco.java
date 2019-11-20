@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
 import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import club.nsdn.nyasamarailway.network.TrainPacket;
+import club.nsdn.nyasamarailway.util.TrainController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +23,11 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart {
+public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart, IMobileBlocking {
 
     public double maxVelocity = 0;
     private static final DataParameter<Float> MAXV = EntityDataManager.createKey(AbsLimLoco.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> MBLK = EntityDataManager.createKey(AbsLimLoco.class, DataSerializers.BOOLEAN);
 
     private int tmpEngineBrake = -1;
 
@@ -33,6 +35,7 @@ public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart {
     protected void entityInit() {
         super.entityInit();
         dataManager.register(MAXV, 0.0F);
+        dataManager.register(MBLK, false);
     }
 
     public AbsLimLoco(World world) {
@@ -55,15 +58,27 @@ public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart {
     }
 
     @Override
+    public boolean getBlockingState() {
+        return dataManager.get(MBLK);
+    }
+
+    @Override
+    public void setBlockingState(boolean value) {
+        dataManager.set(MBLK, value);
+    }
+
+    @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         setMaxVelocity(tagCompound.getDouble("LocoMV"));
+        setBlockingState(tagCompound.getBoolean("MBlk"));
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setDouble("LocoMV", getMaxVelocity());
+        tagCompound.setBoolean("MBlk", getBlockingState());
     }
 
     @Override
@@ -123,6 +138,30 @@ public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart {
 
     @Override
     protected void doEngine() {
+        if (getBlockingState()) {
+            if (IMobileBlocking.hasCartFrom32(world, this)) {
+                TrainPacket packet = new TrainPacket(0, 1, getEngineDir());
+                packet.Velocity = this.Velocity;
+                if (IMobileBlocking.hasCartFrom16(world, this)) {
+                    TrainController.doMotion(packet, this); // stop!
+                } else {
+                    double vel = getSpeed();
+                    if (vel < 0.1) {
+                        packet.P = 1; packet.R = 10;
+                        doMotion(packet, this); // slow move
+                    } else if (vel < 0.2) {
+                        doMotion(packet, this); // control speed
+                    } else {
+                        TrainController.doMotion(packet, this); // EB!
+                    }
+                }
+                setEnginePrevVel(this.Velocity);
+                setEngineVel(packet.Velocity);
+
+                return;
+            }
+        }
+
         tmpPacket = new TrainPacket(getEnginePower(), getEngineBrake(), getEngineDir());
         tmpPacket.Velocity = this.Velocity;
         if (this.maxVelocity > 0) {

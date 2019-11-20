@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
@@ -34,6 +35,7 @@ public class ItemNTP8Bit extends ToolBase {
     public ItemNBTHelper<Integer> cart = new ItemNBTHelper<>(Integer.class, "cart");
 
     public ItemNBTHelper<Boolean> mode = new ItemNBTHelper<>(Boolean.class, "mode");
+    public ItemNBTHelper<Boolean> mblk = new ItemNBTHelper<>(Boolean.class, "mblk");
 
     public ItemNTP8Bit() {
         super(ToolMaterial.IRON);
@@ -58,12 +60,16 @@ public class ItemNTP8Bit extends ToolBase {
                 packet.R = this.brake.get(itemStack);
                 packet.Dir = this.dir.get(itemStack);
                 packet.Mode = this.mode.get(itemStack);
+                packet.MBlk = this.mblk.get(itemStack);
                 packet.dimensionID = player.dimension;
 
                 EntityMinecart cart = packet.getCartInServer(this.cart.get(itemStack));
                 if (cart != null) {
                     if (cart instanceof IHighSpeedCart) {
                         ((IHighSpeedCart) cart).setHighSpeedMode(packet.Mode);
+                    }
+                    if (cart instanceof IMobileBlocking) {
+                        ((IMobileBlocking) cart).setBlockingState(packet.MBlk);
                     }
                     if (cart instanceof AbsLocoBase) {
                         ((AbsLocoBase) cart).setTrainPacket(packet);

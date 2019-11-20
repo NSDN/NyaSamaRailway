@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.api.cart.IMotorCart;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
@@ -182,6 +183,10 @@ public class NSPCT4Renderer extends AbsCartRenerer {
                 int d = motorCart.getMotorDir(), p = motorCart.getMotorPower(), r = motorCart.getMotorBrake();
                 boolean isOff = !motorCart.getMotorState();
 
+                boolean MBlkState = false;
+                if (cart instanceof IMobileBlocking)
+                    MBlkState = ((IMobileBlocking) cart).getBlockingState();
+
                 GlStateManager.enableAlpha();
                 GlStateManager.enableBlend();
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
@@ -193,7 +198,7 @@ public class NSPCT4Renderer extends AbsCartRenerer {
 
                 // HUD1406
                 doRenderText(0, "-= NSR--NTP =-");
-                doRenderText(1, "dir:  " + dir);
+                doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
                 doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : "  RUN"));
                 doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
                 doRenderText(4, "vel:" + sv + "m/t");
