@@ -247,7 +247,7 @@ public class NSCxMRenderer extends AbsCartRenerer {
                 doRenderText(0, "-= NTP--EXT =-");
                 doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
                 doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
-                doRenderText(3, "name: " + String.format("%x", cart.getEntityId()));
+                doRenderText(3, "name: " + Long.toHexString(cart.getEntityId()));
                 doRenderText(4, "dim:" + String.format("%x", cart.dimension));
                 doRenderText(5, "yaw:" + String.format("%1.2f", cart.rotationYaw));
                 GL11.glPopMatrix();

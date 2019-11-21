@@ -197,6 +197,14 @@ item.ItemNSC3A.name=NSC3A
 item.ItemNSC3AM.name=NSC3AM
 item.ItemNSC3B.name=NSC3B
 item.ItemNSC3BM.name=NSC3BM
+item.ItemHelperArriveLeft.name=Left Arrive Equipment Helper(9m)
+item.ItemHelperArriveRight.name=Right Arrive Equipment Helper(9m)
+item.ItemHelperCloseLeft.name=Left Close Equipment Helper(2m)
+item.ItemHelperCloseRight.name=Right Close Equipment Helper(2m)
+item.ItemHelperReceptionLeft.name=Left Reception Equipment Helper(15m)
+item.ItemHelperReceptionRight.name=Right Reception Equipment Helper(15m)
+item.ItemHelperThinLeft.name=Thin Left-Run Equipment Helper(19m)
+item.ItemHelperThinRight.name=Thin Right-Run Equipment Helper(19m)
 
 item.ItemNSBT2.name=NSB-2 Bogie
 item.ItemNSBT2M.name=NSB-2M Motor Bogie

@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.entity.cart.NSPCT9;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
@@ -127,8 +128,13 @@ public class NSPCT9Renderer extends AbsCartRenerer {
                     }
                 }
 
+                GL11.glPushMatrix();
+                GL11.glRotatef(180.0F - yaw, 0.0F, -1.0F, 0.0F);
+                GL11.glRotated(90.0 - player.rotationYaw, 0, 1, 0);
+                GL11.glTranslated(0, 0.125, 0);
                 if (shouldRenderHUD) renderHUD(minecart);
                 else renderStr(str);
+                GL11.glPopMatrix();
             }
         }
     }
@@ -194,8 +200,8 @@ public class NSPCT9Renderer extends AbsCartRenerer {
             doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
             doRenderText(2, "pwr: " + pwr + (isOff ? " IDLE" : "  RUN"));
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
-            doRenderText(4, "vel:" + sv + "m/t");
-            doRenderText(5, "lim:" + sl + "m/t");
+            doRenderText(4, "v/l:" + sv + "/" + sl);
+            doRenderText(5, "blk:" + String.format("%1.1f", loco.getBlocking()));
 
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();

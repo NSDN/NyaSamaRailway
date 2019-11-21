@@ -7,6 +7,7 @@ import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.SoundUtil;
 import club.nsdn.nyasamarailway.util.TrainController;
+import club.nsdn.nyasamatelecom.api.device.SignalBox;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
 import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
 import club.nsdn.nyasamatelecom.api.tileentity.ITriStateReceiver;
@@ -36,6 +37,14 @@ import java.util.LinkedList;
  * Created by drzzm32 on 2019.2.10
  */
 public abstract class TileEntityTrackSideReception extends TileEntityActuator implements ITriStateReceiver, ITrackSide {
+
+    public static void registerController() {
+        SignalBox.TileEntitySignalBox.CONTROL_FUNCS.add((tileEntity, state) -> {
+            if (tileEntity instanceof TileEntityTrackSideReception) {
+                ((TileEntityTrackSideReception) tileEntity).extEnable = state;
+            }
+        });
+    }
 
     public static abstract class ReceptionCore extends NSASM {
 
@@ -198,6 +207,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     public boolean enable = false;
     public boolean prev = false;
     public boolean doorCtrl = false;
+
+    private boolean extEnable = false;
 
     public String cartType = "";
     public String extInfo = "";
@@ -596,7 +607,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             }
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
-                boolean isEnabled = false;
+                boolean isEnabled = reception.extEnable;
+                reception.extEnable = false;
 
                 if (reception.getSender() != null)
                     isEnabled = reception.senderIsPowered();
@@ -698,7 +710,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
             }
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
-                boolean isEnabled = false;
+                boolean isEnabled = reception.extEnable;
+                reception.extEnable = false;
 
                 if (reception.getSender() != null)
                     isEnabled = reception.senderIsPowered();

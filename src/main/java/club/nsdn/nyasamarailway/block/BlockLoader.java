@@ -43,6 +43,13 @@ public class BlockLoader {
 
     public static MdlCurvedRail curvedRail;
 
+    public static Pillar pillar;
+    public static BiSignalLight biSignalLight;
+    public static TrackSideSniffer trackSideSniffer;
+    public static TrackSideRFID trackSideRFID;
+    public static TrackSideBlocking trackSideBlocking;
+    public static TrackSideReception trackSideReception;
+
     public void getLightBeams() {
         light = club.nsdn.nyasamaoptics.block.BlockLoader.light;
         lineLight = club.nsdn.nyasamaoptics.block.BlockLoader.lineLight;
@@ -105,7 +112,7 @@ public class BlockLoader {
         blocks.add(new BlockGlassShieldCorner("GlassShieldCorner", "glass_shield_corner", true));
         blocks.add(new BlockGlassShieldCorner("GlassShieldCornerHalf", "glass_shield_corner_half", false));
 
-        blocks.add(new Pillar());
+        blocks.add(pillar = new Pillar());
         blocks.add(new PillarBig());
         blocks.add(new PillarQuad());
         blocks.add(new RailSignBody());
@@ -159,7 +166,7 @@ public class BlockLoader {
         blocks.add(new GlassShield1D5X1D5());
         blocks.add(new GlassShieldHalf());
 
-        blocks.add(new BiSignalLight());
+        blocks.add(biSignalLight = new BiSignalLight());
         blocks.add(new PillarSignalBi());
         blocks.add(new PillarSignalOne());
         blocks.add(new PillarSignalTri());
@@ -168,12 +175,12 @@ public class BlockLoader {
         blocks.add(new SignalStick());
         blocks.add(new TriSignalLight());
 
-        blocks.add(new TrackSideBlocking());
+        blocks.add(trackSideBlocking = new TrackSideBlocking());
         blocks.add(new TrackSideBlockingHs());
-        blocks.add(new TrackSideReception());
-        blocks.add(new TrackSideRFID());
+        blocks.add(trackSideReception = new TrackSideReception());
+        blocks.add(trackSideRFID = new TrackSideRFID());
         blocks.add(new TrackSideRFIDHs());
-        blocks.add(new TrackSideSniffer());
+        blocks.add(trackSideSniffer = new TrackSideSniffer());
         blocks.add(new TrackSideSnifferHs());
 
         blocks.add(new BuildEndpoint());

@@ -199,6 +199,14 @@ item.ItemNSC3A.name=NSC3A运输桶
 item.ItemNSC3AM.name=NSC3AM运输桶(机车版)
 item.ItemNSC3B.name=NSC3B单轨运输桶
 item.ItemNSC3BM.name=NSC3BM单轨运输桶(机车版)
+item.ItemHelperArriveLeft.name=左到达线布置工具(9米)
+item.ItemHelperArriveRight.name=右到达线布置工具(9米)
+item.ItemHelperCloseLeft.name=左接近布置工具(2米)
+item.ItemHelperCloseRight.name=右接近布置工具(2米)
+item.ItemHelperReceptionLeft.name=左到发线布置工具(15米)
+item.ItemHelperReceptionRight.name=右到发线布置工具(15米)
+item.ItemHelperThinLeft.name=左行紧凑到发线布置工具(19米)
+item.ItemHelperThinRight.name=右行紧凑到发线布置工具(19米)
 
 item.ItemNSBT2.name=NSB-2型转向架
 item.ItemNSBT2M.name=NSB-2M型动力转向架

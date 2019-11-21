@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.renderer.entity;
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
 import club.nsdn.nyasamarailway.api.cart.ILocomotive;
+import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.entity.loco.NSBT4M;
 import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
@@ -167,7 +168,7 @@ public class NSE4Renderer extends AbsTrainRenerer {
             doRenderText(0, "-= NTP--EXT =-");
             doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
             doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
-            doRenderText(3, "name: " + Long.toHexString(motor.getEntityId()) + "h");
+            doRenderText(3, "blk:" + String.format("%1.1f", motor.getBlocking()));
             doRenderText(4, "dim:" + String.format("%x", motor.dimension));
             doRenderText(5, "yaw:" + String.format("%1.2f", motor.rotationYaw));
             GL11.glPopMatrix();

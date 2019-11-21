@@ -1,9 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
-import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
-import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
-import club.nsdn.nyasamarailway.api.cart.ILocomotive;
-import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
+import club.nsdn.nyasamarailway.api.cart.*;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
@@ -185,6 +182,9 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
                 boolean MBlkState = false;
                 if (cart instanceof IMobileBlocking)
                     MBlkState = ((IMobileBlocking) cart).getBlockingState();
+                float blocking = Float.NaN;
+                if (cart instanceof AbsCartBase)
+                    blocking = ((AbsCartBase) cart).getBlocking();
 
                 String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
                 String pwr = String.format("%2d", p);
@@ -215,7 +215,7 @@ public class NSPCT4MRenderer extends AbsCartRenerer {
                 doRenderText(0, "-= NTP--EXT =-");
                 doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
                 doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
-                doRenderText(3, "name: " + String.format("%x", cart.getEntityId()));
+                doRenderText(3, "blk:" + String.format("%1.1f", blocking));
                 doRenderText(4, "dim:" + String.format("%x", cart.dimension));
                 doRenderText(5, "yaw:" + String.format("%1.2f", cart.rotationYaw));
                 GL11.glPopMatrix();

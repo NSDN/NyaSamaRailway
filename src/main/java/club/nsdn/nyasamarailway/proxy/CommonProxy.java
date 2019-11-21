@@ -4,9 +4,11 @@ import club.nsdn.nyasamaoptics.tileblock.screen.LEDPlate;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.api.signal.TileEntitySignalLight;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideRFID;
+import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
 import club.nsdn.nyasamarailway.block.BlockLoader;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.event.EventRegister;
+import club.nsdn.nyasamarailway.item.helper.DeployHelper;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.NTPCore;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -43,8 +45,14 @@ public class CommonProxy {
         NyaSamaRailway.logger.info("Register TrackSide RFID Controller to NyaSamaTelecom");
         TileEntityTrackSideRFID.registerController();
 
+        NyaSamaRailway.logger.info("Register TrackSide Reception Controller to NyaSamaTelecom");
+        TileEntityTrackSideReception.registerController();
+
         NyaSamaRailway.logger.info("Register NTP command to NyaSamaOptics");
         LEDPlate.registerCommand("#!/bin/ntp", new NTPCore());
+
+        NyaSamaRailway.logger.info("Initialize DeployHelper");
+        DeployHelper.setInstance();
     }
 
 }

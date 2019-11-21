@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.*;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
+import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -65,6 +66,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public EnumFacing facing = EnumFacing.DOWN;
 
     private static final DataParameter<Boolean> CURVED = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> BLOCKING = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.FLOAT);
 
     public TileEntityRailEndpoint nowEndPoint = null;
     public double nowProgress = 0;
@@ -83,11 +85,20 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         super.entityInit();
 
         dataManager.register(CURVED, false);
+        dataManager.register(BLOCKING, Float.NaN);
     }
 
     public void setCurved(boolean state) { dataManager.set(CURVED, state); }
 
     public boolean getCurved() { return dataManager.get(CURVED); }
+
+    public void scanBlocking() {
+        dataManager.set(BLOCKING, (float) IMobileBlocking.getNearestCartDist(world, this, 128));
+    }
+
+    public float getBlocking() {
+        return dataManager.get(BLOCKING);
+    }
 
     @Nonnull
     public abstract ItemStack getCartItem();
@@ -449,6 +460,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     slowDown = false;
                 }
             }
+        }
+
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entity;
+            ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem() instanceof ToolBase)
+                this.scanBlocking();
         }
 
         if (slowDown && this.shouldDoRailFunctions()) {

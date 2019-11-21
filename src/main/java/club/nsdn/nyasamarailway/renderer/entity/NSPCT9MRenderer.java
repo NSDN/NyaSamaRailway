@@ -43,7 +43,7 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
             new ResourceLocation("nyasamarailway", "models/carts/" + _name + "_jet.obj")
     );
 
-    private final String _screen = "nspc_8j";
+    private final String _screen = "nsc_x";
 
     private final WavefrontObject modelScreen = new WavefrontObject( // base, r0-r5
             new ResourceLocation("nyasamarailway", "models/carts/" + _screen + "_screen.obj")
@@ -128,8 +128,13 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
                     }
                 }
 
+                GL11.glPushMatrix();
+                GL11.glRotatef(180.0F - yaw, 0.0F, -1.0F, 0.0F);
+                GL11.glRotated(90.0 - player.rotationYaw, 0, 1, 0);
+                GL11.glTranslated(0, 0.125, 0);
                 if (shouldRenderHUD) renderHUD(minecart);
                 else renderStr(str);
+                GL11.glPopMatrix();
             }
         }
     }
@@ -179,15 +184,17 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
             int d = loco.getEngineDir(), p = loco.getEnginePower(), r = loco.getEngineBrake();
             boolean MBlkState = loco.getBlockingState();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
             String pwr = String.format("%2d", p);
             String brk = String.format("%2d", 10 - r);
             String sv = String.format("%1.2f", v);
             String sl = String.format("%1.2f", lim);
 
+            GL11.glPushMatrix();
+            GL11.glRotated(45, 0, 1, 0);
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
+            RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
             doRenderText(1, "dir:  " + dir + "  " + (MBlkState ? "B" : ""));
@@ -195,11 +202,29 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
             doRenderText(3, "brk: " + brk + (r == 1 ? " EME" : ""));
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
+            GL11.glPopMatrix();
 
+            GL11.glPushMatrix();
+            GL11.glRotated(-45, 0, 1, 0);
+            GlStateManager.enableAlpha();
+            GlStateManager.enableBlend();
+            RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
+            // HUD1406
+            doRenderText(0, "-= NTP--EXT =-");
+            doRenderText(1, "vel:" + String.format("%1.2f", v * 72) + "km/h");
+            doRenderText(2, "acc:" + String.format("%1.2f", a * 400) + "m/s2");
+            doRenderText(3, "blk:" + String.format("%1.1f", loco.getBlocking()));
+            doRenderText(4, "dim:" + String.format("%x", cart.dimension));
+            doRenderText(5, "yaw:" + String.format("%1.2f", cart.rotationYaw));
+            GL11.glPopMatrix();
+
+            GL11.glPushMatrix();
+            GL11.glRotated(30, 0, 0, 1);
+            GL11.glTranslated(0.5, 0, 0);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
-            angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
+            angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
             GL11.glPushMatrix();
             GL11.glTranslatef(0.625F, 0.9375F, -0.625F);
@@ -229,7 +254,7 @@ public class NSPCT9MRenderer extends AbsCartRenerer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
             GL11.glPopMatrix();
-
+            GL11.glPopMatrix();
         }
     }
 

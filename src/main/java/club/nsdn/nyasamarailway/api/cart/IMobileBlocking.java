@@ -150,6 +150,8 @@ public interface IMobileBlocking {
             Object obj = bBox.get(0);
             if (obj instanceof AbsMotoCart) {
                 AbsMotoCart cart = (AbsMotoCart) obj;
+                if (cart.equals(me))
+                    return false;
                 return !cart.getPassengers().isEmpty();
             }
             return !obj.equals(me);

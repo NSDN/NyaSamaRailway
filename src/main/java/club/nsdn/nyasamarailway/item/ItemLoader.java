@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.item;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.item.cart.*;
+import club.nsdn.nyasamarailway.item.helper.*;
 import club.nsdn.nyasamarailway.item.loco.*;
 import club.nsdn.nyasamarailway.item.misc.*;
 import club.nsdn.nyasamarailway.item.nsc.*;
@@ -157,6 +158,15 @@ public class ItemLoader {
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift6", "item_nyagift_6","item_nyagift_6"));
         itemNyaGifts.add(new ItemTicketStore("ItemNyaGift7", "item_nyagift_7","item_nyagift_7"));
         items.addAll(itemNyaGifts);
+
+        items.add(new ItemHelperArriveLeft());
+        items.add(new ItemHelperArriveRight());
+        items.add(new ItemHelperCloseLeft());
+        items.add(new ItemHelperCloseRight());
+        items.add(new ItemHelperReceptionLeft());
+        items.add(new ItemHelperReceptionRight());
+        items.add(new ItemHelperThinLeft());
+        items.add(new ItemHelperThinRight());
     }
 
 }
