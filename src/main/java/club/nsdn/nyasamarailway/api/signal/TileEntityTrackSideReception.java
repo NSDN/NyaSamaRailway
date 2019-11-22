@@ -497,7 +497,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     reception.count += 1;
                     if (reception.count >= SPAWN_DELAY * 20) {
                         reception.reset();
-                        reception.spawn();
+                        if (reception.state != STATE_NEG)
+                            reception.spawn();
                     }
                 }
             } else {
@@ -608,7 +609,6 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
                 boolean isEnabled = reception.extEnable;
-                reception.extEnable = false;
 
                 if (reception.getSender() != null)
                     isEnabled = reception.senderIsPowered();
@@ -711,7 +711,6 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         } else {
             if (reception.delay < reception.setDelay * 20 && reception.enable) {
                 boolean isEnabled = reception.extEnable;
-                reception.extEnable = false;
 
                 if (reception.getSender() != null)
                     isEnabled = reception.senderIsPowered();
@@ -773,6 +772,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     break;
                 case STATE_NEG:
                     if (cart != null) {
+                        cart.removePassengers();
                         cart.killMinecart(new DamageSource("nsr"));
                     }
                     break;

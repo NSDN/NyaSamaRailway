@@ -76,16 +76,21 @@ public class DeployHelper {
         return null;
     }
 
-    public TileEntityActuator placeTriSignalBox(World world, BlockPos pos, EntityPlayer player, boolean neg) {
+    public TileEntityActuator placeTriSignalBox(World world, BlockPos pos, EntityPlayer player, boolean neg, boolean invert) {
         place(world, pos, triSignalBox, player);
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TriStateSignalBox.TileEntityTriStateSignalBox) {
             TriStateSignalBox.TileEntityTriStateSignalBox box = (TriStateSignalBox.TileEntityTriStateSignalBox) te;
             box.triStateIsNeg = neg;
+            box.inverterEnabled = invert;
             box.refresh();
             return box;
         }
         return null;
+    }
+
+    public TileEntityActuator placeTriSignalBox(World world, BlockPos pos, EntityPlayer player, boolean neg) {
+        return placeTriSignalBox(world, pos, player, neg, false);
     }
 
     // by default, dir is left

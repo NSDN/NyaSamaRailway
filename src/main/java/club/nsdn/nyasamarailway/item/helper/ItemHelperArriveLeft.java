@@ -3,6 +3,7 @@ package club.nsdn.nyasamarailway.item.helper;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.api.tileentity.*;
+import club.nsdn.nyasamatelecom.api.tool.NGTablet;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.state.IBlockState;
@@ -51,23 +52,34 @@ public class ItemHelperArriveLeft extends ToolBase {
             TileEntityActuator reception, invBox, triBoxP, triBoxN;
             TileEntityTransceiver sniffer; TileEntityReceiver rfid, light;
 
-            rfid = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing, 4), player, 1, 0, 0.1, true, true, false);
-            sniffer = DeployHelper.INSTANCE.placeSniffer(world, pos.offset(facing, 3), player, false);
-                DeployHelper.INSTANCE.connect(sniffer, rfid);
-            light = DeployHelper.INSTANCE.placeSignalLight(world, pos.offset(facing, 2), player);
-            triBoxP = DeployHelper.INSTANCE.placeTriSignalBox(world, pos.offset(facing), player, false);
-                DeployHelper.INSTANCE.connect(sniffer, triBoxP);
-            reception = DeployHelper.INSTANCE.placeReception(world, pos, player, false);
-                DeployHelper.INSTANCE.connect(reception, light);
-            triBoxN = DeployHelper.INSTANCE.placeTriSignalBox(world, pos.offset(facing.getOpposite()), player, true);
-            invBox = DeployHelper.INSTANCE.placeSignalBox(world, pos.offset(facing.getOpposite(), 2), player, true);
-                DeployHelper.INSTANCE.connect(invBox, reception);
-                DeployHelper.INSTANCE.connect(triBoxP, reception);
-                DeployHelper.INSTANCE.connect(triBoxN, reception);
-            rfid = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing.getOpposite(), 3), player, 0, 9, 0, false, false, false);
-            sniffer = DeployHelper.INSTANCE.placeSniffer(world, pos.offset(facing.getOpposite(), 4), player, false);
-                DeployHelper.INSTANCE.connect(sniffer, rfid);
-                DeployHelper.INSTANCE.connect(sniffer, triBoxN);
+            ItemStack stack = player.getHeldItem(EnumHand.OFF_HAND);
+            boolean special = stack.getItem() instanceof NGTablet;
+
+            if (special) {
+                rfid = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing, 4), player, 1, 0, 0.1, true, true, false);
+                sniffer = DeployHelper.INSTANCE.placeSniffer(world, pos.offset(facing, 3), player, false);
+                    DeployHelper.INSTANCE.connect(sniffer, rfid);
+                light = DeployHelper.INSTANCE.placeSignalLight(world, pos.offset(facing, 2), player);
+                triBoxP = DeployHelper.INSTANCE.placeTriSignalBox(world, pos.offset(facing), player, false);
+                    DeployHelper.INSTANCE.connect(sniffer, triBoxP);
+                reception = DeployHelper.INSTANCE.placeReception(world, pos, player, false);
+                    DeployHelper.INSTANCE.connect(reception, light);
+                triBoxN = DeployHelper.INSTANCE.placeTriSignalBox(world, pos.offset(facing.getOpposite()), player, true);
+                invBox = DeployHelper.INSTANCE.placeSignalBox(world, pos.offset(facing.getOpposite(), 2), player, true);
+                    DeployHelper.INSTANCE.connect(invBox, reception);
+                    DeployHelper.INSTANCE.connect(triBoxP, reception);
+                    DeployHelper.INSTANCE.connect(triBoxN, reception);
+                rfid = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing.getOpposite(), 3), player, 0, 9, 0, false, false, false);
+                sniffer = DeployHelper.INSTANCE.placeSniffer(world, pos.offset(facing.getOpposite(), 4), player, false);
+                    DeployHelper.INSTANCE.connect(sniffer, rfid);
+                    DeployHelper.INSTANCE.connect(sniffer, triBoxN);
+            } else {
+                light = DeployHelper.INSTANCE.placeSignalLight(world, pos.offset(facing, 4), player);
+                reception = DeployHelper.INSTANCE.placeReception(world, pos, player, false);
+                    DeployHelper.INSTANCE.connect(reception, light);
+                triBoxN = DeployHelper.INSTANCE.placeTriSignalBox(world, pos.offset(facing.getOpposite(), 4), player, true, true);
+                    DeployHelper.INSTANCE.connect(triBoxN, reception);
+            }
 
             Util.say(player, "info.PierBuilder.finish");
         }
