@@ -756,13 +756,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     x = MathHelper.floor(this.posX);
                     y = MathHelper.floor(this.posY);
                     z = MathHelper.floor(this.posZ);
-                    pos = new BlockPos(x, y, z);
-                    state = this.world.getBlockState(pos);
 
                     if (!BlockRailBase.isRailBlock(this.world, new BlockPos(x, y, z)) && BlockRailBase.isRailBlock(this.world, new BlockPos(x, y - 1, z))) {
                         --y;
                     }
 
+                    pos = new BlockPos(x, y, z);
+                    state = this.world.getBlockState(pos);
                     if (this.canUseRail() && BlockRailBase.isRailBlock(state)) {
                         this.moveAlongTrack(pos, state);
                         if (state.getBlock() == Blocks.ACTIVATOR_RAIL) {
