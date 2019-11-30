@@ -26,12 +26,15 @@ public class DeployHelper {
     private BiSignalLight biSignalLight;
     private TrackSideSniffer trackSideSniffer;
     private TrackSideRFID trackSideRFID;
+    private TrackSideSnifferHs trackSideSnifferHs;
+    private TrackSideRFIDHs trackSideRFIDHs;
     private TrackSideBlocking trackSideBlocking;
     private TrackSideReception trackSideReception;
 
     private DeployHelper(SignalBox box, TriStateSignalBox triBox,
                          Pillar pillar, BiSignalLight light,
                          TrackSideSniffer sniffer, TrackSideRFID rfid,
+                         TrackSideSnifferHs snifferHs, TrackSideRFIDHs rfidHs,
                          TrackSideBlocking blocking, TrackSideReception reception) {
         signalBox = box;
         triSignalBox = triBox;
@@ -39,6 +42,8 @@ public class DeployHelper {
         biSignalLight = light;
         trackSideSniffer = sniffer;
         trackSideRFID = rfid;
+        trackSideSnifferHs = snifferHs;
+        trackSideRFIDHs = rfidHs;
         trackSideBlocking = blocking;
         trackSideReception = reception;
     }
@@ -51,6 +56,7 @@ public class DeployHelper {
                 club.nsdn.nyasamatelecom.block.BlockLoader.triStateSignalBox,
                 BlockLoader.pillar, BlockLoader.biSignalLight,
                 BlockLoader.trackSideSniffer, BlockLoader.trackSideRFID,
+                BlockLoader.trackSideSnifferHs, BlockLoader.trackSideRFIDHs,
                 BlockLoader.trackSideBlocking, BlockLoader.trackSideReception
         );
     }
@@ -153,6 +159,21 @@ public class DeployHelper {
         return null;
     }
 
+    public TileEntityTransceiver placeSnifferHs(World world, BlockPos pos, EntityPlayer player, boolean invert, boolean right) {
+        place(world, pos, trackSideSnifferHs, player);
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TrackSideSnifferHs.TileEntityTrackSideSnifferHs) {
+            TrackSideSnifferHs.TileEntityTrackSideSnifferHs sniffer = (TrackSideSnifferHs.TileEntityTrackSideSnifferHs) te;
+            sniffer.invert = invert;
+            sniffer.keep = 20;
+            if (right)
+                modifyDir(sniffer);
+            sniffer.refresh();
+            return sniffer;
+        }
+        return null;
+    }
+
     public TileEntityActuator placeReception(World world, BlockPos pos, EntityPlayer player, boolean invert, boolean right) {
         place(world, pos, trackSideReception, player);
         TileEntity te = world.getTileEntity(pos);
@@ -188,6 +209,37 @@ public class DeployHelper {
             rfid.R = brake > 10 ? 10 : (brake < 1 ? 1 : brake);
 
             rfid.vel = limit;
+            rfid.state = state;
+            rfid.mblk = block;
+
+            if (right)
+                modifyDir(rfid);
+
+            rfid.refresh();
+            return rfid;
+        }
+        return null;
+    }
+
+    public TileEntityReceiver placeRFIDHs(
+            World world, BlockPos pos, EntityPlayer player,
+            int power, int brake, double limit, boolean high,
+            boolean state, boolean block,
+            boolean invert, boolean right
+    ) {
+        place(world, pos, trackSideRFIDHs, player);
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TrackSideRFIDHs.TileEntityTrackSideRFIDHs) {
+            TrackSideRFIDHs.TileEntityTrackSideRFIDHs rfid = (TrackSideRFIDHs.TileEntityTrackSideRFIDHs) te;
+            rfid.invert = invert;
+
+            rfid.P = power > 20 ? 20 : (power < 0 ? 0 : power);
+
+            brake = 10 - brake;
+            rfid.R = brake > 10 ? 10 : (brake < 1 ? 1 : brake);
+
+            rfid.vel = limit;
+            rfid.high = high;
             rfid.state = state;
             rfid.mblk = block;
 

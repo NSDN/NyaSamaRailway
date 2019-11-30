@@ -3,7 +3,9 @@ package club.nsdn.nyasamarailway.item.helper;
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.api.tileentity.*;
+import club.nsdn.nyasamatelecom.api.tool.NGTablet;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
+import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,9 +50,51 @@ public class ItemHelperCloseRight extends ToolBase {
             facing = player.getHorizontalFacing();
             pos = pos.up();
 
-            TileEntityTransceiver source = DeployHelper.INSTANCE.placeSniffer(world, pos, player, true);
-            TileEntityReceiver target = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing), player, 2, 0, 0.2, true, true, true);
-            DeployHelper.INSTANCE.connect(source, target);
+            ItemStack stack = player.getHeldItem(EnumHand.OFF_HAND);
+            if (stack.getItem() instanceof NGTablet) {
+                double speed;
+
+                String str = NSASM.getCodeString(Util.getTagListFromNGT(stack));
+                str = str.split("\n")[0];
+                if (str.contains(".")) {
+                    try {
+                        speed = Double.parseDouble(str); // m/tick
+                    } catch (Exception e) {
+                        speed = -0.6;
+                    }
+                } else {
+                    try {
+                        speed = Integer.parseInt(str); // km/h
+                    } catch (Exception e) {
+                        speed = -45;
+                    }
+                    speed = speed / 3.6 / 20;
+                }
+
+                boolean high = Math.abs(speed) >= 1.2;
+                int power = 10;
+                if (high) {
+                    if (speed >= 1.5)
+                        power += 5;
+                    if (speed >= 2.0)
+                        power += 5;
+                } else {
+                    if (speed >= 0.8)
+                        power += 5;
+                    if (speed >= 1.0)
+                        power += 5;
+                }
+
+                Util.say(player, "[NSR] P: " + power + ", V: " + String.format("%1.2f", speed));
+
+                TileEntityTransceiver source = DeployHelper.INSTANCE.placeSnifferHs(world, pos, player, false, true);
+                TileEntityReceiver target = DeployHelper.INSTANCE.placeRFIDHs(world, pos.offset(facing), player, power, 0, speed, high, true, true, true, true);
+                DeployHelper.INSTANCE.connect(source, target);
+            } else {
+                TileEntityTransceiver source = DeployHelper.INSTANCE.placeSniffer(world, pos, player, true);
+                TileEntityReceiver target = DeployHelper.INSTANCE.placeRFID(world, pos.offset(facing), player, 2, 0, 0.2, true, true, true);
+                DeployHelper.INSTANCE.connect(source, target);
+            }
 
             Util.say(player, "info.PierBuilder.finish");
         }

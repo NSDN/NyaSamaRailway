@@ -47,6 +47,8 @@ public class BlockLoader {
     public static BiSignalLight biSignalLight;
     public static TrackSideSniffer trackSideSniffer;
     public static TrackSideRFID trackSideRFID;
+    public static TrackSideSnifferHs trackSideSnifferHs;
+    public static TrackSideRFIDHs trackSideRFIDHs;
     public static TrackSideBlocking trackSideBlocking;
     public static TrackSideReception trackSideReception;
 
@@ -179,9 +181,9 @@ public class BlockLoader {
         blocks.add(new TrackSideBlockingHs());
         blocks.add(trackSideReception = new TrackSideReception());
         blocks.add(trackSideRFID = new TrackSideRFID());
-        blocks.add(new TrackSideRFIDHs());
+        blocks.add(trackSideRFIDHs = new TrackSideRFIDHs());
         blocks.add(trackSideSniffer = new TrackSideSniffer());
-        blocks.add(new TrackSideSnifferHs());
+        blocks.add(trackSideSnifferHs = new TrackSideSnifferHs());
 
         blocks.add(new BuildEndpoint());
         blocks.add(new BuildNode());

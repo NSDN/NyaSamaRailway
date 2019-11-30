@@ -48,10 +48,20 @@ public class ItemHelperReceptionRight extends ToolBase {
             ItemStack stack = player.getHeldItem(EnumHand.OFF_HAND);
             if (stack.getItem() instanceof NGTablet) {
                 String str = NSASM.getCodeString(Util.getTagListFromNGT(stack));
-                try {
-                    limit = Double.parseDouble(str);
-                } catch (Exception e) {
-                    limit = 0.6;
+                str = str.split("\n")[0];
+                if (str.contains(".")) {
+                    try {
+                        limit = Double.parseDouble(str); // m/tick
+                    } catch (Exception e) {
+                        limit = 0.6;
+                    }
+                } else {
+                    try {
+                        limit = Integer.parseInt(str); // km/h
+                    } catch (Exception e) {
+                        limit = 45;
+                    }
+                    limit = limit / 3.6 / 20;
                 }
             }
             int power = 10;
