@@ -101,7 +101,18 @@ public class BuildEndpoint extends BlockContainer {
                     if (world.getBlockState(next).getBlock() != this)
                         endpoint.theTask.place(world, next, endpoint::recordUndo);
 
-                    world.scheduleUpdate(pos, this, endpoint.theTask.tick);
+                    if (endpoint.theTask.tick <= 0) {
+                        for (int i = endpoint.theTask.tick; i < 1; i++) {
+                            if (!endpoint.hasNext())
+                                break;
+                            vec = endpoint.next(); next = vec2Pos(vec);
+                            if (world.getBlockState(next).getBlock() != this)
+                                endpoint.theTask.place(world, next, endpoint::recordUndo);
+                        }
+                        world.scheduleUpdate(pos, this, 1);
+                    } else {
+                        world.scheduleUpdate(pos, this, endpoint.theTask.tick);
+                    }
                 } else {
                     endpoint.theTask = null;
                     endpoint.reset();
@@ -228,6 +239,7 @@ public class BuildEndpoint extends BlockContainer {
                                 case "rect": task.setType(TileEntityBuildEndpoint.TYPE_RECT); break;
                                 case "mono": task.setType(TileEntityBuildEndpoint.TYPE_MONO); break;
                                 case "bird": task.setType(TileEntityBuildEndpoint.TYPE_BRID); break;
+                                case "tun": task.setType(TileEntityBuildEndpoint.TYPE_TUN); break;
                             }
 
                             return Result.OK;

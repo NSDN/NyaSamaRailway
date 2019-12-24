@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -15,7 +16,9 @@ import org.thewdj.spline.Spline;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by drzzm32 on 2019.3.10.
@@ -27,6 +30,8 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
     public static final int TYPE_MONO = 2;
     public static final int TYPE_BRID = 3;
 
+    public static final int TYPE_TUN = 4;
+
     public static class Task {
 
         public int tick = 20;
@@ -36,7 +41,7 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         public int radius = 0;
         public int height = 0;
 
-        public LinkedList<BlockPos> blocks = new LinkedList<>();
+        public LinkedList<Tuple<BlockPos, Integer>> blocks = new LinkedList<>();
 
         public interface IRecord {
             void record(World world, BlockPos pos);
@@ -54,11 +59,16 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
 
         public void place(World world, BlockPos pos, IRecord record) {
             IBlockState state = Block.getBlockById(block).getDefaultState();
-            for (BlockPos offset : blocks) {
+            for (Tuple<BlockPos, Integer> blk : blocks) {
+                BlockPos offset = blk.getFirst();
+                int id = blk.getSecond();
                 if (world.getTileEntity(pos.add(offset)) instanceof TileEntityBuildEndpoint)
                     continue;
                 record.record(world, pos.add(offset));
-                world.setBlockState(pos.add(offset), state);
+                if (id == block)
+                    world.setBlockState(pos.add(offset), state);
+                else if (id == 0)
+                    world.setBlockToAir(pos.add(offset));
             }
         }
 
@@ -71,7 +81,7 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
                         for (int y = -radius; y <= radius; y++)
                             for (int z = -radius; z <= radius; z++) {
                                 if (x * x + y * y + z * z <= radius * radius)
-                                    blocks.add(new BlockPos(x, y, z));
+                                    blocks.add(new Tuple<>(new BlockPos(x, y, z), block));
                             }
                     break;
                 case TYPE_RECT:
@@ -81,11 +91,11 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
                         for (int y = 0; y <= height; y++)
                             for (int z = -radius; z <= radius; z++) {
                                 if (x * x + z * z <= radius * radius)
-                                    blocks.add(new BlockPos(x, y, z));
+                                    blocks.add(new Tuple<>(new BlockPos(x, y, z), block));
                             }
                     break;
                 case TYPE_MONO:
-                    blocks.add(BlockPos.ORIGIN);
+                    blocks.add(new Tuple<>(BlockPos.ORIGIN, block));
                     break;
                 case TYPE_BRID:
                     if (radius == 0) break;
@@ -95,8 +105,28 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
                         for (int y = -h; y <= 0; y++)
                             for (int z = -r; z <= r; z++) {
                                 if (x * x + y * y + z * z <= r * r)
-                                    blocks.add(new BlockPos(x, y, z));
+                                    blocks.add(new Tuple<>(new BlockPos(x, y, z), block));
                             }
+                    break;
+                case TYPE_TUN:
+                    LinkedHashMap<BlockPos, Integer> tmp = new LinkedHashMap<>();
+                    if (radius == 0) break;
+                    for (int x = -radius; x <= radius; x++)
+                        for (int y = -radius; y <= radius; y++)
+                            for (int z = -radius; z <= radius; z++) {
+                                if (x * x + y * y + z * z <= radius * radius)
+                                    tmp.put(new BlockPos(x, y, z), block);
+                            }
+                    radius -= 1;
+                    if (radius == 0) break;
+                    for (int x = -radius; x <= radius; x++)
+                        for (int y = -radius; y <= radius; y++)
+                            for (int z = -radius; z <= radius; z++) {
+                                if (x * x + y * y + z * z <= radius * radius)
+                                    tmp.put(new BlockPos(x, y, z), 0);
+                            }
+                    for (Map.Entry<BlockPos, Integer> i : tmp.entrySet())
+                        blocks.add(new Tuple<>(i.getKey(), i.getValue()));
                     break;
             }
         }

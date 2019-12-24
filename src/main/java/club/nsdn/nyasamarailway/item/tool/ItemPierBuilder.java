@@ -515,7 +515,7 @@ public class ItemPierBuilder extends ToolBase {
 
                     traversalCounter = 0;
                     facing = player.getHorizontalFacing();
-                    if (world.getBlockState(pos.down().offset(facing)).getBlock() != base &&
+                    if (world.getBlockState(pos.down().offset(facing)).getBlock() != base.getBlock() &&
                             rail instanceof BlockRailBase
                     )
                         TraversalRailsEx(world, (BlockRailBase) rail, base, edge, pos, facing);
