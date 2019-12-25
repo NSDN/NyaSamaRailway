@@ -105,6 +105,9 @@ public class TileEntityLoader {
         tileEntities.add(RailEndpoint.TileEntityRailEndpoint.class);
         tileEntities.add(RailEndpoint.TileEntityFastRailEndpoint.class);
         tileEntities.add(RailNode.TileEntityRailNode.class);
+
+        tileEntities.add(GateTiny.TileEntityGateTiny.class);
+        tileEntities.add(YakumoPC.TileEntityYakumoPC.class);
     }
 
 }

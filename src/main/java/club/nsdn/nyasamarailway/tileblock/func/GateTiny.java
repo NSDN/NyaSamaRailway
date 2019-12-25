@@ -4,10 +4,16 @@ import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.item.misc.ItemTicketBase;
 import club.nsdn.nyasamarailway.item.misc.ItemTicketOnce;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
+import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.tileblock.TileBlock;
+import club.nsdn.nyasamarailway.util.OverSheet;
 import club.nsdn.nyasamarailway.util.SoundUtil;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
+import club.nsdn.nyasamatelecom.api.tool.NGTablet;
+import club.nsdn.nyasamatelecom.api.util.NSASM;
+import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +21,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -22,10 +29,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 import javax.annotation.Nonnull;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -36,29 +46,36 @@ public class GateTiny extends TileBlock {
     public static class TileEntityGateTiny extends TileEntityReceiver {
 
         public static final int RST_DELAY = 5;
+        public static final int RST_DELAY_DEFAULT = RST_DELAY * 20 + 1;
 
         public EnumFacing direction;
         public boolean isEnabled = true;
-
-        public boolean doorState = false;
-
         public int over = -1;
         public int setOver = 1;
+        public boolean doorState = false;
+        public String overSheetTag = "";
+        public int stationIndex = 0;
 
         private String nowName = "";
-        private int rstCounter = RST_DELAY;
+        private int rstCounter = RST_DELAY_DEFAULT;
 
         public TileEntityGateTiny() {
             super();
-            setInfo(4, 1, 1.5, 0.5);
+            setInfo(4, 0.75, 1.5, 0.5);
         }
 
         @Override
         protected void updateBounds() {
-            setBoundsByXYZ(
-                    0.5 - this.SIZE.x / 2, 0, 0.25 - this.SIZE.z / 2,
-                    0.5 + this.SIZE.x / 2, this.SIZE.y, 0.25 + this.SIZE.z / 2
-            );
+            if (!doorState)
+                setBoundsByXYZ(
+                        0.375 - this.SIZE.x / 2, 0, 0.25 - this.SIZE.z / 2,
+                        0.375 + this.SIZE.x / 2, this.SIZE.y, 0.25 + this.SIZE.z / 2
+                );
+            else
+                setBoundsByXYZ(
+                        0, 0, 0,
+                        0.125, 1.5, 1
+                );
         }
 
         @Nonnull
@@ -73,11 +90,11 @@ public class GateTiny extends TileBlock {
 
             direction = EnumFacing.byName(tagCompound.getString("direction"));
             isEnabled = tagCompound.getBoolean("isEnabled");
-
-
-
             over = tagCompound.getInteger("over");
             setOver = tagCompound.getInteger("setOver");
+            doorState = tagCompound.getBoolean("doorState");
+            overSheetTag = tagCompound.getString("overSheetTag");
+            stationIndex = tagCompound.getInteger("stationIndex");
         }
 
         @Override
@@ -85,11 +102,11 @@ public class GateTiny extends TileBlock {
             if (direction == null) direction = EnumFacing.DOWN;
             tagCompound.setString("direction", direction.getName());
             tagCompound.setBoolean("isEnabled", isEnabled);
-
-
-
             tagCompound.setInteger("over", over);
             tagCompound.setInteger("setOver", setOver);
+            tagCompound.setBoolean("doorState", doorState);
+            tagCompound.setString("overSheetTag", overSheetTag);
+            tagCompound.setInteger("stationIndex", stationIndex);
 
             return super.toNBT(tagCompound);
         }
@@ -133,20 +150,21 @@ public class GateTiny extends TileBlock {
 
             BlockPos vec = new BlockPos(dir.getDirectionVec());
             if (gate.isEnabled) {
-                player = findPlayer(world, pos.add(vec));
+                player = findPlayer(world, pos.add(vec.rotate(Rotation.CLOCKWISE_180)));
                 if (player != null) {
                     gate.nowName = player.getDisplayNameString();
                 }
-                player = findPlayer(world, pos.add(vec.rotate(Rotation.CLOCKWISE_180)));
+                player = findPlayer(world, pos.add(vec));
                 if (player != null) {
                     if (gate.nowName.equals(player.getDisplayNameString()))
-                        gate.openDoor();
+                        gate.reset();
                 }
             }
         }
 
         public void reset() {
             doorState = false;
+            rstCounter = RST_DELAY_DEFAULT;
             nowName = "";
             over = -1;
             refresh();
@@ -220,6 +238,14 @@ public class GateTiny extends TileBlock {
 
     @Override
     @Nonnull
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        if (world.getBlockState(pos.down()).getBlock() instanceof BlockSlab)
+            super.getBoundingBox(state, world, pos).contract(0, 0.5, 0);
+        return super.getBoundingBox(state, world, pos);
+    }
+
+    @Override
+    @Nonnull
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, @Nonnull World world, @Nonnull BlockPos pos) {
         return super.getSelectedBoundingBox(state, world, pos).contract(0, 0.5, 0);
     }
@@ -235,7 +261,74 @@ public class GateTiny extends TileBlock {
             if (!stack.isEmpty() && gate.isEnabled) {
                 Item item = stack.getItem();
 
-                if (item instanceof Item1N4148) {
+                if (item instanceof NGTablet) {
+                    NBTTagList list = Util.getTagListFromNGT(stack);
+                    if (list == null) return false;
+
+                    if (!world.isRemote) {
+                        String[][] code = NSASM.getCode(list);
+                        new NSASM(code) {
+                            @Override
+                            public World getWorld() {
+                                return world;
+                            }
+
+                            @Override
+                            public double getX() {
+                                return pos.getX();
+                            }
+
+                            @Override
+                            public double getY() {
+                                return pos.getY();
+                            }
+
+                            @Override
+                            public double getZ() {
+                                return pos.getZ();
+                            }
+
+                            @Override
+                            public EntityPlayer getPlayer() {
+                                return player;
+                            }
+
+                            @Override
+                            public SimpleNetworkWrapper getWrapper() {
+                                return NetworkWrapper.instance;
+                            }
+
+                            @Override
+                            public void loadFunc(LinkedHashMap<String, Operator> funcList) {
+                                funcList.put("tag", ((dst, src) -> {
+                                    if (src != null) return Result.ERR;
+                                    if (dst == null) return Result.ERR;
+                                    if (dst.type == RegType.STR) {
+                                        gate.overSheetTag = (String) dst.data;
+                                        player.sendMessage(new TextComponentString(
+                                                "[NSR] OverSheet Tag set to: " + gate.overSheetTag));
+                                        return Result.OK;
+                                    }
+                                    return Result.ERR;
+                                }));
+
+                                funcList.put("index", ((dst, src) -> {
+                                    if (src != null) return Result.ERR;
+                                    if (dst == null) return Result.ERR;
+                                    if (dst.type == RegType.INT) {
+                                        gate.stationIndex = (int) dst.data;
+                                        player.sendMessage(new TextComponentString(
+                                                "[NSR] Station Index set to: " + gate.stationIndex));
+                                        return Result.OK;
+                                    }
+                                    return Result.ERR;
+                                }));
+                            }
+                        }.run();
+                    }
+
+                    return true;
+                } else if (item instanceof Item1N4148) {
                     if (!world.isRemote) {
                         if (gate.nowName.equals(player.getDisplayNameString())) {
                             gate.openDoor();
@@ -247,19 +340,37 @@ public class GateTiny extends TileBlock {
                     return true;
                 } else if (item instanceof ItemTicketBase) {
                     if (!world.isRemote) {
-
                         if (gate.nowName.equals(player.getDisplayNameString())) {
                             if (item instanceof ItemTicketOnce) {
                                 if (gate.setOver != ItemTicketBase.getOver(stack)) {
                                     gate.closeDoor();
-                                    gate.over = -1;
+                                    gate.over = -3;
+                                    gate.refresh();
                                     return true;
                                 }
                             }
 
                             if (ItemTicketBase.getOver(stack) > 0) {
                                 if (ItemTicketBase.getState(stack)) {
-                                    ItemTicketBase.decOver(stack);
+                                    if (ItemTicketBase.getIndex(stack) < 0)
+                                        ItemTicketBase.decOver(stack);
+                                    else {
+                                        int inIndex = ItemTicketBase.getIndex(stack);
+                                        OverSheet overSheet = OverSheet.getOverSheet(world, gate.overSheetTag);
+                                        int over = 1;
+                                        if (overSheet != null)
+                                            over = overSheet.get(inIndex).get(gate.stationIndex);
+                                        NyaSamaRailway.logger.info(overSheet == null ? "nullSheet" : "hasSheet");
+                                        NyaSamaRailway.logger.info("in: " + inIndex + ", out: " + gate.stationIndex);
+                                        NyaSamaRailway.logger.info("over: " + over);
+                                        if (ItemTicketBase.getOver(stack) < over) {
+                                            gate.closeDoor();
+                                            gate.over = -3;
+                                            gate.refresh();
+                                            return true;
+                                        }
+                                        ItemTicketBase.subOver(stack, over);
+                                    }
                                     if (stack.getItem() instanceof ItemTicketOnce) {
                                         ItemTicketBase.setOver(stack, 0);
                                         player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -267,10 +378,12 @@ public class GateTiny extends TileBlock {
                                     gate.openDoor();
                                     gate.over = ItemTicketBase.getOver(stack);
                                     ItemTicketBase.setState(stack, false);
+                                    ItemTicketBase.setIndex(stack, -1);
                                 } else {
                                     gate.openDoor();
                                     gate.over = ItemTicketBase.getOver(stack);
                                     ItemTicketBase.setState(stack, true);
+                                    ItemTicketBase.setIndex(stack, gate.stationIndex);
                                 }
                                 SoundUtil.instance().playSoundTop(world, pos, SoundUtil.instance().GATE_BEEP);
                             }

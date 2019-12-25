@@ -117,6 +117,9 @@ public class TileEntityModelBinder {
 
         renderers.put(RailEndpoint.TileEntityRailEndpoint.class, new CurvedRailRenderer());
         renderers.put(RailEndpoint.TileEntityFastRailEndpoint.class, new CurvedRailFastRenderer());
+
+        renderers.put(GateTiny.TileEntityGateTiny.class, new GateRenderer(GateRenderer.GATE_TINY));
+        renderers.put(YakumoPC.TileEntityYakumoPC.class, new YakumoPCRenderer());
     }
 
 }

@@ -236,6 +236,9 @@ tile.BuildNode.name=Build Node
 tile.RailEndpoint.name=Rail Endpoint
 tile.RailNode.name=Rail Node
 
+tile.GateTiny.name=Tiny Gate
+tile.YakumoPC.name=Yakumo PC 81R
+
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep
 subtitles.reception.ready=Depart Beep

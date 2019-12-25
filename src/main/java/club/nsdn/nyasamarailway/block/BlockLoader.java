@@ -189,6 +189,9 @@ public class BlockLoader {
         blocks.add(new BuildNode());
         blocks.add(new RailEndpoint());
         blocks.add(new RailNode());
+
+        blocks.add(new GateTiny());
+        blocks.add(new YakumoPC());
     }
 
 }

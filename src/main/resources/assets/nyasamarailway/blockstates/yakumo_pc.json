@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "nyasamarailway:yakumo_pc",
+    "textures": {
+      "base": "nyasamarailway:blocks/pc/yakumo_pc_base",
+      "screen": "nyasamarailway:blocks/pc/yakumo_pc_screen",
+      "print": "nyasamarailway:blocks/pc/yakumo_pc_print",
+      "left": "nyasamarailway:blocks/pc/yakumo_pc_led_r",
+      "right": "nyasamarailway:blocks/pc/yakumo_pc_led_g"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

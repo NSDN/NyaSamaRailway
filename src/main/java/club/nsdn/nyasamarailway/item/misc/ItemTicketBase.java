@@ -39,6 +39,7 @@ public class ItemTicketBase extends Item {
         if (tagCompound == null) return;
         tagCompound.setInteger("over", over);
         tagCompound.setBoolean("state", false);
+        tagCompound.setInteger("index", -1);
         itemStack.setTagCompound(tagCompound);
     }
 
@@ -79,6 +80,39 @@ public class ItemTicketBase extends Item {
         int over = tagCompound.getInteger("over");
         if (over > 0) over -= 1;
         tagCompound.setInteger("over", over);
+        itemStack.setTagCompound(tagCompound);
+    }
+
+    public static void subOver(ItemStack itemStack, int val) {
+        if (!itemStack.hasTagCompound())
+            itemStack.setTagCompound(new NBTTagCompound());
+
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if (tagCompound == null) return;
+        int over = tagCompound.getInteger("over");
+        if (over > 0) over -= val;
+        tagCompound.setInteger("over", over);
+        itemStack.setTagCompound(tagCompound);
+    }
+
+    public static int getIndex(ItemStack itemStack) {
+        if (!itemStack.hasTagCompound())
+            itemStack.setTagCompound(new NBTTagCompound());
+
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if (tagCompound == null) return -1;
+        if (!tagCompound.hasKey("index"))
+            return -1;
+        return tagCompound.getInteger("index");
+    }
+
+    public static void setIndex(ItemStack itemStack, int index) {
+        if (!itemStack.hasTagCompound())
+            itemStack.setTagCompound(new NBTTagCompound());
+
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if (tagCompound == null) return;
+        tagCompound.setInteger("index", index);
         itemStack.setTagCompound(tagCompound);
     }
 

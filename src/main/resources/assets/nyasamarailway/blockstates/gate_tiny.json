@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "nyasamarailway:gate_tiny",
+    "textures": {
+      "main": "nyasamarailway:blocks/gate/gate_main"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

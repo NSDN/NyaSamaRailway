@@ -238,6 +238,9 @@ tile.BuildNode.name=建造节点
 tile.RailEndpoint.name=轨道端点
 tile.RailNode.name=轨道节点
 
+tile.GateTiny.name=紧凑闸机
+tile.YakumoPC.name=八云计算机(81R型)
+
 subtitles.reception.pause=停站提示音
 subtitles.reception.jetty=停站提示音
 subtitles.reception.ready=发车提示音

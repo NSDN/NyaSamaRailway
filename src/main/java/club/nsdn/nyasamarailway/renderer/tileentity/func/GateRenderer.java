@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.tileentity.func;
 
 import club.nsdn.nyasamarailway.tileblock.func.GateDoor;
+import club.nsdn.nyasamarailway.tileblock.func.GateTiny;
 import club.nsdn.nyasamarailway.tileblock.signal.deco.GateFront;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
@@ -17,6 +18,7 @@ import javax.annotation.Nonnull;
 public class GateRenderer extends AbsTileEntitySpecialRenderer {
 
     private final WavefrontObject modelBase;
+    private final WavefrontObject modelTiny;
     private final WavefrontObject modelFrontMain;
     private final WavefrontObject modelDoorAxis;
     private final WavefrontObject modelDoorLeft;
@@ -49,6 +51,7 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
     public static final int GATE_DOOR = 1;
     public static final int GATE_FRONT_N = 2;
     public static final int GATE_FRONT = 3;
+    public static final int GATE_TINY = 4;
     private final int renderType;
 
     public static final float ANIMATION_STEP = 10;
@@ -56,6 +59,9 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
     public GateRenderer(int renderType) {
         modelBase = new WavefrontObject(
                 new ResourceLocation("nyasamarailway", "models/blocks/gate/gate_base.obj")
+        );
+        modelTiny = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/gate/gate_tiny_main.obj")
         );
         modelFrontMain = new WavefrontObject(
                 new ResourceLocation("nyasamarailway", "models/blocks/gate/gate_front_main.obj")
@@ -191,6 +197,49 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_1], angle, textureText[over / 100]);
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_2], angle, textureText[(over % 100) / 10]);
                         RendererHelper.renderWithResourceAndRotation(modelScreen[SCREEN_3], angle, textureText[over % 10]);
+                    }
+                }
+                break;
+            case GATE_TINY:
+                if (te instanceof GateTiny.TileEntityGateTiny) {
+                    boolean isEnabled = ((GateTiny.TileEntityGateTiny) te).isEnabled;
+                    int over = ((GateTiny.TileEntityGateTiny) te).over;
+                    boolean doorState = ((GateTiny.TileEntityGateTiny) te).doorState;
+
+                    RendererHelper.renderPartWithResourceAndRotation(modelTiny, "base", angle, textureMain);
+                    RendererHelper.renderPartWithResourceAndRotation(modelTiny, "front", angle, textureMain);
+                    RendererHelper.renderPartWithResourceAndRotation(modelTiny, "arm", angle, textureMain);
+                    RendererHelper.renderPartWithResourceAndRotation(modelTiny, "top", angle, textureMain);
+
+                    if (doorState)
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "door_open", angle, textureMain);
+                    else
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "door", angle, textureMain);
+
+                    RendererHelper.beginSpecialLighting();
+
+                    if (isEnabled)
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "led_g", angle, textureMain);
+                    else
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "led_r", angle, textureMain);
+
+                    if (over == -1) {
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_0", angle, textureText[TEXT_SUB]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_1", angle, textureText[TEXT_SUB]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_2", angle, textureText[TEXT_SUB]);
+                    } else if (over == -2) {
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_0", angle, textureText[TEXT_N]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_1", angle, textureText[TEXT_U]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_2", angle, textureText[TEXT_L]);
+                    } else if (over == -3) {
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_0", angle, textureText[TEXT_E]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_1", angle, textureText[TEXT_R]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_2", angle, textureText[TEXT_R]);
+                    } else {
+                        if (over > 999) over = 999;
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_0", angle, textureText[over / 100]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_1", angle, textureText[(over % 100) / 10]);
+                        RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_2", angle, textureText[over % 10]);
                     }
                 }
                 break;
