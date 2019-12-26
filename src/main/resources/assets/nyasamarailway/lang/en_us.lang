@@ -239,6 +239,26 @@ tile.RailNode.name=Rail Node
 tile.GateTiny.name=Tiny Gate
 tile.YakumoPC.name=Yakumo PC 81R
 
+pc.menu.line1=MENU:
+pc.menu.line2=1. Once-Ticket
+pc.menu.line3=2. Stored Card
+pc.menu.line4=0. About This PC
+pc.once.line1=Input Over:
+pc.once.line2=-- 1-9 as Dec
+pc.once.line3=-- A-F as Hex
+pc.once.line5=Press Y to make
+pc.once.line6=Over: %d
+pc.card.line1=Select Over:
+pc.card.line2=1:10 2:20 3:50
+pc.card.line3=4:80 5:100 6:200
+pc.card.line5=Press Y to make
+pc.card.line6=Over: %d
+pc.about.line1=Yakumo PC 81R
+pc.about.line2=0-F for select
+pc.about.line3=Y for confirm
+pc.about.line4=N for back
+pc.about.line6=press any key...
+
 subtitles.reception.pause=Parking Beep
 subtitles.reception.jetty=Parking Beep
 subtitles.reception.ready=Depart Beep

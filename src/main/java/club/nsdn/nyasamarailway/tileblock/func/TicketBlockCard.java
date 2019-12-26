@@ -160,8 +160,8 @@ public class TicketBlockCard extends TileBlock {
                     ticketBlock.refresh();
 
                     return true;
-                } else if (stack.getItem() instanceof ItemTicketStore) {
-                    if ((meta & 0x4) != 0) {
+                } else if (stack.getItem() instanceof ItemTicketBase) {
+                    if ((meta & 0x4) != 0 && stack.getItem() instanceof ItemTicketStore) {
                         int over = ItemTicketBase.getOver(stack);
                         if (over > MAX_OVER) {
                             ItemStack itemStack = new ItemStack(ItemLoader.nyaCoin);
@@ -172,6 +172,7 @@ public class TicketBlockCard extends TileBlock {
                             ItemTicketBase.setOver(stack, over + ticketBlock.over);
                         }
                     }
+                    ItemTicketBase.resetCard(stack);
                     ticketBlock.over = ItemTicketBase.getOver(stack);
                     ticketBlock.META = (meta & 0x3) | 0x8;
                     ticketBlock.refresh();

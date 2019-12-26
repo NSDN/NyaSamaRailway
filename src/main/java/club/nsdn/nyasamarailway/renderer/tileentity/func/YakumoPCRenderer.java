@@ -18,13 +18,17 @@ import javax.annotation.Nonnull;
  */
 public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
 
-    public static final int ALIGN_CENTER = 0, ALIGN_LEFT = 1, ALIGN_RIGHT = 2;
+    private static final int SCREEN_WIDTH = 70;
+    private static final int SCREEN_LINES = 6;
 
     private final WavefrontObject modelMain;
+    private final WavefrontObject modelKeys;
 
     private final ResourceLocation textureBase;
     private final ResourceLocation textureScreen;
     private final ResourceLocation texturePrint;
+    private final ResourceLocation textureKeys;
+    private final ResourceLocation textureOverlay;
 
     private static final int LED_R = 0;
     private static final int LED_G = 1;
@@ -35,10 +39,15 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
         modelMain = new WavefrontObject(
                 new ResourceLocation("nyasamarailway", "models/blocks/yakumo_pc_main.obj")
         );
+        modelKeys = new WavefrontObject(
+                new ResourceLocation("nyasamarailway", "models/blocks/yakumo_pc_keys.obj")
+        );
 
         textureBase = new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_base.png");
         textureScreen = new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_screen.png");
         texturePrint = new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_print.png");
+        textureKeys = new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_keys.png");
+        textureOverlay = new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_overlay.png");
 
         textureLED = new ResourceLocation[] {
                 new ResourceLocation("nyasamarailway", "textures/blocks/pc/yakumo_pc_led_r.png"),
@@ -61,11 +70,12 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
         int angle = (meta & 0x3) * 90;
 
         boolean ledLeft = false, ledRight = false;
-        String content = "DUMMY";
+        String content = "DUMMY"; char hitKey = 0;
         if (te instanceof YakumoPC.TileEntityYakumoPC) {
             content = ((YakumoPC.TileEntityYakumoPC) te).buffer;
             ledLeft = ((YakumoPC.TileEntityYakumoPC) te).ledLeft;
             ledRight = ((YakumoPC.TileEntityYakumoPC) te).ledRight;
+            hitKey = ((YakumoPC.TileEntityYakumoPC) te).hitKey;
         }
 
         GL11.glPushMatrix();
@@ -84,6 +94,13 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
             modelMain.renderPart("led_l");
             manager.bindTexture(textureLED[ledRight ? LED_G : LED_N]);
             modelMain.renderPart("led_r");
+
+            manager.bindTexture(textureKeys);
+            modelKeys.renderPart("keys");
+            if (hitKey != 0) {
+                manager.bindTexture(textureOverlay);
+                modelKeys.renderPart("key_" + hitKey);
+            }
         }
         GL11.glPopMatrix();
         GL11.glPopMatrix();
@@ -91,7 +108,7 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
         RendererHelper.beginSpecialLighting();
 
         final float offset = 0.0625F;
-        final double offsetX = 0.35, offsetY = 0.275;
+        final double offsetX = 0.35, offsetY = 0.425;
         final int color = 0xFFC107;
 
         GL11.glPushMatrix();
@@ -102,7 +119,7 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
         GL11.glRotatef(180.0F,0.0F, 0.0F, 1.0F);
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, offset - 0.01F);
-        renderString(content, 0.5, ALIGN_LEFT, color);
+        renderString(content, color);
         GL11.glPopMatrix();
         GL11.glPopMatrix();
         GL11.glPopMatrix();
@@ -113,26 +130,25 @@ public class YakumoPCRenderer extends AbsTileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
-    private void renderString(String str, double scale, int align, int color) {
+    private void renderString(String str, int color) {
         FontRenderer renderer = Minecraft.getMinecraft().fontRenderer;
+        final double scale = 0.5;
         GL11.glPushMatrix();
         GL11.glScaled(scale, scale, 1.0);
         GL11.glPushMatrix();
         GL11.glScalef(0.02F, 0.02F, 1.0F);
         GL11.glPushMatrix();
         String[] lines = str.split("\n");
-        GL11.glTranslatef(0.0F, -(float) lines.length / 2.0F * renderer.FONT_HEIGHT, 0.0F);
-        int x = 0, y = 0;
+        int y = 0;
         for (String s : lines) {
-            switch (align) {
-                case ALIGN_CENTER:
-                    x = -renderer.getStringWidth(s) / 2; break;
-                case ALIGN_LEFT:
-                    x = 0; break;
-                case ALIGN_RIGHT:
-                    x = -renderer.getStringWidth(s); break;
+            String buf = "", tmp;
+            for (int i = 0; i < s.length(); i++) {
+                tmp = String.valueOf(s.charAt(i));
+                if (renderer.getStringWidth(buf.concat(tmp)) > SCREEN_WIDTH)
+                    break;
+                buf = buf.concat(tmp);
             }
-            renderer.drawString(s, x, y, color);
+            renderer.drawString(buf, 0, y, color);
             y += renderer.FONT_HEIGHT;
         }
         GL11.glPopMatrix();

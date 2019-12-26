@@ -6,6 +6,7 @@ import club.nsdn.nyasamarailway.tileblock.signal.deco.GateFront;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.util.ResourceLocation;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import org.lwjgl.opengl.GL11;
@@ -156,6 +157,8 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
                     GL11.glPushMatrix();
                     GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
 
+                    RendererHelper.beginSpecialLighting();
+
                     GL11.glPushMatrix();
                     GL11.glTranslatef(gateDoor.prevDist, 0.0F, 0.0F);
                     RendererHelper.renderWithResource(modelDoorLeft, textureMain);
@@ -205,18 +208,22 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
                     boolean isEnabled = ((GateTiny.TileEntityGateTiny) te).isEnabled;
                     int over = ((GateTiny.TileEntityGateTiny) te).over;
                     boolean doorState = ((GateTiny.TileEntityGateTiny) te).doorState;
+                    boolean onSlab = te.getWorld().getBlockState(te.getPos().down()).getBlock() instanceof BlockSlab;
+
+                    GL11.glPushMatrix();
+                    GL11.glTranslated(0, onSlab ? -0.5 : 0, 0);
 
                     RendererHelper.renderPartWithResourceAndRotation(modelTiny, "base", angle, textureMain);
                     RendererHelper.renderPartWithResourceAndRotation(modelTiny, "front", angle, textureMain);
                     RendererHelper.renderPartWithResourceAndRotation(modelTiny, "arm", angle, textureMain);
                     RendererHelper.renderPartWithResourceAndRotation(modelTiny, "top", angle, textureMain);
 
+                    RendererHelper.beginSpecialLighting();
+
                     if (doorState)
                         RendererHelper.renderPartWithResourceAndRotation(modelTiny, "door_open", angle, textureMain);
                     else
                         RendererHelper.renderPartWithResourceAndRotation(modelTiny, "door", angle, textureMain);
-
-                    RendererHelper.beginSpecialLighting();
 
                     if (isEnabled)
                         RendererHelper.renderPartWithResourceAndRotation(modelTiny, "led_g", angle, textureMain);
@@ -241,6 +248,7 @@ public class GateRenderer extends AbsTileEntitySpecialRenderer {
                         RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_1", angle, textureText[(over % 100) / 10]);
                         RendererHelper.renderPartWithResourceAndRotation(modelTiny, "text_2", angle, textureText[over % 10]);
                     }
+                    GL11.glPopMatrix();
                 }
                 break;
             default:

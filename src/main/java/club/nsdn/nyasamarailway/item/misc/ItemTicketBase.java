@@ -31,6 +31,14 @@ public class ItemTicketBase extends Item {
         return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
+    public static void resetCard(ItemStack itemStack) {
+        NBTTagCompound tagCompound = itemStack.getTagCompound();
+        if (tagCompound == null) return;
+        tagCompound.setBoolean("state", false);
+        tagCompound.setInteger("index", -1);
+        itemStack.setTagCompound(tagCompound);
+    }
+
     public static void setOver(ItemStack itemStack, int over) {
         if (!itemStack.hasTagCompound())
             itemStack.setTagCompound(new NBTTagCompound());
@@ -38,9 +46,9 @@ public class ItemTicketBase extends Item {
         NBTTagCompound tagCompound = itemStack.getTagCompound();
         if (tagCompound == null) return;
         tagCompound.setInteger("over", over);
-        tagCompound.setBoolean("state", false);
-        tagCompound.setInteger("index", -1);
         itemStack.setTagCompound(tagCompound);
+
+        resetCard(itemStack);
     }
 
     public static void setState(ItemStack itemStack, boolean state) {

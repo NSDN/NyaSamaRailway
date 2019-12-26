@@ -54,7 +54,7 @@ public class GateTiny extends TileBlock {
         public int setOver = 1;
         public boolean doorState = false;
         public String overSheetTag = "";
-        public int stationIndex = 0;
+        public int stationIndex = -1;
 
         private String nowName = "";
         private int rstCounter = RST_DELAY_DEFAULT;
@@ -152,7 +152,10 @@ public class GateTiny extends TileBlock {
             if (gate.isEnabled) {
                 player = findPlayer(world, pos.add(vec.rotate(Rotation.CLOCKWISE_180)));
                 if (player != null) {
-                    gate.nowName = player.getDisplayNameString();
+                    if (gate.nowName.isEmpty())
+                        gate.nowName = player.getDisplayNameString();
+                    else if (!gate.nowName.equals(player.getDisplayNameString()))
+                        gate.reset();
                 }
                 player = findPlayer(world, pos.add(vec));
                 if (player != null) {
@@ -178,6 +181,10 @@ public class GateTiny extends TileBlock {
         public void closeDoor() {
             doorState = false;
             rstCounter = 0;
+        }
+
+        public boolean useOverSys() {
+            return !overSheetTag.isEmpty() && stationIndex >= 0;
         }
 
         public EntityPlayer findPlayer(World world, BlockPos pos) {
@@ -240,7 +247,7 @@ public class GateTiny extends TileBlock {
     @Nonnull
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
         if (world.getBlockState(pos.down()).getBlock() instanceof BlockSlab)
-            super.getBoundingBox(state, world, pos).contract(0, 0.5, 0);
+            return super.getBoundingBox(state, world, pos).contract(0, 0.5, 0);
         return super.getBoundingBox(state, world, pos);
     }
 
@@ -341,7 +348,7 @@ public class GateTiny extends TileBlock {
                 } else if (item instanceof ItemTicketBase) {
                     if (!world.isRemote) {
                         if (gate.nowName.equals(player.getDisplayNameString())) {
-                            if (item instanceof ItemTicketOnce) {
+                            if (item instanceof ItemTicketOnce && !gate.useOverSys()) {
                                 if (gate.setOver != ItemTicketBase.getOver(stack)) {
                                     gate.closeDoor();
                                     gate.over = -3;
@@ -352,7 +359,7 @@ public class GateTiny extends TileBlock {
 
                             if (ItemTicketBase.getOver(stack) > 0) {
                                 if (ItemTicketBase.getState(stack)) {
-                                    if (ItemTicketBase.getIndex(stack) < 0)
+                                    if (!gate.useOverSys())
                                         ItemTicketBase.decOver(stack);
                                     else {
                                         int inIndex = ItemTicketBase.getIndex(stack);
