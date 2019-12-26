@@ -239,7 +239,7 @@ tile.RailEndpoint.name=轨道端点
 tile.RailNode.name=轨道节点
 
 tile.GateTiny.name=紧凑闸机
-tile.YakumoPC.name=八云计算机 81R版
+tile.YakumoPC.name=八云计算机 81R型
 pc.menu.line1=请选择功能:
 pc.menu.line2=1. 单程票制作
 pc.menu.line3=2. 储值卡制作
@@ -254,7 +254,7 @@ pc.card.line2=1:10 2:20 3:50
 pc.card.line3=4:80 5:100 6:200
 pc.card.line5=Y 键出票
 pc.card.line6=数额: %d
-pc.about.line1=八云计算机 81R版
+pc.about.line1=八云计算机 81R型
 pc.about.line2=0-F 键选择功能
 pc.about.line3=Y 键确认
 pc.about.line4=N 键返回

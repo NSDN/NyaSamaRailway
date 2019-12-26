@@ -57,7 +57,7 @@ public class GateTiny extends TileBlock {
         public int stationIndex = -1;
 
         private String nowName = "";
-        private int rstCounter = RST_DELAY_DEFAULT;
+        private int rstCounter = RST_DELAY * 20;
 
         public TileEntityGateTiny() {
             super();
