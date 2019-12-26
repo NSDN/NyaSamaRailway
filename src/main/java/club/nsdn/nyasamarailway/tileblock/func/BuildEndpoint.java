@@ -99,7 +99,7 @@ public class BuildEndpoint extends BlockContainer {
                             (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F
                     );
                     if (world.getBlockState(next).getBlock() != this)
-                        endpoint.theTask.place(world, next, endpoint::recordUndo);
+                        endpoint.theTask.place(world, next, endpoint::recordUndo, endpoint::hadPlaced);
 
                     if (endpoint.theTask.tick <= 0) {
                         for (int i = endpoint.theTask.tick; i < 1; i++) {
@@ -107,7 +107,7 @@ public class BuildEndpoint extends BlockContainer {
                                 break;
                             vec = endpoint.next(); next = vec2Pos(vec);
                             if (world.getBlockState(next).getBlock() != this)
-                                endpoint.theTask.place(world, next, endpoint::recordUndo);
+                                endpoint.theTask.place(world, next, endpoint::recordUndo, endpoint::hadPlaced);
                         }
                         world.scheduleUpdate(pos, this, 1);
                     } else {

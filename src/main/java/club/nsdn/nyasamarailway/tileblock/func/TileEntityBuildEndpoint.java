@@ -47,6 +47,10 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
             void record(World world, BlockPos pos);
         }
 
+        public interface ICompare {
+            boolean compare(BlockPos pos);
+        }
+
         public Task setTick(int t) { tick = t; return this; }
 
         public Task setType(int t) { type = t; return this; }
@@ -57,13 +61,20 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
 
         public Task setHeight(int h) { height = Math.abs(h); return this; }
 
-        public void place(World world, BlockPos pos, IRecord record) {
+        public void place(World world, BlockPos pos, IRecord record, ICompare compare) {
             IBlockState state = Block.getBlockById(block).getDefaultState();
             for (Tuple<BlockPos, Integer> blk : blocks) {
                 BlockPos offset = blk.getFirst();
                 int id = blk.getSecond();
                 if (world.getTileEntity(pos.add(offset)) instanceof TileEntityBuildEndpoint)
                     continue;
+                if (compare.compare(pos.add(offset))) {
+                    if (id == 0)
+                        world.setBlockToAir(pos.add(offset));
+                    continue;
+                }
+
+
                 record.record(world, pos.add(offset));
                 if (id == block)
                     world.setBlockState(pos.add(offset), state);
@@ -145,9 +156,15 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
         }
     }
     public LinkedList<BackBlk> oldBlocks = new LinkedList<>();
+    public LinkedList<BlockPos> placedPos = new LinkedList<>();
+
+    public boolean hadPlaced(BlockPos pos) {
+        return placedPos.contains(pos);
+    }
 
     public void recordUndo(World world, BlockPos pos) {
         oldBlocks.add(new BackBlk(pos, world.getBlockState(pos)));
+        placedPos.add(new BlockPos(pos));
     }
 
     public void undo(World world) {
@@ -156,10 +173,12 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
             world.setBlockState(blk.pos, blk.state);
         }
         oldBlocks.clear();
+        placedPos.clear();
     }
 
     public void clearUndo() {
         oldBlocks.clear();
+        placedPos.clear();
     }
 
     boolean inv = false;
