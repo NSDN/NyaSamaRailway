@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by drzzm32 on 2019.12.25.
@@ -134,6 +135,35 @@ public class OverSheet extends Utility.Data.IntDataSheet {
         }
 
         return sheet;
+    }
+
+    public static String showSheetsInfo(World world) {
+        StringBuilder builder = new StringBuilder();
+
+        if (!sheets.containsKey(world)) {
+            builder.append("This world do not have any sheet.");
+            return builder.toString();
+        }
+
+        LinkedHashMap<String, OverSheet> subSheets = sheets.get(world);
+        builder.append("World [");
+        builder.append(world.getWorldInfo().getWorldName());
+        builder.append("] has ");
+        builder.append(subSheets.size());
+        builder.append(" sheet(s):\n");
+        for (Map.Entry<String, OverSheet> i : subSheets.entrySet()) {
+            builder.append(i.getKey());
+            builder.append(": ");
+            OverSheet sheet = i.getValue();
+            builder.append(sheet.size());
+            if (sheet.size() > 0) {
+                builder.append("x");
+                builder.append(sheet.get(0).size());
+            }
+            builder.append("\n");
+        }
+
+        return builder.toString();
     }
 
     void saveToWorld(World world, String tag) {

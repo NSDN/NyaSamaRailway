@@ -360,9 +360,6 @@ public class GateTiny extends TileBlock {
                                         int over = 1;
                                         if (overSheet != null)
                                             over = overSheet.get(inIndex).get(gate.stationIndex);
-                                        NyaSamaRailway.logger.info(overSheet == null ? "nullSheet" : "hasSheet");
-                                        NyaSamaRailway.logger.info("in: " + inIndex + ", out: " + gate.stationIndex);
-                                        NyaSamaRailway.logger.info("over: " + over);
                                         if (ItemTicketBase.getOver(stack) < over) {
                                             gate.closeDoor();
                                             gate.over = -3;

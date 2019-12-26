@@ -47,6 +47,14 @@ public class OverSysCommand extends CommandBase {
         public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) {
             if (args.length < 2) {
                 sender.sendMessage(new TextComponentString(TextFormatting.AQUA + getUsage(sender)));
+                if (sender instanceof EntityPlayer) {
+                    int dim = ((EntityPlayer) sender).dimension;
+                    if (args.length == 1) {
+                        String[] str = OverSheet.showSheetsInfo(server.getWorld(dim)).split("\n");
+                        for (String s : str)
+                            sender.sendMessage(new TextComponentString(TextFormatting.GRAY + s));
+                    }
+                }
                 return;
             }
 
