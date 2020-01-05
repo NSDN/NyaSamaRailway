@@ -9,12 +9,13 @@ import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionType;
 import net.minecraft.util.EnumFacing;
 import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMinecart;
@@ -800,23 +801,61 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 box = this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D);
             }
 
+            /** modified for Automatic Train Control */
             if (this.canBeRidden() && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D) {
                 List<Entity> list = this.world.getEntitiesInAABBexcluding(this, box, EntitySelectors.getTeamCollisionPredicate(this));
                 if (!list.isEmpty()) {
-                    for(int j1 = 0; j1 < list.size(); ++j1) {
-                        Entity entity1 = (Entity)list.get(j1);
-                        if (!(entity1 instanceof EntityPlayer) && !(entity1 instanceof EntityIronGolem) && !(entity1 instanceof EntityMinecart) && canFitPassenger(entity1) && !entity1.isRiding()) {
-                            entity1.startRiding(this);
+                    for (int i = 0; i < list.size(); ++i) {
+                        Entity target = list.get(i);
+                        if (target instanceof EntityLivingBase) {
+                            EntityLivingBase living = (EntityLivingBase) target;
+                            Vec3d src = this.getPositionVector();
+                            Vec3d dst = target.getPositionVector();
+                            Vec3d vec = dst.subtract(src);
+
+                            vec = vec.normalize().scale(this.getSpeed() * (1.5 + rand.nextDouble()));
+                            vec = vec.addVector(0, 1 + rand.nextDouble(), 0);
+
+                            if (living instanceof EntityPlayer) {
+                                EntityPlayer player = (EntityPlayer) living;
+                                if (!player.isCreative()) {
+                                    player.setHealth(player.getHealth() / 2.0F);
+                                    player.performHurtAnimation();
+                                    PotionType type;
+                                    type = PotionType.getPotionTypeForName("long_weakness");
+                                    if (type != null)
+                                        for (PotionEffect effect : type.getEffects())
+                                            effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
+                                    type = PotionType.getPotionTypeForName("strong_harming");
+                                    if (type != null)
+                                        for (PotionEffect effect : type.getEffects())
+                                            effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
+                                }
+                            } else {
+                                living.setHealth(living.getHealth() / 2.0F);
+                                living.performHurtAnimation();
+                                PotionType type;
+                                type = PotionType.getPotionTypeForName("long_weakness");
+                                if (type != null)
+                                    for (PotionEffect effect : type.getEffects())
+                                        effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
+                                type = PotionType.getPotionTypeForName("strong_harming");
+                                if (type != null)
+                                    for (PotionEffect effect : type.getEffects())
+                                        effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
+                            }
+
+                            living.addVelocity(vec.x, vec.y, vec.z);
                         } else {
-                            entity1.applyEntityCollision(this);
+                            target.applyEntityCollision(this);
                         }
                     }
                 }
             } else {
-                Iterator var13 = this.world.getEntitiesWithinAABBExcludingEntity(this, box).iterator();
+                Iterator iterator = this.world.getEntitiesWithinAABBExcludingEntity(this, box).iterator();
 
-                while(var13.hasNext()) {
-                    Entity entity = (Entity)var13.next();
+                while(iterator.hasNext()) {
+                    Entity entity = (Entity)iterator.next();
                     if (!this.isPassenger(entity) && entity.canBePushed() && entity instanceof EntityMinecart) {
                         entity.applyEntityCollision(this);
                     }
