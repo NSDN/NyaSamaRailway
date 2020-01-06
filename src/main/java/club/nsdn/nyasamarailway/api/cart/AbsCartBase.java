@@ -830,6 +830,9 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                                     if (type != null)
                                         for (PotionEffect effect : type.getEffects())
                                             effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
+                                    player.addVelocity(vec.x, vec.y, vec.z);
+                                } else {
+                                    player.applyEntityCollision(this);
                                 }
                             } else {
                                 living.setHealth(living.getHealth() / 2.0F);
@@ -843,9 +846,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                                 if (type != null)
                                     for (PotionEffect effect : type.getEffects())
                                         effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
+                                living.addVelocity(vec.x, vec.y, vec.z);
                             }
-
-                            living.addVelocity(vec.x, vec.y, vec.z);
                         } else {
                             target.applyEntityCollision(this);
                         }
