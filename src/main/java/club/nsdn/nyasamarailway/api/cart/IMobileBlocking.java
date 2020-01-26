@@ -19,6 +19,10 @@ public interface IMobileBlocking {
     boolean getBlockingState();
     void setBlockingState(boolean value);
 
+    static Tuple<BlockPos, EnumFacing> findNextRail(World world, Tuple<BlockPos, EnumFacing> now) {
+        return findNextRail(world, null, now);
+    }
+
     static Tuple<BlockPos, EnumFacing> findNextRail(World world, EntityMinecart cart, Tuple<BlockPos, EnumFacing> now) {
         if (now == null) return null;
 
@@ -102,41 +106,29 @@ public interface IMobileBlocking {
             case NORTH_EAST:
                 switch (now.getSecond()) {
                     case NORTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().north()))
-                            return new Tuple<>(now.getFirst().down().north(), now.getSecond());
-                        return new Tuple<>(now.getFirst().north(), EnumFacing.NORTH);
-                    case SOUTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().east()))
-                            return new Tuple<>(now.getFirst().down().east(), now.getSecond());
-                        return new Tuple<>(now.getFirst().east(), EnumFacing.EAST);
-                    case EAST:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().east()))
-                            return new Tuple<>(now.getFirst().down().east(), now.getSecond());
-                        return new Tuple<>(now.getFirst().east(), EnumFacing.EAST);
                     case WEST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().north()))
-                            return new Tuple<>(now.getFirst().down().north(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().north(), EnumFacing.NORTH);
                         return new Tuple<>(now.getFirst().north(), EnumFacing.NORTH);
+                    case SOUTH:
+                    case EAST:
+                        if (!BlockRailBase.isRailBlock(world, now.getFirst().east()))
+                            return new Tuple<>(now.getFirst().down().east(), EnumFacing.EAST);
+                        return new Tuple<>(now.getFirst().east(), EnumFacing.EAST);
                     default:
                         return null;
                 }
             case NORTH_WEST:
                 switch (now.getSecond()) {
                     case NORTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().north()))
-                            return new Tuple<>(now.getFirst().down().north(), now.getSecond());
-                        return new Tuple<>(now.getFirst().north(), EnumFacing.NORTH);
-                    case SOUTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().west()))
-                            return new Tuple<>(now.getFirst().down().west(), now.getSecond());
-                        return new Tuple<>(now.getFirst().west(), EnumFacing.WEST);
                     case EAST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().north()))
-                            return new Tuple<>(now.getFirst().down().north(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().north(), EnumFacing.NORTH);
                         return new Tuple<>(now.getFirst().north(), EnumFacing.NORTH);
+                    case SOUTH:
                     case WEST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().west()))
-                            return new Tuple<>(now.getFirst().down().west(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().west(), EnumFacing.WEST);
                         return new Tuple<>(now.getFirst().west(), EnumFacing.WEST);
                     default:
                         return null;
@@ -144,20 +136,14 @@ public interface IMobileBlocking {
             case SOUTH_EAST:
                 switch (now.getSecond()) {
                     case NORTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().east()))
-                            return new Tuple<>(now.getFirst().down().east(), now.getSecond());
-                        return new Tuple<>(now.getFirst().east(), EnumFacing.EAST);
-                    case SOUTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().south()))
-                            return new Tuple<>(now.getFirst().down().south(), now.getSecond());
-                        return new Tuple<>(now.getFirst().south(), EnumFacing.SOUTH);
                     case EAST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().east()))
-                            return new Tuple<>(now.getFirst().down().east(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().east(), EnumFacing.EAST);
                         return new Tuple<>(now.getFirst().east(), EnumFacing.EAST);
+                    case SOUTH:
                     case WEST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().south()))
-                            return new Tuple<>(now.getFirst().down().south(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().south(), EnumFacing.SOUTH);
                         return new Tuple<>(now.getFirst().south(), EnumFacing.SOUTH);
                     default:
                         return null;
@@ -165,21 +151,15 @@ public interface IMobileBlocking {
             case SOUTH_WEST:
                 switch (now.getSecond()) {
                     case NORTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().west()))
-                            return new Tuple<>(now.getFirst().down().west(), now.getSecond());
-                        return new Tuple<>(now.getFirst().west(), EnumFacing.WEST);
-                    case SOUTH:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().south()))
-                            return new Tuple<>(now.getFirst().down().south(), now.getSecond());
-                        return new Tuple<>(now.getFirst().south(), EnumFacing.SOUTH);
-                    case EAST:
-                        if (!BlockRailBase.isRailBlock(world, now.getFirst().south()))
-                            return new Tuple<>(now.getFirst().down().south(), now.getSecond());
-                        return new Tuple<>(now.getFirst().south(), EnumFacing.SOUTH);
                     case WEST:
                         if (!BlockRailBase.isRailBlock(world, now.getFirst().west()))
-                            return new Tuple<>(now.getFirst().down().west(), now.getSecond());
+                            return new Tuple<>(now.getFirst().down().west(), EnumFacing.WEST);
                         return new Tuple<>(now.getFirst().west(), EnumFacing.WEST);
+                    case SOUTH:
+                    case EAST:
+                        if (!BlockRailBase.isRailBlock(world, now.getFirst().south()))
+                            return new Tuple<>(now.getFirst().down().south(), EnumFacing.SOUTH);
+                        return new Tuple<>(now.getFirst().south(), EnumFacing.SOUTH);
                     default:
                         return null;
                 }
