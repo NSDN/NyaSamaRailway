@@ -111,7 +111,7 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
         if (tileEntity instanceof TileEntityVirtualRail) {
             TileEntityVirtualRail rail = (TileEntityVirtualRail) tileEntity;
 
-            int val = MathHelper.floor((double)((player.rotationYaw + 360.0F) * 8.0F / 360.0F) + 0.5D) & 7;
+            int val = MathHelper.floor((double)((player.rotationYaw + 180.0F) * 8.0F / 360.0F) + 0.5D) & 7;
             rail.direction = val * 45;
             rail.actualDir = rail.direction;
 
@@ -151,10 +151,10 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
 
                 switch (rail.state) {
                     case TileEntityVirtualRail.STATE_POS: //left
-                        rail.actualDir = rail.direction + 45;
+                        rail.actualDir = rail.direction - 45;
                         break;
                     case TileEntityVirtualRail.STATE_NEG: //right
-                        rail.actualDir = rail.direction - 45;
+                        rail.actualDir = rail.direction + 45;
                         break;
                     case TileEntityVirtualRail.STATE_ZERO:
                         rail.actualDir = rail.direction;

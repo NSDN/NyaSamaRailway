@@ -1,7 +1,6 @@
 package club.nsdn.nyasamarailway.renderer.tileentity.rail;
 
-import club.nsdn.nyasamarailway.api.rail.AbsRailBase;
-import club.nsdn.nyasamarailway.api.rail.IMonoSwitch;
+import club.nsdn.nyasamarailway.api.rail.IBaseRail;
 import club.nsdn.nyasamarailway.tileblock.rail.VirtualRail;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
@@ -34,11 +33,8 @@ public class VirtualRailRenderer extends AbsTileEntitySpecialRenderer {
         //RendererHelper.beginSpecialLighting();
 
         GL11.glPushMatrix();
-        if (!(te.getWorld().getBlockState(te.getPos().down()).getBlock() instanceof AbsRailBase) &&
-                !(te.getWorld().getTileEntity(te.getPos().down()) instanceof IMonoSwitch)) {
-            GL11.glTranslatef(0.0F, 0.25F, 0.0F);
-            GL11.glTranslatef(0.0F, 0.00625F, 0.0F);
-        }
+        if (te.getWorld().getTileEntity(te.getPos().down()) instanceof IBaseRail)
+            GL11.glTranslatef(0.0F, -0.25F, 0.0F);
 
         RendererHelper.renderWithResourceAndRotation(model, angle, texture);
 

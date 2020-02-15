@@ -67,11 +67,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
     private static final DataParameter<Boolean> CURVED = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> BLOCKING = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> VIRTUAL = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.VARINT);
 
     public TileEntityRailEndpoint nowEndPoint = null;
     public double nowProgress = 0;
     public double progressDir = 0;
+
+    public int virtualCounter = 0;
+    public boolean inVirtual = false;
 
     public AbsCartBase(World world) {
         super(world);
@@ -87,7 +89,6 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
         dataManager.register(CURVED, false);
         dataManager.register(BLOCKING, Float.NaN);
-        dataManager.register(VIRTUAL, 0);
     }
 
     public void setCurved(boolean state) { dataManager.set(CURVED, state); }
@@ -106,11 +107,11 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         return getVirtualCounter() < 600;
     }
 
-    public int getVirtualCounter() { return dataManager.get(VIRTUAL); }
+    public int getVirtualCounter() { return virtualCounter; }
 
-    public void incVirtualCounter() { dataManager.set(VIRTUAL, getVirtualCounter() + 1); }
+    public void incVirtualCounter() { virtualCounter += 1; }
 
-    public void resetVirtualCounter() { dataManager.set(VIRTUAL, 0); }
+    public void resetVirtualCounter() { virtualCounter = 0; }
 
     @Nonnull
     public abstract ItemStack getCartItem();
@@ -652,6 +653,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
         nowProgress = tagCompound.getDouble("nowProgress");
         progressDir = tagCompound.getDouble("progressDir");
+        virtualCounter = tagCompound.getInteger("virtualCounter");
+        inVirtual = tagCompound.getBoolean("inVirtual");
     }
 
     @Override
@@ -663,6 +666,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
         tagCompound.setDouble("nowProgress", nowProgress);
         tagCompound.setDouble("progressDir", progressDir);
+        tagCompound.setInteger("virtualCounter", virtualCounter);
+        tagCompound.setBoolean("inVirtual", inVirtual);
     }
 
     /*******************************************************************************************************************/
@@ -783,7 +788,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             this.onActivatorRailPass(x, y, z, state.getValue(BlockRailPowered.POWERED));
                         }
                         resetVirtualCounter();
-                    } else if (state.getBlock() instanceof IVirtualRail && canRunVirtually()) {
+                        this.inVirtual = false;
+                    } else if ((state.getBlock() instanceof IVirtualRail && canRunVirtually()) || this.inVirtual) {
                         double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
                         IVirtualRail rail = (IVirtualRail) state.getBlock();
                         float dir = rail.getTargetDirection(this.world, pos);
@@ -794,9 +800,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                         this.move(MoverType.SELF, vec.x, 0, vec.z);
 
                         incVirtualCounter();
+                        if (state.getBlock() instanceof IVirtualRail)
+                            resetVirtualCounter();
+                        this.inVirtual = canRunVirtually();
                     } else {
                         this.moveDerailedMinecart();
                         resetVirtualCounter();
+                        this.inVirtual = false;
                     }
 
                     this.doBlockCollisions();
