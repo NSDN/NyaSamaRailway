@@ -11,9 +11,7 @@ public interface IVirtualRail {
     float getTargetDirection(World world, BlockPos pos);
 
     static Vec3d getDirectionVec(float angle) {
-        Vec3d vec = new Vec3d(0, 0, -1);
-        vec = vec.rotateYaw(angle);
-        return vec;
+        return Vec3d.fromPitchYaw(0, angle).scale(-1);
     }
 
 }

@@ -74,6 +74,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
     public int virtualCounter = 0;
     public boolean inVirtual = false;
+    public Vec3d virtualVec = Vec3d.ZERO;
 
     public AbsCartBase(World world) {
         super(world);
@@ -655,6 +656,10 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         progressDir = tagCompound.getDouble("progressDir");
         virtualCounter = tagCompound.getInteger("virtualCounter");
         inVirtual = tagCompound.getBoolean("inVirtual");
+        double x = tagCompound.getDouble("virtualX");
+        double y = tagCompound.getDouble("virtualY");
+        double z = tagCompound.getDouble("virtualZ");
+        virtualVec = new Vec3d(x, y, z);
     }
 
     @Override
@@ -668,6 +673,11 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         tagCompound.setDouble("progressDir", progressDir);
         tagCompound.setInteger("virtualCounter", virtualCounter);
         tagCompound.setBoolean("inVirtual", inVirtual);
+        if (virtualVec == null)
+            virtualVec = Vec3d.ZERO;
+        tagCompound.setDouble("virtualX", virtualVec.x);
+        tagCompound.setDouble("virtualY", virtualVec.y);
+        tagCompound.setDouble("virtualZ", virtualVec.z);
     }
 
     /*******************************************************************************************************************/
@@ -790,18 +800,24 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                         resetVirtualCounter();
                         this.inVirtual = false;
                     } else if ((state.getBlock() instanceof IVirtualRail && canRunVirtually()) || this.inVirtual) {
-                        double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-                        IVirtualRail rail = (IVirtualRail) state.getBlock();
-                        float dir = rail.getTargetDirection(this.world, pos);
-                        Vec3d vec = IVirtualRail.getDirectionVec(dir);
-                        vec = vec.scale(speed);
-                        this.motionX = vec.x;
-                        this.motionZ = vec.z;
-                        this.move(MoverType.SELF, vec.x, 0, vec.z);
+                        if (state.getBlock() instanceof IVirtualRail) {
+                            resetVirtualCounter();
+
+                            double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                            IVirtualRail rail = (IVirtualRail) state.getBlock();
+                            float dir = rail.getTargetDirection(this.world, pos);
+                            Vec3d vec = IVirtualRail.getDirectionVec(dir);
+                            vec = vec.scale(speed);
+                            this.virtualVec = new Vec3d(vec.x, vec.y, vec.z);
+                        }
+                        if (this.virtualVec != null) {
+                            this.motionX = this.virtualVec.x;
+                            this.motionY = this.virtualVec.y;
+                            this.motionZ = this.virtualVec.z;
+                        }
+                        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 
                         incVirtualCounter();
-                        if (state.getBlock() instanceof IVirtualRail)
-                            resetVirtualCounter();
                         this.inVirtual = canRunVirtually();
                     } else {
                         this.moveDerailedMinecart();
@@ -819,6 +835,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             this.rotationYaw += 180.0F;
                         }
                     }
+                    if (this.inVirtual)
+                        this.rotationYaw = (float) (Math.atan2(this.virtualVec.z, this.virtualVec.x) * 180 / Math.PI);
 
                     double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
                     if (dYaw < -170.0D || dYaw >= 170.0D) {
