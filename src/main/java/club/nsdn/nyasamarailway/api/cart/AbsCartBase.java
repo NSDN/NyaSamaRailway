@@ -844,15 +844,13 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
                             if (living instanceof EntityPlayer) {
                                 EntityPlayer player = (EntityPlayer) living;
-                                if (!player.isCreative()) {
-                                    player.setHealth(player.getHealth() / 2.0F);
-                                    player.performHurtAnimation();
+                                if (!player.isCreative() && !this.isPassenger(player)) {
                                     PotionType type;
-                                    type = PotionType.getPotionTypeForName("long_weakness");
+                                    type = PotionType.getPotionTypeForName("weakness");
                                     if (type != null)
                                         for (PotionEffect effect : type.getEffects())
                                             effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
-                                    type = PotionType.getPotionTypeForName("strong_harming");
+                                    type = PotionType.getPotionTypeForName("harming");
                                     if (type != null)
                                         for (PotionEffect effect : type.getEffects())
                                             effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
@@ -862,7 +860,6 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                                 }
                             } else {
                                 living.setHealth(living.getHealth() / 2.0F);
-                                living.performHurtAnimation();
                                 PotionType type;
                                 type = PotionType.getPotionTypeForName("long_weakness");
                                 if (type != null)

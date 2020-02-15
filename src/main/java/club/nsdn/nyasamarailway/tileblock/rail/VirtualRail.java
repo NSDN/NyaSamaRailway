@@ -45,11 +45,13 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
         public void fromNBT(NBTTagCompound tagCompound) {
             super.fromNBT(tagCompound);
             direction = tagCompound.getFloat("direction");
+            actualDir = tagCompound.getFloat("actualDir");
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setFloat("direction", direction);
+            tagCompound.setFloat("actualDir", actualDir);
             return super.toNBT(tagCompound);
         }
 
@@ -103,16 +105,6 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
         return AABB;
     }
 
-    public EnumFacing getDirFromMeta(int meta) {
-        switch (meta & 0x3) {
-            case 0: return EnumFacing.NORTH;
-            case 1: return EnumFacing.EAST;
-            case 2: return EnumFacing.SOUTH;
-            case 3: return EnumFacing.WEST;
-        }
-        return EnumFacing.UP;
-    }
-
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
         TileEntity tileEntity = world.getTileEntity(pos);
@@ -121,6 +113,7 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
 
             int val = MathHelper.floor((double)((player.rotationYaw + 360.0F) * 8.0F / 360.0F) + 0.5D) & 7;
             rail.direction = val * 45;
+            rail.actualDir = rail.direction;
 
             rail.refresh();
         }
