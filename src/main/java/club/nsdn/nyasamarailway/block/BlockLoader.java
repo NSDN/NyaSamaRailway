@@ -192,6 +192,7 @@ public class BlockLoader {
 
         blocks.add(new GateTiny());
         blocks.add(new YakumoPC());
+        blocks.add(new VirtualRail());
     }
 
 }

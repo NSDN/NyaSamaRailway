@@ -1,5 +1,7 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.api.rail.IBaseRail;
+import club.nsdn.nyasamarailway.api.rail.IVirtualRail;
 import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.ItemLoader;
@@ -11,7 +13,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.*;
 import org.thewdj.linkage.api.ILinkableCart;
 import net.minecraft.block.BlockRailPowered;
 import net.minecraft.block.state.IBlockState;
@@ -20,8 +22,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMinecart;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -37,7 +37,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -68,6 +67,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
     private static final DataParameter<Boolean> CURVED = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> BLOCKING = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> VIRTUAL = EntityDataManager.createKey(AbsCartBase.class, DataSerializers.VARINT);
 
     public TileEntityRailEndpoint nowEndPoint = null;
     public double nowProgress = 0;
@@ -87,6 +87,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
         dataManager.register(CURVED, false);
         dataManager.register(BLOCKING, Float.NaN);
+        dataManager.register(VIRTUAL, 0);
     }
 
     public void setCurved(boolean state) { dataManager.set(CURVED, state); }
@@ -100,6 +101,16 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public float getBlocking() {
         return dataManager.get(BLOCKING);
     }
+
+    public boolean canRunVirtually() {
+        return getVirtualCounter() < 600;
+    }
+
+    public int getVirtualCounter() { return dataManager.get(VIRTUAL); }
+
+    public void incVirtualCounter() { dataManager.set(VIRTUAL, getVirtualCounter() + 1); }
+
+    public void resetVirtualCounter() { dataManager.set(VIRTUAL, 0); }
 
     @Nonnull
     public abstract ItemStack getCartItem();
@@ -579,14 +590,11 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public void moveMinecartOnRail(BlockPos pos) {
         double mX = this.motionX;
         double mZ = this.motionZ;
-        if (this.isBeingRidden()) {
-            mX *= 0.75D;
-            mZ *= 0.75D;
-        }
 
         double max = this.getMaxSpeed();
         mX = MathHelper.clamp(mX, -max, max);
         mZ = MathHelper.clamp(mZ, -max, max);
+
         this.move(MoverType.SELF, mX, 0.0D, mZ);
     }
 
@@ -760,6 +768,11 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
                     if (!BlockRailBase.isRailBlock(this.world, new BlockPos(x, y, z)) && BlockRailBase.isRailBlock(this.world, new BlockPos(x, y - 1, z))) {
                         --y;
+
+                        pos = new BlockPos(x, y, z);
+                        TileEntity tile = this.world.getTileEntity(pos);
+                        if (tile instanceof IBaseRail)
+                            ++y;
                     }
 
                     pos = new BlockPos(x, y, z);
@@ -769,8 +782,21 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                         if (state.getBlock() == Blocks.ACTIVATOR_RAIL) {
                             this.onActivatorRailPass(x, y, z, state.getValue(BlockRailPowered.POWERED));
                         }
+                        resetVirtualCounter();
+                    } else if (state.getBlock() instanceof IVirtualRail && canRunVirtually()) {
+                        double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                        IVirtualRail rail = (IVirtualRail) state.getBlock();
+                        float dir = rail.getTargetDirection(this.world, pos);
+                        Vec3d vec = IVirtualRail.getDirectionVec(dir);
+                        vec = vec.scale(speed);
+                        this.motionX = vec.x;
+                        this.motionZ = vec.z;
+                        this.move(MoverType.SELF, vec.x, 0, vec.z);
+
+                        incVirtualCounter();
                     } else {
                         this.moveDerailedMinecart();
+                        resetVirtualCounter();
                     }
 
                     this.doBlockCollisions();

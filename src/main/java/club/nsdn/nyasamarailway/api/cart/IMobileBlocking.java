@@ -10,6 +10,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -18,6 +19,15 @@ import java.util.List;
 public interface IMobileBlocking {
     boolean getBlockingState();
     void setBlockingState(boolean value);
+
+    static BlockRailBase.EnumRailDirection getRailDirection(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (!(block instanceof BlockRailBase))
+            return null;
+        BlockRailBase rail = (BlockRailBase) block;
+        return rail.getRailDirection(world, pos, state, null);
+    }
 
     static Tuple<BlockPos, EnumFacing> findNextRail(World world, Tuple<BlockPos, EnumFacing> now) {
         return findNextRail(world, null, now);
@@ -166,6 +176,40 @@ public interface IMobileBlocking {
             default:
                 return null;
         }
+    }
+
+    static Tuple<BlockPos, EnumFacing> findNextRail(World world, BlockPos pos, @Nonnull EntityMinecart cart, int maxDist) {
+        if (!BlockRailBase.isRailBlock(world, pos))
+            return null;
+
+        EnumFacing facing = EnumFacing.DOWN;
+        if (cart instanceof AbsCartBase) {
+            facing = ((AbsCartBase) cart).facing;
+        } else {
+            if (cart.motionX > 0)
+                facing = EnumFacing.EAST;
+            else if (cart.motionX < 0)
+                facing = EnumFacing.WEST;
+            else if (cart.motionZ > 0)
+                facing = EnumFacing.SOUTH;
+            else if (cart.motionZ < 0)
+                facing = EnumFacing.NORTH;
+            else if (cart.motionX  == 0 && cart.motionZ == 0)
+                facing = cart.getHorizontalFacing();
+        }
+
+        Tuple<BlockPos, EnumFacing> now = new Tuple<>(pos, facing), prev;
+        if (findNextRail(world, now) == null)
+            return now;
+
+        for (int i = 0; i < maxDist; i++) {
+            prev = now;
+            now = findNextRail(world, prev);
+            if (now == null)
+                return prev;
+        }
+
+        return now;
     }
 
     static boolean hasCart(World world, EntityMinecart me, BlockPos pos) {

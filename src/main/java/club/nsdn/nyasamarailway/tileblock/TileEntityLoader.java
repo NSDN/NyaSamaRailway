@@ -108,6 +108,7 @@ public class TileEntityLoader {
 
         tileEntities.add(GateTiny.TileEntityGateTiny.class);
         tileEntities.add(YakumoPC.TileEntityYakumoPC.class);
+        tileEntities.add(VirtualRail.TileEntityVirtualRail.class);
     }
 
 }
