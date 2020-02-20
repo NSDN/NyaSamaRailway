@@ -130,6 +130,7 @@ tile.GlassShield1X1.name=Glass Shield(1x1)
 tile.GlassShield3X1.name=Glass Shield(3x1)
 tile.GlassShield3X1D5.name=Glass Shield(3x1.5)
 tile.GlassShield1D5X1D5.name=Glass Shield(1.5x1.5)
+tile.GlassShield2X1D5.name=Glass Shield(2x1.5)
 tile.GlassShieldAl.name=Platform Shield
 tile.GlassShieldAlHalf.name=Short Platform Shield
 tile.GlassShieldAlBase.name=Platform Shield With Base
@@ -239,6 +240,15 @@ tile.RailNode.name=Rail Node
 tile.GateTiny.name=Tiny Gate
 tile.YakumoPC.name=Yakumo PC 81R
 tile.VirtualRail.name=Virtual Rail
+
+tile.PlatformHead.name=Platform Head
+tile.PlatformHeadHalf.name=Half Platform Head
+tile.PlatformHeadDark.name=Dark Platform Head
+tile.PlatformHeadHalfDark.name=Dark Half Platform Head
+tile.PlatformHeadCorner.name=Platform Head Corner
+tile.PlatformHeadCornerHalf.name=Half Platform Head Corner
+tile.PlatformHeadCornerDark.name=Dark Platform Head Corner
+tile.PlatformHeadCornerHalfDark.name=Dark Half Platform Head Corner
 
 pc.menu.line1=MENU:
 pc.menu.line2=1. Once-Ticket

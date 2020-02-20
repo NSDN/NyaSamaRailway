@@ -81,6 +81,7 @@ public class TileEntityLoader {
         tileEntities.add(GlassShield3X1.TileEntityGlassShield3X1.class);
         tileEntities.add(GlassShield3X1D5.TileEntityGlassShield3X1D5.class);
         tileEntities.add(GlassShield1D5X1D5.TileEntityGlassShield1D5X1D5.class);
+        tileEntities.add(GlassShield2X1D5.TileEntityGlassShield2X1D5.class);
         tileEntities.add(GlassShieldHalf.TileEntityGlassShieldHalf.class);
 
         tileEntities.add(BiSignalLight.TileEntityBiSignalLight.class);
@@ -109,6 +110,7 @@ public class TileEntityLoader {
         tileEntities.add(GateTiny.TileEntityGateTiny.class);
         tileEntities.add(YakumoPC.TileEntityYakumoPC.class);
         tileEntities.add(VirtualRail.TileEntityVirtualRail.class);
+        tileEntities.add(PlatformHead.TileEntityPlatformHead.class);
     }
 
 }

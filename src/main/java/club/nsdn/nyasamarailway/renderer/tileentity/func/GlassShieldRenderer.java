@@ -25,6 +25,7 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
     public static final int SHIELD_3X1 = 3;
     public static final int SHIELD_3X1D5 = 4;
     public static final int SHIELD_1D5X1D5 = 5;
+    public static final int SHIELD_2X1D5 = 6;
     
     private final WavefrontObject[] modelMain;
     private final ResourceLocation textureMain;
@@ -52,6 +53,9 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
                 ),
                 new WavefrontObject(
                         new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_1d5x1d5.obj")
+                ),
+                new WavefrontObject(
+                        new ResourceLocation("nyasamarailway", "models/blocks/glass_shield_2x1d5.obj")
                 )
         };
 
@@ -188,6 +192,20 @@ public class GlassShieldRenderer extends AbsTileEntitySpecialRenderer {
                     GL11.glPushMatrix();
                     GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
                     RendererHelper.renderWithResource(modelMain[SHIELD_1D5X1D5], textureMain);
+                    GL11.glPopMatrix();
+
+                    GL11.glPopMatrix();
+                    break;
+                case SHIELD_2X1D5:
+                    MOVE_DIST = 1.5F - (1.0F / 16.0F);
+                    doInterpolation(te);
+
+                    GL11.glPushMatrix();
+                    GL11.glRotatef(angle, 0.0F, -1.0F, 0.0F);
+
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(glassShield.prevDist, 0.0F, 0.0F);
+                    RendererHelper.renderWithResource(modelMain[SHIELD_2X1D5], textureMain);
                     GL11.glPopMatrix();
 
                     GL11.glPopMatrix();

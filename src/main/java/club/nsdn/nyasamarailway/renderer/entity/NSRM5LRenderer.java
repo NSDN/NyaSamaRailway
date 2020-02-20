@@ -88,10 +88,17 @@ public class NSRM5LRenderer extends AbsTrainRenerer {
             GlStateManager.enableBlend();
             modelBase.renderOnly("door2r", "door4r");
             GlStateManager.popMatrix();
+
+            GlStateManager.disableAlpha();
+            GlStateManager.disableBlend();
         }
 
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
         Minecraft.getMinecraft().getTextureManager().bindTexture(texturePrint);
         modelPrint.renderAll();
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
 
         GlStateManager.popMatrix();
     }

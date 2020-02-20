@@ -166,6 +166,7 @@ public class BlockLoader {
         blocks.add(new GlassShield3X1());
         blocks.add(new GlassShield3X1D5());
         blocks.add(new GlassShield1D5X1D5());
+        blocks.add(new GlassShield2X1D5());
         blocks.add(new GlassShieldHalf());
 
         blocks.add(biSignalLight = new BiSignalLight());
@@ -193,6 +194,14 @@ public class BlockLoader {
         blocks.add(new GateTiny());
         blocks.add(new YakumoPC());
         blocks.add(new VirtualRail());
+        blocks.add(new PlatformHead("PlatformHead", "platform_head", false));
+        blocks.add(new PlatformHead("PlatformHeadHalf", "platform_head_half", true));
+        blocks.add(new PlatformHead("PlatformHeadDark", "platform_head_dark", false));
+        blocks.add(new PlatformHead("PlatformHeadHalfDark", "platform_head_half_dark", true));
+        blocks.add(new PlatformHeadCorner("PlatformHeadCorner", "platform_head_corner", false));
+        blocks.add(new PlatformHeadCorner("PlatformHeadCornerHalf", "platform_head_corner_half", true));
+        blocks.add(new PlatformHeadCorner("PlatformHeadCornerDark", "platform_head_corner_dark", false));
+        blocks.add(new PlatformHeadCorner("PlatformHeadCornerHalfDark", "platform_head_corner_half_dark", true));
     }
 
 }

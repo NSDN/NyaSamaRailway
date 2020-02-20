@@ -132,6 +132,7 @@ tile.GlassShield1X1.name=玻璃屏蔽门(1x1)
 tile.GlassShield3X1.name=玻璃屏蔽门(3x1)
 tile.GlassShield3X1D5.name=玻璃屏蔽门(3x1.5)
 tile.GlassShield1D5X1D5.name=玻璃屏蔽门(1.5x1.5)
+tile.GlassShield2X1D5.name=玻璃屏蔽门(2x1.5)
 tile.GlassShieldAl.name=铝边玻璃板
 tile.GlassShieldAlHalf.name=半高铝边玻璃板
 tile.GlassShieldAlBase.name=铝底玻璃墙
@@ -241,6 +242,15 @@ tile.RailNode.name=轨道节点
 tile.GateTiny.name=紧凑闸机
 tile.YakumoPC.name=八云计算机 81R型
 tile.VirtualRail.name=虚拟轨道
+
+tile.PlatformHead.name=站台顶
+tile.PlatformHeadHalf.name=半站台顶
+tile.PlatformHeadDark.name=深色站台顶
+tile.PlatformHeadHalfDark.name=深色半站台顶
+tile.PlatformHeadCorner.name=站台顶角
+tile.PlatformHeadCornerHalf.name=半站台顶角
+tile.PlatformHeadCornerDark.name=深色站台顶角
+tile.PlatformHeadCornerHalfDark.name=深色半站台顶角
 
 pc.menu.line1=请选择功能:
 pc.menu.line2=1. 单程票制作

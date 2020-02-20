@@ -93,6 +93,7 @@ public class TileEntityModelBinder {
         renderers.put(GlassShield3X1.TileEntityGlassShield3X1.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_3X1));
         renderers.put(GlassShield3X1D5.TileEntityGlassShield3X1D5.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_3X1D5));
         renderers.put(GlassShield1D5X1D5.TileEntityGlassShield1D5X1D5.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_1D5X1D5));
+        renderers.put(GlassShield2X1D5.TileEntityGlassShield2X1D5.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_2X1D5));
         renderers.put(GlassShieldHalf.TileEntityGlassShieldHalf.class, new GlassShieldRenderer(GlassShieldRenderer.SHIELD_HALF));
 
         renderers.put(BiSignalLight.TileEntityBiSignalLight.class, new BiSignalLightRenderer("bi_signal_light"));
@@ -121,6 +122,7 @@ public class TileEntityModelBinder {
         renderers.put(GateTiny.TileEntityGateTiny.class, new GateRenderer(GateRenderer.GATE_TINY));
         renderers.put(YakumoPC.TileEntityYakumoPC.class, new YakumoPCRenderer());
         renderers.put(VirtualRail.TileEntityVirtualRail.class, new VirtualRailRenderer());
+        renderers.put(PlatformHead.TileEntityPlatformHead.class, new PlatformHeadRenderer());
     }
 
 }
