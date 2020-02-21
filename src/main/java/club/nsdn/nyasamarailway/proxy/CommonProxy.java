@@ -11,6 +11,7 @@ import club.nsdn.nyasamarailway.event.EventRegister;
 import club.nsdn.nyasamarailway.item.helper.DeployHelper;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.NTPCore;
+import club.nsdn.nyasamarailway.util.PublicInfoCore;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -50,6 +51,8 @@ public class CommonProxy {
 
         NyaSamaRailway.logger.info("Register NTP command to NyaSamaOptics");
         LEDPlate.registerCommand("#!/bin/ntp", new NTPCore());
+        NyaSamaRailway.logger.info("Register Info command to NyaSamaOptics");
+        LEDPlate.registerCommand("#!/bin/info", new PublicInfoCore.PublicInfoCmd());
 
         NyaSamaRailway.logger.info("Initialize DeployHelper");
         DeployHelper.setInstance();

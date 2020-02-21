@@ -80,11 +80,36 @@ public class PlatformHead extends BlockContainer {
 
         public static final int USE_MOD = 0;
         public static final int USE_WEB = 1;
+        public static final int USE_GEN = 2;
 
-        public int use = 0;
+        public int use = USE_MOD;
         public String url = "null";
         public boolean wide = false;
         public boolean enabled = false;
+
+        public boolean right = false;
+        public boolean isDir = false;
+        public int colorPri = 0x323232;
+        public int colorSec = 0xf0f0f0;
+        public int colorAcc = 0xc00000;
+        public String nowMain = "喵玉殿";
+        public String nowSub = "NyaSama";
+        public String prevTop = "上一站 Prev Stop";
+        public String prevMain = "NSDN大厦";
+        public String prevSub = "NSDN Tower";
+        public String nextTop = "下一站 Next Stop";
+        public String nextMain = "MC幻想乡";
+        public String nextSub = "MC Gensokyo";
+        public String prevMainS = "";
+        public String prevSubS = "";
+        public String nextMainS = "";
+        public String nextSubS = "";
+
+        public String dirHead = "R";
+        public String dirLine = "R  号线";
+        public String dirLineSub = "Line R";
+        public String dirTarget = "虹之里方向";
+        public String dirTargetSub = "To Rainbow Village";
 
         @SideOnly(Side.CLIENT)
         public Object texture = null;
@@ -102,6 +127,34 @@ public class PlatformHead extends BlockContainer {
             url = tagCompound.getString("url");
             wide = tagCompound.getBoolean("wide");
             enabled = tagCompound.getBoolean("enabled");
+
+            right = tagCompound.getBoolean("right");
+            isDir = tagCompound.getBoolean("isDir");
+            colorPri = tagCompound.getInteger("colorPri");
+            colorSec = tagCompound.getInteger("colorSec");
+            colorAcc = tagCompound.getInteger("colorAcc");
+            
+            NBTTagCompound tag = tagCompound.getCompoundTag("now");
+            if (tag.hasNoTags()) return;
+            nowMain = tag.getString("nowMain");
+            nowSub = tag.getString("nowSub");
+            prevTop = tag.getString("prevTop");
+            prevMain = tag.getString("prevMain");
+            prevSub = tag.getString("prevSub");
+            nextTop = tag.getString("nextTop");
+            nextMain = tag.getString("nextMain");
+            nextSub = tag.getString("nextSub");
+            prevMainS = tag.getString("prevMainS");
+            prevSubS = tag.getString("prevSubS");
+            nextMainS = tag.getString("nextMainS");
+            nextSubS = tag.getString("nextSubS");
+            tag = tagCompound.getCompoundTag("dir");
+            if (tag.hasNoTags()) return;
+            dirHead = tag.getString("dirHead");
+            dirLine = tag.getString("dirLine");
+            dirLineSub = tag.getString("dirLineSub");
+            dirTarget = tag.getString("dirTarget");
+            dirTargetSub = tag.getString("dirTargetSub");
         }
 
         @Override
@@ -111,13 +164,43 @@ public class PlatformHead extends BlockContainer {
             tagCompound.setBoolean("wide", wide);
             tagCompound.setBoolean("enabled", enabled);
 
+            tagCompound.setBoolean("right", right);
+            tagCompound.setBoolean("isDir", isDir);
+            tagCompound.setInteger("colorPri", colorPri);
+            tagCompound.setInteger("colorSec", colorSec);
+            tagCompound.setInteger("colorAcc", colorAcc);
+
+            NBTTagCompound now = new NBTTagCompound();
+            now.setString("nowMain", nowMain);
+            now.setString("nowSub", nowSub);
+            now.setString("prevTop", prevTop);
+            now.setString("prevMain", prevMain);
+            now.setString("prevSub", prevSub);
+            now.setString("nextTop", nextTop);
+            now.setString("nextMain", nextMain);
+            now.setString("nextSub", nextSub);
+            now.setString("prevMainS", prevMainS);
+            now.setString("prevSubS", prevSubS);
+            now.setString("nextMainS", nextMainS);
+            now.setString("nextSubS", nextSubS);
+            tagCompound.setTag("now", now);
+            NBTTagCompound dir = new NBTTagCompound();
+            dir.setString("dirHead", dirHead);
+            dir.setString("dirLine", dirLine);
+            dir.setString("dirLineSub", dirLineSub);
+            dir.setString("dirTarget", dirTarget);
+            dir.setString("dirTargetSub", dirTargetSub);
+            tagCompound.setTag("dir", dir);
+
             return super.toNBT(tagCompound);
         }
 
         @Nonnull
         @Override
         public AxisAlignedBB getRenderBoundingBox() {
-            return super.getRenderBoundingBox().expand(4, 4, 4);
+            return super.getRenderBoundingBox()
+                    .expand(4, 4, 4)
+                    .expand(-4, -4, -4);
         }
 
     }
@@ -255,8 +338,10 @@ public class PlatformHead extends BlockContainer {
                             String str = (String) dst.data;
                             if (str.toLowerCase().equals("web"))
                                 head.use = TileEntityPlatformHead.USE_WEB;
-                            else
+                            else if (str.toLowerCase().equals("mod"))
                                 head.use = TileEntityPlatformHead.USE_MOD;
+                            else
+                                head.use = TileEntityPlatformHead.USE_GEN;
 
                             return Result.OK;
                         }));
@@ -292,6 +377,297 @@ public class PlatformHead extends BlockContainer {
 
                             return Result.OK;
                         }));
+
+                        funcList.put("right", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.INT) return Result.ERR;
+
+                            head.right = ((int) dst.data) != 0;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.INT) return Result.ERR;
+
+                            head.isDir = ((int) dst.data) != 0;
+
+                            return Result.OK;
+                        }));
+
+                        funcList.put("pri", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.INT) return Result.ERR;
+
+                            head.colorPri = (int) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("sec", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.INT) return Result.ERR;
+
+                            head.colorSec = (int) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("acc", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.INT) return Result.ERR;
+
+                            head.colorAcc = (int) dst.data;
+
+                            return Result.OK;
+                        }));
+
+                        funcList.put("now", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nowMain = (String) dst.data;
+                            head.nowSub = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("now.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nowMain = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("now.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nowSub = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("prev", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevMain = (String) dst.data;
+                            head.prevSub = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("prev.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevMain = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("prev.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevSub = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("next", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextMain = (String) dst.data;
+                            head.nextSub = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("next.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextMain = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("next.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextSub = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("top", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevTop = (String) dst.data;
+                            head.nextTop = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("top.prev", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevTop = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("top.next", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextTop = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("pres", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevMainS = (String) dst.data;
+                            head.prevSubS = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("pres.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevMainS = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("pres.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.prevSubS = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("nexs", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextMainS = (String) dst.data;
+                            head.nextSubS = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("nexs.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextMainS = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("nexs.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.nextSubS = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+
+                        funcList.put("dir.head", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirHead = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.line", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirLine = (String) dst.data;
+                            head.dirLineSub = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.line.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirLine = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.line.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirLineSub = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.tar", ((dst, src) -> {
+                            if (src == null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (src.type != RegType.STR) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirTarget = (String) dst.data;
+                            head.dirTargetSub = (String) src.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.tar.main", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirTarget = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+                        funcList.put("dir.tar.sub", ((dst, src) -> {
+                            if (src != null) return Result.ERR;
+                            if (dst == null) return Result.ERR;
+                            if (dst.type != RegType.STR) return Result.ERR;
+
+                            head.dirTargetSub = (String) dst.data;
+
+                            return Result.OK;
+                        }));
+
                     }
                 }.run();
 

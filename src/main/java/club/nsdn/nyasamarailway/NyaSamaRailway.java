@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway;
 
 import club.nsdn.nyasamarailway.proxy.CommonProxy;
 import club.nsdn.nyasamarailway.util.OverSysCommand;
+import club.nsdn.nyasamarailway.util.PublicInfoCore;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -51,6 +52,7 @@ public class NyaSamaRailway {
     @EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new OverSysCommand());
+        event.registerServerCommand(new PublicInfoCore.InfoSheetCommand());
     }
 
 }
