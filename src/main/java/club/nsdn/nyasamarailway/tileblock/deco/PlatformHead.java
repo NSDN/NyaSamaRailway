@@ -112,7 +112,7 @@ public class PlatformHead extends BlockContainer {
         public String dirTargetSub = "To Rainbow Village";
 
         @SideOnly(Side.CLIENT)
-        public Object texture = null;
+        public Object texture;
 
         public TileEntityPlatformHead() {
             super();
