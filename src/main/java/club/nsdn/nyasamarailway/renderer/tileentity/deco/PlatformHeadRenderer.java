@@ -5,17 +5,20 @@ import club.nsdn.nyasamarailway.tileblock.deco.PlatformHead;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
 import cn.ac.nya.forgeobj.WavefrontObject;
+import cn.ac.nya.sler.SLER;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -196,6 +199,66 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
         return null;
     }
 
+    private static final ResourceLocation RES_YAN = new ResourceLocation("nyasamarailway", "fonts/yan.ttf");
+    private static final ResourceLocation RES_SONG = new ResourceLocation("nyasamarailway", "fonts/song.otf");
+    private static final ResourceLocation RES_HEI = new ResourceLocation("nyasamarailway", "fonts/hei.otf");
+    private static final Font yan, song, hei;
+    private static Font copyFont(Font font) { return font.deriveFont(16.0F); }
+    private static Font loadFont(ResourceLocation loc, Font def) {
+        IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
+        Font font;
+        try {
+            IResource res = manager.getResource(loc);
+            font = Font.createFont(Font.TRUETYPE_FONT, res.getInputStream());
+        } catch (Exception e) {
+            NyaSamaRailway.logger.info("Font not found: " + loc);
+            font = copyFont(def);
+        }
+        return font;
+    }
+
+    static {
+        yan = loadFont(RES_YAN, new Font("楷体", Font.BOLD, 16));
+        song = loadFont(RES_SONG, new Font("宋体", Font.BOLD, 16));
+        hei = loadFont(RES_HEI, new Font("黑体", Font.BOLD, 16));
+    }
+
+    public static Texture genTexture(PlatformHead.TileEntityPlatformHead head) {
+        BlockPos pos = head.getPos();
+        if (textures.containsKey(pos)) {
+            Texture texture = textures.get(pos);
+            texture.loadTexture(Minecraft.getMinecraft().getResourceManager());
+            return texture;
+        } else if (!stack.contains(pos)) {
+            stack.add(pos);
+
+            String[] args;
+            if (head.isDir)
+                args = SLER.arg(head.dirHead, head.dirLine, head.dirLineSub, head.dirTarget, head.dirTargetSub);
+            else
+                args = SLER.arg(
+                        head.nowMain, head.nowSub,
+                        head.prevTop, head.prevMain, head.prevSub,
+                        head.nextTop, head.nextMain, head.nextSub,
+                        head.prevMainS, head.prevSubS,
+                        head.nextMainS, head.nextSubS
+                );
+
+            String[] arg = args;
+            Color pri = new Color(head.colorPri), sec = new Color(head.colorSec), acc = new Color(head.colorAcc);
+            Font fontPri = head.isDir ? copyFont(song) : copyFont(yan), fontSec = copyFont(hei);
+
+            executor.schedule(() -> {
+                BufferedImage image = SLER.gen(arg, pri, sec, acc, fontPri, fontSec, head.right, head.wide);
+                Texture texture = new Texture(image);
+                texture.preLoadTexture();
+                textures.put(pos, texture);
+                stack.remove(pos);
+            }, 10, TimeUnit.MILLISECONDS);
+        }
+        return null;
+    }
+
     private final WavefrontObject model = new WavefrontObject(
             new ResourceLocation("nyasamarailway", "models/blocks/platform_head_frame.obj")
     );
@@ -225,6 +288,9 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
                         break;
                     case PlatformHead.TileEntityPlatformHead.USE_WEB:
                         head.texture = getTexture(head);
+                        break;
+                    case PlatformHead.TileEntityPlatformHead.USE_GEN:
+                        head.texture = genTexture(head);
                         break;
                 }
             }
