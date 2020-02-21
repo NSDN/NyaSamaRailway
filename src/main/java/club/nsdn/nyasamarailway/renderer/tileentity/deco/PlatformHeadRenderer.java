@@ -199,7 +199,7 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
         return null;
     }
 
-    private static final ResourceLocation RES_YAN = new ResourceLocation("nyasamarailway", "fonts/yan.ttf");
+    private static final ResourceLocation RES_YAN = new ResourceLocation("nyasamarailway", "fonts/yan.otf");
     private static final ResourceLocation RES_SONG = new ResourceLocation("nyasamarailway", "fonts/song.otf");
     private static final ResourceLocation RES_HEI = new ResourceLocation("nyasamarailway", "fonts/hei.otf");
     private static final Font yan, song, hei;
@@ -247,11 +247,13 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
             String[] arg = args;
             Color pri = new Color(head.colorPri), sec = new Color(head.colorSec), acc = new Color(head.colorAcc);
             Font fontPri = head.isDir ? copyFont(song) : copyFont(yan), fontSec = copyFont(hei);
+            boolean right = head.right, wide = head.wide;
 
             executor.schedule(() -> {
-                BufferedImage image = SLER.gen(arg, pri, sec, acc, fontPri, fontSec, head.right, head.wide);
+                BufferedImage image = SLER.gen(arg, pri, sec, acc, fontPri, fontSec, right, wide);
                 Texture texture = new Texture(image);
                 texture.preLoadTexture();
+
                 textures.put(pos, texture);
                 stack.remove(pos);
             }, 10, TimeUnit.MILLISECONDS);

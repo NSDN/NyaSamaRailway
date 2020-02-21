@@ -142,7 +142,7 @@ public class TextUtil {
 
     private static void DrawAccentString(Graphics2D g, String str, Color color, Font font, int x, int y, TextAlign align, int border) {
         Font fnt = font.deriveFont(Font.BOLD);
-        Bitmap bmp = GetString(str, new Color(250, 250, 250, 255), fnt);
+        Bitmap bmp = GetString(str, new Color(0xFAFAFA), fnt);
         int u = 0, v = y, w = bmp.getWidth(), h = bmp.getHeight();
         switch (align) {
             case LEFT:

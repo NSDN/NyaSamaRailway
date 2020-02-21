@@ -90,15 +90,15 @@ public class PlatformHead extends BlockContainer {
         public boolean right = false;
         public boolean isDir = false;
         public int colorPri = 0x323232;
-        public int colorSec = 0xf0f0f0;
+        public int colorSec = 0xbababa;
         public int colorAcc = 0xc00000;
-        public String nowMain = "喵玉殿";
+        public String nowMain = "\u55b5\u7389\u6bbf";
         public String nowSub = "NyaSama";
-        public String prevTop = "上一站 Prev Stop";
-        public String prevMain = "NSDN大厦";
+        public String prevTop = "\u4e0a\u4e00\u7ad9 Prev Stop";
+        public String prevMain = "NSDN\u5927\u53a6";
         public String prevSub = "NSDN Tower";
-        public String nextTop = "下一站 Next Stop";
-        public String nextMain = "MC幻想乡";
+        public String nextTop = "\u4e0b\u4e00\u7ad9 Next Stop";
+        public String nextMain = "MC\u5e7b\u60f3\u4e61";
         public String nextSub = "MC Gensokyo";
         public String prevMainS = "";
         public String prevSubS = "";
@@ -106,9 +106,9 @@ public class PlatformHead extends BlockContainer {
         public String nextSubS = "";
 
         public String dirHead = "R";
-        public String dirLine = "R  号线";
+        public String dirLine = "R  \u53f7\u7ebf";
         public String dirLineSub = "Line R";
-        public String dirTarget = "虹之里方向";
+        public String dirTarget = "\u8679\u4e4b\u91cc\u65b9\u5411";
         public String dirTargetSub = "To Rainbow Village";
 
         @SideOnly(Side.CLIENT)

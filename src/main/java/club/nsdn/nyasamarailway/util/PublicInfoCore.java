@@ -6,7 +6,10 @@ import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemWritableBook;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListOps;
 import net.minecraft.util.math.BlockPos;
@@ -89,7 +92,7 @@ public class PublicInfoCore {
             builder.append(world.getWorldInfo().getWorldName());
             builder.append("] has ");
             builder.append(data.sheets.size());
-            builder.append(" sheet(s):\n");
+            builder.append(" info(s):\n");
             for (Map.Entry<String, String> i : data.sheets.entrySet()) {
                 builder.append(i.getKey());
                 builder.append(": ");
@@ -163,6 +166,21 @@ public class PublicInfoCore {
 
             String key = args[0], value = args[1];
             EntityPlayer player = (EntityPlayer) sender;
+            if (value.toLowerCase().equals("book")) {
+                ItemStack stack = player.getHeldItemMainhand();
+                if (stack.getItem() instanceof ItemWritableBook && stack.getTagCompound() != null) {
+                    NBTTagList list = stack.getTagCompound().getTagList("pages", 8);
+                    value = "";
+                    for (int i = 0; i < list.tagCount(); i++)
+                        value = value.concat(list.getStringTagAt(i) + "\n");
+                }
+            } else {
+                value = "";
+                for (int i = 1; i < args.length; i++)
+                    value = value.concat(args[i] + " ");
+                value = value.replace("\\t", "    ");
+                value = value.replace("\\n", "\n");
+            }
             InfoSheet.put(server.getWorld(player.dimension), key, value);
             player.sendMessage(new TextComponentString(TextFormatting.GRAY + "Info added: " + key + " -> " + value));
         }
