@@ -17,7 +17,7 @@ public class SLER {
         polygon.addPoint(90, 50);
         polygon.addPoint(10, 80);
         polygon.addPoint(30, 50);
-        g.setColor(Color.BLACK);
+        g.setColor(color);
         g.fillPolygon(polygon);
         g.dispose();
         return defArrow;
