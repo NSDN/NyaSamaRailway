@@ -8,10 +8,8 @@ import static cn.ac.nya.sler.TextUtil.*;
 
 public class SLER {
 
-    public static final Bitmap defArrow;
-
-    static {
-        defArrow = new Bitmap(100, 100);
+    public static Bitmap defArrow(Color color) {
+        Bitmap defArrow = new Bitmap(100, 100);
         Graphics2D g = defArrow.createGraphics();
         ConfigureGraphics(g);
         Polygon polygon = new Polygon();
@@ -22,12 +20,13 @@ public class SLER {
         g.setColor(Color.BLACK);
         g.fillPolygon(polygon);
         g.dispose();
+        return defArrow;
     }
 
     private static void drawLine(Graphics2D g, float x1, float y1, float x2, float y2) {
         g.drawLine(Math.round(x1), Math.round(y1), Math.round(x2), Math.round(y2));
     }
-    
+
     public static String[] arg(
             String nowMain, String nowSub,
             String prevTop, String prevMain, String prevSub,
@@ -62,7 +61,7 @@ public class SLER {
                 target, targetSub
         };
     }
-    
+
     public static BufferedImage gen(
             String[] args,
             Color colorPri, Color colorSec, Color colorAccent,
@@ -74,7 +73,7 @@ public class SLER {
         int width = bitmap.getWidth(), heigh = bitmap.getHeight();
 
         if (args.length > 5) {
-            
+
             args = Arrays.copyOf(args, 12);
             String nowMain = args[0];
             String nowSub = args[1];
@@ -166,14 +165,14 @@ public class SLER {
             g.dispose();
 
         } else {
-            
+
             args = Arrays.copyOf(args, 5);
             String head = args[0];
             String line = args[1];
             String lineSub = args[2];
             String target = args[3];
             String targetSub = args[4];
-            Bitmap targetArrow = defArrow;
+            Bitmap targetArrow = defArrow(colorPri);
 
             Bitmap label = GenLineLabel(
                     head, line, lineSub, colorPri, colorAccent, fontPri, fontSec,
@@ -211,7 +210,7 @@ public class SLER {
                     0, 0, targetArrow.getWidth(), targetArrow.getHeight(),
                     null);
             g.dispose();
-            
+
         }
 
         return bitmap;
