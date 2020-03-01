@@ -1,5 +1,7 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.api.item.IController;
+import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.api.rail.IBaseRail;
 import club.nsdn.nyasamarailway.api.rail.IVirtualRail;
 import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
@@ -141,13 +143,10 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (
-                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
-                                stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
-                ) {
+                if (stack.getItem() instanceof IController)
                     return true;
-                }
-                if (stack.getItem() instanceof ItemMinecart) return true;
+                if (stack.getItem() instanceof ItemMinecart)
+                    return true;
             }
             if (!this.world.isRemote) {
                 player.startRiding(this);
@@ -437,14 +436,14 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                 ++this.posY;
         }
 
-        int[][] aint = MATRIX[direction.getMetadata()];
-        double d1 = (double)(aint[1][0] - aint[0][0]);
-        double d2 = (double)(aint[1][2] - aint[0][2]);
-        double d3 = Math.sqrt(d1 * d1 + d2 * d2);
-        double d4 = this.motionX * d1 + this.motionZ * d2;
-        if (d4 < 0.0D) {
-            d1 = -d1;
-            d2 = -d2;
+        int[][] matrix = MATRIX[direction.getMetadata()];
+        double u = (double)(matrix[1][0] - matrix[0][0]);
+        double v = (double)(matrix[1][2] - matrix[0][2]);
+        double L = Math.sqrt(u * u + v * v);
+        double w = this.motionX * u + this.motionZ * v;
+        if (w < 0.0D) {
+            u = -u;
+            v = -v;
         }
 
         /**
@@ -455,22 +454,22 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             vel = getMaxCartSpeedOnRail();
         }
 
-        this.motionX = vel * d1 / d3;
-        this.motionZ = vel * d2 / d3;
-        Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
-        double d18;
-        double d19;
-        double d8;
-        double d9;
+        this.motionX = vel * u / L;
+        this.motionZ = vel * v / L;
+        /**
+         * pushed by player
+         * */
+        Entity entity = this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+        double a, b, c, d;
         if (entity instanceof EntityLivingBase) {
-            d18 = (double)((EntityLivingBase)entity).moveForward;
-            if (d18 > 0.0D) {
-                d19 = -Math.sin((double)(entity.rotationYaw * 0.017453292F));
-                d8 = Math.cos((double)(entity.rotationYaw * 0.017453292F));
-                d9 = this.motionX * this.motionX + this.motionZ * this.motionZ;
-                if (d9 < 0.01D) {
-                    this.motionX += d19 * getPlayerPushVel();
-                    this.motionZ += d8 * getPlayerPushVel();
+            a = ((EntityLivingBase)entity).moveForward;
+            if (a > 0.0D && ((EntityLivingBase) entity).getHeldItemMainhand().getItem() instanceof IWand) {
+                b = -Math.sin((double)(entity.rotationYaw * 0.017453292F));
+                c = Math.cos((double)(entity.rotationYaw * 0.017453292F));
+                d = this.motionX * this.motionX + this.motionZ * this.motionZ;
+                if (d < 0.01D) {
+                    this.motionX += b * getPlayerPushVel();
+                    this.motionZ += c * getPlayerPushVel();
                     slowDown = false;
                 }
             }
@@ -484,8 +483,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
 
         if (slowDown && this.shouldDoRailFunctions()) {
-            d18 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            if (d18 < 0.03D) {
+            a = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            if (a < 0.03D) {
                 this.motionX *= 0.0D;
                 this.motionY *= 0.0D;
                 this.motionZ *= 0.0D;
@@ -496,33 +495,33 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             }
         }
 
-        d18 = (double)pos.getX() + 0.5D + (double)aint[0][0] * 0.5D;
-        d19 = (double)pos.getZ() + 0.5D + (double)aint[0][2] * 0.5D;
-        d8 = (double)pos.getX() + 0.5D + (double)aint[1][0] * 0.5D;
-        d9 = (double)pos.getZ() + 0.5D + (double)aint[1][2] * 0.5D;
-        d1 = d8 - d18;
-        d2 = d9 - d19;
+        a = (double)pos.getX() + 0.5D + (double)matrix[0][0] * 0.5D;
+        b = (double)pos.getZ() + 0.5D + (double)matrix[0][2] * 0.5D;
+        c = (double)pos.getX() + 0.5D + (double)matrix[1][0] * 0.5D;
+        d = (double)pos.getZ() + 0.5D + (double)matrix[1][2] * 0.5D;
+        u = c - a;
+        v = d - b;
         double d10;
-        if (d1 == 0.0D) {
+        if (u == 0.0D) {
             this.posX = (double)pos.getX() + 0.5D;
             d10 = this.posZ - (double)pos.getZ();
-        } else if (d2 == 0.0D) {
+        } else if (v == 0.0D) {
             this.posZ = (double)pos.getZ() + 0.5D;
             d10 = this.posX - (double)pos.getX();
         } else {
-            double d11 = this.posX - d18;
-            double d12 = this.posZ - d19;
-            d10 = (d11 * d1 + d12 * d2) * 2.0D;
+            double d11 = this.posX - a;
+            double d12 = this.posZ - b;
+            d10 = (d11 * u + d12 * v) * 2.0D;
         }
 
-        this.posX = d18 + d1 * d10;
-        this.posZ = d19 + d2 * d10;
+        this.posX = a + u * d10;
+        this.posZ = b + v * d10;
         this.setPosition(this.posX, this.posY, this.posZ);
         this.moveMinecartOnRail(pos);
-        if (aint[0][1] != 0 && MathHelper.floor(this.posX) - pos.getX() == aint[0][0] && MathHelper.floor(this.posZ) - pos.getZ() == aint[0][2]) {
-            this.setPosition(this.posX, this.posY + (double)aint[0][1], this.posZ);
-        } else if (aint[1][1] != 0 && MathHelper.floor(this.posX) - pos.getX() == aint[1][0] && MathHelper.floor(this.posZ) - pos.getZ() == aint[1][2]) {
-            this.setPosition(this.posX, this.posY + (double)aint[1][1], this.posZ);
+        if (matrix[0][1] != 0 && MathHelper.floor(this.posX) - pos.getX() == matrix[0][0] && MathHelper.floor(this.posZ) - pos.getZ() == matrix[0][2]) {
+            this.setPosition(this.posX, this.posY + (double)matrix[0][1], this.posZ);
+        } else if (matrix[1][1] != 0 && MathHelper.floor(this.posX) - pos.getX() == matrix[1][0] && MathHelper.floor(this.posZ) - pos.getZ() == matrix[1][2]) {
+            this.setPosition(this.posX, this.posY + (double)matrix[1][1], this.posZ);
         }
 
         this.applyDrag();
@@ -621,8 +620,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     EntityPlayer player = (EntityPlayer) source.getTrueSource();
                     ItemStack stack = player.getHeldItemMainhand();
                     if (stack.isEmpty()) return false;
-                    if (stack.getItem() instanceof Item74HC04) flag = true;
-                    if (stack.getItem() instanceof Item1N4148) flag = true;
+                    if (stack.getItem() instanceof IWand) flag = true;
                 }
                 if (flag || this.getDamage() > 40.0F) {
                     this.removePassengers();
@@ -872,7 +870,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
                             if (living instanceof EntityPlayer) {
                                 EntityPlayer player = (EntityPlayer) living;
-                                if (!player.isCreative() && !this.isPassenger(player)) {
+                                ItemStack stack = player.getHeldItemMainhand();
+                                if (!(stack.getItem() instanceof IWand) && !this.isPassenger(player)) {
                                     PotionType type;
                                     type = PotionType.getPotionTypeForName("weakness");
                                     if (type != null)

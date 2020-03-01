@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.api.signal.ITrackSide;
 import club.nsdn.nyasamarailway.api.signal.TileEntitySignalLight;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
@@ -30,7 +31,7 @@ import static club.nsdn.nyasamatelecom.api.util.Util.say;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class Item1N4148 extends ToolBase {
+public class Item1N4148 extends ToolBase implements IController {
 
     public static LinkedHashMap<UUID, TileEntityTransceiver> tmpRails;
 

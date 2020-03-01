@@ -2,6 +2,7 @@ package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
@@ -27,7 +28,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class ItemNTP8Bit extends ToolBase {
+public class ItemNTP8Bit extends ToolBase implements IController {
 
     public ItemNBTHelper<Integer> power = new ItemNBTHelper<>(Integer.class, "power");
     public ItemNBTHelper<Integer> brake = new ItemNBTHelper<>(Integer.class, "brake");

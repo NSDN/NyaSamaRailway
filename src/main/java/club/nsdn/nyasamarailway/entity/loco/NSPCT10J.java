@@ -4,9 +4,7 @@ import club.nsdn.nyasamarailway.api.cart.AbsLimLoco;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.cart.IHighSpeedCart;
 import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.network.TrainPacket;
 import club.nsdn.nyasamarailway.util.TrainController;
 import club.nsdn.nyasamatelecom.api.util.Util;
@@ -113,12 +111,10 @@ public class NSPCT10J extends AbsLimLoco implements IHighSpeedCart, IInspectionC
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit ||
-                        stack.getItem() instanceof ItemNTP32Bit) {
+                if (stack.getItem() instanceof IController)
                     return true;
-                }
-                if (stack.getItem() instanceof ItemMinecart) return true;
+                if (stack.getItem() instanceof ItemMinecart)
+                    return true;
             }
             if (!this.world.isRemote) {
                 player.startRiding(this);

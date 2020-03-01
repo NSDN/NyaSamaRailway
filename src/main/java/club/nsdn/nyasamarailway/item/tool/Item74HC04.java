@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +20,7 @@ import org.thewdj.linkage.api.IToolCrowbar;
 /**
  * Created by drzzm32 on 2019.2.22
  */
-public class Item74HC04 extends ToolBase implements IToolCrowbar {
+public class Item74HC04 extends ToolBase implements IToolCrowbar, IWand {
 
     public Item74HC04() {
         super(ToolMaterial.IRON);

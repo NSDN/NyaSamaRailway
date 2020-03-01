@@ -1,18 +1,12 @@
 package club.nsdn.nyasamarailway.api.signal;
 
-import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
-import club.nsdn.nyasamarailway.api.cart.AbsMotoCart;
-import club.nsdn.nyasamarailway.api.cart.IContainer;
-import club.nsdn.nyasamarailway.api.cart.IExtendedInfoCart;
+import club.nsdn.nyasamarailway.api.cart.*;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
 import club.nsdn.nyasamarailway.util.SoundUtil;
 import club.nsdn.nyasamarailway.util.TrainController;
-import club.nsdn.nyasamatelecom.api.device.SignalBox;
-import club.nsdn.nyasamatelecom.api.device.SignalBoxGetter;
-import club.nsdn.nyasamatelecom.api.device.SignalBoxSender;
-import club.nsdn.nyasamatelecom.api.tileentity.ITriStateReceiver;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
-import club.nsdn.nyasamatelecom.api.tileentity.TileEntityReceiver;
+import club.nsdn.nyasamatelecom.api.device.*;
+import club.nsdn.nyasamatelecom.api.tileentity.*;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import net.minecraft.entity.Entity;
@@ -501,7 +495,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                             reception.spawn();
                     }
                 }
-            } else {
+            } else if (!(cart instanceof AbsLocoBase)) {
                 if (reception.cartType.isEmpty() && (getVelSq(cart) == 0))
                     registerCart(reception, cart);
 
@@ -574,6 +568,10 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     protected void loco(AbsLocoBase loco, TileEntityTrackSideReception reception, LinkedList<EntityPlayer> players) {
         if (reception == null) return; if (loco == null) return;
+
+        for (EntityPlayer player : players)
+            if (player.getHeldItemMainhand().getItem() instanceof IController)
+                return;
 
         double maxV = 0.2;
         World world = reception.world;
@@ -668,6 +666,10 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     protected void cart(EntityMinecart cart, TileEntityTrackSideReception reception, LinkedList<EntityPlayer> players) {
         if (reception == null) return; if (cart == null) return;
+
+        for (EntityPlayer player : players)
+            if (player.getHeldItemMainhand().getItem() instanceof IController)
+                return;
 
         World world = reception.world;
         EnumFacing railOffset = ITrackSide.getRailOffset(reception.direction);

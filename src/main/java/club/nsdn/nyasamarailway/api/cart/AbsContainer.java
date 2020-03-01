@@ -1,10 +1,10 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.api.item.IController;
+import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -148,12 +148,8 @@ public abstract class AbsContainer extends Entity {
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (
-                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
-                ) {
+                if (stack.getItem() instanceof IController)
                     return true;
-                }
             }
             if (!this.world.isRemote) {
                 player.startRiding(this);
@@ -182,8 +178,7 @@ public abstract class AbsContainer extends Entity {
                 EntityPlayer player = (EntityPlayer) source.getTrueSource();
                 ItemStack stack = player.getHeldItemMainhand();
                 if (stack.isEmpty()) return false;
-                if (stack.getItem() instanceof Item74HC04) flag = true;
-                if (stack.getItem() instanceof Item1N4148) flag = true;
+                if (stack.getItem() instanceof IWand) flag = true;
             }
             if (flag) {
                 this.removePassengers();

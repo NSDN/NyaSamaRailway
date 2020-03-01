@@ -3,11 +3,8 @@ package club.nsdn.nyasamarailway.entity.train;
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.cart.IInspectionCart;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.Item74HC04;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP32Bit;
-import club.nsdn.nyasamarailway.item.tool.ItemNTP8Bit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -68,12 +65,8 @@ public class NSE4 extends AbsTrainBase implements IInspectionCart {
         } else {
             ItemStack stack = player.getHeldItemMainhand();
             if (!stack.isEmpty()) {
-                if (
-                        stack.getItem() instanceof Item74HC04 || stack.getItem() instanceof Item1N4148 ||
-                        stack.getItem() instanceof ItemNTP8Bit || stack.getItem() instanceof ItemNTP32Bit
-                ) {
+                if (stack.getItem() instanceof IController)
                     return true;
-                }
             }
             if (!this.world.isRemote) {
                 player.startRiding(this);

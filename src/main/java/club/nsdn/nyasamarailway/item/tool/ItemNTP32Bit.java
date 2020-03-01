@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.item.tool;
 
 import club.nsdn.nyasamarailway.NyaSamaRailway;
+import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.creativetab.CreativeTabLoader;
 import club.nsdn.nyasamarailway.api.cart.AbsLocoBase;
 import club.nsdn.nyasamarailway.network.NetworkWrapper;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class ItemNTP32Bit extends ToolBase {
+public class ItemNTP32Bit extends ToolBase implements IController {
 
     public ItemNBTHelper<Integer> power = new ItemNBTHelper<>(Integer.class, "power");
     public ItemNBTHelper<Integer> brake = new ItemNBTHelper<>(Integer.class, "brake");

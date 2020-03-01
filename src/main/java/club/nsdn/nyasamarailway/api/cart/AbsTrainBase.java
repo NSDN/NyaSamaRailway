@@ -1,5 +1,6 @@
 package club.nsdn.nyasamarailway.api.cart;
 
+import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.item.ItemLoader;
 import club.nsdn.nyasamarailway.item.tool.*;
 import net.minecraft.entity.Entity;
@@ -147,8 +148,7 @@ public abstract class AbsTrainBase extends AbsContainer {
                 EntityPlayer player = (EntityPlayer) source.getTrueSource();
                 ItemStack stack = player.getHeldItemMainhand();
                 if (stack.isEmpty()) return false;
-                if (stack.getItem() instanceof Item74HC04) flag = true;
-                if (stack.getItem() instanceof Item1N4148) flag = true;
+                if (stack.getItem() instanceof IWand) flag = true;
             }
             if (flag) {
                 this.removePassengers();
