@@ -7,7 +7,6 @@ import club.nsdn.nyasamarailway.api.rail.IVirtualRail;
 import club.nsdn.nyasamarailway.api.rail.TileEntityRailEndpoint;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
 import club.nsdn.nyasamarailway.item.ItemLoader;
-import club.nsdn.nyasamarailway.item.tool.*;
 import club.nsdn.nyasamarailway.api.signal.TileEntityTrackSideReception;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
 import net.minecraft.network.datasync.DataParameter;
@@ -918,6 +917,16 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, this.getCurrentRailPosition()));
         }
 
+    }
+
+    @Override
+    public void applyEntityCollision(@Nonnull Entity entity) {
+        if (entity instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) entity;
+            ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem() instanceof IWand)
+                super.applyEntityCollision(entity);
+        }
     }
 
     protected BlockPos getCurrentRailPosition() {
