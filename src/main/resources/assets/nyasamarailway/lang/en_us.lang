@@ -175,6 +175,7 @@ tile.TrackSideRFIDHs.name=TS-003B High-Speed Track-Side RFID Device
 info.trackside.invert=Track-Side Device Direction changed
 tile.WireRail.name=Wire Rail
 tile.WireRailNode.name=Wire Rail Node
+tile.WireRailSwitch.name=Wire Rail Switch
 tile.RailNorStoneSleeper.name=Normal Rail(Stone Sleeper)
 
 itemGroup.tabNSTest=NyaSama Test

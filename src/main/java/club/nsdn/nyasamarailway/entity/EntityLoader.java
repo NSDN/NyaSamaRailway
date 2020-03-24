@@ -28,8 +28,8 @@ public class EntityLoader {
     public static LinkedList<Class<? extends Entity>> entities;
 
     private static void register(int index, Class<? extends Entity> entity) {
-        String name = entity.getName().replace(EntityLoader.class.getPackage().getName(), "");
-        name = name.replace(".", "_").substring(1).replace("$", "_").toLowerCase();
+        String name = entity.getName().replace(EntityLoader.class.getPackage().getName() + ".", "");
+        name = name.replace(".", "_").replace("$", "_").toLowerCase();
         EntityRegistry.registerModEntity(
                 new ResourceLocation(NyaSamaRailway.MODID, name),
                 entity, name, index, NyaSamaRailway.getInstance(),

@@ -158,6 +158,7 @@ public class BlockLoader {
         blocks.add(new RailNoSleeper());
         blocks.add(new RailTriSwitch());
         blocks.add(new WireRail());
+        blocks.add(new WireRailSwitch());
         blocks.add(new RailNorStoneSleeper());
 
         blocks.add(new GateFront());
