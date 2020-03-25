@@ -83,6 +83,16 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
                 return Result.OK;
             }));
+
+            funcList.put("nul", ((dst, src) -> {
+                if (src != null) return Result.ERR;
+                if (dst != null) return Result.ERR;
+
+                getReception().cartType = "null";
+                prt("[NSR] cartType <- null");
+
+                return Result.OK;
+            }));
         }
 
         public abstract TileEntityTrackSideReception getReception();
@@ -435,6 +445,9 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
     }
 
     protected void spawn() {
+        if (cartType.equals("null"))
+            return;
+
         EnumFacing railOffset = ITrackSide.getRailOffset(direction);
         BlockPos offset = new BlockPos(
                 railOffset.getFrontOffsetX(),
@@ -488,11 +501,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
         } else {
             if (!hasCart) {
                 if (!reception.cartType.isEmpty()) {
-                    reception.count += 1;
-                    if (reception.count >= SPAWN_DELAY * 20) {
+                    if (reception.cartType.equals("null"))
                         reception.reset();
-                        if (reception.state != STATE_NEG)
-                            reception.spawn();
+                    else {
+                        reception.count += 1;
+                        if (reception.count >= SPAWN_DELAY * 20) {
+                            reception.reset();
+                            if (reception.state != STATE_NEG)
+                                reception.spawn();
+                        }
                     }
                 }
             } else if (!(cart instanceof AbsLocoBase)) {
@@ -689,8 +706,15 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
         if ((getVelSq(cart) > 0) && !reception.enable) {
             if ((Math.abs(cart.motionX) > maxV / 2) || (Math.abs(cart.motionZ) > maxV / 2)) {
-                cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
-                cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
+                if (cart instanceof AbsMotoCart) {
+                    ((AbsMotoCart) cart).setMotorPower(0);
+                    ((AbsMotoCart) cart).setMotorBrake(1);
+                    ((AbsMotoCart) cart).setMotorState(true);
+                    ((AbsMotoCart) cart).setMotorVel(maxV / 4);
+                } else {
+                    cart.motionX = (Math.signum(cart.motionX) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionX), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
+                    cart.motionZ = (Math.signum(cart.motionZ) * Dynamics.LocoMotions.calcVelocityDown(Math.abs(cart.motionZ), 0.1D, 1.0D, 1.0D, 1.0D, 0.05D, 0.02D));
+                }
             } else {
                 reception.enable = true;
                 reception.doorCtrl = true;
@@ -701,6 +725,8 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
                     ((AbsMotoCart) cart).setMotorBrake(1);
                     ((AbsMotoCart) cart).setMotorState(false);
                     ((AbsMotoCart) cart).setMotorVel(0);
+                    ((AbsMotoCart) cart).setMotorDir(0);
+                    ((AbsMotoCart) cart).setBlockingState(false);
                 }
                 setCartDefaultPosition(cart, pos);
                 if (reception.setDelay >= 5 && reception.delay == 0) {
@@ -744,19 +770,33 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
                 setCartDefaultPosition(cart, pos);
             } else {
-                if (cart instanceof AbsMotoCart)
+                if (cart instanceof AbsMotoCart) {
+                    int dir = 0;
+                    if (reception.direction.getFrontOffsetZ() != 0)
+                        dir = (int) Math.signum(Math.sin(TrainController.calcYaw(cart) * Math.PI / 180.0));
+                    else if (reception.direction.getFrontOffsetX() != 0)
+                        dir = (int) Math.signum(Math.cos(TrainController.calcYaw(cart) * Math.PI / 180.0));
+                    if ((reception.direction == EnumFacing.SOUTH || reception.direction == EnumFacing.WEST))
+                        dir = -dir;
+                    if (reception.isInvert()) dir = -dir;
+                    ((AbsMotoCart) cart).setMotorPower(1);
                     ((AbsMotoCart) cart).setMotorBrake(10);
-
-                double dir = (reception.direction == EnumFacing.NORTH || reception.direction == EnumFacing.EAST) ? 1 : -1;
-                if (reception.isInvert()) dir = -dir;
-                if (reception.direction.getFrontOffsetZ() != 0) {
-                    if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
-                    if (Math.abs(cart.motionZ) < maxV)
-                        cart.motionZ = -dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1D, 1.0D, 0.1D, 0.02D);
-                } else if (reception.direction.getFrontOffsetX() != 0) {
-                    if (cart.motionX * dir <= 0.0D) cart.motionX = dir * 0.005D;
-                    if (Math.abs(cart.motionX) < maxV)
-                        cart.motionX = dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1D, 1.0D, 0.1D, 0.02D);
+                    ((AbsMotoCart) cart).setMotorState(true);
+                    ((AbsMotoCart) cart).setMotorVel(maxV);
+                    ((AbsMotoCart) cart).setMotorDir(dir);
+                    ((AbsMotoCart) cart).setBlockingState(true);
+                } else {
+                    double dir = (reception.direction == EnumFacing.NORTH || reception.direction == EnumFacing.EAST) ? 1 : -1;
+                    if (reception.isInvert()) dir = -dir;
+                    if (reception.direction.getFrontOffsetZ() != 0) {
+                        if (cart.motionZ * dir >= 0.0D) cart.motionZ = -dir * 0.005D;
+                        if (Math.abs(cart.motionZ) < maxV)
+                            cart.motionZ = -dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionZ), 0.1D, 1.0D, 0.1D, 0.02D);
+                    } else if (reception.direction.getFrontOffsetX() != 0) {
+                        if (cart.motionX * dir <= 0.0D) cart.motionX = dir * 0.005D;
+                        if (Math.abs(cart.motionX) < maxV)
+                            cart.motionX = dir * Dynamics.LocoMotions.calcVelocityUp(Math.abs(cart.motionX), 0.1D, 1.0D, 0.1D, 0.02D);
+                    }
                 }
             }
         }
