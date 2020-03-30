@@ -101,7 +101,7 @@ public abstract class TileEntityTrackSideReception extends TileEntityActuator im
 
     @Override
     protected void setBoundsByXYZ(double x1, double y1, double z1, double x2, double y2, double z2) {
-        switch (META % METAMAX) {
+        switch (META & 0x7) {
             case 0:
                 setBlockBounds(x1, y1, z1, x2, y2, z2);
                 break;
