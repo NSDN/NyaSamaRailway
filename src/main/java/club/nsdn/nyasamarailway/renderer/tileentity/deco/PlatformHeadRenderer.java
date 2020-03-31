@@ -217,10 +217,21 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
         return font;
     }
 
+    private static Font getFont(String name) {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        for (Font f : ge.getAllFonts())
+            if (f.getName().equalsIgnoreCase(name))
+                return f.deriveFont(Font.BOLD);
+        for (Font f : ge.getAllFonts())
+            if (f.getName().equalsIgnoreCase("Arial"))
+                return f.deriveFont(Font.BOLD);
+        return null;
+    }
+
     static {
-        yan = loadFont(RES_YAN, new Font("楷体", Font.BOLD, 16));
-        song = loadFont(RES_SONG, new Font("宋体", Font.BOLD, 16));
-        hei = loadFont(RES_HEI, new Font("黑体", Font.BOLD, 16));
+        yan = loadFont(RES_YAN, getFont("\u6977\u4F53"));
+        song = loadFont(RES_SONG, getFont("\u5B8B\u4F53"));
+        hei = loadFont(RES_HEI, getFont("\u9ED1\u4F53"));
     }
 
     public static Texture genTexture(PlatformHead.TileEntityPlatformHead head) {
