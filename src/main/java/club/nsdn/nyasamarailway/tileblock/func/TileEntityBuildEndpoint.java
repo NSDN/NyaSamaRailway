@@ -1,5 +1,7 @@
 package club.nsdn.nyasamarailway.tileblock.func;
 
+import club.nsdn.nyasamatelecom.NyaSamaTelecom;
+import club.nsdn.nyasamatelecom.api.tileentity.ITileAnchor;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityActuator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -8,22 +10,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.thewdj.spline.Spline;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
 /**
  * Created by drzzm32 on 2019.3.10.
  */
-public class TileEntityBuildEndpoint extends TileEntityActuator {
+public class TileEntityBuildEndpoint extends TileEntityActuator implements ITileAnchor {
 
     public static final int TYPE_TUBE = 0;
     public static final int TYPE_RECT = 1;
@@ -344,6 +346,109 @@ public class TileEntityBuildEndpoint extends TileEntityActuator {
     @Override
     public double getMaxRenderDistanceSquared() {
         return 65536.0;
+    }
+
+    /* -------- -------- -------- -------- */
+
+    public boolean hasTicket = false;
+    public static final byte ANCHOR_RADIUS = 2;
+    public static final byte MAX_CHUNKS = 25;
+    public Set<ChunkPos> chunks;
+    public ForgeChunkManager.Ticket ticket;
+
+    public void setTicketFlag(boolean flag) {
+        hasTicket = flag;
+    }
+
+    public boolean hasTicketFlag() {
+        return hasTicket;
+    }
+
+    @Override
+    public void update() {
+        if (!world.isRemote)
+            updateSignal(world, getPos());
+
+        if (world.isRemote) {
+            if (hasTicketFlag())
+                if (chunks == null)
+                    setupChunks();
+            return;
+        }
+
+        if (ticket == null)
+            requestTicket();
+    }
+
+    public void releaseTicket() {
+        ForgeChunkManager.releaseTicket(ticket);
+        ticket = null;
+        setTicketFlag(false);
+    }
+
+    private boolean requestTicket() {
+        ForgeChunkManager.Ticket chunkTicket = ForgeChunkManager.requestTicket(
+                NyaSamaTelecom.getInstance(), world, ForgeChunkManager.Type.NORMAL
+        );
+        if (chunkTicket != null) {
+            NBTTagCompound tag = chunkTicket.getModData();
+            tag.setInteger("x", pos.getX());
+            tag.setInteger("y", pos.getY());
+            tag.setInteger("z", pos.getZ());
+            chunkTicket.setChunkListDepth(MAX_CHUNKS);
+            setChunkTicket(chunkTicket);
+            forceChunkLoading();
+            return true;
+        }
+        return false;
+    }
+
+    public void setChunkTicket(@Nullable ForgeChunkManager.Ticket tick) {
+        if (this.ticket != tick)
+            ForgeChunkManager.releaseTicket(this.ticket);
+        this.ticket = tick;
+        setTicketFlag(ticket != null);
+    }
+
+    public Set<ChunkPos> getChunksAround(int xChunk, int zChunk, int radius) {
+        Set<ChunkPos> chunkList = new HashSet<ChunkPos>();
+        for (int xx = xChunk - radius; xx <= xChunk + radius; xx++) {
+            for (int zz = zChunk - radius; zz <= zChunk + radius; zz++) {
+                chunkList.add(new ChunkPos(xx, zz));
+            }
+        }
+        return chunkList;
+    }
+
+    public void forceChunkLoading() {
+        if (ticket == null)
+            return;
+
+        int xChunk = getPos().getX() >> 4, zChunk = getPos().getZ() >> 4;
+        setupChunks();
+
+        Set<ChunkPos> innerChunks = getChunksAround(xChunk, zChunk, 1);
+
+        for (ChunkPos chunk : chunks) {
+            ForgeChunkManager.forceChunk(ticket, chunk);
+            ForgeChunkManager.reorderChunk(ticket, chunk);
+        }
+        for (ChunkPos chunk : innerChunks) {
+            ForgeChunkManager.forceChunk(ticket, chunk);
+            ForgeChunkManager.reorderChunk(ticket, chunk);
+        }
+
+        ChunkPos myChunk = new ChunkPos(xChunk, zChunk);
+        ForgeChunkManager.forceChunk(ticket, myChunk);
+        ForgeChunkManager.reorderChunk(ticket, myChunk);
+    }
+
+    public void setupChunks() {
+        int xChunk = getPos().getX() >> 4, zChunk = getPos().getZ() >> 4;
+        if (hasTicketFlag())
+            chunks = getChunksAround(xChunk, zChunk, ANCHOR_RADIUS);
+        else
+            chunks = Collections.emptySet();
     }
 
 }

@@ -4,6 +4,7 @@ import club.nsdn.nyasamarailway.NyaSamaRailway;
 import club.nsdn.nyasamarailway.tileblock.deco.PlatformHead;
 import club.nsdn.nyasamatelecom.api.render.AbsTileEntitySpecialRenderer;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityBase;
+import cn.ac.nya.NyaSamaLib;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import cn.ac.nya.sler.SLER;
 import net.minecraft.client.Minecraft;
@@ -169,7 +170,7 @@ public class PlatformHeadRenderer extends AbsTileEntitySpecialRenderer {
         }
     }
 
-    public static ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(32);
+    public static ScheduledThreadPoolExecutor executor = NyaSamaLib.EXECUTOR;
     public static SafePool<BlockPos, Texture> textures = new SafePool<>();
     public static SafeList<BlockPos> stack = new SafeList<>();
 
