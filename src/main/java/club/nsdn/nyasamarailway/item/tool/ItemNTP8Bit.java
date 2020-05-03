@@ -52,7 +52,10 @@ public class ItemNTP8Bit extends ToolBase implements IController {
 
     @Override
     public void onUpdate(ItemStack itemStack, World world, Entity entity, int index, boolean inHand) {
-        if (!world.isRemote && inHand) {
+        boolean inOffHand = false;
+        if (entity instanceof EntityPlayer)
+            inOffHand = ((EntityPlayer) entity).getHeldItemOffhand() == itemStack;
+        if (!world.isRemote && (inHand || inOffHand)) {
             if (entity instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entity;
 

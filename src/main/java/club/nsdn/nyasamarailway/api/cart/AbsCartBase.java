@@ -477,6 +477,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
             ItemStack stack = player.getHeldItemMainhand();
+            if (!((stack.getItem() instanceof ToolBase)))
+                stack = player.getHeldItemOffhand();
             if (stack.getItem() instanceof ToolBase)
                 this.scanBlocking();
         }
