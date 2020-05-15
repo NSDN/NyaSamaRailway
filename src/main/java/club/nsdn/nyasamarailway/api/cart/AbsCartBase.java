@@ -98,7 +98,12 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
     public boolean getCurved() { return dataManager.get(CURVED); }
 
     public void scanBlocking() {
-        dataManager.set(BLOCKING, (float) IMobileBlocking.getNearestCartDist(world, this, 128));
+        int max = IMobileBlocking.distByCart(this, IMobileBlocking.BLOCKING_DIST_LIM * 2);
+        double dist = IMobileBlocking.getNearestCartDist(world, this, max);
+        if (Double.isNaN(dist))
+            dist = IMobileBlocking.INF_DIST;
+        else if (dist > max) dist = max;
+        dataManager.set(BLOCKING, (float) dist);
     }
 
     public float getBlocking() {

@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -267,15 +268,34 @@ public interface IMobileBlocking {
         return Double.NaN;
     }
 
-    static boolean hasCartFrom32(World world, EntityMinecart cart) {
-        double dist = getNearestCartDist(world, cart, 32);
-        if (Double.isNaN(dist)) return false;
-        return dist < 32;
+    int BLOCKING_DIST_LIM = 16;
+    int MAX_DIST = 512, INF_DIST = 999;
+    static int distByCart(EntityMinecart cart, int base) {
+        if (cart == null) return INF_DIST;
+        Vec3d vel = new Vec3d(cart.motionX, 0, cart.motionZ);
+        double a0 =        1140;
+        double a1 =       -1143;
+        double b1 =       54.97;
+        double w =       0.1821;
+        double x = vel.lengthVector();
+        double dist = a0 + a1 * Math.cos(x * w) + b1 * Math.sin(x * w);
+        int res = Math.round((float) dist + BLOCKING_DIST_LIM);
+        if (res > MAX_DIST) res = MAX_DIST;
+        return Math.max(res, base);
     }
 
-    static boolean hasCartFrom16(World world, EntityMinecart cart) {
-        double dist = getNearestCartDist(world, cart, 16);
+    static boolean preMobileBlocking(World world, EntityMinecart cart) {
+        int max = distByCart(cart, BLOCKING_DIST_LIM * 2);
+        double dist = getNearestCartDist(world, cart, max);
         if (Double.isNaN(dist)) return false;
-        return dist < 16;
+        return dist < max;
     }
+
+    static boolean mobileBlocking(World world, EntityMinecart cart) {
+        int max = BLOCKING_DIST_LIM;
+        double dist = getNearestCartDist(world, cart, max);
+        if (Double.isNaN(dist)) return false;
+        return dist < max;
+    }
+
 }

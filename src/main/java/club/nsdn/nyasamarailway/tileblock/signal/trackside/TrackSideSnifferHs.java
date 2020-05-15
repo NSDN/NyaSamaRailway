@@ -5,6 +5,7 @@ import club.nsdn.nyasamarailway.api.signal.ITrackSide;
 import club.nsdn.nyasamatelecom.api.util.Util;
 import cn.ac.nya.nsasm.NSASM;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,10 +14,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -46,6 +48,18 @@ public class TrackSideSnifferHs extends AbsTrackSide {
                     getSniffer().invert = !getSniffer().invert;
 
                     return NSASM.Result.OK;
+                }));
+                funcList.put("dist", ((dst, src) -> {
+                    if (src != null) return Result.ERR;
+                    if (dst == null) return Result.ERR;
+                    if (dst.type != RegType.INT) return Result.ERR;
+
+                    getSniffer().sniffDist = (int) dst.data;
+                    if (getPlayer() != null)
+                        getPlayer().sendMessage(new TextComponentString(
+                                TextFormatting.DARK_GRAY + "sniffDist -> " + getSniffer().sniffDist));
+
+                    return Result.OK;
                 }));
             }
 
@@ -93,16 +107,19 @@ public class TrackSideSnifferHs extends AbsTrackSide {
         }
 
         public boolean invert = false;
+        public int sniffDist = 8;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             invert = tagCompound.getBoolean("invert");
+            sniffDist = tagCompound.getInteger("sniffDist");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setBoolean("invert", invert);
+            tagCompound.setInteger("sniffDist", sniffDist);
             return super.toNBT(tagCompound);
         }
 
@@ -120,7 +137,8 @@ public class TrackSideSnifferHs extends AbsTrackSide {
                     if (!world.isRemote) {
                         String code = club.nsdn.nyasamatelecom.api.util.NSASM.getCodeString(list);
 
-                        if (code.contains("inv\n")) {
+                        if (code.contains("inv\n") || code.contains("#conf\n")) {
+                            code = code.replace("#conf\n", "");
                             new SnifferCore(code) {
                                 @Override
                                 public World getWorld() {
@@ -143,18 +161,18 @@ public class TrackSideSnifferHs extends AbsTrackSide {
                                 }
 
                                 @Override
-                                public EntityPlayer getPlayer() {
-                                    return null;
-                                }
-
-                                @Override
                                 public TileEntityTrackSideSnifferHs getSniffer() {
                                     return sniffer;
                                 }
 
                                 @Override
-                                public EntityMinecart getCart() {
+                                public List<EntityMinecart> getCarts() {
                                     return null;
+                                }
+
+                                @Override
+                                public List<EntityPlayer> getPlayers() {
+                                    return Collections.singletonList(player);
                                 }
                             }.run();
                         } else {
@@ -180,22 +198,23 @@ public class TrackSideSnifferHs extends AbsTrackSide {
                 TileEntityTrackSideSnifferHs sniffer = (TileEntityTrackSideSnifferHs) tileEntity;
 
                 EnumFacing offset = sniffer.isInvert() ? sniffer.direction.getOpposite() : sniffer.direction;
-                boolean hasCart = ITrackSide.hasMinecart(sniffer, sniffer.direction, offset);
+                LinkedList<EntityMinecart> carts;
+                if (sniffer.sniffDist <= 8)
+                    carts = ITrackSide.getMinecarts(sniffer, sniffer.direction, offset);
+                else
+                    carts = ITrackSide.sniffMinecarts(sniffer, sniffer.direction, offset, sniffer.sniffDist);
+
+                boolean hasCart = !carts.isEmpty();
                 boolean hasPowered = ITrackSide.hasPowered(sniffer);
                 if (hasCart && sniffer.nsasmState == TileEntityTrackSideSnifferHs.NSASM_IDLE) {
                     sniffer.nsasmState = TileEntityTrackSideSnifferHs.NSASM_DONE;
-
-                    EntityMinecart cart = ITrackSide.getMinecart(sniffer, sniffer.direction, offset);
-                    EntityPlayer player = null;
-                    if (cart != null) {
-                        if (!cart.getPassengers().isEmpty()) { // TODO: for more players
-                            if (!(cart.getPassengers().get(0) instanceof EntityPlayer))
-                                player = null;
-                            else player = (EntityPlayer) cart.getPassengers().get(0);
+                    LinkedList<EntityPlayer> players = new LinkedList<>();
+                    for (EntityMinecart cart : carts) {
+                        for (Entity e : cart.getPassengers()) {
+                            if (e instanceof EntityPlayer)
+                                players.add((EntityPlayer) e);
                         }
                     }
-
-                    EntityPlayer thePlayer = player;
 
                     new SnifferCore(sniffer.nsasmCode) {
                         @Override
@@ -219,18 +238,18 @@ public class TrackSideSnifferHs extends AbsTrackSide {
                         }
 
                         @Override
-                        public EntityPlayer getPlayer() {
-                            return thePlayer;
-                        }
-
-                        @Override
                         public TileEntityTrackSideSnifferHs getSniffer() {
                             return sniffer;
                         }
 
                         @Override
-                        public EntityMinecart getCart() {
-                            return cart;
+                        public List<EntityMinecart> getCarts() {
+                            return carts;
+                        }
+
+                        @Override
+                        public List<EntityPlayer> getPlayers() {
+                            return players;
                         }
                     }.run();
 

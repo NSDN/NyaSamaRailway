@@ -6,6 +6,7 @@ import club.nsdn.nyasamatelecom.api.network.ParticlePacket;
 import club.nsdn.nyasamatelecom.api.tileentity.TileEntityMultiSender;
 import club.nsdn.nyasamatelecom.api.util.NSASM;
 import club.nsdn.nyasamatelecom.api.util.Util;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.LinkedHashMap;
+import java.util.*;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -183,8 +184,105 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
 
         }
 
+        @Override
+        protected void loadParamList() {
+            super.loadParamList();
+
+            paramList.put("cnt", (reg) -> {
+                if (reg == null) {
+                    Register res = new Register();
+                    res.type = RegType.INT;
+                    res.readOnly = true;
+                    if (getCarts() == null)
+                        res.data = 0;
+                    else res.data = getCarts().size();
+                    return res;
+                } else {
+                    return reg;
+                }
+            });
+            paramList.put("pnt", (reg) -> {
+                if (reg == null) {
+                    Register res = new Register();
+                    res.type = RegType.INT;
+                    res.readOnly = true;
+                    if (getPlayers() == null)
+                        res.data = 0;
+                    else res.data = getPlayers().size();
+                    return res;
+                } else {
+                    return reg;
+                }
+            });
+            paramList.put("cids", (reg) -> {
+                if (reg == null) {
+                    Register res = new Register();
+                    res.type = RegType.MAP;
+                    res.readOnly = true;
+                    Map map = new Map();
+                    if (getCarts() != null) {
+                        for (int i = 0; i < getCarts().size(); i++) {
+                            Register k = new Register();
+                            k.type = RegType.INT;
+                            k.readOnly = false;
+                            k.data = i;
+                            Register v = new Register();
+                            v.type = RegType.STR;
+                            v.readOnly = false;
+                            v.data = getCarts().get(i).getCustomNameTag();
+                            map.put(k, v);
+                        }
+                    }
+                    res.data = map;
+                    return res;
+                } else {
+                    return reg;
+                }
+            });
+            paramList.put("pids", (reg) -> {
+                if (reg == null) {
+                    Register res = new Register();
+                    res.type = RegType.MAP;
+                    res.readOnly = true;
+                    Map map = new Map();
+                    if (getPlayers() != null) {
+                        for (int i = 0; i < getPlayers().size(); i++) {
+                            Register k = new Register();
+                            k.type = RegType.INT;
+                            k.readOnly = false;
+                            k.data = i;
+                            Register v = new Register();
+                            v.type = RegType.STR;
+                            v.readOnly = false;
+                            v.data = getPlayers().get(i).getDisplayNameString();
+                            map.put(k, v);
+                        }
+                    }
+                    res.data = map;
+                    return res;
+                } else {
+                    return reg;
+                }
+            });
+        }
+
+        public abstract List<EntityPlayer> getPlayers();
+        public abstract List<EntityMinecart> getCarts();
+
         public abstract T getSniffer();
-        public abstract EntityMinecart getCart();
+
+        @Override
+        public EntityPlayer getPlayer() {
+            if (getPlayers() != null && !getPlayers().isEmpty())
+                return getPlayers().get(0);
+            return null;
+        }
+
+        public EntityMinecart getCart() {
+            if (getCarts() != null && !getCarts().isEmpty())
+                return getCarts().get(0);
+            return null;
+        }
 
     }
 
@@ -345,18 +443,15 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
                 sniffer.nsasmState = TileEntityTrackSideSniffer.NSASM_DONE;
 
                 EntityMinecart cart = ITrackSide.getMinecart(sniffer, sniffer.direction);
-                EntityPlayer player = null;
+                LinkedList<EntityPlayer> players = new LinkedList<>();
                 if (cart != null) {
-                    if (!cart.getPassengers().isEmpty()) { // TODO: for more players
-                        if (!(cart.getPassengers().get(0) instanceof EntityPlayer))
-                            player = null;
-                        else player = (EntityPlayer) cart.getPassengers().get(0);
+                    for (Entity e : cart.getPassengers()) {
+                        if (e instanceof EntityPlayer)
+                            players.add((EntityPlayer) e);
                     }
                 }
 
-                EntityPlayer thePlayer = player;
-
-                new SnifferCore(sniffer.nsasmCode) {
+                new SnifferCore<TileEntityTrackSideSniffer>(sniffer.nsasmCode) {
                     @Override
                     public World getWorld() {
                         return world;
@@ -378,18 +473,18 @@ public class TileEntityTrackSideSniffer extends TileEntityMultiSender implements
                     }
 
                     @Override
-                    public EntityPlayer getPlayer() {
-                        return thePlayer;
-                    }
-
-                    @Override
                     public TileEntityTrackSideSniffer getSniffer() {
                         return sniffer;
                     }
 
                     @Override
-                    public EntityMinecart getCart() {
-                        return cart;
+                    public List<EntityMinecart> getCarts() {
+                        return Collections.singletonList(cart);
+                    }
+
+                    @Override
+                    public List<EntityPlayer> getPlayers() {
+                        return players;
                     }
                 }.run();
 

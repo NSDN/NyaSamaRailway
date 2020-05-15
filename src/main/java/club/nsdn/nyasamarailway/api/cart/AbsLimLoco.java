@@ -133,10 +133,10 @@ public abstract class AbsLimLoco extends AbsLocoBase implements ILimitVelCart, I
     @Override
     protected void doEngine() {
         if (getBlockingState()) {
-            if (IMobileBlocking.hasCartFrom32(world, this)) {
+            if (IMobileBlocking.preMobileBlocking(world, this)) {
                 TrainPacket packet = new TrainPacket(0, 1, getEngineDir());
                 packet.Velocity = this.Velocity;
-                if (IMobileBlocking.hasCartFrom16(world, this)) {
+                if (IMobileBlocking.mobileBlocking(world, this)) {
                     TrainController.doMotion(packet, this); // stop!
                 } else {
                     double vel = getSpeed();

@@ -12,6 +12,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import java.util.LinkedHashMap;
@@ -43,6 +45,18 @@ public class TrackSideRFIDHs extends AbsTrackSide {
                     if (dst != null) return Result.ERR;
 
                     getRFID().invert = !getRFID().invert;
+
+                    return Result.OK;
+                }));
+                funcList.put("dist", ((dst, src) -> {
+                    if (src != null) return Result.ERR;
+                    if (dst == null) return Result.ERR;
+                    if (dst.type != RegType.INT) return Result.ERR;
+
+                    getRFID().sniffDist = (int) dst.data;
+                    if (getPlayer() != null)
+                        getPlayer().sendMessage(new TextComponentString(
+                                TextFormatting.DARK_GRAY + "sniffDist -> " + getRFID().sniffDist));
 
                     return Result.OK;
                 }));
@@ -92,16 +106,19 @@ public class TrackSideRFIDHs extends AbsTrackSide {
         }
 
         public boolean invert = false;
+        public int sniffDist = 8;
 
         @Override
         public void fromNBT(NBTTagCompound tagCompound) {
             invert = tagCompound.getBoolean("invert");
+            sniffDist = tagCompound.getInteger("sniffDist");
             super.fromNBT(tagCompound);
         }
 
         @Override
         public NBTTagCompound toNBT(NBTTagCompound tagCompound) {
             tagCompound.setBoolean("invert", invert);
+            tagCompound.setInteger("sniffDist", sniffDist);
             return super.toNBT(tagCompound);
         }
 
@@ -177,7 +194,11 @@ public class TrackSideRFIDHs extends AbsTrackSide {
                 }
 
                 EnumFacing offset = rfid.isInvert() ? rfid.direction.getOpposite() : rfid.direction;
-                LinkedList<EntityMinecart> carts = ITrackSide.getMinecarts(rfid, rfid.direction, offset);
+                LinkedList<EntityMinecart> carts = null;
+                if (rfid.sniffDist <= 8)
+                    carts = ITrackSide.getMinecarts(rfid, rfid.direction, offset);
+                else
+                    carts = ITrackSide.sniffMinecarts(rfid, rfid.direction, offset, rfid.sniffDist);
 
                 if (carts != null) {
                     for (EntityMinecart cart : carts)

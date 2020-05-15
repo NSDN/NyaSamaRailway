@@ -108,6 +108,16 @@ public interface ITrackSide {
         return carts;
     }
 
+    static LinkedList<EntityMinecart> sniffMinecarts(TileEntityBase tile, EnumFacing dir, EnumFacing offset, int dist) {
+        LinkedList<EntityMinecart> carts = new LinkedList<>();
+        LinkedList<EntityMinecart> buff;
+        for (int i = 0; i <= dist; i++) {
+            buff = getMinecarts(tile, dir, offset, i);
+            if (buff != null) carts.addAll(buff);
+        }
+        return carts;
+    }
+
     static EntityMinecart getMinecart(World world, BlockPos pos) {
         LinkedList<EntityMinecart> carts = getMinecarts(world, pos);
         if (carts.isEmpty()) return null;
@@ -122,6 +132,14 @@ public interface ITrackSide {
 
     static EntityMinecart getMinecart(TileEntityBase tile, EnumFacing dir, EnumFacing offset) {
         for (int i = 0; i <= 8; i++) { //Total: 9 blocks
+            if (getMinecart(tile, dir, offset, i) != null)
+                return getMinecart(tile, dir, offset, i);
+        }
+        return null;
+    }
+
+    static EntityMinecart sniffMinecart(TileEntityBase tile, EnumFacing dir, EnumFacing offset, int dist) {
+        for (int i = 0; i <= dist; i++) {
             if (getMinecart(tile, dir, offset, i) != null)
                 return getMinecart(tile, dir, offset, i);
         }
