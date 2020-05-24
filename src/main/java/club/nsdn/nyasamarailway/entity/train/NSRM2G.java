@@ -153,26 +153,13 @@ public class NSRM2G extends AbsTrainBase {
         }
     }
 
-    public boolean getStateLeft(boolean invert) {
-        if (invert)
-            return getDoorStateRight();
-        return getDoorStateLeft();
-    }
-
-    public boolean getStateRight(boolean invert) {
-        if (invert)
-            return getDoorStateLeft();
-        return getDoorStateRight();
-    }
-
     @Override
     protected void removePassenger(Entity entity) {
         BlockPos pos = this.getPosition();
-        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
-        boolean invert = facing.getAxis() == EnumFacing.Axis.X;
-        if (getStateLeft(invert))
+        EnumFacing facing = getHorizontalFacing(); // Engine is the front
+        if (getDoorStateLeft())
             pos = pos.offset(facing.rotateYCCW(), 3);
-        else if (getStateRight(invert))
+        else if (getDoorStateRight())
             pos = pos.offset(facing.rotateY(), 3);
         else {
             if (world.getBlockState(pos.down().offset(facing.rotateYCCW(), 2)).getBlock() instanceof BlockPlatform)
@@ -197,13 +184,13 @@ public class NSRM2G extends AbsTrainBase {
     protected boolean canFitPassenger(Entity entity) {
         boolean res = super.canFitPassenger(entity);
         BlockPos pos = this.getPosition();
-        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+        EnumFacing facing = getHorizontalFacing(); // Engine is the front
 
         if (getDoorStateLeft() || getDoorStateRight()) {
             boolean invert = facing.getAxis() == EnumFacing.Axis.X;
-            if (getStateLeft(invert))
+            if (getDoorStateLeft())
                 pos = pos.offset(facing.rotateYCCW(), 2);
-            else if (getStateRight(invert))
+            else if (getDoorStateRight())
                 pos = pos.offset(facing.rotateY(), 2);
 
             Vec3i vec = entity.getPosition().subtract(pos);
@@ -228,34 +215,27 @@ public class NSRM2G extends AbsTrainBase {
         return null;
     }
 
-    public void setDoorState(boolean invert, boolean value) {
-        if (invert) setDoorStateRight(value);
-        else setDoorStateLeft(value);
-    }
-
     @Override
     public void onUpdate() {
         super.onUpdate();
 
         if (!world.isRemote) {
-            EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
-            boolean invert = facing.getAxis() == EnumFacing.Axis.X;
+            EnumFacing facing = getHorizontalFacing(); // Engine is the front
             BlockPos pos = getPosition();
             TileEntityGlassShield shield = getShield(pos.offset(facing.rotateYCCW(), 2), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorState(invert, true);
+                    setDoorStateLeft(true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorState(invert, false);
+                    setDoorStateLeft(false);
             }
 
-            invert = !invert;
             shield = getShield(pos.offset(facing.rotateY(), 2), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorState(invert, true);
+                    setDoorStateRight(true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorState(invert, false);
+                    setDoorStateRight(false);
             }
         }
 

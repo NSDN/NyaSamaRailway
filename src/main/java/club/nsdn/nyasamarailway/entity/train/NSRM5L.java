@@ -1,6 +1,7 @@
 package club.nsdn.nyasamarailway.entity.train;
 
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
+import club.nsdn.nyasamarailway.api.cart.CartPart;
 import club.nsdn.nyasamarailway.api.cart.CartUtil;
 import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
@@ -17,13 +18,16 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.*;
 
 /**
  * Created by drzzm32 on 2019.3.21
@@ -38,14 +42,27 @@ public class NSRM5L extends AbsTrainBase {
 
     public final int STEP = 4;
 
+    public static final float DOOR_DIST = 3.0F;
+
+    public final LinkedList<CartPart> parts = new LinkedList<>();
+
+    @Override
+    public boolean hasMultiPart() { return true; }
+
+    @Override
+    public List<CartPart> getMultiPart() { return parts; }
+
     public NSRM5L(World world) {
-        super(world);
+        this(world, 0, 0, 0);
     }
 
     public NSRM5L(World world, double x, double y, double z) {
         super(world, x, y, z);
-    }
+        this.setSize(1.5F, 1.75F);
 
+        parts.add(new CartPart(this, "front", new Vec3d(DOOR_DIST, 0, 0)));
+        parts.add(new CartPart(this, "back", new Vec3d(-DOOR_DIST, 0, 0)));
+    }
 
     @Override
     protected void entityInit() {
@@ -113,6 +130,13 @@ public class NSRM5L extends AbsTrainBase {
         return 0.25;
     }
 
+    @Nonnull
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return super.getRenderBoundingBox().expand(5, 1, 5)
+                .expand(-5, 0, -5);
+    }
+
     @Override
     public int getMaxPassengerSize() {
         return 24;
@@ -163,24 +187,42 @@ public class NSRM5L extends AbsTrainBase {
         return getDoorStateRight();
     }
 
-    @Override
-    protected void removePassenger(Entity entity) {
-        BlockPos pos = this.getPosition();
-        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
-        boolean invert = facing.getAxis() == EnumFacing.Axis.X;
-        if (getStateLeft(invert))
+    public BlockPos calcPlatform(BlockPos pos) {
+        EnumFacing facing = this.getHorizontalFacing(); // Engine is the front
+        if (getDoorStateLeft())
             pos = pos.offset(facing.rotateYCCW(), 2);
-        else if (getStateRight(invert))
+        else if (getDoorStateRight())
             pos = pos.offset(facing.rotateY(), 2);
         else {
             if (world.getBlockState(pos.down().offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
                 pos = pos.offset(facing.rotateYCCW(), 2);
             else if (world.getBlockState(pos.down().offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
                 pos = pos.offset(facing.rotateY(), 2);
-            else {
-                super.removePassenger(entity);
-                return;
-            }
+            else
+                return null;
+        }
+        return pos;
+    }
+
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = entity.getPosition();
+
+        ArrayList<Double> list = new ArrayList<>();
+        LinkedHashMap<Double, BlockPos> map = new LinkedHashMap<>();
+        double v = pos.distanceSq(this.getPosition());
+        list.add(v); map.put(v, this.getPosition());
+        for (CartPart p : getMultiPart()) {
+            v = pos.distanceSq(p.getPosition());
+            list.add(v); map.put(v, p.getPosition());
+        }
+        list.sort(Comparator.naturalOrder());
+        pos = map.get(list.get(0));
+
+        pos = calcPlatform(pos);
+        if (pos == null) {
+            super.removePassenger(entity);
+            return;
         }
 
         super.removePassenger(entity);
@@ -191,17 +233,13 @@ public class NSRM5L extends AbsTrainBase {
         );
     }
 
-    @Override
-    protected boolean canFitPassenger(Entity entity) {
-        boolean res = super.canFitPassenger(entity);
-        BlockPos pos = this.getPosition();
-        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+    public boolean canFit(BlockPos pos, Entity entity, boolean res) {
+        EnumFacing facing = this.getHorizontalFacing(); // Engine is the front
 
         if (getDoorStateLeft() || getDoorStateRight()) {
-            boolean invert = facing.getAxis() == EnumFacing.Axis.X;
-            if (getStateLeft(invert))
+            if (getDoorStateLeft())
                 pos = pos.offset(facing.rotateYCCW());
-            else if (getStateRight(invert))
+            else if (getDoorStateRight())
                 pos = pos.offset(facing.rotateY());
 
             Vec3i vec = entity.getPosition().subtract(pos);
@@ -219,6 +257,17 @@ public class NSRM5L extends AbsTrainBase {
         return res;
     }
 
+    @Override
+    protected boolean canFitPassenger(Entity entity) {
+        boolean res = super.canFitPassenger(entity);
+
+        res |= canFit(this.getPosition(), entity, res);
+        for (CartPart p : getMultiPart())
+            res |= canFit(p.getPosition(), entity, res);
+
+        return res;
+    }
+
     public TileEntityGlassShield getShield(BlockPos pos, EnumFacing facing) {
         TileEntity te = world.getTileEntity(pos.offset(facing));
         if (te instanceof TileEntityGlassShield)
@@ -226,34 +275,35 @@ public class NSRM5L extends AbsTrainBase {
         return null;
     }
 
-    public void setDoorState(boolean invert, boolean value) {
-        if (invert) setDoorStateRight(value);
-        else setDoorStateLeft(value);
-    }
-
     @Override
     public void onUpdate() {
         super.onUpdate();
 
+        for (CartPart p : parts) {
+            if (!world.loadedEntityList.contains(p))
+                world.spawnEntity(p);
+        }
+
+        for (CartPart p : parts)
+            p.onUpdate();
+
         if (!world.isRemote) {
-            EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
-            boolean invert = facing.getAxis() == EnumFacing.Axis.X;
+            EnumFacing facing = getHorizontalFacing(); // Engine is the front
             BlockPos pos = getPosition();
             TileEntityGlassShield shield = getShield(pos.offset(facing.rotateYCCW()), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorState(invert, true);
+                    setDoorStateLeft(true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorState(invert, false);
+                    setDoorStateLeft(false);
             }
 
-            invert = !invert;
             shield = getShield(pos.offset(facing.rotateY()), facing);
             if (shield != null) {
                 if (shield.state == TileEntityGlassShield.STATE_OPENING)
-                    setDoorState(invert, true);
+                    setDoorStateRight(true);
                 else if (shield.state == TileEntityGlassShield.STATE_CLOSING)
-                    setDoorState(invert, false);
+                    setDoorStateRight(false);
             }
         }
 

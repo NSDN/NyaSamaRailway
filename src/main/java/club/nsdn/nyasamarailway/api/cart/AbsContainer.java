@@ -3,8 +3,6 @@ package club.nsdn.nyasamarailway.api.cart;
 import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
-import club.nsdn.nyasamarailway.item.tool.Item1N4148;
-import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -74,6 +75,20 @@ public abstract class AbsContainer extends Entity {
     protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
         tagCompound.setInteger("Base", dataManager.get(BASE));
         tagCompound.setUniqueId("baseUUID", this.baseUUID);
+    }
+
+    @Nullable
+    @Override
+    public Entity[] getParts() {
+        return hasMultiPart() ? getMultiPart().toArray(new Entity[0]) : null;
+    }
+
+    public boolean hasMultiPart() { return false; }
+
+    public List<CartPart> getMultiPart() { return Collections.emptyList(); }
+
+    public Vec3d getOffset(Vec3d vec) {
+        return vec.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI)).add(this.getPositionVector());
     }
 
     public AbsContainer setBase(Entity base) {
@@ -160,8 +175,8 @@ public abstract class AbsContainer extends Entity {
     }
 
     @Override
-    protected boolean canFitPassenger(Entity entity) {
-        return getPassengers().size() < getMaxPassengerSize();
+    protected boolean canFitPassenger(@Nonnull Entity entity) {
+        return getPassengers().size() < getMaxPassengerSize() && !isPassenger(entity);
     }
 
     public abstract int getMaxPassengerSize();
@@ -182,16 +197,13 @@ public abstract class AbsContainer extends Entity {
             }
             if (flag) {
                 this.removePassengers();
-
-                if (flag && !this.hasCustomName()) {
-                    this.setDead();
-                }
+                this.setDead();
+                for (CartPart e : getMultiPart())
+                    e.setDead();
+                return true;
             }
-
-            return true;
-        } else {
-            return true;
         }
+        return false;
     }
 
     @Override

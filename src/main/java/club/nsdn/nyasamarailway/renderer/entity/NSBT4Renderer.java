@@ -14,7 +14,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.3.1
  */
-public class NSBT4Renderer extends AbsCartRenerer {
+public class NSBT4Renderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY_A = (RenderManager manager) -> new NSBT4Renderer(manager, "nsb_4a");
     public static IRenderFactory<EntityMinecart> FACTORY_B = (RenderManager manager) -> new NSBT4Renderer(manager, "nsb_4b");

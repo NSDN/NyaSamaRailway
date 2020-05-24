@@ -79,7 +79,7 @@ public class NSE4 extends AbsTrainBase implements IInspectionCart {
     @Override
     protected void removePassenger(Entity entity) {
         BlockPos pos = this.getPosition();
-        EnumFacing facing = EnumFacing.fromAngle(180 - this.rotationYaw).rotateYCCW(); // Engine is the front
+        EnumFacing facing = getHorizontalFacing(); // Engine is the front
         if (world.getBlockState(pos.down().offset(facing.rotateYCCW())).getBlock() instanceof BlockPlatform)
             pos = pos.offset(facing.rotateYCCW(), 2);
         else if (world.getBlockState(pos.down().offset(facing.rotateY())).getBlock() instanceof BlockPlatform)

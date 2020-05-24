@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.3.21
  */
-public class NSRM5LRenderer extends AbsTrainRenerer {
+public class NSRM5LRenderer extends AbsTrainRenderer {
 
     public static IRenderFactory<AbsTrainBase> FACTORY = NSRM5LRenderer::new;
 
@@ -59,7 +59,7 @@ public class NSRM5LRenderer extends AbsTrainRenerer {
             GlStateManager.enableBlend();
             modelBase.renderOnly("w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9");
 
-            double prog = metro.doorProgressLeft / 100.0 * 15;
+            double prog = metro.doorProgressRight / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(-prog, 0, 0);
             GlStateManager.enableAlpha();
@@ -74,7 +74,7 @@ public class NSRM5LRenderer extends AbsTrainRenerer {
             modelBase.renderOnly("door1r", "door3r");
             GlStateManager.popMatrix();
 
-            prog = metro.doorProgressRight / 100.0 * 15;
+            prog = metro.doorProgressLeft / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(prog, 0, 0);
             GlStateManager.enableAlpha();

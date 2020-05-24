@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class NSPCT4Renderer extends AbsCartRenerer {
+public class NSPCT4Renderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSPCT4Renderer::new;
 

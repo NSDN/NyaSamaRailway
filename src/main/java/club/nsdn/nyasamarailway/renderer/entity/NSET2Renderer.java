@@ -1,16 +1,16 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.ResourceLocation;
-import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class NSET2Renderer extends AbsCartRenerer {
+public class NSET2Renderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSET2Renderer::new;
 

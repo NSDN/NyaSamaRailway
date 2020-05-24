@@ -1,10 +1,11 @@
-package club.nsdn.nyasamarailway.entity.train;
+package club.nsdn.nyasamarailway.ext;
 
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
-import club.nsdn.nyasamarailway.api.cart.CartUtil;
+import club.nsdn.nyasamarailway.api.cart.CartPart;
 import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
+import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import net.minecraft.entity.Entity;
@@ -24,36 +25,80 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 
-/**
- * Created by drzzm32 on 2019.3.3
- */
-public class NSRM3 extends AbsTrainBase {
+public class AbsMetro extends AbsTrainBase {
 
-    private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM3.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM3.class, DataSerializers.BOOLEAN);
+    public AbsMetro(World world) {
+        super(world);
+    }
+
+    public AbsMetro(World world, double x, double y, double z) {
+        super(world, x, y, z);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        dataManager.register(DOOR_STATE_L, false);
+        dataManager.register(DOOR_STATE_R, false);
+
+        initEntity();
+    }
+
+    @Override
+    protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        setDoorStateLeft(tagCompound.getBoolean("doorStateLeft"));
+        setDoorStateRight(tagCompound.getBoolean("doorStateRight"));
+
+        fromNBT(tagCompound);
+    }
+
+    @Override
+    protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        tagCompound.setBoolean("doorStateLeft", getDoorStateLeft());
+        tagCompound.setBoolean("doorStateRight", getDoorStateRight());
+
+        toNBT(tagCompound);
+    }
+
+    @Override
+    public boolean shouldRiderSit() {
+        return shouldSit();
+    }
+
+    @Override
+    public double getMountedYOffset() {
+        return passengerYOffset();
+    }
+
+    @Override
+    public void updatePassenger(@Nonnull Entity entity) {
+        passengerUpdate(entity);
+    }
+
+    public void initEntity() { }
+    public void fromNBT(@Nonnull NBTTagCompound tag) { }
+    public void toNBT(@Nonnull NBTTagCompound tag) { }
+    public boolean shouldSit() { return false; }
+    public double passengerYOffset() { return 0; }
+    public void passengerUpdate(@Nonnull Entity passenger) { }
+
+    public boolean isWideDoor() { return false; }
+
+    /* ---------------------------------------------------------------- */
+
+    private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
 
     private boolean prevDoorStateLeft = false, prevDoorStateRight = false;
     public int doorProgressLeft = 0, doorProgressRight = 0;
 
     public final int STEP = 4;
-
-    public NSRM3(World world) {
-        super(world);
-    }
-
-    public NSRM3(World world, double x, double y, double z) {
-        super(world, x, y, z);
-    }
-
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-
-        dataManager.register(DOOR_STATE_L, false);
-        dataManager.register(DOOR_STATE_R, false);
-    }
 
     public boolean getDoorStateLeft() {
         return dataManager.get(DOOR_STATE_L);
@@ -72,32 +117,6 @@ public class NSRM3 extends AbsTrainBase {
     }
 
     @Override
-    protected void readEntityFromNBT(@Nonnull NBTTagCompound tagCompound) {
-        super.readEntityFromNBT(tagCompound);
-
-        setDoorStateLeft(tagCompound.getBoolean("doorStateLeft"));
-        setDoorStateRight(tagCompound.getBoolean("doorStateRight"));
-    }
-
-    @Override
-    protected void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
-        super.writeEntityToNBT(tagCompound);
-
-        tagCompound.setBoolean("doorStateLeft", getDoorStateLeft());
-        tagCompound.setBoolean("doorStateRight", getDoorStateRight());
-    }
-
-    @Override
-    public boolean shouldRiderSit() {
-        return false;
-    }
-
-    @Override
-    public double getMountedYOffset() {
-        return 0.25;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public double getRenderFixOffset() {
         return -0.25;
@@ -106,11 +125,6 @@ public class NSRM3 extends AbsTrainBase {
     @Override
     public int getMaxPassengerSize() {
         return 12;
-    }
-
-    @Override // Called by rider
-    public void updatePassenger(@Nonnull Entity entity) {
-        CartUtil.updatePassenger12C(this, entity);
     }
 
     @Override
@@ -141,22 +155,8 @@ public class NSRM3 extends AbsTrainBase {
         }
     }
 
-    public boolean getStateLeft(boolean invert) {
-        if (invert)
-            return getDoorStateRight();
-        return getDoorStateLeft();
-    }
-
-    public boolean getStateRight(boolean invert) {
-        if (invert)
-            return getDoorStateLeft();
-        return getDoorStateRight();
-    }
-
-    @Override
-    protected void removePassenger(Entity entity) {
-        BlockPos pos = this.getPosition();
-        EnumFacing facing = getHorizontalFacing(); // Engine is the front
+    public BlockPos calcPlatform(BlockPos pos) {
+        EnumFacing facing = this.getHorizontalFacing(); // Engine is the front
         if (getDoorStateLeft())
             pos = pos.offset(facing.rotateYCCW(), 2);
         else if (getDoorStateRight())
@@ -166,10 +166,31 @@ public class NSRM3 extends AbsTrainBase {
                 pos = pos.offset(facing.rotateYCCW(), 2);
             else if (world.getBlockState(pos.down().offset(facing.rotateY())).getBlock() instanceof BlockPlatform)
                 pos = pos.offset(facing.rotateY(), 2);
-            else {
-                super.removePassenger(entity);
-                return;
-            }
+            else
+                return null;
+        }
+        return pos;
+    }
+
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = entity.getPosition();
+
+        ArrayList<Double> list = new ArrayList<>();
+        LinkedHashMap<Double, BlockPos> map = new LinkedHashMap<>();
+        double v = pos.distanceSq(this.getPosition());
+        list.add(v); map.put(v, this.getPosition());
+        for (CartPart p : getMultiPart()) {
+            v = pos.distanceSq(p.getPosition());
+            list.add(v); map.put(v, p.getPosition());
+        }
+        list.sort(Comparator.naturalOrder());
+        pos = map.get(list.get(0));
+
+        pos = calcPlatform(pos);
+        if (pos == null) {
+            super.removePassenger(entity);
+            return;
         }
 
         super.removePassenger(entity);
@@ -180,11 +201,8 @@ public class NSRM3 extends AbsTrainBase {
         );
     }
 
-    @Override
-    protected boolean canFitPassenger(Entity entity) {
-        boolean res = super.canFitPassenger(entity);
-        BlockPos pos = this.getPosition();
-        EnumFacing facing = getHorizontalFacing(); // Engine is the front
+    public boolean canFit(BlockPos pos, Entity entity, boolean res) {
+        EnumFacing facing = this.getHorizontalFacing(); // Engine is the front
 
         if (getDoorStateLeft() || getDoorStateRight()) {
             if (getDoorStateLeft())
@@ -207,8 +225,19 @@ public class NSRM3 extends AbsTrainBase {
         return res;
     }
 
+    @Override
+    protected boolean canFitPassenger(Entity entity) {
+        boolean res = super.canFitPassenger(entity);
+
+        res |= canFit(this.getPosition(), entity, res);
+        for (CartPart p : getMultiPart())
+            res |= canFit(p.getPosition(), entity, res);
+
+        return res;
+    }
+
     public TileEntityGlassShield getShield(BlockPos pos, EnumFacing facing) {
-        TileEntity te = world.getTileEntity(pos.offset(facing));
+        TileEntity te = world.getTileEntity(isWideDoor() ? pos.offset(facing) : pos);
         if (te instanceof TileEntityGlassShield)
             return (TileEntityGlassShield) te;
         return null;
@@ -280,4 +309,5 @@ public class NSRM3 extends AbsTrainBase {
             }
         }
     }
+
 }

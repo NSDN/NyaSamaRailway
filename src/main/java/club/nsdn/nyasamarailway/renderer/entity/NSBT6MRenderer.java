@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by drzzm32 on 2019.3.21
  */
-public class NSBT6MRenderer extends AbsCartRenerer {
+public class NSBT6MRenderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSBT6MRenderer::new;
 

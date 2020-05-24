@@ -12,7 +12,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.3.1
  */
-public class NSBT3Renderer extends AbsCartRenerer {
+public class NSBT3Renderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSBT3Renderer::new;
 

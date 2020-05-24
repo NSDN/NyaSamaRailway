@@ -16,16 +16,16 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsCartRenerer extends Render<EntityMinecart> {
+public abstract class AbsCartRenderer extends Render<EntityMinecart> {
 
-    public static IRenderFactory<EntityMinecart> FACTORY_DUMMY = (RenderManager manager) -> new AbsCartRenerer(manager) {
+    public static IRenderFactory<EntityMinecart> FACTORY_DUMMY = (RenderManager manager) -> new AbsCartRenderer(manager) {
         @Override
         public void render(EntityMinecart cart, double x, double y, double z, float yaw) {
 
         }
     };
 
-    public AbsCartRenerer(RenderManager manager) {
+    public AbsCartRenderer(RenderManager manager) {
         super(manager);
         this.shadowSize = 0.5F;
     }

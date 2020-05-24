@@ -5,9 +5,9 @@ import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
 import club.nsdn.nyasamarailway.api.cart.ILocomotive;
 import club.nsdn.nyasamarailway.api.cart.nsc.IMonoRailCart;
 import club.nsdn.nyasamarailway.api.cart.nsc.IRotaCart;
-import club.nsdn.nyasamarailway.entity.nsc.*;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import club.nsdn.nyasamatelecom.api.tool.ToolBase;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,14 +16,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class NSCxMRenderer extends AbsCartRenerer {
+public class NSCxMRenderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY_1A = (RenderManager manager) -> new NSCxMRenderer(manager, "nsc_1am", false);
     public static IRenderFactory<EntityMinecart> FACTORY_1B = (RenderManager manager) -> new NSCxMRenderer(manager, "nsc_1bm", false);

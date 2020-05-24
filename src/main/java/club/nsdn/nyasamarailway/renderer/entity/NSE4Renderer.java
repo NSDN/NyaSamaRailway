@@ -1,11 +1,7 @@
 package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.api.cart.AbsTrainBase;
-import club.nsdn.nyasamarailway.api.cart.ILimitVelCart;
-import club.nsdn.nyasamarailway.api.cart.ILocomotive;
-import club.nsdn.nyasamarailway.api.cart.IMobileBlocking;
 import club.nsdn.nyasamarailway.entity.loco.NSBT4M;
-import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
 import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.Minecraft;
@@ -18,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by drzzm32 on 2019.3.3
  */
-public class NSE4Renderer extends AbsTrainRenerer {
+public class NSE4Renderer extends AbsTrainRenderer {
 
     public static IRenderFactory<AbsTrainBase> FACTORY = NSE4Renderer::new;
 

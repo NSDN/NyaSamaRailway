@@ -2,18 +2,18 @@ package club.nsdn.nyasamarailway.renderer.entity;
 
 import club.nsdn.nyasamarailway.entity.loco.NSPCT10J;
 import club.nsdn.nyasamatelecom.api.render.RendererHelper;
+import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.ResourceLocation;
-import cn.ac.nya.forgeobj.WavefrontObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public class NSPCT10JRenderer extends AbsCartRenerer {
+public class NSPCT10JRenderer extends AbsCartRenderer {
 
     public static IRenderFactory<EntityMinecart> FACTORY = NSPCT10JRenderer::new;
 

@@ -10,16 +10,16 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.4.2.
  */
-public abstract class AbsContainerRenerer extends Render<AbsContainer> {
+public abstract class AbsContainerRenderer extends Render<AbsContainer> {
 
-    public static IRenderFactory<AbsContainer> FACTORY_DUMMY = (RenderManager manager) -> new AbsContainerRenerer(manager) {
+    public static IRenderFactory<AbsContainer> FACTORY_DUMMY = (RenderManager manager) -> new AbsContainerRenderer(manager) {
         @Override
         public void render(AbsContainer container, double x, double y, double z, float yaw) {
 
         }
     };
 
-    public AbsContainerRenerer(RenderManager manager) {
+    public AbsContainerRenderer(RenderManager manager) {
         super(manager);
         this.shadowSize = 0.5F;
     }

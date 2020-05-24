@@ -2,7 +2,6 @@ package club.nsdn.nyasamarailway.api.cart;
 
 import club.nsdn.nyasamarailway.api.item.IWand;
 import club.nsdn.nyasamarailway.item.ItemLoader;
-import club.nsdn.nyasamarailway.item.tool.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityMinecart;
@@ -15,6 +14,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -123,6 +124,13 @@ public abstract class AbsTrainBase extends AbsContainer {
             }
         }
         return entity;
+    }
+
+    @Override
+    @Nonnull
+    public EnumFacing getHorizontalFacing() {
+        float yaw = this.rotationYaw - 90;
+        return EnumFacing.getHorizontal(MathHelper.floor((double)(yaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite();
     }
 
     @Override

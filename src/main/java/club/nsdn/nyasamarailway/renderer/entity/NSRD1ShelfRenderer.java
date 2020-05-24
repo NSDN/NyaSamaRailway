@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.3.1
  */
-public class NSRD1ShelfRenderer extends AbsTrainRenerer {
+public class NSRD1ShelfRenderer extends AbsTrainRenderer {
 
     public static IRenderFactory<AbsTrainBase> FACTORY = NSRD1ShelfRenderer::new;
 

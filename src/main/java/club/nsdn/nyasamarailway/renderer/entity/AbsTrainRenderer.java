@@ -10,16 +10,16 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 /**
  * Created by drzzm32 on 2019.2.27
  */
-public abstract class AbsTrainRenerer extends Render<AbsTrainBase> {
+public abstract class AbsTrainRenderer extends Render<AbsTrainBase> {
 
-    public static IRenderFactory<AbsTrainBase> FACTORY_DUMMY = (RenderManager manager) -> new AbsTrainRenerer(manager) {
+    public static IRenderFactory<AbsTrainBase> FACTORY_DUMMY = (RenderManager manager) -> new AbsTrainRenderer(manager) {
         @Override
         public void render(AbsTrainBase train, double x, double y, double z, float yaw) {
 
         }
     };
 
-    public AbsTrainRenerer(RenderManager manager) {
+    public AbsTrainRenderer(RenderManager manager) {
         super(manager);
         this.shadowSize = 0.5F;
     }
