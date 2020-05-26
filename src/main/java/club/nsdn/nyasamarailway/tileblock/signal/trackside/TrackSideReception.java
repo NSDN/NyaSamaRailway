@@ -2,11 +2,16 @@ package club.nsdn.nyasamarailway.tileblock.signal.trackside;
 
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.nsc.*;
+import club.nsdn.nyasamarailway.ext.MultiCartSpawn;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Loader;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by drzzm32 on 2019.2.10
@@ -18,7 +23,7 @@ public class TrackSideReception extends AbsTrackSide {
         public TileEntityTrackSideReception() {
             setInfo(13, 0.25, 0.3125, 1);
         }
-        
+
         private EntityMinecart spawnNSC(World world, double x, double y, double z) {
             EntityMinecart cart;
             if (cartType.equals(NSC1A.class.getName()))
@@ -37,6 +42,35 @@ public class TrackSideReception extends AbsTrackSide {
                 cartType = "stock";
                 cart = EntityMinecart.create(world, x, y, z, EntityMinecart.Type.RIDEABLE);
             }
+            return cart;
+        }
+
+        private EntityMinecart spawnExt(World world, double x, double y, double z, EnumFacing facing) {
+            EntityMinecart cart = null;
+            Class<?> cls = null;
+            boolean res = false;
+            try {
+                cls = Loader.instance().getModClassLoader().loadClass(cartType);
+
+                Method method = null;
+                Method[] methods = cls.getMethods();
+                for (Method m : methods) {
+                    if (m.isAnnotationPresent(MultiCartSpawn.class)) {
+                        method = m;
+                        break;
+                    }
+                }
+                if (method != null) {
+                    method.invoke(null, world, x, y, z, facing);
+                    res = true;
+                }
+            } catch (Exception ignored) { }
+
+            if (!res) {
+                cartType = "stock";
+                cart = EntityMinecart.create(world, x, y, z, EntityMinecart.Type.RIDEABLE);
+            }
+
             return cart;
         }
 
@@ -65,8 +99,9 @@ public class TrackSideReception extends AbsTrackSide {
             } else if (cartType.contains("nsc")) {
                 spawnNSC(world, x, y, z);
             } else {
-                cartType = "stock";
-                cart = EntityMinecart.create(world, x, y, z, EntityMinecart.Type.RIDEABLE);
+                EnumFacing facing = direction;
+                if (invert) facing = facing.getOpposite();
+                cart = spawnExt(world, x, y, z, facing);
             }
             if (cart != null) world.spawnEntity(cart);
         }

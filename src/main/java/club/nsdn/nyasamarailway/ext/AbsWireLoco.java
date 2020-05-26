@@ -65,8 +65,14 @@ public class AbsWireLoco extends NSPCT8C {
         toNBT(tagCompound);
     }
 
+    @Override
+    public double getMountedYOffset() {
+        return getDropDist() + 1;
+    }
+
     public void initEntity() { }
     public void fromNBT(@Nonnull NBTTagCompound tag) { }
     public void toNBT(@Nonnull NBTTagCompound tag) { }
+    public double getDropDist() { return -3.0; }
 
 }
