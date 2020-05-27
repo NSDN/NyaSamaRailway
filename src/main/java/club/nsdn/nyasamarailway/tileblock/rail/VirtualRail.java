@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -58,14 +59,14 @@ public class VirtualRail extends TileBlock implements IVirtualRail {
     }
 
     @Override
-    public float getTargetDirection(World world, BlockPos pos) {
+    public Vec3d getTargetDirection(World world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityVirtualRail) {
             TileEntityVirtualRail rail = (TileEntityVirtualRail) tileEntity;
 
-            return rail.actualDir;
+            return Vec3d.fromPitchYaw(0, rail.actualDir).scale(-1);
         }
-        return 0;
+        return Vec3d.ZERO;
     }
 
     public VirtualRail() {

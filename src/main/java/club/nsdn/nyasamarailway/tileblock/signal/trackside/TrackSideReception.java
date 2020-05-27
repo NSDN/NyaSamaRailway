@@ -2,7 +2,7 @@ package club.nsdn.nyasamarailway.tileblock.signal.trackside;
 
 import club.nsdn.nyasamarailway.entity.cart.*;
 import club.nsdn.nyasamarailway.entity.nsc.*;
-import club.nsdn.nyasamarailway.ext.MultiCartSpawn;
+import club.nsdn.nyasamarailway.ext.SpawnFunction;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -47,15 +47,14 @@ public class TrackSideReception extends AbsTrackSide {
 
         private EntityMinecart spawnExt(World world, double x, double y, double z, EnumFacing facing) {
             EntityMinecart cart = null;
-            Class<?> cls = null;
             boolean res = false;
             try {
-                cls = Loader.instance().getModClassLoader().loadClass(cartType);
+                Class<?> cls = Loader.instance().getModClassLoader().loadClass(cartType);
 
                 Method method = null;
                 Method[] methods = cls.getMethods();
                 for (Method m : methods) {
-                    if (m.isAnnotationPresent(MultiCartSpawn.class)) {
+                    if (m.isAnnotationPresent(SpawnFunction.class)) {
                         method = m;
                         break;
                     }

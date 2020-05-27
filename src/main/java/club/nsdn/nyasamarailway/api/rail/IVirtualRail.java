@@ -8,10 +8,5 @@ import net.minecraft.world.World;
  * Created by drzzm32 on 2020.2.15
  */
 public interface IVirtualRail {
-    float getTargetDirection(World world, BlockPos pos);
-
-    static Vec3d getDirectionVec(float angle) {
-        return Vec3d.fromPitchYaw(0, angle).scale(-1);
-    }
-
+    Vec3d getTargetDirection(World world, BlockPos pos);
 }

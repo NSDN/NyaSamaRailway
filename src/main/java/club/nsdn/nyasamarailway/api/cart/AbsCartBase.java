@@ -809,8 +809,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
                             double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
                             IVirtualRail rail = (IVirtualRail) state.getBlock();
-                            float dir = rail.getTargetDirection(this.world, pos);
-                            Vec3d vec = IVirtualRail.getDirectionVec(dir);
+                            Vec3d vec = rail.getTargetDirection(this.world, pos);
                             vec = vec.scale(speed);
                             this.virtualVec = new Vec3d(vec.x, vec.y, vec.z);
                         }
@@ -839,8 +838,11 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                             this.rotationYaw += 180.0F;
                         }
                     }
-                    if (this.inVirtual)
+                    if (this.inVirtual) {
                         this.rotationYaw = (float) (Math.atan2(this.virtualVec.z, this.virtualVec.x) * 180 / Math.PI);
+                        this.rotationPitch = (float) (Math.atan(this.virtualVec.y /
+                                (this.virtualVec.x * this.virtualVec.x + this.virtualVec.z * this.virtualVec.z)) * 180 / Math.PI);
+                    }
 
                     double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
                     if (dYaw < -170.0D || dYaw >= 170.0D) {
