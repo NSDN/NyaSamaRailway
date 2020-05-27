@@ -881,58 +881,14 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             if (getCollisionHandler() != null) {
                 box = getCollisionHandler().getMinecartCollisionBox(this);
             } else {
-                box = this.getEntityBoundingBox().grow(0.20000000298023224D, 0.0D, 0.20000000298023224D);
+                box = this.getEntityBoundingBox().grow(0.2, 0.0, 0.2);
             }
 
             /** modified for Automatic Train Control */
             if (this.canBeRidden() && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D) {
-                List<Entity> list = this.world.getEntitiesInAABBexcluding(this, box, EntitySelectors.getTeamCollisionPredicate(this));
-                if (!list.isEmpty()) {
-                    for (int i = 0; i < list.size(); ++i) {
-                        Entity target = list.get(i);
-                        if (target instanceof EntityLivingBase) {
-                            EntityLivingBase living = (EntityLivingBase) target;
-                            Vec3d src = this.getPositionVector();
-                            Vec3d dst = target.getPositionVector();
-                            Vec3d vec = dst.subtract(src);
-
-                            vec = vec.normalize().scale(this.getSpeed() * (1.5 + rand.nextDouble()));
-                            vec = vec.addVector(0, 1 + rand.nextDouble(), 0);
-
-                            if (living instanceof EntityPlayer) {
-                                EntityPlayer player = (EntityPlayer) living;
-                                ItemStack stack = player.getHeldItemMainhand();
-                                if (!(stack.getItem() instanceof IWand) && !this.isPassenger(player)) {
-                                    PotionType type;
-                                    type = PotionType.getPotionTypeForName("weakness");
-                                    if (type != null)
-                                        for (PotionEffect effect : type.getEffects())
-                                            effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
-                                    type = PotionType.getPotionTypeForName("harming");
-                                    if (type != null)
-                                        for (PotionEffect effect : type.getEffects())
-                                            effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
-                                    player.addVelocity(vec.x, vec.y, vec.z);
-                                } else {
-                                    player.applyEntityCollision(this);
-                                }
-                            } else {
-                                living.setHealth(living.getHealth() / 2.0F);
-                                PotionType type;
-                                type = PotionType.getPotionTypeForName("long_weakness");
-                                if (type != null)
-                                    for (PotionEffect effect : type.getEffects())
-                                        effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
-                                type = PotionType.getPotionTypeForName("strong_harming");
-                                if (type != null)
-                                    for (PotionEffect effect : type.getEffects())
-                                        effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
-                                living.addVelocity(vec.x, vec.y, vec.z);
-                            }
-                        } else {
-                            target.applyEntityCollision(this);
-                        }
-                    }
+                performCollisionHurt(box);
+                if (hasMultiPart()) for (CartPart<?> p : getMultiPart()) {
+                    performCollisionHurt(p.getEntityBoundingBox().grow(0.2, 0, 0.2));
                 }
             } else {
                 Iterator iterator = this.world.getEntitiesWithinAABBExcludingEntity(this, box).iterator();
@@ -950,6 +906,58 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         }
 
         update();
+    }
+
+    public void performCollisionHurt(AxisAlignedBB box) {
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, box,
+                EntitySelectors.getTeamCollisionPredicate(this));
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); ++i) {
+                Entity target = list.get(i);
+                if (target instanceof EntityLivingBase) {
+                    EntityLivingBase living = (EntityLivingBase) target;
+                    Vec3d src = this.getPositionVector();
+                    Vec3d dst = target.getPositionVector();
+                    Vec3d vec = dst.subtract(src);
+
+                    vec = vec.normalize().scale(this.getSpeed() * (1.5 + rand.nextDouble()));
+                    vec = vec.addVector(0, 1 + rand.nextDouble(), 0);
+
+                    if (living instanceof EntityPlayer) {
+                        EntityPlayer player = (EntityPlayer) living;
+                        ItemStack stack = player.getHeldItemMainhand();
+                        if (!(stack.getItem() instanceof IWand) && !this.isPassenger(player)) {
+                            PotionType type;
+                            type = PotionType.getPotionTypeForName("weakness");
+                            if (type != null)
+                                for (PotionEffect effect : type.getEffects())
+                                    effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
+                            type = PotionType.getPotionTypeForName("harming");
+                            if (type != null)
+                                for (PotionEffect effect : type.getEffects())
+                                    effect.getPotion().affectEntity(null, null, player, effect.getAmplifier(), 1.0F);
+                            player.addVelocity(vec.x, vec.y, vec.z);
+                        } else {
+                            player.applyEntityCollision(this);
+                        }
+                    } else {
+                        living.setHealth(living.getHealth() / 2.0F);
+                        PotionType type;
+                        type = PotionType.getPotionTypeForName("long_weakness");
+                        if (type != null)
+                            for (PotionEffect effect : type.getEffects())
+                                effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
+                        type = PotionType.getPotionTypeForName("strong_harming");
+                        if (type != null)
+                            for (PotionEffect effect : type.getEffects())
+                                effect.getPotion().affectEntity(null, null, living, effect.getAmplifier(), 1.0F);
+                        living.addVelocity(vec.x, vec.y, vec.z);
+                    }
+                } else {
+                    target.applyEntityCollision(this);
+                }
+            }
+        }
     }
 
     @Override
