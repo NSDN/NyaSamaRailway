@@ -123,6 +123,7 @@ public class TileEntityModelBinder {
         renderers.put(GateTiny.TileEntityGateTiny.class, new GateRenderer(GateRenderer.GATE_TINY));
         renderers.put(YakumoPC.TileEntityYakumoPC.class, new YakumoPCRenderer());
         renderers.put(VirtualRail.TileEntityVirtualRail.class, new VirtualRailRenderer());
+        renderers.put(WireRailV.TileEntityWireRailV.class, new WireRailVRenderer());
         renderers.put(PlatformHead.TileEntityPlatformHead.class, new PlatformHeadRenderer());
     }
 

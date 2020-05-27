@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "nyasamarailway:rail_wire_v"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

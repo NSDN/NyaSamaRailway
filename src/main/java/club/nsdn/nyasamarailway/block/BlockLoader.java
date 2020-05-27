@@ -195,6 +195,7 @@ public class BlockLoader {
         blocks.add(new GateTiny());
         blocks.add(new YakumoPC());
         blocks.add(new VirtualRail());
+        blocks.add(new WireRailV());
         blocks.add(new PlatformHead("PlatformHead", "platform_head", false));
         blocks.add(new PlatformHead("PlatformHeadHalf", "platform_head_half", true));
         blocks.add(new PlatformHead("PlatformHeadDark", "platform_head_dark", false));

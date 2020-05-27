@@ -176,6 +176,7 @@ tile.TrackSideSnifferHs.name=TS-002B高速轨旁嗅探机
 tile.TrackSideRFIDHs.name=TS-003B高速轨旁射频机
 info.trackside.invert=轨旁设备方向已变更
 tile.WireRail.name=缆型轨
+tile.WireRailV.name=纵向缆型轨
 tile.WireRailNode.name=缆型轨节点
 tile.WireRailSwitch.name=缆型轨道岔
 tile.RailNorStoneSleeper.name=标准轨(混凝土枕)

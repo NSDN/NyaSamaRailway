@@ -14,13 +14,13 @@ import javax.annotation.Nullable;
 /**
  * Created by drzzm32 on 2020.5.24.
  */
-public class CartPart extends Entity {
+public class CartPart<Parent extends Entity> extends Entity {
 
-    public final AbsContainer parent;
+    public final Parent parent;
     public final String partName;
     public final Vec3d offset;
 
-    public CartPart(AbsContainer parent, String name, Vec3d offset) {
+    public CartPart(Parent parent, String name, Vec3d offset) {
         super(parent.world);
         this.parent = parent;
         this.partName = name;
@@ -28,7 +28,7 @@ public class CartPart extends Entity {
         this.offset = new Vec3d(offset.x, offset.y, offset.z);
     }
 
-    public CartPart(AbsContainer parent, String name, float width, float height, Vec3d offset) {
+    public CartPart(Parent parent, String name, float width, float height, Vec3d offset) {
         super(parent.world);
         this.parent = parent;
         this.partName = name;
@@ -40,7 +40,9 @@ public class CartPart extends Entity {
     public void onUpdate() {
         super.onUpdate();
 
-        Vec3d vec = parent.getOffset(offset);
+        Vec3d vec = Vec3d.ZERO;
+        if (parent instanceof IPartParent)
+            vec = ((IPartParent) parent).getOffset(offset);
         setLocationAndAngles(vec.x, vec.y, vec.z, 0.0F, 0.0F);
 
         if (parent.isDead) this.setDead();

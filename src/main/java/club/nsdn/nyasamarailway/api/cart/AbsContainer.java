@@ -30,7 +30,7 @@ import java.util.UUID;
 /**
  * Created by drzzm32 on 2019.4.2.
  */
-public abstract class AbsContainer extends Entity {
+public abstract class AbsContainer extends Entity implements IPartParent {
 
     private static final DataParameter<Integer> BASE = EntityDataManager.createKey(AbsContainer.class, DataSerializers.VARINT);
 
@@ -87,6 +87,7 @@ public abstract class AbsContainer extends Entity {
 
     public List<CartPart> getMultiPart() { return Collections.emptyList(); }
 
+    @Override
     public Vec3d getOffset(Vec3d vec) {
         return vec.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI)).add(this.getPositionVector());
     }
@@ -196,6 +197,7 @@ public abstract class AbsContainer extends Entity {
                 if (stack.getItem() instanceof IWand) flag = true;
             }
             if (flag) {
+                onKilled();
                 this.removePassengers();
                 this.setDead();
                 for (CartPart e : getMultiPart())
@@ -205,6 +207,8 @@ public abstract class AbsContainer extends Entity {
         }
         return false;
     }
+
+    public void onKilled() { }
 
     @Override
     protected boolean canTriggerWalking() {

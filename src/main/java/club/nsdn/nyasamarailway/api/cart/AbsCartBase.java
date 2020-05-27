@@ -46,13 +46,14 @@ import net.minecraftforge.event.entity.minecart.MinecartUpdateEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by drzzm32 on 2019.2.10
  */
-public abstract class AbsCartBase extends EntityMinecart implements ILinkableCart {
+public abstract class AbsCartBase extends EntityMinecart implements ILinkableCart, IPartParent {
 
     /** Minecart rotational logic matrix */
     public static final int[][][] MATRIX = new int[][][]{
@@ -265,6 +266,21 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
 
     public double getSpeed() {
         return Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+    }
+
+    @Nullable
+    @Override
+    public Entity[] getParts() {
+        return hasMultiPart() ? getMultiPart().toArray(new Entity[0]) : null;
+    }
+
+    public boolean hasMultiPart() { return false; }
+
+    public List<CartPart> getMultiPart() { return Collections.emptyList(); }
+
+    @Override
+    public Vec3d getOffset(Vec3d vec) {
+        return vec.rotateYaw((float) ((180 - this.rotationYaw) / 180 * Math.PI)).add(this.getPositionVector());
     }
 
     public boolean hasSpecialUpdate() { return false; }
@@ -629,6 +645,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     if (stack.getItem() instanceof IWand) flag = true;
                 }
                 if (flag || this.getDamage() > 40.0F) {
+                    onKilled();
                     this.removePassengers();
                     if (flag && !this.hasCustomName()) {
                         this.setDead();
@@ -643,6 +660,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             return true;
         }
     }
+
+    public void onKilled() { }
 
     @Override
     protected void readEntityFromNBT(NBTTagCompound tagCompound) {
@@ -683,6 +702,8 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
         tagCompound.setDouble("virtualY", virtualVec.y);
         tagCompound.setDouble("virtualZ", virtualVec.z);
     }
+
+    public void update() { }
 
     /*******************************************************************************************************************/
 
@@ -807,7 +828,9 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                         if (state.getBlock() instanceof IVirtualRail) {
                             resetVirtualCounter();
 
-                            double speed = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                            if (Math.abs(this.motionY) > getMaxCartSpeedOnRail())
+                                this.motionY = 0;
+                            double speed = Math.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                             IVirtualRail rail = (IVirtualRail) state.getBlock();
                             Vec3d vec = rail.getTargetDirection(this.world, pos);
                             vec = vec.scale(speed);
@@ -841,7 +864,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
                     if (this.inVirtual) {
                         this.rotationYaw = (float) (Math.atan2(this.virtualVec.z, this.virtualVec.x) * 180 / Math.PI);
                         this.rotationPitch = (float) (Math.atan(this.virtualVec.y /
-                                (this.virtualVec.x * this.virtualVec.x + this.virtualVec.z * this.virtualVec.z)) * 180 / Math.PI);
+                                Math.sqrt(this.virtualVec.x * this.virtualVec.x + this.virtualVec.z * this.virtualVec.z)) * 180 / Math.PI);
                     }
 
                     double dYaw = (double)MathHelper.wrapDegrees(this.rotationYaw - this.prevRotationYaw);
@@ -926,6 +949,7 @@ public abstract class AbsCartBase extends EntityMinecart implements ILinkableCar
             MinecraftForge.EVENT_BUS.post(new MinecartUpdateEvent(this, this.getCurrentRailPosition()));
         }
 
+        update();
     }
 
     @Override
