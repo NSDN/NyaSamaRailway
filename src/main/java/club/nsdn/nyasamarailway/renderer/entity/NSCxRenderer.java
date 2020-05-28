@@ -132,7 +132,6 @@ public class NSCxRenderer extends AbsCartRenderer {
         if (minecart instanceof IMonoRailCart)
             GL11.glTranslated(0.0, ((IMonoRailCart) minecart).getShiftY() - 0.3125, 0.0);
 
-        RendererHelper.beginSpecialLighting();
         if (minecart instanceof IRotaCart) {
             IRotaCart rotaCart = (IRotaCart) minecart;
             float angle = rotaCart.getAngle() + 1;
@@ -142,7 +141,6 @@ public class NSCxRenderer extends AbsCartRenderer {
             RendererHelper.renderOtherPartWithResourceAndRotation(modelBase, "Top", 90.0F, textureBase);
         } else
             RendererHelper.renderWithResourceAndRotation(modelBase, 90.0F, textureBase);
-        RendererHelper.endSpecialLighting();
 
         if (modelPrint != null)
             RendererHelper.renderWithResourceAndRotation(modelPrint, 90.0F, print);
@@ -218,8 +216,8 @@ public class NSCxRenderer extends AbsCartRenderer {
                 int d = motorCart.getMotorDir(), p = motorCart.getMotorPower(), r = motorCart.getMotorBrake();
                 boolean isOff = !motorCart.getMotorState();
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
+                GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
                 String pwr = String.format("%2d", p);
@@ -235,8 +233,6 @@ public class NSCxRenderer extends AbsCartRenderer {
                 doRenderText(4, "vel:" + sv + "m/t");
                 doRenderText(5, "lim:" + sl + "m/t");
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterV, textureMeterV);
                 angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
                 if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -252,8 +248,6 @@ public class NSCxRenderer extends AbsCartRenderer {
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterA, textureMeterA);
                 angle = a / 0.03F * ANGLE_HALF;
                 if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
@@ -268,6 +262,8 @@ public class NSCxRenderer extends AbsCartRenderer {
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
+
+                GlStateManager.Profile.TRANSPARENT_MODEL.clean();
             }
         }
     }

@@ -42,9 +42,7 @@ public abstract class AbsTrainRenderer extends Render<AbsTrainBase> {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, train.getRenderFixOffset(), 0);
-        GlStateManager.pushAttrib();
         render(train, x, y, z, yaw);
-        GlStateManager.popAttrib();
         GlStateManager.popMatrix();
 
         GlStateManager.popMatrix();

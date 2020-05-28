@@ -107,10 +107,8 @@ public class NSPCT4Renderer extends AbsCartRenderer {
         if (minecart instanceof IMonoRailCart)
             GL11.glTranslated(0.0, ((IMonoRailCart) minecart).getShiftY() - 0.3125, 0.0);
 
-        RendererHelper.beginSpecialLighting();
         RendererHelper.renderWithResourceAndRotation(modelBase, 90.0F, textureBase);
         RendererHelper.renderWithResourceAndRotation(modelPrint, 90.0F, print);
-        RendererHelper.endSpecialLighting();
 
         if (!minecart.getPassengers().isEmpty()) {
             if (minecart.getPassengers().get(0) instanceof EntityPlayer) {
@@ -187,8 +185,8 @@ public class NSPCT4Renderer extends AbsCartRenderer {
                 if (cart instanceof AbsCartBase)
                     blocking = ((AbsCartBase) cart).getBlocking();
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
+                GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
                 RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
                 String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
                 String pwr = String.format("%2d", p);
@@ -204,8 +202,6 @@ public class NSPCT4Renderer extends AbsCartRenderer {
                 doRenderText(4, "v/l:" + sv + "/" + sl);
                 doRenderText(5, "blk:" + String.format("%1.1f", blocking));
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterV, textureMeterV);
                 angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
                 if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -221,8 +217,6 @@ public class NSPCT4Renderer extends AbsCartRenderer {
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
 
-                GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
                 RendererHelper.renderWithResource(modelMeterA, textureMeterA);
                 angle = a / 0.03F * ANGLE_HALF;
                 if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
@@ -237,6 +231,8 @@ public class NSPCT4Renderer extends AbsCartRenderer {
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
                 GL11.glPopMatrix();
+
+                GlStateManager.Profile.TRANSPARENT_MODEL.clean();
             }
         }
     }

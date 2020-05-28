@@ -104,8 +104,8 @@ public class NSPCT8JRenderer extends AbsCartRenderer {
 
             boolean MBlkState = loco.getBlockingState();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
             String pwr = String.format("%2d", p);
@@ -123,8 +123,6 @@ public class NSPCT8JRenderer extends AbsCartRenderer {
 
             GL11.glPushMatrix();
             GL11.glRotated(180, 0, 1, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             // HUD1406
             doRenderText(0, "-= NTP--EXT =-");
@@ -140,6 +138,8 @@ public class NSPCT8JRenderer extends AbsCartRenderer {
             GL11.glRotated(180, 0, 1, 0);
             doRenderMeter(loco);
             GL11.glPopMatrix();
+
+            GlStateManager.Profile.TRANSPARENT_MODEL.clean();
         }
     }
 
@@ -149,8 +149,6 @@ public class NSPCT8JRenderer extends AbsCartRenderer {
 
         float angle;
 
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
         RendererHelper.renderWithResource(modelMeterV, textureMeterV);
         angle = v / 6.0F * ANGLE_HALF * 2 - ANGLE_HALF;
         if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -166,8 +164,6 @@ public class NSPCT8JRenderer extends AbsCartRenderer {
         GL11.glPopMatrix();
         GL11.glPopMatrix();
 
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
         RendererHelper.renderWithResource(modelMeterA, textureMeterA);
         angle = a / 0.03F * ANGLE_HALF;
         if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;

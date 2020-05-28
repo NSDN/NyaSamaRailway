@@ -52,50 +52,37 @@ public class NSRM2Renderer extends AbsTrainRenderer {
         if (train instanceof NSRM2) {
             NSRM2 metro = (NSRM2) train;
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
             modelBase.renderOnly("w0", "w1", "w2", "w3", "w4", "w5");
 
             double prog = metro.doorProgressRight / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderPart("door1l");
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderPart("door1r");
             GlStateManager.popMatrix();
 
             prog = metro.doorProgressLeft / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderPart("door2l");
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderPart("door2r");
             GlStateManager.popMatrix();
 
-            GlStateManager.disableAlpha();
-            GlStateManager.disableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.clean();
         }
 
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
         Minecraft.getMinecraft().getTextureManager().bindTexture(texturePrint);
         modelPrint.renderAll();
-        GlStateManager.disableAlpha();
-        GlStateManager.disableBlend();
 
         GlStateManager.popMatrix();
     }

@@ -5,16 +5,12 @@ import club.nsdn.nyasamarailway.api.cart.CartPart;
 import club.nsdn.nyasamarailway.api.item.IController;
 import club.nsdn.nyasamarailway.api.signal.TileEntityGlassShield;
 import club.nsdn.nyasamarailway.block.BlockPlatform;
-import club.nsdn.nyasamarailway.entity.train.NSRM1;
 import club.nsdn.nyasamarailway.item.tool.Item1N4148;
 import club.nsdn.nyasamarailway.item.tool.Item74HC04;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -42,9 +38,6 @@ public class AbsMetro extends AbsTrainBase {
     @Override
     protected void entityInit() {
         super.entityInit();
-        dataManager.register(DOOR_STATE_L, false);
-        dataManager.register(DOOR_STATE_R, false);
-
         initEntity();
     }
 
@@ -81,40 +74,43 @@ public class AbsMetro extends AbsTrainBase {
         passengerUpdate(entity);
     }
 
+    @Override
+    protected void removePassenger(Entity entity) {
+        BlockPos pos = passengerRemove(entity);
+        if (pos == null) {
+            this.doRemovePassenger(entity);
+            return;
+        }
+
+        this.doRemovePassenger(entity);
+        entity.setPositionAndUpdate(
+                pos.getX() + 0.5,
+                pos.getY() + 0.1,
+                pos.getZ() + 0.5
+        );
+    }
+
     public void initEntity() { }
     public void fromNBT(@Nonnull NBTTagCompound tag) { }
     public void toNBT(@Nonnull NBTTagCompound tag) { }
     public boolean shouldSit() { return false; }
     public double passengerYOffset() { return 0; }
     public void passengerUpdate(@Nonnull Entity passenger) { }
+    public BlockPos passengerRemove(@Nonnull Entity passenger) { return null; }
 
     public boolean isWideDoor() { return false; }
 
     /* ---------------------------------------------------------------- */
-
-    private static final DataParameter<Boolean> DOOR_STATE_L = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DOOR_STATE_R = EntityDataManager.createKey(NSRM1.class, DataSerializers.BOOLEAN);
 
     private boolean prevDoorStateLeft = false, prevDoorStateRight = false;
     public int doorProgressLeft = 0, doorProgressRight = 0;
 
     public final int STEP = 4;
 
-    public boolean getDoorStateLeft() {
-        return dataManager.get(DOOR_STATE_L);
-    }
-
-    public boolean getDoorStateRight() {
-        return dataManager.get(DOOR_STATE_R);
-    }
-
-    public void setDoorStateLeft(boolean value) {
-        dataManager.set(DOOR_STATE_L, value);
-    }
-
-    public void setDoorStateRight(boolean value) {
-        dataManager.set(DOOR_STATE_R, value);
-    }
+    public boolean getDoorStateLeft() { return false; }
+    public boolean getDoorStateRight() { return false; }
+    public void setDoorStateLeft(boolean value) { }
+    public void setDoorStateRight(boolean value) { }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -172,8 +168,7 @@ public class AbsMetro extends AbsTrainBase {
         return pos;
     }
 
-    @Override
-    protected void removePassenger(Entity entity) {
+    public void doRemovePassenger(Entity entity) {
         BlockPos pos = entity.getPosition();
 
         ArrayList<Double> list = new ArrayList<>();

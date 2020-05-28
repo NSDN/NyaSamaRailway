@@ -93,9 +93,9 @@ public class NSE4Renderer extends AbsTrainRenderer {
         Minecraft.getMinecraft().getTextureManager().bindTexture(textureBase);
         modelBase.renderAllExcept( "w0", "w1", "w2", "w3");
 
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
+        GlStateManager.Profile.TRANSPARENT_MODEL.apply();
         modelBase.renderOnly("w0", "w1", "w2", "w3");
+        GlStateManager.Profile.TRANSPARENT_MODEL.clean();
 
         GlStateManager.popMatrix();
 
@@ -138,11 +138,11 @@ public class NSE4Renderer extends AbsTrainRenderer {
             String sv = String.format("%1.2f", v);
             String sl = String.format("%1.2f", lim);
 
+            GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
             GL11.glPushMatrix();
             GL11.glTranslated(-0.25, 0, 0);
             GL11.glRotated(-15, 0, 0, 1);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             // HUD1406
             doRenderText(0, "-= NSR--NTP =-");
@@ -157,8 +157,6 @@ public class NSE4Renderer extends AbsTrainRenderer {
             GL11.glRotated(-180, 0, 1, 0);
             GL11.glTranslated(-0.25, 0, 0);
             GL11.glRotated(-15, 0, 0, 1);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             // HUD1406
             doRenderText(0, "-= NTP--EXT =-");
@@ -172,8 +170,6 @@ public class NSE4Renderer extends AbsTrainRenderer {
             GL11.glPushMatrix();
             GL11.glRotated(30, 0, 0, 1);
             GL11.glTranslated(0.5, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
             angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -189,8 +185,6 @@ public class NSE4Renderer extends AbsTrainRenderer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
             angle = a / 0.03F * ANGLE_HALF;
             if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
@@ -206,6 +200,8 @@ public class NSE4Renderer extends AbsTrainRenderer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
             GL11.glPopMatrix();
+
+            GlStateManager.Profile.TRANSPARENT_MODEL.clean();
         }
     }
 

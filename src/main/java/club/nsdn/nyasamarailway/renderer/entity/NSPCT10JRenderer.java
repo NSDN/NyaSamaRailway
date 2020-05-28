@@ -105,8 +105,8 @@ public class NSPCT10JRenderer extends AbsCartRenderer {
             boolean high = loco.getHighSpeedMode();
             boolean MBlkState = loco.getBlockingState();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.apply();
+
             RendererHelper.renderPartWithResource(modelScreen, "base", textureScreen);
             String dir = d == 1 ? "F" : (d == 0 ? "N" : "R");
             String pwr = String.format("%2d", p);
@@ -122,8 +122,6 @@ public class NSPCT10JRenderer extends AbsCartRenderer {
             doRenderText(4, "vel:" + sv + "m/t");
             doRenderText(5, "lim:" + sl + "m/t");
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterV, textureMeterV);
             angle = v / 9.0F * ANGLE_HALF * 2 - ANGLE_HALF;
             if (angle > ANGLE_HALF) angle = ANGLE_HALF;
@@ -139,8 +137,6 @@ public class NSPCT10JRenderer extends AbsCartRenderer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             RendererHelper.renderWithResource(modelMeterA, textureMeterA);
             angle = a / 0.06F * ANGLE_HALF;
             if (Math.abs(angle) > ANGLE_HALF) angle = Math.signum(angle) * ANGLE_HALF;
@@ -156,6 +152,7 @@ public class NSPCT10JRenderer extends AbsCartRenderer {
             GL11.glPopMatrix();
             GL11.glPopMatrix();
 
+            GlStateManager.Profile.TRANSPARENT_MODEL.clean();
         }
     }
 

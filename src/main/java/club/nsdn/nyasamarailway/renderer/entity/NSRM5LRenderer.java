@@ -55,50 +55,36 @@ public class NSRM5LRenderer extends AbsTrainRenderer {
         if (train instanceof NSRM5L) {
             NSRM5L metro = (NSRM5L) train;
 
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.apply();
             modelBase.renderOnly("w0", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9");
 
             double prog = metro.doorProgressRight / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderOnly("door1l", "door3l");
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderOnly("door1r", "door3r");
             GlStateManager.popMatrix();
 
             prog = metro.doorProgressLeft / 100.0 * 15;
             GlStateManager.pushMatrix();
             GlStateManager.translate(prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderOnly("door2l", "door4l");
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(-prog, 0, 0);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
             modelBase.renderOnly("door2r", "door4r");
             GlStateManager.popMatrix();
 
-            GlStateManager.disableAlpha();
-            GlStateManager.disableBlend();
+            GlStateManager.Profile.TRANSPARENT_MODEL.clean();
         }
 
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
         Minecraft.getMinecraft().getTextureManager().bindTexture(texturePrint);
         modelPrint.renderAll();
-        GlStateManager.disableAlpha();
-        GlStateManager.disableBlend();
 
         GlStateManager.popMatrix();
     }
